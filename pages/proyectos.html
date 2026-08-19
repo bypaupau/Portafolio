@@ -59,11 +59,20 @@
   var TIPO_LABEL = { academico:'Académicos', personal:'Personales', hackathon:'Hackathones' };
   var barColors = ['', 'sky', 'lav', 'mint', 'peach'];
 
+  /* Un proyecto puede tener varios tipos: tipo:"academico, personal".
+     Además normalizamos a minúsculas para que "Academico" y "academico"
+     no aparezcan como dos opciones distintas en el filtro. */
+  function tiposDe(p){
+    return String(p.tipo || '').split(',')
+      .map(function(t){ return t.trim().toLowerCase(); })
+      .filter(Boolean);
+  }
+
   // construir conjuntos de filtros
   var materias=[], tipos=[], skills=[];
   PROYECTOS.forEach(function(p){
-    if(materias.indexOf(p.materia)<0) materias.push(p.materia);
-    if(tipos.indexOf(p.tipo)<0) tipos.push(p.tipo);
+    if(p.materia && materias.indexOf(p.materia)<0) materias.push(p.materia);
+    tiposDe(p).forEach(function(t){ if(tipos.indexOf(t)<0) tipos.push(t); });
     (p.habilidades||[]).forEach(function(s){ if(skills.indexOf(s)<0) skills.push(s); });
   });
 
@@ -81,10 +90,11 @@
   function render(){
     grid.innerHTML = PROYECTOS.map(function(p,i){
       var bar = barColors[i % barColors.length];
-      var b = BADGE[p.estado] || BADGE['pronto'];
+      var b = BADGE[String(p.estado||'').trim().toLowerCase()] || BADGE['pronto'];
       var pills = (p.habilidades||[]).map(function(s){ return '<span class="pill">'+s+'</span>'; }).join('');
       var TIPO_TXT = { academico:'académico', personal:'personal', hackathon:'hackathon' };
-      var tipoTxt = TIPO_TXT[p.tipo] || p.tipo;
+      var misTipos = tiposDe(p);
+      var tipoTxt  = misTipos.map(function(t){ return TIPO_TXT[t] || t; }).join(' · ');
       var link = (p.repo && p.repo!=='#')
         ? '<a class="link" href="'+p.repo+'" target="_blank" rel="noopener">ver repo →</a>'
         : '<span class="link" style="opacity:.6">pronto ✦</span>';
@@ -92,7 +102,7 @@
       var thumb = p.img
         ? '<div class="proj-thumb"><img src="'+imgSrc+'" alt="'+p.nombre+'"></div>'
         : '<div class="proj-thumb"><span class="ph">▢ captura<br>pronto</span></div>';
-      return '<article class="win proj-card" data-tipo="'+p.tipo+'" data-materia="'+p.materia+'" data-skills="'+(p.habilidades||[]).join('|')+'">'+
+      return '<article class="win proj-card" data-tipo="'+misTipos.join('|')+'" data-materia="'+(p.materia||'')+'" data-skills="'+(p.habilidades||[]).join('|')+'">'+
         '<div class="win-bar '+bar+'"><span class="win-title">'+p.nombre+'</span>'+
         '<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span></div>'+
         thumb +
@@ -116,7 +126,7 @@
     var cards = grid.querySelectorAll('.proj-card');
     var shown = 0;
     cards.forEach(function(c){
-      var ok = (!ft || c.dataset.tipo===ft) &&
+      var ok = (!ft || ('|'+c.dataset.tipo+'|').indexOf('|'+ft+'|')>=0) &&
                (!fm || c.dataset.materia===fm) &&
                (!fs || ('|'+c.dataset.skills+'|').indexOf('|'+fs+'|')>=0);
       c.classList.toggle('hide', !ok);

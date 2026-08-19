@@ -24,12 +24,12 @@ const MATERIAS = [
     proyectos: [
       {
         nombre: "App Web de Tracking de Libros",
-        repo:   "https://github.com/paumquintana/ProyectoIParcialLenguajesProgramacion",
+        repo:   "https://github.com/bypaupau/Biblioteca-Personal",
         estado: "completado"
       },
       {
         nombre: "Simulación de Videojuego (Laravel + Prolog)",
-        repo:   "https://github.com/paumquintana/proyectoRecuperacionLenguajesProgramacion",
+        repo:   "https://github.com/bypaupau/RPG-Game",
         estado: "completado"
       }
     ]
@@ -109,11 +109,11 @@ const PROYECTOS = [
     habilidades: ["Diseño", "C#", "Unity", "Ilustración"],
     repo: "https://github.com/bypaupau/JuegoGrupal-ProyectoIIParcial",
     img: "img/catventures.png",
-    estado: "Completado"
+    estado: "completado"
   },
   {
     nombre: "Simulación de Videojuego · Laravel + Prolog",
-    tipo: "Academico",
+    tipo: "academico",
     materia: "Lenguajes de Programación",
     periodo: "Junio 2026",
     descripcion: "Simulación de un videojuego que combina Laravel para la lógica web y Prolog para el razonamiento.",
@@ -124,7 +124,7 @@ const PROYECTOS = [
   },
   {
     nombre: "Dashboard BI",
-    tipo: "Academico",
+    tipo: "academico",
     materia: "Base de Datos II",
     periodo: "Abril 2026",
     descripcion: "Tablero de inteligencia de negocios para analizar facturación, cobranza y servicios, con modelo de datos en SQL.",
@@ -135,7 +135,7 @@ const PROYECTOS = [
   },
   {
     nombre: "Simulación de Proceso de Adopción",
-    tipo: "Academico",
+    tipo: "academico",
     materia: "Base de Datos I",
     periodo: "Diciembre 2025",
     descripcion: "Simulación de un proceso de adopción con su modelo de base de datos, consultas y lógica del flujo.",
@@ -146,7 +146,7 @@ const PROYECTOS = [
   },
   {
     nombre: "Inventario + Reportes con Docker",
-    tipo: "Academico",
+    tipo: "academico",
     materia: "Sistemas Distribuidos",
     periodo: "Junio 2026",
     descripcion: "Sistema distribuido con Docker: mi app de inventario envía datos que se reflejan en la base y el sistema de reportes de un compañero, en tiempo real.",
