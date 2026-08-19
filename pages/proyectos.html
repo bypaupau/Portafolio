@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <title>pau.proyectos · proyectos</title>
 <meta name="description" content="Proyectos de Pau — académicos y personales, filtrables por materia, tipo y habilidad." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/portfolio.css?v=2">
+<link rel="stylesheet" href="../css/portfolio.css?v=2">
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">pau<span>.</span>proyectos</a>
+  <a href="../index.html" class="nav-logo">pau<span>.</span>proyectos</a>
   <ul class="nav-tabs">
-    <li><a href="index.html">Inicio</a></li>
+    <li><a href="../index.html">Inicio</a></li>
     <li><a href="sobremi.html">Sobre</a></li>
     <li><a href="materias.html">Materias</a></li>
     <li><a href="proyectos.html" class="active">Proyectos</a></li>
@@ -39,7 +39,7 @@
 
 <p class="foot">hecho con <span class="hp">&lt;3</span> + pixeles · por Pau · © 2026</p>
 
-<script src="data/proyectos.js"></script>
+<script src="../data/proyectos.js"></script>
 <script>
 (function(){
   var BADGE = {
@@ -83,8 +83,9 @@
       var link = (p.repo && p.repo!=='#')
         ? '<a class="link" href="'+p.repo+'" target="_blank" rel="noopener">ver repo →</a>'
         : '<span class="link" style="opacity:.6">pronto ✦</span>';
+      var imgSrc = p.img ? (/^(https?:|\/|\.\.\/)/.test(p.img) ? p.img : '../'+p.img) : '';
       var thumb = p.img
-        ? '<div class="proj-thumb"><img src="'+p.img+'" alt="'+p.nombre+'"></div>'
+        ? '<div class="proj-thumb"><img src="'+imgSrc+'" alt="'+p.nombre+'"></div>'
         : '<div class="proj-thumb"><span class="ph">▢ captura<br>pronto</span></div>';
       return '<article class="win proj-card" data-tipo="'+p.tipo+'" data-materia="'+p.materia+'" data-skills="'+(p.habilidades||[]).join('|')+'">'+
         '<div class="win-bar '+bar+'"><span class="win-title">'+p.nombre+'</span>'+

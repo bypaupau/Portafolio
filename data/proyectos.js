@@ -104,11 +104,11 @@ const PROYECTOS = [
   {
     nombre: "Catventures - Unity 2D",
     tipo: "academico, personal",
-    periodo: "Agosto - 2026",
+    periodo: "Agosto 2026",
     descripcion: "Creacion de un pixel videogame en Unity para aprender C#",
     habilidades: ["Diseño", "C#", "Unity", "Ilustración"],
     repo: "https://github.com/bypaupau/JuegoGrupal-ProyectoIIParcial",
-    img: "img/cateventures.png",
+    img: "img/catventures.png",
     estado: "Completado"
   },
   {
