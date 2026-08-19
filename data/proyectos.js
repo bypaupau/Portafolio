@@ -69,6 +69,20 @@ const MATERIAS = [
 // img: ruta de la captura/thumbnail (ej: "img/peaknews.png"). Déjalo "" para mostrar un placeholder.
 const PROYECTOS = [
   {
+    nombre: "Grow With Phoenix",
+    tipo: "hackathon",
+    materia: "SpaceHACK for Sustainability 2025",
+    periodo: "2025",
+    descripcion: "🏆 Primer lugar internacional. Analizamos los desiertos alimentarios de Phoenix, Arizona con datos satelitales y diseñamos el prototipo de una app que acompaña a la gente a cultivar su propia comida.",
+    habilidades: ["Figma", "UX/UI", "Python", "Google Earth Engine", "Google Colab", "Data Science"],
+    // ⬇︎ PEGA AQUÍ el enlace de Drive con permiso "cualquiera con el enlace".
+    //    Debe verse así: https://drive.google.com/file/d/XXXXXXXX/view?usp=sharing
+    //    Mientras esté vacío, la tarjeta muestra "pronto ✦" en vez de un enlace roto.
+    repo: "",
+    img: "img/phoenix-grow.png",
+    estado: "completado"
+  },
+  {
     nombre: "Peak News - Alpine Fact-Checker",
     tipo: "hackathon",
     materia: "Spacehack 2026",
