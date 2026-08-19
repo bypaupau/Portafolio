@@ -16,7 +16,12 @@
 
 <nav>
   <a href="index.html" class="nav-logo">pau<span>.</span>proyectos</a>
-  <ul class="nav-tabs">
+  <button class="nav-toggle" id="nav-toggle" type="button"
+          aria-expanded="false" aria-controls="nav-tabs" aria-label="Abrir menú">
+    <span class="nav-burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    menú
+  </button>
+  <ul class="nav-tabs" id="nav-tabs">
     <li><a href="index.html" class="active">Inicio</a></li>
     <li><a href="pages/sobremi.html">Sobre</a></li>
     <li><a href="pages/materias.html">Materias</a></li>
@@ -149,18 +154,7 @@
 
 <p class="foot">hecho con <span class="hp">&lt;3</span> + pixeles · por Pau · © 2026</p>
 
-<script>
-(function(){
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      e.target.querySelectorAll('.popup').forEach(function(el,i){
-        if(e.isIntersecting){ el.style.transitionDelay=(i*0.12)+'s'; el.classList.add('pop'); }
-        else { el.classList.remove('pop'); }
-      });
-    });
-  }, { threshold:0.25 });
-  document.querySelectorAll('.popups').forEach(function(p){ io.observe(p); });
-})();
-</script>
+<!-- el pop-in de las tarjetas y el menú móvil viven ahora en js/portfolio.js -->
+<script src="js/portfolio.js"></script>
 </body>
 </html>

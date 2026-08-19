@@ -26,17 +26,26 @@
 
   --win-shadow: 5px 5px 0 var(--pink-mid);
   --win-shadow-ink: 4px 4px 0 var(--ink);
+
+  /* ── medidas responsive ── */
+  --gutter:  2.5rem;   /* margen lateral total del .wrap (1.25rem por lado) */
+  --nav-h:   54px;     /* alto del nav; se mantiene fijo en TODOS los tamaños */
 }
 
 *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 
 body{
   font-family:var(--font-body);
   color:var(--text);
   min-height:100vh;
   background:var(--pink-pale);
+  overflow-x:hidden;              /* red de seguridad: nada se sale de lado */
 }
+/* imágenes y sprites siempre fluidos */
+img,svg,video,canvas{ max-width:100%; height:auto; }
+/* palabras larguísimas (URLs, nombres de repo) parten en vez de estirar la caja */
+h1,h2,h3,h4,p,a,li,span,label{ overflow-wrap:break-word; }
 /* fondo de cuadrícula tipo papel milimetrado pixel */
 body::before{
   content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
@@ -46,32 +55,64 @@ body::before{
   background-size:24px 24px;
 }
 
-.wrap{ width:min(1000px, 92vw); margin-inline:auto; }
+/* Contenedor central.
+   Usamos "100% - margen" en vez de 92vw: vw incluye la barra de scroll y por eso
+   aparecía 1px de desbordamiento horizontal en escritorio. */
+.wrap{
+  width:min(1000px, 100% - var(--gutter));
+  margin-inline:auto;
+}
 
 /* ════════ NAV (barra superior estilo ventana) ════════ */
 nav{
   position:fixed; top:0; left:0; right:0; z-index:100;
   display:flex; align-items:center; gap:10px;
-  height:54px; padding:0 22px;
+  height:var(--nav-h); padding:0 clamp(12px,3vw,22px);
   background:var(--white);
   border-bottom:3px solid var(--ink);
 }
 .nav-logo{
-  font-family:var(--font-pixel); font-weight:700; font-size:1.25rem;
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:clamp(1.05rem,3.4vw,1.25rem);
   color:var(--ink); text-decoration:none; margin-right:auto; letter-spacing:.5px;
+  white-space:nowrap;
 }
 .nav-logo span{ color:var(--pink); }
-.nav-tabs{ display:flex; gap:4px; list-style:none; flex-wrap:wrap; }
+.nav-tabs{ display:flex; gap:4px; list-style:none; }
 .nav-tabs a{
+  display:block;
   font-family:var(--font-pixel); font-size:1rem; font-weight:500;
   text-decoration:none; color:var(--text-soft);
-  padding:5px 12px; border:2px solid transparent; border-radius:0;
+  padding:8px 12px; border:2px solid transparent; border-radius:0;
   transition:.12s ease;
 }
 .nav-tabs a:hover{ background:var(--pink-light); color:var(--ink); border-color:var(--pink-mid); }
 .nav-tabs a.active{ background:var(--pink-light); color:var(--pink); border-color:var(--pink); }
 
-main{ position:relative; z-index:2; padding-top:54px; }
+/* ── botón hamburguesa estilo ventana retro (solo móvil) ── */
+.nav-toggle{
+  display:none;                       /* se enciende en el breakpoint móvil */
+  align-items:center; gap:8px;
+  font-family:var(--font-pixel); font-size:1rem; font-weight:600; color:var(--ink);
+  background:var(--pink-light); border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+  padding:7px 12px; cursor:pointer; border-radius:0;
+  min-height:38px;                    /* área táctil cómoda */
+  transition:.1s ease;
+}
+.nav-toggle:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
+.nav-toggle .nav-burger{ display:grid; gap:3px; }
+.nav-toggle .nav-burger i{
+  display:block; width:16px; height:3px; background:var(--ink);
+  transition:transform .18s ease, opacity .18s ease;
+}
+/* al abrir, las 3 rayas se vuelven una ✕ */
+.nav-toggle[aria-expanded="true"] .nav-burger i:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-burger i:nth-child(2){ opacity:0; }
+.nav-toggle[aria-expanded="true"] .nav-burger i:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+.nav-toggle[aria-expanded="true"]{ background:var(--pink); color:#fff; }
+.nav-toggle[aria-expanded="true"] .nav-burger i{ background:#fff; }
+
+main{ position:relative; z-index:2; padding-top:var(--nav-h); }
 
 /* ════════ VENTANA RETRO reutilizable ════════ */
 .win{
@@ -79,7 +120,12 @@ main{ position:relative; z-index:2; padding-top:54px; }
   border:3px solid var(--ink);
   box-shadow:var(--win-shadow);
   border-radius:0;
+  min-width:0;   /* como item de grid/flex: puede encogerse por debajo de su
+                    contenido en vez de estirar la columna fuera de pantalla */
+  max-width:100%;
 }
+/* misma regla para cualquier hijo directo de nuestras rejillas */
+.materias-grid > *, .cards > *, .popups > *, .stats > *, .resumen-grid > *{ min-width:0; }
 .win-bar{
   display:flex; align-items:center; gap:10px;
   padding:7px 10px;
@@ -90,7 +136,10 @@ main{ position:relative; z-index:2; padding-top:54px; }
 .win-bar.sky{ background:var(--sky); } .win-bar.peach{ background:var(--peach); }
 .win-bar.yellow{ background:var(--yellow); }
 .win-title{
-  flex:1; font-family:var(--font-term); font-size:1.15rem; line-height:1;
+  flex:1;
+  min-width:0;   /* CLAVE: sin esto un título largo (nombre de proyecto) no se
+                    encoge y estira toda la tarjeta fuera de la pantalla */
+  font-family:var(--font-term); font-size:1.15rem; line-height:1;
   color:var(--ink); letter-spacing:.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 /* controles _ ▢ ✕ */
@@ -125,12 +174,23 @@ main{ position:relative; z-index:2; padding-top:54px; }
 .btn-sky{ background:var(--sky); color:var(--ink); }
 
 /* ════════ HERO (inicio) ════════ */
-.hero{ min-height:calc(100vh - 54px); display:flex; align-items:center; padding:40px 0; }
-.hero-inner{ display:grid; grid-template-columns:1fr 1.12fr; gap:40px; align-items:center; width:100%; }
-.hero-greeting{ font-family:var(--font-term); font-size:1.5rem; color:var(--pink); }
+/* 100svh = alto "pequeño" del viewport: en el celular no salta cuando aparece o
+   desaparece la barra de direcciones del navegador. Con fallback a vh. */
+/* OJO: .hero es flex en COLUMNA. Antes era en fila, así que el "↓ desliza para
+   explorar" se colocaba AL LADO del contenido y le robaba casi la mitad del ancho. */
+.hero{
+  min-height:calc(100vh - var(--nav-h));
+  display:flex; flex-direction:column; justify-content:center;
+  padding:40px 0;
+}
+@supports (height:100svh){
+  .hero{ min-height:calc(100svh - var(--nav-h)); }
+}
+.hero-inner{ display:grid; grid-template-columns:1fr 1.12fr; gap:clamp(26px,4vw,40px); align-items:center; width:100%; }
+.hero-greeting{ font-family:var(--font-term); font-size:clamp(1.25rem,4vw,1.5rem); color:var(--pink); }
 .hero-name{
   font-family:var(--font-pixel); font-weight:700;
-  font-size:clamp(3.4rem,9vw,5.4rem); line-height:.95; color:var(--ink);
+  font-size:clamp(2.8rem,13vw,5.4rem); line-height:.95; color:var(--ink);
   text-shadow:4px 4px 0 var(--pink-mid); margin:2px 0 14px;
 }
 .hero-role{ font-size:1.05rem; font-weight:600; color:var(--text-soft); }
@@ -139,9 +199,9 @@ main{ position:relative; z-index:2; padding-top:54px; }
 .hero-desc strong{ color:var(--ink); }
 .hero-btns{ display:flex; gap:14px; flex-wrap:wrap; }
 
-/* indicador de scroll */
+/* indicador de scroll (va DEBAJO del hero, centrado) */
 .scroll-hint{
-  display:block; text-align:center; margin:6px 0 0;
+  display:block; text-align:center; margin:26px auto 0; width:100%;
   font-family:var(--font-term); font-size:1.2rem; color:var(--text-muted);
   animation:bob 2s ease-in-out infinite;
 }
@@ -243,13 +303,15 @@ main{ position:relative; z-index:2; padding-top:54px; }
 .link:hover{ color:var(--ink); border-color:var(--ink); }
 
 /* ════════ MATERIAS (cards generadas) ════════ */
-.materias-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
+/* min(280px,100%) evita que la columna mínima sea más ancha que la pantalla */
+.materias-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr)); gap:20px; }
 .mat-body{ padding:16px 18px 18px; }
 .mat-period{ font-family:var(--font-tiny); font-size:.55rem; letter-spacing:1px; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px; }
 .mat-name{ font-family:var(--font-pixel); font-weight:700; font-size:1.3rem; color:var(--ink); margin-bottom:12px; line-height:1.1; }
 .proj-list{ list-style:none; display:flex; flex-direction:column; gap:7px; }
 .proj-item{
-  display:flex; align-items:center; gap:8px; padding:8px 11px;
+  display:flex; align-items:center; gap:8px; padding:10px 11px;
+  min-width:0;                     /* nombres largos se encogen en vez de desbordar */
   background:var(--pink-pale); border:2px solid var(--ink);
   font-size:.9rem; font-weight:600; color:var(--text-soft); text-decoration:none; transition:.12s;
 }
@@ -349,18 +411,123 @@ main{ position:relative; z-index:2; padding-top:54px; }
 }
 .foot .hp{ color:var(--pink); }
 
-/* ════════ RESPONSIVE ════════ */
+/* ╔════════════════════════════════════════════════════════════╗
+   ║  RESPONSIVE                                                 ║
+   ║  Escalones:  ≤1024 tablet grande · ≤900 tablet ·            ║
+   ║              ≤760 celular (aquí entra el menú hamburguesa) ·║
+   ║              ≤480 celular chico                             ║
+   ╚════════════════════════════════════════════════════════════╝ */
+
+/* ── ≤1024px · tablet horizontal ── */
+@media (max-width:1024px){
+  :root{ --gutter:2rem; }
+  .popups{ gap:22px; }
+  .hero-card{ max-width:420px; }
+}
+
+/* ── ≤900px · tablet vertical ── */
+@media (max-width:900px){
+  .grid-3{ grid-template-columns:repeat(2,1fr); }
+  .hero-inner{ grid-template-columns:1fr .95fr; }
+  .stats{ grid-template-columns:repeat(2,1fr); }
+  .contact-cols{ grid-template-columns:1fr; gap:26px; }
+  .materias-grid{ grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); }
+}
+
+/* ── ≤760px · CELULAR ─────────────────────────────────────────
+   El nav conserva su alto fijo (54px) y los links se esconden
+   dentro de un panel desplegable, así main{padding-top} nunca
+   se descuadra. ─────────────────────────────────────────────── */
 @media (max-width:760px){
+  :root{ --gutter:1.75rem; }
+
+  /* nav → hamburguesa */
+  .nav-toggle{ display:inline-flex; }
+  .nav-tabs{
+    position:absolute; top:100%; left:0; right:0;
+    flex-direction:column; gap:0;
+    background:var(--white);
+    border-bottom:3px solid var(--ink);
+    box-shadow:0 6px 0 rgba(44,26,36,.12);
+    /* oculto por defecto, sin sacarlo del árbol de accesibilidad de golpe */
+    display:none;
+  }
+  .nav-tabs.open{ display:flex; }
+  .nav-tabs li{ border-top:2px solid var(--pink-mid); }
+  .nav-tabs li:first-child{ border-top:none; }
+  .nav-tabs a{
+    padding:14px 20px;              /* área táctil ≥44px de alto */
+    font-size:1.1rem; border:none;
+  }
+  .nav-tabs a:hover,
+  .nav-tabs a.active{ border:none; background:var(--pink-light); }
+  .nav-tabs a.active{ box-shadow:inset 5px 0 0 var(--pink); }
+
+  /* layout general → una columna */
+  .hero{ padding:28px 0 40px; }
   .hero-inner{ grid-template-columns:1fr; gap:30px; text-align:center; }
+  .hero-desc{ margin-inline:auto; }
   .hero-btns{ justify-content:center; }
-  .hero-card{ max-width:380px; margin:0 auto; }
+  .hero-card{ justify-self:center; max-width:380px; margin-inline:auto; }
+  .hero-card .win-body{ min-height:280px; }
   .grid-3,.grid-2{ grid-template-columns:1fr; }
   .contact-cols{ grid-template-columns:1fr; gap:24px; }
-  .stats{ grid-template-columns:1fr 1fr; }
   .resumen-grid{ grid-template-columns:1fr; }
-  .popups{ grid-template-columns:1fr; gap:24px; }
-  nav{ height:auto; flex-wrap:wrap; padding:8px 14px; gap:6px; }
-  .nav-tabs a{ font-size:.92rem; padding:4px 9px; }
-  main{ padding-top:96px; }
+  .popups{ grid-template-columns:1fr; gap:26px; }
+  .sec-head{ margin:26px 0 18px; }
+
+  /* 16px mínimo en campos: por debajo de eso Safari en iPhone hace zoom solo
+     al tocar el input y descuadra la página */
+  .contact-form input, .contact-form textarea, .dd select{ font-size:16px; }
+
+  /* filtros de proyectos: que no queden apretados */
+  .filters-bar{ gap:12px; }
+  .dd{ flex:1 1 46%; }
+  .dd select{ width:100%; min-width:0; }
+  .reset-btn{ flex:1 1 100%; }
+
+  .win-menu{ gap:12px; padding:4px 10px; }
 }
-@media (prefers-reduced-motion:reduce){ .float{ animation:none; } }
+
+/* ── ≤480px · CELULAR CHICO ── */
+@media (max-width:480px){
+  :root{ --gutter:1.5rem; }
+
+  .stats{ grid-template-columns:1fr 1fr; gap:12px; }
+  .stat{ padding:14px 10px; }
+  .stat .num{ font-size:1.9rem; }
+  .stat .lbl{ font-size:1rem; line-height:1.15; }
+
+  /* botones a lo ancho: más fáciles de tocar */
+  .hero-btns{ flex-direction:column; align-items:stretch; }
+  .hero-btns .btn{ justify-content:center; }
+
+  .materias-grid{ grid-template-columns:1fr; }
+  .filters-bar .dd{ flex:1 1 100%; }
+
+  /* tarjetas de logros/hackathones: el ícono arriba, no al lado */
+  .item-row{ flex-direction:column; align-items:flex-start; gap:10px; }
+  .item-row .badge-img{ width:52px; height:52px; font-size:1.5rem; }
+
+  .win-body{ padding:16px; }
+  .mat-body{ padding:14px; }
+  .logros-win .win-body{ gap:12px; }
+  .logros-win .trophy{ font-size:2.1rem; }
+  .foot{ font-size:1.05rem; padding:16px 0 30px; }
+}
+
+/* ── pantallas táctiles: sin efectos hover pegados ── */
+@media (hover:none){
+  .btn:hover{ transform:none; box-shadow:var(--win-shadow-ink); }
+  .social:hover{ transform:none; box-shadow:3px 3px 0 var(--ink); }
+  .reset-btn:hover{ transform:none; box-shadow:2px 2px 0 var(--ink); }
+  .popup:hover .mini-win{ transform:rotate(-3deg); }
+  .popup:nth-child(even):hover .mini-win{ transform:rotate(3deg); }
+  .proj-item:hover{ transform:none; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .float,.scroll-hint{ animation:none; }
+  html{ scroll-behavior:auto; }
+  .popup{ transition:none; }
+}
