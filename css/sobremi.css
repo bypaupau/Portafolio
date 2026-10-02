@@ -26,7 +26,7 @@
   height:auto; 
   image-rendering:pixelated; }
 /* escala de píxel fija: ancho = columnas de la cuadrícula × --ps */
-.stk .px, .stop-ico .px, .tool-ico .px, .clue .px, .ev-seal .px{
+.stk .px, .stop-ico .px, .tool-ico .px, .clue .px{
   width:calc(var(--gw) * var(--ps, 3px)); max-width:none; height:auto; flex:none;
 }
 
@@ -302,59 +302,6 @@
 
 
 /* ════════════════════════════════════════════════
-   03 · EVIDENCIA
-   ════════════════════════════════════════════════ */
-.evs{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; align-items:stretch; }
-.ev{ display:flex; flex-direction:column; }
-.ev-inner{ display:flex; flex-direction:column; flex:1; }
-.ev-thumb{
-  position:relative; flex:none; min-height:0;
-  aspect-ratio:16/10; overflow:hidden;
-  border-bottom:3px solid var(--ink);
-  background:repeating-linear-gradient(45deg, var(--pink-pale) 0 12px, #fff 12px 24px);
-}
-.ev-thumb img{
-  /* la imagen nunca dicta el tamaño de la caja (iOS Safari la estiraba a su tamaño real) */
-  position:absolute; inset:0;
-  width:100%; height:100%; max-width:none;
-  object-fit:cover; object-position:center top; display:block;
-}
-.ev-body{ padding:18px 18px 20px; display:flex; flex-direction:column; flex:1; }
-
-/* sello del logro: lo primero que se lee en la tarjeta */
-.ev-seal{
-  align-self:flex-start;
-  display:inline-flex; align-items:center; gap:8px;
-  font-family:var(--font-term); font-size:1.15rem; line-height:1.05; color:var(--ink);
-  border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
-  padding:4px 10px 4px 6px; margin-bottom:12px;
-  white-space:nowrap; max-width:100%;
-}
-.ev-seal{ --ps:2px; }
-.s-gold{ background:var(--yellow); } .s-pink{ background:var(--pink-light); } .s-lav{ background:var(--lav); }
-
-.ev-meta{ font-family:var(--font-term); font-size:1.08rem; color:var(--pink-ink); }
-.ev-title{
-  font-family:var(--font-pixel); font-weight:700; font-size:1.4rem; line-height:1.1;
-  color:var(--ink); margin:2px 0 10px;
-}
-.ev-what{ font-size:.92rem; line-height:1.6; color:var(--text-soft); }
-.ev-proof{
-  margin-top:14px; padding:10px 12px;
-  background:var(--pink-pale); border-left:4px solid var(--pink);
-  font-size:.92rem; line-height:1.5; color:var(--ink);
-}
-.ev-proof-k{
-  display:block; font-family:var(--font-term);
-  font-size:1.2rem; line-height:1; color:var(--pink-ink); margin-bottom:5px;
-}
-.ev-links{ display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:auto; padding-top:16px; }
-.ev-links .link{ display:inline-flex; align-items:center; min-height:32px; }
-
-.ab-all{ margin-top:22px; text-align:right; }
-.ab-all .link{ font-size:1.1rem; }
-
-/* ════════════════════════════════════════════════
    04 · PISTAS
    ════════════════════════════════════════════════ */
 .clues-board{
@@ -457,11 +404,6 @@
   .tool-ico .px{ transition:transform .25s var(--ease-pop); }
   .tool:hover .tool-ico .px{ transform:scale(1.08); }
 
-  /* 4 · proyectos: la ventana sube; la imagen hace zoom dentro de su marco */
-  .ev{ transition:transform .2s var(--ease-soft), box-shadow .2s var(--ease-soft); }
-  .ev:hover, .ev:focus-within{ transform:translateY(-3px); box-shadow:6px 8px 0 var(--pink-mid); }
-  .ev-thumb img{ transition:transform .35s var(--ease-soft); }
-  .ev:hover .ev-thumb img, .ev:focus-within .ev-thumb img{ transform:scale(1.04); }
 
   /* 6 · pistas: mismo gesto (escala + leve giro/desplazamiento),
          distinta personalidad por ícono */
@@ -507,7 +449,6 @@
 @media (max-width:1024px){
   .route{ gap:16px; }
   .stop-txt{ font-size:.88rem; }
-  .evs{ gap:20px; }
 }
 
 /* ── ≤900 · tablet vertical ──
@@ -538,9 +479,6 @@
   .tools{ grid-template-columns:repeat(2,minmax(0,1fr)); }
   .tool:first-child{ grid-column:1 / -1; }
 
-  .evs{ grid-template-columns:1fr; }
-  .ev-inner{ display:grid; grid-template-columns:minmax(0,38%) minmax(0,1fr); }
-  .ev-thumb{ aspect-ratio:auto; min-height:100%; border-bottom:none; border-right:3px solid var(--ink); }
 
   .clues{ grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
@@ -572,8 +510,6 @@
 
 /* ── ≤560 · celular: evidencia vuelve a apilarse (foto arriba) ── */
 @media (max-width:560px){
-  .ev-inner{ display:flex; flex-direction:column; flex:1; }
-  .ev-thumb{ aspect-ratio:16/10; min-height:0; width:100%; border-right:none; border-bottom:3px solid var(--ink); }
   .clues{ grid-template-columns:1fr; gap:14px; }
   .clue{ transform:none !important; }   /* en una columna la inclinación solo estorba la lectura */
   .ab-status{ display:flex; width:fit-content; max-width:100%; }
@@ -587,7 +523,6 @@
   .stop-ico{ width:56px; height:56px; --ps:2px; }
   .stop:not(:last-child)::after{ left:26px; top:56px; }
   .keys{ padding:14px 12px 16px; }
-  .ev-body{ padding:16px 14px 18px; }
 }
 
 @media (prefers-reduced-motion:reduce){
