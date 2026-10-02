@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css?v=16">
+<link rel="stylesheet" href="../css/styles.css?v=20">
 </head>
 <body data-page="projects">
 
@@ -33,135 +33,175 @@
 <main>
   <div class="wrap">
     <div class="sec-head">
-      <p class="sec-label" data-i18n="projects.label">académicos &amp; personales</p>
+      <p class="sec-label" data-i18n="projects.label">hackathones, universidad y personales</p>
       <h1 class="sec-title" data-i18n="projects.title">Proyectos</h1>
+      <p class="proj-intro" id="proj-intro" hidden></p>
     </div>
 
-    <div class="filters-bar" id="filtros"></div>
-    <div class="materias-grid" id="proyectos-grid"></div>
+    <!-- filtros: una disciplina + un contexto (se combinan) -->
+    <!-- filtros: pestañas por disciplina + contador -->
+    <div class="chipbar fx-c" role="group" aria-label="Filtrar proyectos" data-i18n-attr="aria-label:projects.chips.aria">
+      <div class="fx-c-tabs" id="chips-d"></div>
+      <div class="fx-c-sub"><span class="fx-count" id="fx-count" aria-hidden="true"></span></div>
+    </div>
+
+    <section class="proj-sec" id="sec-feat" aria-labelledby="h-feat">
+      <h2 class="sec-label proj-h" id="h-feat" data-i18n="projects.feat">// destacados</h2>
+      <div class="pcards" id="feat-grid"></div>
+    </section>
+
+    <section class="proj-sec" id="sec-arch" aria-labelledby="h-arch">
+      <h2 class="sec-label proj-h" id="h-arch" data-i18n="projects.arch">// archivo</h2>
+      <div class="win arch-win">
+        <div class="win-bar lav"><span class="win-title" id="arch-title">C:/pau/proyectos/archivo</span><span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span></div>
+        <ul class="arch" id="arch-list"></ul>
+      </div>
+    </section>
+
+    <p class="no-proj" id="no-proj" hidden></p>
+    <p class="sr-only" id="proj-live" aria-live="polite"></p>
   </div>
 </main>
 
 <p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span> · <a class="foot-link" href="https://github.com/bypaupau/Portafolio#%C3%ADndice-acad%C3%A9mico" target="_blank" rel="noopener" data-i18n="foot.index">índice académico ↗</a></p>
 
 <!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
-<script src="../js/translations.js?v=6"></script>
+<script src="../js/translations.js?v=9"></script>
 <script src="../js/i18n.js?v=1"></script>
 
-<script src="../data/proyectos.js?v=5"></script>
+<script src="../data/proyectos.js?v=6"></script>
 <script>
 (function(){
-  /* textos de la interfaz → js/translations.js · textos de cada proyecto → data/proyectos.js */
+  /* textos de la interfaz → js/translations.js · datos de cada proyecto → data/proyectos.js */
   var t = I18N.t, pick = I18N.pick;
-  var BADGE_CSS = { 'completado':'bd-done', 'en-progreso':'bd-wip', 'pronto':'bd-soon' };
-  var grid = document.getElementById('proyectos-grid');
-  var fbox = document.getElementById('filtros');
-  if(!grid || typeof PROYECTOS==='undefined') return;
+  if (typeof PROYECTOS === 'undefined') return;
 
-  var barColors = ['', 'sky', 'lav', 'mint', 'peach'];
+  var DISC = ['diseno', 'desarrollo', 'datos', 'juegos'];
+  var CTX  = ['hackathon', 'universidad', 'personal'];
+  var BAR  = { pink:'', peach:'peach', sky:'sky', mint:'mint', lav:'lav', yellow:'yellow' };
+  var SEAL = {"s-gold": "<svg class=\"px\" style=\"--gw:9;--gh:10\" viewBox=\"0 0 9 10\" shape-rendering=\"crispEdges\" aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"0\" width=\"7\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"1\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"1\" width=\"5\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"7\" y=\"1\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"2\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"2\" width=\"5\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"7\" y=\"2\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"3\" width=\"5\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"7\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"3\" y=\"4\" width=\"3\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"6\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"3\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"4\" y=\"5\" width=\"1\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"5\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"3\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"4\" y=\"6\" width=\"1\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"5\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"7\" width=\"5\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"8\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"3\" y=\"8\" width=\"3\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"6\" y=\"8\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"9\" width=\"5\" height=\"1\" fill=\"#2C1A24\"/></svg>", "s-pink": "<svg class=\"px\" style=\"--gw:9;--gh:10\" viewBox=\"0 0 9 10\" shape-rendering=\"crispEdges\" aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"0\" width=\"2\" height=\"1\" fill=\"#E87EA1\"/><rect x=\"6\" y=\"0\" width=\"2\" height=\"1\" fill=\"#D6EEFB\"/><rect x=\"1\" y=\"1\" width=\"2\" height=\"1\" fill=\"#E87EA1\"/><rect x=\"6\" y=\"1\" width=\"2\" height=\"1\" fill=\"#D6EEFB\"/><rect x=\"2\" y=\"2\" width=\"2\" height=\"1\" fill=\"#E87EA1\"/><rect x=\"5\" y=\"2\" width=\"2\" height=\"1\" fill=\"#D6EEFB\"/><rect x=\"3\" y=\"3\" width=\"3\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"3\" y=\"4\" width=\"3\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"6\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"5\" width=\"2\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"4\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"5\" y=\"5\" width=\"2\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"7\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"6\" width=\"1\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"3\" y=\"6\" width=\"3\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"6\" y=\"6\" width=\"1\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"7\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"7\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"7\" width=\"2\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"4\" y=\"7\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"5\" y=\"7\" width=\"2\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"7\" y=\"7\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"8\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"3\" y=\"8\" width=\"3\" height=\"1\" fill=\"#F4C04E\"/><rect x=\"6\" y=\"8\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"3\" y=\"9\" width=\"3\" height=\"1\" fill=\"#2C1A24\"/></svg>", "s-lav": "<svg class=\"px\" style=\"--gw:9;--gh:9\" viewBox=\"0 0 9 9\" shape-rendering=\"crispEdges\" aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"0\" y=\"0\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"6\" y=\"0\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"1\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"5\" y=\"1\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"2\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"2\" width=\"1\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"2\" y=\"2\" width=\"3\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"5\" y=\"2\" width=\"1\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"6\" y=\"2\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"3\" width=\"5\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"6\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"4\" width=\"1\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"2\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"3\" y=\"4\" width=\"1\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"4\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"5\" y=\"4\" width=\"1\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"6\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"5\" width=\"2\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"3\" y=\"5\" width=\"1\" height=\"1\" fill=\"#E87EA1\"/><rect x=\"4\" y=\"5\" width=\"2\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"6\" y=\"5\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"6\" width=\"4\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"6\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"8\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"7\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"7\" width=\"4\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"6\" y=\"7\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"8\" y=\"7\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"8\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"2\" y=\"8\" width=\"1\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"3\" y=\"8\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"4\" y=\"8\" width=\"1\" height=\"1\" fill=\"#E6D8FB\"/><rect x=\"5\" y=\"8\" width=\"3\" height=\"1\" fill=\"#2C1A24\"/></svg>"};
 
-  /* valor estable para filtrar: el español (no cambia al cambiar de idioma) */
-  function keyOf(v){ return (v && typeof v==='object') ? v.es : (v || ''); }
+  var $ = function (id) { return document.getElementById(id); };
+  var boxD = $('chips-d'), featGrid = $('feat-grid'), archList = $('arch-list');
 
-  /* Un proyecto puede tener varios tipos: tipo:"academico, personal".
-     Además normalizamos a minúsculas para que "Academico" y "academico"
-     no aparezcan como dos opciones distintas en el filtro. */
-  function tiposDe(p){
-    return String(p.tipo || '').split(',')
-      .map(function(t){ return t.trim().toLowerCase(); })
-      .filter(Boolean);
+  function esc(v) { return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  /* "academico, personal" → ['universidad','personal'] */
+  function ctxOf(p) {
+    return String(p.tipo || '').split(',').map(function (s) {
+      s = s.trim().toLowerCase(); return s === 'academico' ? 'universidad' : s;
+    }).filter(Boolean);
   }
-  /* etiqueta traducida si existe; si no, el valor tal cual */
-  function tr(key, fallback){ var v = t(key); return v === key ? fallback : v; }
+  function match(p, d, c) {
+    return (!d || (p.disciplinas || []).indexOf(d) >= 0) && (!c || ctxOf(p).indexOf(c) >= 0);
+  }
+  function imgOf(p) { return p.img ? (/^(https?:|\/|\.\.\/)/.test(p.img) ? p.img : '../' + p.img) : ''; }
+  function hrefOf(p) { var h = p.enlace || p.repo; return (h && h !== '#') ? h : ''; }
+  function pills(p, n) {
+    return (p.habilidades || []).slice(0, n).map(function (s) { return '<span class="pill">' + esc(pick(s)) + '</span>'; }).join('');
+  }
 
-  // construir conjuntos de filtros (value = clave estable · label = texto traducido)
-  var materias=[], tipos=[], skills=[];
-  PROYECTOS.forEach(function(p){
-    if(p.materia && !materias.some(function(m){ return keyOf(m)===keyOf(p.materia); })) materias.push(p.materia);
-    tiposDe(p).forEach(function(t){ if(tipos.indexOf(t)<0) tipos.push(t); });
-    (p.habilidades||[]).forEach(function(s){
-      if(!skills.some(function(k){ return keyOf(k)===keyOf(s); })) skills.push(s);
-    });
+  /* estado inicial: ?disciplina=datos&contexto=universidad */
+  var q = new URLSearchParams(location.search);
+  var state = {
+    d: DISC.indexOf(q.get('disciplina')) >= 0 ? q.get('disciplina') : '',
+    c: ''   /* el contexto ya no es un filtro: se lee en la metadata de cada proyecto */
+  };
+
+  var feat = PROYECTOS.filter(function (p) { return p.destacado; })
+                      .sort(function (a, b) { return a.destacado - b.destacado; });
+  var arch = PROYECTOS.filter(function (p) { return !p.destacado; })
+                      .sort(function (a, b) { return String(b.fecha || '').localeCompare(String(a.fecha || '')); });
+
+  /* tarjeta grande: el mismo componente del inicio, pero con la descripción visible */
+  function featCard(p) {
+    var h = hrefOf(p), tag = h ? 'a' : 'div';
+    var attrs = h ? ' href="' + esc(h) + '" target="_blank" rel="noopener"' : '';
+    return '<' + tag + ' class="pcard pcard-full"' + attrs + '>' +
+      (p.logro ? '<span class="pcard-sticker ' + esc(p.sello || 's-pink') + '">' + (SEAL[p.sello] || '') + '<span>' + esc(pick(p.logro)) + '</span></span>' : '') +
+      '<span class="win pcard-win"><span class="win-bar ' + (BAR[p.color] || '') + '"><span class="win-title">' + esc(pick(p.archivo || p.nombre)) + '</span>' +
+        '<span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span></span>' +
+        '<span class="pcard-media">' + (p.img ? '<img src="' + esc(imgOf(p)) + '" alt="" loading="lazy" decoding="async">' : '') + '</span></span>' +
+      '<span class="pcard-info">' +
+        '<span class="pcard-title">' + esc(pick(p.nombreCorto || p.nombre)) + '</span>' +
+        '<span class="pcard-meta">' + esc(pick(p.meta || p.periodo)) + '</span>' +
+        '<span class="pcard-desc">' + esc(pick(p.descripcion)) + '</span>' +
+        '<span class="pcard-tools">' + pills(p, 4) + '</span>' +
+        (h ? '<span class="pcard-cta">' + esc(t('projects.view')) + ' <span class="pcard-arr" aria-hidden="true">↗</span></span>' : '') +
+      '</span></' + tag + '>';
+  }
+
+  /* fila del archivo: miniatura | nombre + descripción + contexto | enlace */
+  function archRow(p) {
+    var h = hrefOf(p), tag = h ? 'a' : 'div';
+    var attrs = h ? ' href="' + esc(h) + '" target="_blank" rel="noopener"' : '';
+    var est = String(p.estado || '').trim().toLowerCase();
+    var mat = pick(p.materia);
+    var meta = ctxOf(p).map(function (c) { return t('projects.c.' + c); }).join(' + ');
+    if (mat && mat !== '-') meta += ' · ' + mat;
+    if (p.periodo) meta += ' · ' + pick(p.periodo);
+    var go = h ? (p.enlaceTxt ? pick(p.enlaceTxt) : t('projects.repo')) : t('projects.soon');
+    return '<li><' + tag + ' class="arow"' + attrs + '>' +
+      '<span class="arow-thumb">' + (p.img ? '<img src="' + esc(imgOf(p)) + '" alt="" loading="lazy" decoding="async">' : '') + '</span>' +
+      '<span class="arow-main">' +
+        '<span class="arow-name">' + esc(pick(p.nombre)) +
+          (est === 'en-progreso' ? ' <span class="badge bd-wip">' + esc(t('badge.en-progreso')) + '</span>' : '') + '</span>' +
+        '<span class="arow-desc">' + esc(pick(p.descripcion)) + '</span>' +
+        '<span class="arow-meta">' + esc(meta) + '</span>' +
+        '<span class="arow-tools">' + pills(p, 3) + '</span>' +
+      '</span>' +
+      '<span class="arow-go">' + esc(go) + '</span>' +
+    '</' + tag + '></li>';
+  }
+
+  function count(d, c) { return PROYECTOS.filter(function (p) { return match(p, d, c); }).length; }
+  /* sin número en cada botón: una opción sin resultados solo se atenúa (data-zero) */
+  function btn(kind, val, label, on) {
+    var n = (kind === 'd') ? count(val, state.c) : count(state.d, val);
+    return '<button type="button" class="chip' + (on ? ' is-on' : '') + '" data-kind="' + kind + '" data-val="' + val + '" aria-pressed="' + on + '"' +
+           (n === 0 && !on ? ' data-zero' : '') + '>' + esc(label) + '</button>';
+  }
+  function renderChips() {
+    boxD.innerHTML = btn('d', '', t('projects.f.all').toLowerCase(), !state.d) +
+      DISC.map(function (d) { return btn('d', d, t('projects.d.' + d).toLowerCase(), state.d === d); }).join('');
+    var n = count(state.d, state.c), tot = PROYECTOS.length;
+    $('fx-count').innerHTML = (n === tot ? t('projects.count.all') : t('projects.count.some'))
+      .replace('{n}', '<b>' + n + '</b>').replace('{t}', tot);
+    /* celular: las pestañas se deslizan; la elegida siempre a la vista */
+    var on = boxD.querySelector('.is-on');
+    if (on && boxD.scrollWidth > boxD.clientWidth) boxD.scrollLeft = Math.max(0, on.offsetLeft - 24);
+  }
+
+  function render() {
+    renderChips();
+    var f = feat.filter(function (p) { return match(p, state.d, state.c); });
+    var a = arch.filter(function (p) { return match(p, state.d, state.c); });
+    featGrid.innerHTML = f.map(featCard).join('');
+    archList.innerHTML = a.map(archRow).join('');
+    /* transición corta al cambiar el filtro */
+    featGrid.classList.remove('fx-swap'); archList.classList.remove('fx-swap'); void featGrid.offsetWidth;
+    featGrid.classList.add('fx-swap'); archList.classList.add('fx-swap');
+    $('sec-feat').hidden = !f.length;
+    $('sec-arch').hidden = !a.length;
+    $('arch-title').textContent = t('projects.arch.win').replace('{n}', a.length);
+    var intro = $('proj-intro'), txt = t('projects.intro'); intro.textContent = txt; intro.hidden = !txt;
+    var none = $('no-proj'); none.hidden = (f.length + a.length) > 0; none.textContent = t('projects.empty');
+    $('proj-live').textContent = t('projects.live').replace('{n}', f.length + a.length);
+  }
+
+  document.querySelector('.chipbar').addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b) return;
+    state[b.getAttribute('data-kind')] = b.getAttribute('data-val');
+    render();
+    /* el foco se queda en el chip que se tocó (el HTML se vuelve a dibujar) */
+    var again = document.querySelector('.chip[data-kind="' + b.getAttribute('data-kind') + '"][data-val="' + b.getAttribute('data-val') + '"]');
+    if (again) again.focus();
+    var qs = new URLSearchParams();
+    if (state.d) qs.set('disciplina', state.d);
+    try { history.replaceState(null, '', location.pathname + (qs.toString() ? '?' + qs : '')); } catch (err) {}
   });
 
-  function dd(id, labelKey, opts, val){
-    var o = '<option value="">'+t('projects.f.all')+'</option>' + opts.map(function(v){
-      return '<option value="'+v.val+'"'+(v.val===val?' selected':'')+'>'+v.txt+'</option>'; }).join('');
-    return '<div class="dd"><label for="'+id+'">'+t(labelKey)+'</label><select id="'+id+'">'+o+'</select></div>';
-  }
-  function renderFilters(cur){
-    cur = cur || {};
-    fbox.innerHTML =
-      dd('f-tipo','projects.f.type', tipos.map(function(x){ return {val:x, txt:tr('projects.type.'+x, x)}; }), cur.tipo) +
-      dd('f-materia','projects.f.subject', materias.map(function(m){ return {val:keyOf(m), txt:pick(m)}; }), cur.materia) +
-      dd('f-skill','projects.f.skill', skills.map(function(s){ return {val:keyOf(s), txt:pick(s)}; }), cur.skill) +
-      '<button class="reset-btn" id="f-reset" type="button">'+t('projects.f.reset')+'</button>';
-  }
-
-  function render(){
-    grid.innerHTML = PROYECTOS.map(function(p,i){
-      var bar = barColors[i % barColors.length];
-      var est = String(p.estado||'').trim().toLowerCase();
-      if(!BADGE_CSS[est]) est = 'pronto';
-      var nombre = pick(p.nombre);
-      var pills = (p.habilidades||[]).map(function(s){ return '<span class="pill">'+pick(s)+'</span>'; }).join('');
-      var misTipos = tiposDe(p);
-      var tipoTxt  = misTipos.map(function(x){ return tr('projects.tag.'+x, x); }).join(' · ');
-      /* enlace: el repo por defecto; "enlace" + "enlaceTxt" para lo que no tiene repo (ej. una noticia) */
-      var href = p.enlace || p.repo;
-      var link = (href && href!=='#')
-        ? '<a class="link" href="'+href+'" target="_blank" rel="noopener">'+(p.enlaceTxt ? pick(p.enlaceTxt) : t('projects.repo'))+'</a>'
-        : '<span class="link" style="opacity:.6">'+t('projects.soon')+'</span>';
-      var imgSrc = p.img ? (/^(https?:|\/|\.\.\/)/.test(p.img) ? p.img : '../'+p.img) : '';
-      var thumb = p.img
-        ? '<div class="proj-thumb"><img src="'+imgSrc+'" alt="'+nombre+'"></div>'
-        : '<div class="proj-thumb"><span class="ph">'+t('projects.thumb.soon')+'</span></div>';
-      return '<article class="win proj-card" data-tipo="'+misTipos.join('|')+'" data-materia="'+keyOf(p.materia)+'" data-skills="'+(p.habilidades||[]).map(keyOf).join('|')+'">'+
-        '<div class="win-bar '+bar+'"><span class="win-title">'+nombre+'</span>'+
-        '<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span></div>'+
-        thumb +
-        '<div class="mat-body">'+
-        '<p class="meta">'+pick(p.periodo)+' · '+tipoTxt+'</p>'+
-        '<h3 class="mat-name">'+nombre+'</h3>'+
-        '<p style="font-size:.9rem;color:var(--text-soft);margin-bottom:10px">'+pick(p.descripcion)+'</p>'+
-        '<p style="margin-bottom:10px">'+pills+'</p>'+
-        '<p>'+link+' <span class="badge '+BADGE_CSS[est]+'">'+t('badge.'+est)+'</span></p>'+
-        '</div></article>';
-    }).join('');
-  }
-
-  var selTipo, selMat, selSkill;
-  function applyFilter(){
-    var ft = selTipo.value, fm = selMat.value, fs = selSkill.value;
-    var cards = grid.querySelectorAll('.proj-card');
-    var shown = 0;
-    cards.forEach(function(c){
-      var ok = (!ft || ('|'+c.dataset.tipo+'|').indexOf('|'+ft+'|')>=0) &&
-               (!fm || c.dataset.materia===fm) &&
-               (!fs || ('|'+c.dataset.skills+'|').indexOf('|'+fs+'|')>=0);
-      c.classList.toggle('hide', !ok);
-      if(ok) shown++;
-    });
-    var prev = grid.querySelector('.no-proj'); if(prev) prev.remove();
-    if(shown===0){ var n=document.createElement('p'); n.className='no-proj'; n.textContent=t('projects.empty'); grid.appendChild(n); }
-  }
-  function wire(){
-    selTipo  = document.getElementById('f-tipo');
-    selMat   = document.getElementById('f-materia');
-    selSkill = document.getElementById('f-skill');
-    [selTipo,selMat,selSkill].forEach(function(s){ s.addEventListener('change', applyFilter); });
-    document.getElementById('f-reset').addEventListener('click', function(){
-      selTipo.value=''; selMat.value=''; selSkill.value=''; applyFilter();
-    });
-  }
-
-  renderFilters(); render(); wire();
-
-  /* cambio de idioma: se vuelve a dibujar todo, conservando los filtros elegidos */
-  document.addEventListener('langchange', function(){
-    var cur = { tipo:selTipo.value, materia:selMat.value, skill:selSkill.value };
-    renderFilters(cur); render(); wire(); applyFilter();
-  });
+  render();
+  document.addEventListener('langchange', render);
 })();
 </script>
 <script src="../js/portfolio.js?v=3"></script>

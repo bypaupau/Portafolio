@@ -10,12 +10,19 @@
 // ── PROYECTOS ──
 // materia: la asignatura (proyectos de la universidad) o el evento (hackathones).
 //   Los académicos también aparecen en las carpetas "Año - Materia" del repositorio.
-// tipo: "academico" | "personal" | "hackathon"  ·  estado: "completado" | "en-progreso" | "pronto"
+// tipo: "academico" | "personal" | "hackathon" (combinables con coma)  ·  estado: "completado" | "en-progreso" | "pronto"
+// disciplinas: "diseno" | "desarrollo" | "datos" | "juegos"  → los chips de la página Proyectos
+// fecha: "AAAA-MM" → orden del archivo (más reciente primero)
+// destacado: 1, 2, 3… → aparece arriba, en tarjeta grande (y en ese orden).
+//   Los destacados usan además: nombreCorto, meta, archivo (título de la ventana),
+//   color (barra), logro + sello (sticker) y frase.
 // habilidades: lista libre de etiquetas (alimentan el filtro por habilidad)
 // img: ruta de la captura/thumbnail (ej: "img/peaknews.png"). Déjalo "" para mostrar un placeholder.
 const PROYECTOS = [
   {
     nombre: "Peak News - Alpine Fact-Checker",
+    disciplinas: ["desarrollo", "datos"],
+    fecha: "2026-04",
     tipo: "hackathon",
     materia: "Spacehack 2026",
     periodo: { es: "Abril 2026", en: "April 2026" },
@@ -30,12 +37,21 @@ const PROYECTOS = [
   },
   {
     nombre: { es: "Rutas de Incendio · WiDS Datathon", en: "Wildfire Routes · WiDS Datathon" },
+    destacado: 2,
+    disciplinas: ["datos"],
+    fecha: "2026-06",
+    nombreCorto: { es: "Rutas de incendio", en: "Wildfire routes" },
+    meta: "WiDS Datathon · 2026",
+    archivo: { es: "rutas_de_incendio", en: "wildfire_routes" },
+    color: "sky",
+    logro: { es: "3er lugar general", en: "3rd place overall" }, sello: "s-pink",
+    frase: { es: "Rutas de escape seguras ante un incendio. Mi parte: el modelado.", en: "Safe escape routes during a wildfire. My part: the modeling." },
     tipo: "hackathon",
     materia: "WiDS Datathon ESPOL 2026",
     periodo: { es: "Junio 2026", en: "June 2026" },
     descripcion: {
-      es: "Notebook de ciencia de datos para analizar y predecir rutas de incendios. 3er lugar en el WiDS Datathon ESPOL 2026.",
-      en: "Data science notebook to analyze and predict wildfire routes. 3rd place at the WiDS Datathon ESPOL 2026."
+      es: "Notebook de ciencia de datos para analizar y predecir rutas de incendios.",
+      en: "Data science notebook to analyze and predict wildfire routes."
     },
     habilidades: ["Python", "Data Science", "Pandas", "Matplotlib"],
     repo: "https://github.com/DATATHON-WIDS/wids-datathon-2026-artemis-4",
@@ -44,6 +60,8 @@ const PROYECTOS = [
   },
   {
     nombre: { es: "App Web de Tracking de Libros", en: "Book Tracking Web App" },
+    disciplinas: ["desarrollo"],
+    fecha: "2026-06",
     tipo: "academico",
     materia: { es: "Lenguajes de Programación", en: "Programming Languages" },
     periodo: { es: "Junio 2026", en: "June 2026" },
@@ -58,6 +76,15 @@ const PROYECTOS = [
   },
   {
     nombre: "Catventures - Unity 2D",
+    destacado: 3,
+    disciplinas: ["juegos", "diseno"],
+    fecha: "2026-08",
+    nombreCorto: "Catventures",
+    meta: "Unity 2D · 2026",
+    archivo: "catventures",
+    color: "mint",
+    logro: { es: "diseño + código", en: "design + code" }, sello: "s-lav",
+    frase: { es: "Un juego pixel art en Unity: diseño, ilustración y C#, en equipo.", en: "A pixel art game in Unity: design, illustration and C#, as a team." },
     tipo: "academico, personal",
     materia: { es: "Lenguajes de Programación", en: "Programming Languages" },
     periodo: { es: "Agosto 2026", en: "August 2026" },
@@ -72,12 +99,20 @@ const PROYECTOS = [
   },
     {
     nombre: "Grow With Phoenix",
+    destacado: 1,
+    disciplinas: ["diseno", "datos"],
+    fecha: "2025",
+    meta: "SpaceHACK · 2025",
+    archivo: "grow_with_phoenix",
+    color: "peach",
+    logro: { es: "1er lugar internacional", en: "1st place worldwide" }, sello: "s-gold",
+    frase: { es: "Datos satelitales convertidos en una app para cultivar tu propia comida.", en: "Satellite data turned into an app for growing your own food." },
     tipo: "hackathon",
     materia: "SpaceHACK for Sustainability 2025",
     periodo: "2025",
     descripcion: {
-      es: "Primer lugar internacional. Analizamos los desiertos alimentarios de Phoenix, Arizona con datos satelitales y diseñamos el prototipo de una app que acompaña a la gente a cultivar su propia comida.",
-      en: "1st place worldwide. We analyzed the food deserts of Phoenix, Arizona with satellite data and designed a prototype app that helps people grow their own food."
+      es: "Analizamos los desiertos alimentarios de Phoenix, Arizona con datos satelitales y diseñamos el prototipo de una app que acompaña a la gente a cultivar su propia comida.",
+      en: "We analyzed the food deserts of Phoenix, Arizona with satellite data and designed a prototype app that helps people grow their own food."
     },
     habilidades: ["Figma", "UX/UI", "Python", "Google Earth Engine", "Google Colab", "Data Science"],
     repo: "",
@@ -89,6 +124,8 @@ const PROYECTOS = [
   },
   {
     nombre: { es: "Simulación de Videojuego · Laravel + Prolog", en: "Video Game Simulation · Laravel + Prolog" },
+    disciplinas: ["juegos", "desarrollo"],
+    fecha: "2026-06",
     tipo: "academico",
     materia: { es: "Lenguajes de Programación", en: "Programming Languages" },
     periodo: { es: "Junio 2026", en: "June 2026" },
@@ -103,6 +140,8 @@ const PROYECTOS = [
   },
   {
     nombre: { es: "Dashboard BI", en: "BI Dashboard" },
+    disciplinas: ["datos", "desarrollo"],
+    fecha: "2026-04",
     tipo: "academico",
     materia: { es: "Base de Datos II", en: "Databases II" },
     periodo: { es: "Abril 2026", en: "April 2026" },
@@ -117,6 +156,8 @@ const PROYECTOS = [
   },
   {
     nombre: { es: "Simulación de Proceso de Adopción", en: "Adoption Process Simulation" },
+    disciplinas: ["datos", "desarrollo"],
+    fecha: "2025-12",
     tipo: "academico",
     materia: { es: "Base de Datos I", en: "Databases I" },
     periodo: { es: "Diciembre 2025", en: "December 2025" },
@@ -131,6 +172,8 @@ const PROYECTOS = [
   },
   {
     nombre: { es: "Inventario + Reportes con Docker", en: "Inventory + Reports with Docker" },
+    disciplinas: ["desarrollo"],
+    fecha: "2026-06",
     tipo: "academico",
     materia: { es: "Sistemas Distribuidos", en: "Distributed Systems" },
     periodo: { es: "Junio 2026", en: "June 2026" },
@@ -145,6 +188,8 @@ const PROYECTOS = [
   },
     {
     nombre: { es: "Aplicación Pomodoro", en: "Pomodoro App" },
+    disciplinas: ["desarrollo"],
+    fecha: "2026-01",
     tipo: "personal",
     materia: "-",
     periodo: { es: "Enero 2026", en: "January 2026" },
