@@ -2,6 +2,7 @@
    pau.proyectos · script compartido por todas las páginas
    1) menú hamburguesa en celular
    2) pop-in de las tarjetas .popup al hacer scroll (solo inicio)
+   1b) botones de CV que descargan el PDF del idioma activo
    ═══════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -51,6 +52,20 @@
     else if (mq.addListener) mq.addListener(alCambiar);   /* Safari viejo */
   }
 
+  /* ── 1b · CV SEGÚN EL IDIOMA ─────────────────────────────────
+     <a data-cv="../cv/" download> → ../cv/esp.pdf o ../cv/eng.pdf.
+     data-cv es la ruta a la carpeta cv/ desde la página ("cv/" en el inicio).
+     El href del HTML ya apunta al PDF en español, así funciona sin JS. */
+  function syncCV() {
+    var en = window.I18N && I18N.lang === 'en';
+    document.querySelectorAll('[data-cv]').forEach(function (a) {
+      a.setAttribute('href', a.getAttribute('data-cv') + (en ? 'eng.pdf' : 'esp.pdf'));
+      a.setAttribute('download', en ? 'Paula-Martillo-CV-EN.pdf' : 'Paula-Martillo-CV-ES.pdf');
+    });
+  }
+  syncCV();
+  document.addEventListener('langchange', syncCV);
+
   /* ── 2 · POP-IN DE LAS TARJETAS DEL INICIO ──────────────── */
   var popups = document.querySelectorAll('.popups');
   if (!popups.length) return;
@@ -84,4 +99,5 @@
       io.observe(el);
     });
   });
+
 })();

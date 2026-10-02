@@ -46,10 +46,10 @@
 <p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span></p>
 
 <!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
-<script src="../js/translations.js?v=1"></script>
+<script src="../js/translations.js?v=2"></script>
 <script src="../js/i18n.js?v=1"></script>
 
-<script src="../data/proyectos.js?v=2"></script>
+<script src="../data/proyectos.js?v=3"></script>
 <script>
 (function(){
   /* textos de la interfaz → js/translations.js · textos de cada proyecto → data/proyectos.js */
@@ -108,8 +108,10 @@
       var pills = (p.habilidades||[]).map(function(s){ return '<span class="pill">'+pick(s)+'</span>'; }).join('');
       var misTipos = tiposDe(p);
       var tipoTxt  = misTipos.map(function(x){ return tr('projects.tag.'+x, x); }).join(' · ');
-      var link = (p.repo && p.repo!=='#')
-        ? '<a class="link" href="'+p.repo+'" target="_blank" rel="noopener">'+t('projects.repo')+'</a>'
+      /* enlace: el repo por defecto; "enlace" + "enlaceTxt" para lo que no tiene repo (ej. una noticia) */
+      var href = p.enlace || p.repo;
+      var link = (href && href!=='#')
+        ? '<a class="link" href="'+href+'" target="_blank" rel="noopener">'+(p.enlaceTxt ? pick(p.enlaceTxt) : t('projects.repo'))+'</a>'
         : '<span class="link" style="opacity:.6">'+t('projects.soon')+'</span>';
       var imgSrc = p.img ? (/^(https?:|\/|\.\.\/)/.test(p.img) ? p.img : '../'+p.img) : '';
       var thumb = p.img
@@ -163,6 +165,6 @@
   });
 })();
 </script>
-<script src="../js/portfolio.js?v=2"></script>
+<script src="../js/portfolio.js?v=3"></script>
 </body>
 </html>

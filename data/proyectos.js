@@ -97,7 +97,7 @@ const PROYECTOS = [
       es: "Notebook de ciencia de datos para analizar y predecir rutas de incendios. 3er lugar en el WiDS Datathon ESPOL 2026.",
       en: "Data science notebook to analyze and predict wildfire routes. 3rd place at the WiDS Datathon ESPOL 2026."
     },
-    habilidades: ["Python", "Data Science", "Pandas", "Matplot Lib"],
+    habilidades: ["Python", "Data Science", "Pandas", "Matplotlib"],
     repo: "https://github.com/DATATHON-WIDS/wids-datathon-2026-artemis-4",
     img: "img/rutasincendio.png",
     estado: "completado"
@@ -121,8 +121,8 @@ const PROYECTOS = [
     tipo: "academico, personal",
     periodo: { es: "Agosto 2026", en: "August 2026" },
     descripcion: {
-      es: "Creacion de un pixel videogame en Unity para aprender C#",
-      en: "A pixel video game made in Unity to learn C#"
+      es: "Videojuego pixel art hecho en Unity para aprender C#; el diseño y la ilustración fueron parte del trabajo.",
+      en: "A pixel art video game made in Unity to learn C#, where design and illustration were part of the work."
     },
     habilidades: [{ es: "Diseño", en: "Design" }, "C#", "Unity", { es: "Ilustración", en: "Illustration" }],
     repo: "https://github.com/bypaupau/JuegoGrupal-ProyectoIIParcial",
@@ -139,7 +139,10 @@ const PROYECTOS = [
       en: "1st place worldwide. We analyzed the food deserts of Phoenix, Arizona with satellite data and designed a prototype app that helps people grow their own food."
     },
     habilidades: ["Figma", "UX/UI", "Python", "Google Earth Engine", "Google Colab", "Data Science"],
-    repo: "https://drive.google.com/file/d/XXXXXXXX/view?usp=sharing",
+    repo: "",
+    // sin repo público: el enlace lleva a la noticia del premio
+    enlace: "https://uees.edu.ec/uees-obtiene-el-primer-lugar-internacional-en-el-spacehack-for-sustainability/",
+    enlaceTxt: { es: "ver noticia →", en: "read the news →" },
     img: "img/phoenix-grow.png",
     estado: "completado"
   },
@@ -205,8 +208,8 @@ const PROYECTOS = [
     materia: "-",
     periodo: { es: "Enero 2026", en: "January 2026" },
     descripcion: {
-      es: "Aplicación de Pomodoro en tiempo real con interfaz gráfica y Logs de records",
-      en: "Real-time Pomodoro app with a graphical interface and record logs"
+      es: "Aplicación Pomodoro en tiempo real con interfaz gráfica y registro de sesiones.",
+      en: "Real-time Pomodoro app with a graphical interface and a session log."
     },
     habilidades: ["Python"],
     repo: "https://github.com/bypaupau/my-pomodoro",

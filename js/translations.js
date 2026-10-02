@@ -32,7 +32,7 @@ var TRANSLATIONS = {
     },
 
     nav: {
-      home: 'Inicio', about: 'Sobre', subjects: 'Materias', projects: 'Proyectos', contact: 'Contacto',
+      home: 'Inicio', about: 'Sobre mí', subjects: 'Materias', projects: 'Proyectos', contact: 'Contacto',
       menu: 'menú', open: 'Abrir menú', close: 'Cerrar menú'
     },
 
@@ -72,14 +72,14 @@ var TRANSLATIONS = {
       'desc.unite': 'unirlas',
       'desc.4': '. Aspiro a crear proyectos que dejen huella y reflejen mi pasión. ✿',
       'btn.projects': 'Ver Proyectos',
-      'btn.about': 'Sobre Mí',
+      'btn.about': 'Sobre mí',
       'status.key': 'online',
       'status.txt': 'creando cosas desde Guayaquil, Ecuador',
       monitor: 'computadora pixel sonriendo',
       scroll: 'desliza para explorar',
       'disc.label': '// menu · explora',
       'disc.title': '¿A dónde vamos?',
-      'disc.projects': 'Proyectos', 'disc.about': 'Sobre Mí', 'disc.contact': 'Contacto',
+      'disc.projects': 'Proyectos', 'disc.about': 'Sobre mí', 'disc.contact': 'Contacto',
       'ico.folder': 'carpeta', 'ico.heart': 'corazón', 'ico.mail': 'sobre'
     },
 
@@ -186,7 +186,7 @@ var TRANSLATIONS = {
 
     /* ── PROYECTOS ── */
     projects: {
-      label: 'académicos & personales',
+      label: 'hackathones, universidad y personales',
       title: 'Proyectos',
       'f.type': 'tipo', 'f.subject': 'materia', 'f.skill': 'habilidad',
       'f.all': 'Todos', 'f.reset': 'limpiar ✕',
@@ -233,7 +233,7 @@ var TRANSLATIONS = {
     },
 
     nav: {
-      home: 'Home', about: 'About', subjects: 'Courses', projects: 'Projects', contact: 'Contact',
+      home: 'Home', about: 'About me', subjects: 'Courses', projects: 'Projects', contact: 'Contact',
       menu: 'menu', open: 'Open menu', close: 'Close menu'
     },
 
@@ -271,14 +271,14 @@ var TRANSLATIONS = {
       'desc.unite': 'combining them',
       'desc.4': '. I want to build projects that leave a mark and reflect my passion. ✿',
       'btn.projects': 'See Projects',
-      'btn.about': 'About Me',
+      'btn.about': 'About me',
       'status.key': 'online',
       'status.txt': 'making things from Guayaquil, Ecuador',
       monitor: 'smiling pixel computer',
       scroll: 'scroll to explore',
       'disc.label': '// menu · explore',
       'disc.title': 'Where to next?',
-      'disc.projects': 'Projects', 'disc.about': 'About Me', 'disc.contact': 'Contact',
+      'disc.projects': 'Projects', 'disc.about': 'About me', 'disc.contact': 'Contact',
       'ico.folder': 'folder', 'ico.heart': 'heart', 'ico.mail': 'envelope'
     },
 
@@ -381,7 +381,7 @@ var TRANSLATIONS = {
     },
 
     projects: {
-      label: 'academic & personal',
+      label: 'hackathons, university & personal',
       title: 'Projects',
       'f.type': 'type', 'f.subject': 'course', 'f.skill': 'skill',
       'f.all': 'All', 'f.reset': 'clear ✕',
