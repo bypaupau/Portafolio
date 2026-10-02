@@ -46,8 +46,13 @@
   }
   function awake() { return heroVisible && !document.hidden; }
 
+  /* textos en el idioma activo (js/translations.js → grupo "exe");
+     si i18n.js no cargó, se queda con el español de siempre */
+  var FALLBACK = { welcome: '¡bienvenid@! ✿' };
+  function T(k) { return window.I18N ? I18N.t('exe.' + k) : (FALLBACK[k] || k); }
+
   /* ── 1 · pau.exe ─────────────────────────────────────────── */
-  var WELCOME = '¡bienvenid@! ✿';
+  function WELCOME() { return T('welcome'); }
   var typingTimer = null, backTimer = null;
 
   /* escribe `text` letra por letra. El resto del mensaje ya ocupa su
@@ -77,7 +82,7 @@
   function say(text, ms) {
     clearTimeout(backTimer);
     type(text, 38, function () {
-      backTimer = setTimeout(function () { type(WELCOME, 45); }, ms || 1800);
+      backTimer = setTimeout(function () { type(WELCOME(), 45); }, ms || 1800);
     });
   }
 
@@ -92,7 +97,7 @@
   /* al cargar: la bienvenida se escribe cuando la ventana termina de entrar */
   var introDelay = root.classList.contains('hx-motion') ? 1050 : 0;
   cap.textContent = '';
-  setTimeout(function () { type(WELCOME, 70); }, introDelay);
+  setTimeout(function () { type(WELCOME(), 70); }, introDelay);
 
   /* parpadeo ocasional (y de vez en cuando una carita feliz o un guiño) */
   if (!reduce) {
@@ -113,30 +118,36 @@
 
     /* "estados del sistema" automáticos: solo 2 en toda la visita,
        y solo si la persona se queda mirando el inicio */
-    var AUTO = [['pau.exe is running...', 16000], ['still here? ♡', 48000]];
+    var AUTO = [['running', 16000], ['still', 48000]];
     AUTO.forEach(function (m) {
-      setTimeout(function () { if (awake() && !cap.querySelector('.caret')) say(m[0], 2200); }, m[1]);
+      setTimeout(function () { if (awake() && !cap.querySelector('.caret')) say(T(m[0]), 2200); }, m[1]);
     });
   }
 
   /* clic en la compu: va contando sus estados */
-  var STATES = ['loading...', 'ready!', 'welcome!', 'pau.exe is running...', 'compilando ideas...', 'hi there ♡'];
   var si = 0;
   mon.addEventListener('click', function (e) {
+    var STATES = T('states');
     face('happy', 1200);
     say(STATES[si++ % STATES.length]);
     spark(e.clientX, e.clientY);
   });
 
   /* los tres botones: la ventana "lee" a dónde vas */
-  var HINTS = { mail: '> escríbeme ✉', gh: '> mis repos', in: '> conectemos ♡' };
   card.querySelectorAll('.social').forEach(function (a) {
     var key = a.classList.contains('mail') ? 'mail' : a.classList.contains('gh') ? 'gh' : 'in';
-    function enter() { clearTimeout(backTimer); type(HINTS[key], 22); face('happy'); }
-    function leave() { face(''); backTimer = setTimeout(function () { type(WELCOME, 30); }, 350); }
+    function enter() { clearTimeout(backTimer); type(T('hint.' + key), 22); face('happy'); }
+    function leave() { face(''); backTimer = setTimeout(function () { type(WELCOME(), 30); }, 350); }
     if (finePointer) { a.addEventListener('mouseenter', enter); a.addEventListener('mouseleave', leave); }
     a.addEventListener('focus', enter);
     a.addEventListener('blur', leave);
+  });
+
+  /* cambio de idioma desde la taskbar: pau.exe reacciona (sin moverse) */
+  document.addEventListener('langchange', function () {
+    clearTimeout(backTimer);
+    face('happy', 1200);
+    say(T('lang'), 1400);
   });
 
   /* título: pau.exe ↔ pausita.exe al pasar el mouse */
@@ -149,10 +160,10 @@
   /* controles _ ▢ ✕ : no obedecen, pero contestan */
   var ctrls = card.querySelectorAll('.win-ctrls i');
   var CTRL = [
-    function () { face('blink', 500); say('no me minimices :c'); },
-    function () { face('happy', 1200); say('ya estoy en grande ✦'); },
+    function () { face('blink', 500); say(T('min')); },
+    function () { face('happy', 1200); say(T('max')); },
     function () {
-      face('oh', 1300); say('nice try :)');
+      face('oh', 1300); say(T('close'));
       if (!reduce) { card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake'); }
     }
   ];
@@ -184,8 +195,16 @@
     var words = rot.querySelectorAll('.rot-w');
     if (reduce) {
       rot.classList.add('is-static');
-      rot.innerHTML = '<span class="rot-w is-on">' +
-        Array.prototype.map.call(words, function (w) { return w.textContent; }).join(' · ') + '</span>';
+      var joinWords = function () {
+        rot.innerHTML = '<span class="rot-w is-on">' +
+          Array.prototype.map.call(words, function (w) { return w.textContent; }).join(' · ') + '</span>';
+      };
+      joinWords();
+      /* al cambiar de idioma, i18n.js ya tradujo los <span> originales (siguen en memoria) */
+      document.addEventListener('langchange', function () {
+        if (window.I18N) words.forEach(function (w) { w.textContent = I18N.t(w.getAttribute('data-i18n')); });
+        joinWords();
+      });
     } else if (words.length > 1) {
       var wi = 0;
       var nextWord = function () {
@@ -252,7 +271,7 @@
     if (k === KONAMI.length) {
       k = 0;
       face('happy', 2400);
-      say('achievement unlocked ✦', 2600);
+      say(T('konami'), 2600);
       var r = mon.getBoundingClientRect();
       spark(r.left + r.width / 2, r.top + r.height / 2);
       console.log('%c✦ achievement unlocked: curios@ certificad@', 'color:#E87EA1;font:600 13px monospace');

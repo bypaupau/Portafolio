@@ -10,72 +10,78 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css?v=7">
+<link rel="stylesheet" href="../css/styles.css?v=10">
 </head>
-<body>
+<body data-page="subjects">
 
 <nav>
   <a href="../index.html" class="nav-logo">pau<span>.</span>proyectos</a>
   <button class="nav-toggle" id="nav-toggle" type="button"
           aria-expanded="false" aria-controls="nav-tabs" aria-label="Abrir menú">
     <span class="nav-burger" aria-hidden="true"><i></i><i></i><i></i></span>
-    menú
+    <span data-i18n="nav.menu">menú</span>
   </button>
   <ul class="nav-tabs" id="nav-tabs">
-    <li><a href="../index.html">Inicio</a></li>
-    <li><a href="sobremi.html">Sobre</a></li>
-    <li><a href="materias.html" class="active">Materias</a></li>
-    <li><a href="proyectos.html">Proyectos</a></li>
-    <li><a href="contacto.html">Contacto</a></li>
+    <li><a data-i18n="nav.home" href="../index.html">Inicio</a></li>
+    <li><a data-i18n="nav.about" href="sobremi.html">Sobre</a></li>
+    <li><a data-i18n="nav.subjects" href="materias.html" class="active">Materias</a></li>
+    <li><a data-i18n="nav.projects" href="proyectos.html">Proyectos</a></li>
+    <li><a data-i18n="nav.contact" href="contacto.html">Contacto</a></li>
   </ul>
 </nav>
 
 <main>
   <div class="wrap">
     <div class="sec-head">
-      <p class="sec-label">Proyectos académicos</p>
-      <h1 class="sec-title">Materias</h1>
+      <p class="sec-label" data-i18n="subjects.label">Proyectos académicos</p>
+      <h1 class="sec-title" data-i18n="subjects.title">Materias</h1>
     </div>
     <div class="materias-grid" id="materias-grid"></div>
   </div>
 </main>
 
-<p class="foot">hecho con <span class="hp">&lt;3</span> + pixeles · por Pau · © 2026</p>
+<p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span></p>
 
-<script src="../data/proyectos.js"></script>
+<!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
+<script src="../js/translations.js?v=1"></script>
+<script src="../js/i18n.js?v=1"></script>
+
+<script src="../data/proyectos.js?v=2"></script>
 <script>
 (function(){
-  var BADGE = {
-    'completado':  { label:'listo',       css:'bd-done' },
-    'en-progreso': { label:'en progreso', css:'bd-wip'  },
-    'pronto':      { label:'pronto',      css:'bd-soon' }
-  };
+  /* textos de la interfaz → js/translations.js · textos de cada materia → data/proyectos.js */
+  var t = I18N.t, pick = I18N.pick;
+  var BADGE_CSS = { 'completado':'bd-done', 'en-progreso':'bd-wip', 'pronto':'bd-soon' };
   var BAR = { pink:'', lav:'lav', mint:'mint', sky:'sky', peach:'peach' };
   var grid = document.getElementById('materias-grid');
   if(!grid || typeof MATERIAS==='undefined') return;
 
-  grid.innerHTML = MATERIAS.map(function(m){
-    var bar = BAR[m.color] || '';
-    var items = m.proyectos.map(function(p){
-      var b = BADGE[p.estado] || BADGE['pronto'];
-      return '<li><a href="'+p.repo+'" class="proj-item" target="_blank" rel="noopener">'+p.nombre+
-             '<span class="badge '+b.css+'">'+b.label+'</span></a></li>';
-    }).join('');
-    return '<article class="win">'+
-      '<div class="win-bar '+bar+'"><span class="win-title">'+m.periodo+'</span>'+
-      '<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span></div>'+
-      '<div class="mat-body"><p class="mat-period">'+m.periodo+'</p>'+
-      '<h3 class="mat-name">'+m.nombre+'</h3>'+
-      '<ul class="proj-list">'+items+'</ul></div></article>';
-  }).join('') +
-  '<article class="win"><div class="win-bar peach"><span class="win-title">próximamente</span>'+
-  '<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span></div>'+
-  '<div class="mat-body"><p class="mat-period">7mo · 8vo semestre</p>'+
-  '<h3 class="mat-name">Por cursar</h3>'+
-  '<p style="font-size:.9rem;color:var(--text-soft)">Espacio reservado para 7mo y 8vo semestre — lo mejor está por venir. ✿</p>'+
-  '</div></article>';
+  function render(){
+    grid.innerHTML = MATERIAS.map(function(m){
+      var bar = BAR[m.color] || '';
+      var items = m.proyectos.map(function(p){
+        var est = BADGE_CSS[p.estado] ? p.estado : 'pronto';
+        return '<li><a href="'+p.repo+'" class="proj-item" target="_blank" rel="noopener">'+pick(p.nombre)+
+               '<span class="badge '+BADGE_CSS[est]+'">'+t('badge.'+est)+'</span></a></li>';
+      }).join('');
+      return '<article class="win">'+
+        '<div class="win-bar '+bar+'"><span class="win-title">'+pick(m.periodo)+'</span>'+
+        '<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span></div>'+
+        '<div class="mat-body"><p class="mat-period">'+pick(m.periodo)+'</p>'+
+        '<h3 class="mat-name">'+pick(m.nombre)+'</h3>'+
+        '<ul class="proj-list">'+items+'</ul></div></article>';
+    }).join('') +
+    '<article class="win"><div class="win-bar peach"><span class="win-title">'+t('subjects.soon.bar')+'</span>'+
+    '<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span></div>'+
+    '<div class="mat-body"><p class="mat-period">'+t('subjects.soon.period')+'</p>'+
+    '<h3 class="mat-name">'+t('subjects.soon.name')+'</h3>'+
+    '<p style="font-size:.9rem;color:var(--text-soft)">'+t('subjects.soon.txt')+'</p>'+
+    '</div></article>';
+  }
+  render();
+  document.addEventListener('langchange', render);
 })();
 </script>
-<script src="../js/portfolio.js"></script>
+<script src="../js/portfolio.js?v=2"></script>
 </body>
 </html>

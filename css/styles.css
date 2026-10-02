@@ -786,3 +786,139 @@ main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal 
   .rv-motion .rv{ opacity:1; animation:none; }
   .px-spark{ display:none; }
 }
+
+
+/* ╔════════════════════════════════════════════════════════════╗
+   ║  TASKBAR · el pequeño sistema operativo de Pau               ║
+   ║  Barra inferior fija (la "gemela" del nav): misma línea de   ║
+   ║  3px, mismo blanco, mismos bordes y sombras duras que .win y ║
+   ║  .btn. La arma js/i18n.js en todas las páginas.              ║
+   ║    [ventana activa]              🌐 ES │ ▮▮▮ 100%  11:23     ║
+   ╚════════════════════════════════════════════════════════════╝ */
+:root{ --task-h:46px; }
+
+/* el contenido nunca queda escondido debajo de la barra */
+body{ padding-bottom:calc(var(--task-h) + env(safe-area-inset-bottom, 0px)); }
+
+.taskbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:100;
+  display:flex; align-items:center; gap:10px;
+  height:calc(var(--task-h) + env(safe-area-inset-bottom, 0px));
+  padding:0 clamp(10px,3vw,22px) env(safe-area-inset-bottom, 0px);
+  background:var(--white);
+  border-top:3px solid var(--ink);
+  font-family:var(--font-term); color:var(--ink);
+}
+
+/* ── ventana activa (izquierda): muestra dónde estás, clic = volver arriba ── */
+.tb-app{
+  display:inline-flex; align-items:center; gap:8px; min-width:0; max-width:46%;
+  height:32px; padding:0 12px 0 9px;
+  font-family:var(--font-term); font-size:1.15rem; line-height:1; color:var(--ink);
+  background:var(--pink-light); border:2px solid var(--ink);
+  box-shadow:inset 2px 2px 0 rgba(44,26,36,.14);   /* "presionado": es la ventana activa */
+  border-radius:0; cursor:pointer;
+  transition:background-color .12s ease;
+}
+.tb-app:hover{ background:var(--pink-pale); }
+.tb-app-ico{ width:18px; flex:none; image-rendering:pixelated; }
+.tb-app-name{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* ── bandeja (derecha) ── */
+.tb-tray{ margin-left:auto; display:flex; align-items:center; gap:12px; flex:none; }
+.tb-lang-wrap{ position:relative; }
+
+/* botón 🌐 ES: un botón biselado chiquito, como .btn pero a escala de bandeja */
+.tb-btn{
+  display:inline-flex; align-items:center; gap:7px;
+  height:32px; padding:0 10px 0 8px;
+  font-family:var(--font-term); font-size:1.2rem; line-height:1; letter-spacing:.5px; color:var(--ink);
+  background:#fff; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+  border-radius:0; cursor:pointer;
+  transition:transform .12s cubic-bezier(.3,.7,.4,1), box-shadow .12s cubic-bezier(.3,.7,.4,1), background-color .12s ease;
+}
+.tb-btn:hover{ background:var(--pink-light); transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--ink); }
+.tb-btn:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); transition-duration:.05s; }
+.tb-btn[aria-expanded="true"]{ background:var(--pink-light); transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
+.tb-globe{ width:20px; flex:none; image-rendering:pixelated; }
+.tb-code{ min-width:2ch; }
+
+.tb-sep{ width:2px; height:22px; background:var(--pink-mid); }
+.tb-bat{ display:inline-flex; align-items:center; gap:6px; font-size:1.15rem; line-height:1; color:var(--text-soft); }
+.tb-bat-ico{ width:22px; image-rendering:pixelated; }
+.tb-clock{ font-size:1.25rem; line-height:1; letter-spacing:.5px; white-space:nowrap; min-width:5ch; text-align:right; }
+
+/* ── popover de idioma: una mini .win que "sale" de la taskbar ── */
+.tb-pop{
+  position:absolute; right:0; bottom:calc(100% + 13px);
+  width:212px; max-width:calc(100vw - 16px); z-index:110;   /* .win trae max-width:100% (del botón): aquí no aplica */
+  box-shadow:4px 4px 0 var(--pink-mid);
+  transform-origin:100% 100%;
+}
+.tb-pop:not([hidden]){ animation:tb-pop-in .16s var(--ease-out, ease-out) both; }
+@keyframes tb-pop-in{ from{ opacity:0; transform:translateY(5px) scale(.98); } to{ opacity:1; transform:none; } }
+.tb-pop .win-bar{ padding:5px 7px 5px 10px; }
+.tb-pop .win-title{ font-size:1.1rem; }
+.tb-x{
+  width:18px; height:16px; display:grid; place-items:center; padding:0;
+  border:2px solid var(--ink); background:#fff; border-radius:0; cursor:pointer;
+  font-family:var(--font-tiny); font-size:.42rem; color:var(--ink); line-height:1;
+}
+.tb-x:hover{ background:var(--pink); color:#fff; }
+.tb-pop-h{
+  padding:10px 12px 4px;
+  font-family:var(--font-tiny); font-size:.55rem; letter-spacing:1px; color:var(--pink-ink, #B23E68);
+}
+.tb-opts{ list-style:none; padding:4px 8px 10px; display:flex; flex-direction:column; gap:4px; }
+.tb-opt{
+  width:100%; display:flex; align-items:center; gap:8px;
+  min-height:40px; padding:6px 8px;
+  font-family:var(--font-pixel); font-size:1.05rem; font-weight:500; color:var(--text-soft); text-align:left;
+  background:#fff; border:2px solid transparent; border-radius:0; cursor:pointer;
+  transition:background-color .1s ease, border-color .1s ease;
+}
+.tb-opt:hover, .tb-opt:focus-visible{ background:var(--pink-pale); border-color:var(--pink-mid); color:var(--ink); outline:none; }
+/* idioma activo: ✓ + negrita + caja con borde (no solo color) */
+.tb-opt.is-on{ background:var(--pink-light); border-color:var(--ink); color:var(--ink); font-weight:700; }
+.tb-opt-mark{ width:14px; flex:none; display:grid; place-items:center; }
+.tb-check{ width:14px; image-rendering:pixelated; visibility:hidden; color:var(--pink); }
+.tb-opt.is-on .tb-check{ visibility:visible; color:var(--ink); }
+.tb-opt-name{ flex:1; }
+.tb-opt-code{ font-family:var(--font-term); font-size:1.05rem; font-weight:400; color:var(--text-muted); }
+.tb-opt.is-on .tb-opt-code{ color:var(--ink); }
+
+/* foco de teclado: el mismo trazo punteado rosa del resto del sitio */
+.tb-app:focus-visible, .tb-btn:focus-visible, .tb-x:focus-visible{ outline:3px dashed var(--pink); outline-offset:3px; }
+.tb-opt:focus-visible{ outline:2px dashed var(--pink); outline-offset:1px; }
+
+/* ── responsive: misma barra, menos cosas ──
+   prioridad: idioma + hora > ventana activa > batería */
+@media (max-width:760px){
+  :root{ --task-h:48px; }                /* área táctil más cómoda */
+  .tb-tray{ gap:10px; }
+  .tb-btn, .tb-app{ height:36px; }
+}
+@media (max-width:480px){
+  .tb-bat, .tb-sep{ display:none; }
+  .tb-app{ max-width:52%; padding:0 10px 0 8px; }
+  .tb-pop{ width:200px; }
+}
+@media (max-width:340px){
+  .tb-app-name{ display:none; }          /* queda el iconito de la ventana */
+  .tb-app{ padding:0 8px; }
+}
+
+@media (hover:none){
+  .tb-btn:hover{ transform:none; box-shadow:2px 2px 0 var(--ink); background:#fff; }
+}
+@media (prefers-reduced-motion:reduce){
+  .tb-pop:not([hidden]){ animation:none; }
+  .tb-btn, .tb-btn:hover, .tb-btn:active{ transition:none; }
+}
+@media print{ .taskbar{ display:none; } body{ padding-bottom:0; } }
+/* el hero ocupa el espacio VISIBLE entre las dos barras (nav arriba, taskbar abajo),
+   así el "↓ desliza para explorar" no queda escondido detrás de la taskbar */
+.hero{ min-height:calc(100vh - var(--nav-h) - var(--task-h)); }
+@supports (height:100svh){
+  .hero{ min-height:calc(100svh - var(--nav-h) - var(--task-h)); }
+}

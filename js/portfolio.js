@@ -11,11 +11,15 @@
   var tabs   = document.getElementById('nav-tabs');
 
   if (toggle && tabs) {
+    /* textos del botón en el idioma activo (js/i18n.js) */
+    var txt = function (k, es) { return window.I18N ? I18N.t('nav.' + k) : es; };
     var abrir = function (si) {
       tabs.classList.toggle('open', si);
       toggle.setAttribute('aria-expanded', si ? 'true' : 'false');
-      toggle.setAttribute('aria-label', si ? 'Cerrar menú' : 'Abrir menú');
+      toggle.setAttribute('aria-label', si ? txt('close', 'Cerrar menú') : txt('open', 'Abrir menú'));
     };
+    abrir(false);
+    document.addEventListener('langchange', function () { abrir(tabs.classList.contains('open')); });
 
     toggle.addEventListener('click', function (e) {
       e.stopPropagation();

@@ -1,16 +1,22 @@
 // materias y proyectos del portafolio
 // estados: "completado" | "en-progreso" | "pronto"
+//
+// IDIOMAS: cualquier texto puede ser
+//   · un texto normal  → se muestra igual en español e inglés (nombres propios, tecnologías…)
+//   · { es: "…", en: "…" } → cada idioma ve su versión (descripciones, fechas, materias…)
+// Si falta "en", se muestra el "es". Los textos de la interfaz (botones, filtros…)
+// están en js/translations.js.
 
 // ── MATERIAS (para la página "Materias") ──
 const MATERIAS = [
 
   {
-    periodo: "Base de Datos I · 2025",
-    nombre:  "Base de Datos I",
+    periodo: { es: "Base de Datos I · 2025", en: "Databases I · 2025" },
+    nombre:  { es: "Base de Datos I", en: "Databases I" },
     color:   "sky",
     proyectos: [
       {
-        nombre: "Simulación de Proceso de Adopción",
+        nombre: { es: "Simulación de Proceso de Adopción", en: "Adoption Process Simulation" },
         repo:   "https://github.com/DanielV-13/BASE-DE-DATOS-ADOPCION-NI-O",
         estado: "completado"
       }
@@ -18,17 +24,17 @@ const MATERIAS = [
   },
 
   {
-    periodo: "Lenguajes de Programación · 2026",
-    nombre:  "Lenguajes de Programación",
+    periodo: { es: "Lenguajes de Programación · 2026", en: "Programming Languages · 2026" },
+    nombre:  { es: "Lenguajes de Programación", en: "Programming Languages" },
     color:   "lav",
     proyectos: [
       {
-        nombre: "App Web de Tracking de Libros",
+        nombre: { es: "App Web de Tracking de Libros", en: "Book Tracking Web App" },
         repo:   "https://github.com/bypaupau/Biblioteca-Personal",
         estado: "completado"
       },
       {
-        nombre: "Simulación de Videojuego (Laravel + Prolog)",
+        nombre: { es: "Simulación de Videojuego (Laravel + Prolog)", en: "Video Game Simulation (Laravel + Prolog)" },
         repo:   "https://github.com/bypaupau/RPG-Game",
         estado: "completado"
       }
@@ -36,12 +42,12 @@ const MATERIAS = [
   },
 
   {
-    periodo: "Extraordinario I · 2026",
-    nombre:  "Base de Datos II",
+    periodo: { es: "Extraordinario I · 2026", en: "Special Term I · 2026" },
+    nombre:  { es: "Base de Datos II", en: "Databases II" },
     color:   "pink",
     proyectos: [
       {
-        nombre: "Dashboard BI",
+        nombre: { es: "Dashboard BI", en: "BI Dashboard" },
         repo:   "https://github.com/bypaupau/BI-Webpage-Base-De-Datos-Proyecto-II-Parcial",
         estado: "completado"
       }
@@ -49,12 +55,12 @@ const MATERIAS = [
   },
 
   {
-    periodo: "Sistemas Distribuidos · 2026",
-    nombre:  "Sistemas Distribuidos",
+    periodo: { es: "Sistemas Distribuidos · 2026", en: "Distributed Systems · 2026" },
+    nombre:  { es: "Sistemas Distribuidos", en: "Distributed Systems" },
     color:   "mint",
     proyectos: [
       {
-        nombre: "Inventario + Reportes con Docker",
+        nombre: { es: "Inventario + Reportes con Docker", en: "Inventory + Reports with Docker" },
         repo:   "https://github.com/bypaupau/proyectoSistemasDistribuidosP1",
         estado: "completado"
       }
@@ -72,30 +78,39 @@ const PROYECTOS = [
     nombre: "Peak News - Alpine Fact-Checker",
     tipo: "hackathon",
     materia: "Spacehack 2026",
-    periodo: "Abril 2026",
-    descripcion: "Plataforma de fact-checking climático sobre los Alpes: cruza noticias con datos satelitales (Sentinel-2, Landsat) y literatura científica para dar un veredicto de verdad.",
+    periodo: { es: "Abril 2026", en: "April 2026" },
+    descripcion: {
+      es: "Plataforma de fact-checking climático sobre los Alpes: cruza noticias con datos satelitales (Sentinel-2, Landsat) y literatura científica para dar un veredicto de verdad.",
+      en: "Climate fact-checking platform for the Alps: it cross-checks news against satellite data (Sentinel-2, Landsat) and scientific literature to give a truth verdict."
+    },
     habilidades: ["React", "FastAPI", "Python", "TypeScript", "Google Earth Engine"],
     repo: "https://github.com/bypaupau/Spacehack-2026-PeakNews",
     img: "img/peaknews.png",
     estado: "completado"
   },
   {
-    nombre: "Rutas de Incendio · WiDS Datathon",
+    nombre: { es: "Rutas de Incendio · WiDS Datathon", en: "Wildfire Routes · WiDS Datathon" },
     tipo: "hackathon",
     materia: "WiDS Datathon ESPOL 2026",
-    periodo: "Junio 2026",
-    descripcion: "Notebook de ciencia de datos para analizar y predecir rutas de incendios. 3er lugar en el WiDS Datathon ESPOL 2026.",
+    periodo: { es: "Junio 2026", en: "June 2026" },
+    descripcion: {
+      es: "Notebook de ciencia de datos para analizar y predecir rutas de incendios. 3er lugar en el WiDS Datathon ESPOL 2026.",
+      en: "Data science notebook to analyze and predict wildfire routes. 3rd place at the WiDS Datathon ESPOL 2026."
+    },
     habilidades: ["Python", "Data Science", "Pandas", "Matplot Lib"],
     repo: "https://github.com/DATATHON-WIDS/wids-datathon-2026-artemis-4",
     img: "img/rutasincendio.png",
     estado: "completado"
   },
   {
-    nombre: "App Web de Tracking de Libros",
+    nombre: { es: "App Web de Tracking de Libros", en: "Book Tracking Web App" },
     tipo: "academico",
-    materia: "Lenguajes de Programación",
-    periodo: "Junio 2026",
-    descripcion: "Aplicación web para llevar el seguimiento de los libros que lees y los que quieres leer.",
+    materia: { es: "Lenguajes de Programación", en: "Programming Languages" },
+    periodo: { es: "Junio 2026", en: "June 2026" },
+    descripcion: {
+      es: "Aplicación web para llevar el seguimiento de los libros que lees y los que quieres leer.",
+      en: "Web app to keep track of the books you’ve read and the ones you want to read."
+    },
     habilidades: ["Laravel", "PHP", "SQLite"],
     repo: "https://github.com/bypaupau/Biblioteca-Personal",
     img: "img/trackinglibros.png",
@@ -104,9 +119,12 @@ const PROYECTOS = [
   {
     nombre: "Catventures - Unity 2D",
     tipo: "academico, personal",
-    periodo: "Agosto 2026",
-    descripcion: "Creacion de un pixel videogame en Unity para aprender C#",
-    habilidades: ["Diseño", "C#", "Unity", "Ilustración"],
+    periodo: { es: "Agosto 2026", en: "August 2026" },
+    descripcion: {
+      es: "Creacion de un pixel videogame en Unity para aprender C#",
+      en: "A pixel video game made in Unity to learn C#"
+    },
+    habilidades: [{ es: "Diseño", en: "Design" }, "C#", "Unity", { es: "Ilustración", en: "Illustration" }],
     repo: "https://github.com/bypaupau/JuegoGrupal-ProyectoIIParcial",
     img: "img/catventures.png",
     estado: "completado"
@@ -116,62 +134,80 @@ const PROYECTOS = [
     tipo: "hackathon",
     materia: "SpaceHACK for Sustainability 2025",
     periodo: "2025",
-    descripcion: "Primer lugar internacional. Analizamos los desiertos alimentarios de Phoenix, Arizona con datos satelitales y diseñamos el prototipo de una app que acompaña a la gente a cultivar su propia comida.",
+    descripcion: {
+      es: "Primer lugar internacional. Analizamos los desiertos alimentarios de Phoenix, Arizona con datos satelitales y diseñamos el prototipo de una app que acompaña a la gente a cultivar su propia comida.",
+      en: "1st place worldwide. We analyzed the food deserts of Phoenix, Arizona with satellite data and designed a prototype app that helps people grow their own food."
+    },
     habilidades: ["Figma", "UX/UI", "Python", "Google Earth Engine", "Google Colab", "Data Science"],
     repo: "https://drive.google.com/file/d/XXXXXXXX/view?usp=sharing",
     img: "img/phoenix-grow.png",
     estado: "completado"
   },
   {
-    nombre: "Simulación de Videojuego · Laravel + Prolog",
+    nombre: { es: "Simulación de Videojuego · Laravel + Prolog", en: "Video Game Simulation · Laravel + Prolog" },
     tipo: "academico",
-    materia: "Lenguajes de Programación",
-    periodo: "Junio 2026",
-    descripcion: "Simulación de un videojuego que combina Laravel para la lógica web y Prolog para el razonamiento.",
+    materia: { es: "Lenguajes de Programación", en: "Programming Languages" },
+    periodo: { es: "Junio 2026", en: "June 2026" },
+    descripcion: {
+      es: "Simulación de un videojuego que combina Laravel para la lógica web y Prolog para el razonamiento.",
+      en: "Simulation of a video game that combines Laravel for the web logic and Prolog for the reasoning."
+    },
     habilidades: ["Laravel", "Prolog", "PHP"],
     repo: "https://github.com/bypaupau/RPG-Game",
     img: "img/aventuraprolog.png",
     estado: "completado"
   },
   {
-    nombre: "Dashboard BI",
+    nombre: { es: "Dashboard BI", en: "BI Dashboard" },
     tipo: "academico",
-    materia: "Base de Datos II",
-    periodo: "Abril 2026",
-    descripcion: "Tablero de inteligencia de negocios para analizar facturación, cobranza y servicios, con modelo de datos en SQL.",
+    materia: { es: "Base de Datos II", en: "Databases II" },
+    periodo: { es: "Abril 2026", en: "April 2026" },
+    descripcion: {
+      es: "Tablero de inteligencia de negocios para analizar facturación, cobranza y servicios, con modelo de datos en SQL.",
+      en: "Business intelligence dashboard to analyze billing, collections and services, built on a SQL data model."
+    },
     habilidades: ["SQL", "Data Science", "JavaScript"],
     repo: "https://github.com/bypaupau/BI-Webpage-Base-De-Datos-Proyecto-II-Parcial",
     img: "img/dashboardbi.png",
     estado: "completado"
   },
   {
-    nombre: "Simulación de Proceso de Adopción",
+    nombre: { es: "Simulación de Proceso de Adopción", en: "Adoption Process Simulation" },
     tipo: "academico",
-    materia: "Base de Datos I",
-    periodo: "Diciembre 2025",
-    descripcion: "Simulación de un proceso de adopción con su modelo de base de datos, consultas y lógica del flujo.",
-    habilidades: ["SQL", "Base de Datos", "Java"],
+    materia: { es: "Base de Datos I", en: "Databases I" },
+    periodo: { es: "Diciembre 2025", en: "December 2025" },
+    descripcion: {
+      es: "Simulación de un proceso de adopción con su modelo de base de datos, consultas y lógica del flujo.",
+      en: "Simulation of an adoption process with its database model, queries and flow logic."
+    },
+    habilidades: ["SQL", { es: "Base de Datos", en: "Databases" }, "Java"],
     repo: "https://github.com/DanielV-13/BASE-DE-DATOS-ADOPCION-NI-O",
     img: "img/agenciaadopcion.png",
     estado: "completado"
   },
   {
-    nombre: "Inventario + Reportes con Docker",
+    nombre: { es: "Inventario + Reportes con Docker", en: "Inventory + Reports with Docker" },
     tipo: "academico",
-    materia: "Sistemas Distribuidos",
-    periodo: "Junio 2026",
-    descripcion: "Sistema distribuido con Docker: mi app de inventario envía datos que se reflejan en la base y el sistema de reportes de un compañero, en tiempo real.",
-    habilidades: ["Docker", "SQL", "Sistemas Distribuidos"],
+    materia: { es: "Sistemas Distribuidos", en: "Distributed Systems" },
+    periodo: { es: "Junio 2026", en: "June 2026" },
+    descripcion: {
+      es: "Sistema distribuido con Docker: mi app de inventario envía datos que se reflejan en la base y el sistema de reportes de un compañero, en tiempo real.",
+      en: "Distributed system with Docker: my inventory app sends data that shows up in a classmate’s database and reporting system, in real time."
+    },
+    habilidades: ["Docker", "SQL", { es: "Sistemas Distribuidos", en: "Distributed Systems" }],
     repo: "https://github.com/bypaupau/proyectoSistemasDistribuidosP1",
     img: "img/inventariodocker.png",
     estado: "completado"
   },
     {
-    nombre: "Aplicación Pomodoro",
+    nombre: { es: "Aplicación Pomodoro", en: "Pomodoro App" },
     tipo: "personal",
     materia: "-",
-    periodo: "Enero 2026",
-    descripcion: "Aplicación de Pomodoro en tiempo real con interfaz gráfica y Logs de records",
+    periodo: { es: "Enero 2026", en: "January 2026" },
+    descripcion: {
+      es: "Aplicación de Pomodoro en tiempo real con interfaz gráfica y Logs de records",
+      en: "Real-time Pomodoro app with a graphical interface and record logs"
+    },
     habilidades: ["Python"],
     repo: "https://github.com/bypaupau/my-pomodoro",
     img: "img/pomodoro.png",
