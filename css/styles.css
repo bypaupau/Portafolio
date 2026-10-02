@@ -164,10 +164,14 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
   font-family:var(--font-pixel); font-size:1.05rem; font-weight:600;
   padding:9px 20px; text-decoration:none; cursor:pointer;
   border:3px solid var(--ink); border-radius:0;
-  box-shadow:var(--win-shadow-ink); transition:.1s ease;
+  box-shadow:var(--win-shadow-ink);
+  transition:transform .16s cubic-bezier(.3,.7,.4,1), box-shadow .16s cubic-bezier(.3,.7,.4,1), background-color .16s ease;
 }
-.btn:active{ transform:translate(4px,4px); box-shadow:0 0 0 var(--ink); }
-.btn:hover{ transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--ink); }
+/* hover: el botón "se levanta" 2px y su sombra crece.
+   active va DESPUÉS de hover: si no, al hacer clic con el mouse encima
+   ganaba el hover y el botón nunca se "hundía". */
+.btn:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--ink); }
+.btn:active{ transform:translate(4px,4px); box-shadow:0 0 0 var(--ink); transition-duration:.05s; }
 .btn-primary{ background:var(--pink); color:#fff; }
 .btn-ghost{ background:#fff; color:var(--ink); }
 .btn-yellow{ background:var(--yellow); color:var(--ink); }
@@ -267,7 +271,8 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
   width:48px; height:48px; display:grid; place-items:center;
   background:#fff; border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
   font-family:var(--font-pixel); font-weight:700; font-size:1.2rem; color:var(--ink);
-  text-decoration:none; transition:.1s ease;
+  text-decoration:none;
+  transition:transform .16s cubic-bezier(.3,.7,.4,1), box-shadow .16s cubic-bezier(.3,.7,.4,1);
 }
 .social:hover{ transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); }
 .social:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
@@ -530,4 +535,236 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
   .float,.scroll-hint{ animation:none; }
   html{ scroll-behavior:auto; }
   .popup{ transition:none; }
+}
+
+
+/* ╔════════════════════════════════════════════════════════════╗
+   ║  INICIO · polish + personalidad                              ║
+   ║  Todo se monta ENCIMA del diseño existente: misma paleta,    ║
+   ║  mismas fuentes, mismo layout. Lo que se mueve, se mueve     ║
+   ║  pocos píxeles y casi nunca al mismo tiempo.                 ║
+   ║  Las animaciones de entrada solo existen si el <head> de     ║
+   ║  index.html puso .hx-motion (hay JS y NO hay reduced-motion). ║
+   ╚════════════════════════════════════════════════════════════╝ */
+:root{
+  --ease-out: cubic-bezier(.22,1,.36,1);    /* entradas: rápido y suave */
+  --ease-soft: cubic-bezier(.2,.7,.2,1);    /* la misma de sobremi.css */
+  --ok-green: #3FA06A;                       /* el puntito de "abierta a pasantías" */
+}
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* foco visible para teclado (antes no había ninguno) */
+.btn:focus-visible, .social:focus-visible, .nav-tabs a:focus-visible,
+.nav-logo:focus-visible, .popup:focus-visible, .egg:focus-visible{
+  outline:3px dashed var(--pink); outline-offset:4px;
+}
+
+/* ── 1 · ENTRADA DEL HERO ─────────────────────────────────────
+   "backwards": solo se aplica ANTES de empezar (mientras espera su
+   delay). Al terminar, el elemento vuelve a sus estilos normales,
+   así que no pisa el hover, el parallax ni el fade del scroll-hint. */
+@keyframes hx-in{ from{ opacity:0; translate:0 12px; } to{ opacity:1; translate:0 0; } }
+@keyframes hx-fade{ from{ opacity:0; } to{ opacity:1; } }
+.hx-motion .hx{ animation:hx-in .6s var(--ease-out) var(--d, 0ms) backwards; }
+.hx-motion body::before{ animation:hx-fade .5s ease backwards; }
+
+/* ── 2 · STATUS ───────────────────────────────────────────── */
+.hero-status{
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  margin-top:20px;
+  font-family:var(--font-term); font-size:1.12rem; line-height:1.1; color:var(--text-soft);
+}
+.st-key{
+  display:inline-flex; align-items:center; gap:7px;
+  color:var(--ink); background:#fff; border:2px solid var(--ink);
+  padding:2px 8px 1px; box-shadow:2px 2px 0 var(--pink-mid);
+}
+/* puntito cuadrado (pixel), quieto */
+.st-dot{
+  width:8px; height:8px; flex:none; background:var(--ok-green);
+  box-shadow:0 0 0 2px var(--mint);
+}
+
+/* ── 3 · pau.exe ─────────────────────────────────────────── */
+/* la carita: cada expresión es un <g>; data-face decide cuál se ve */
+.mon .e-closed, .mon .e-happy, .mon .m-oh{ display:none; }
+.mon[data-face="blink"] .e-open,
+.mon[data-face="happy"] .e-open{ display:none; }
+.mon[data-face="blink"] .e-closed,
+.mon[data-face="happy"] .e-happy{ display:inline; }
+.mon[data-face="wink"]  .e-open .r{ display:none; }
+.mon[data-face="wink"]  .e-closed .r{ display:inline; }
+.mon[data-face="wink"]  .e-closed .l{ display:none; }
+.mon[data-face="wink"]  .e-closed{ display:inline; }
+.mon[data-face="oh"] .m-smile{ display:none; }
+.mon[data-face="oh"] .m-oh{ display:inline; }
+.hero-card .mon{ cursor:pointer; }
+
+/* texto que se escribe solo: el resto del mensaje ya ocupa su lugar
+   (invisible), así el texto centrado no "baila" mientras aparece */
+.cap{ min-height:1.2em; }
+.cap-type .off{ visibility:hidden; }
+.cap-type .caret{ position:relative; display:inline-block; width:0; }
+.cap-type .caret::after{
+  content:"_"; position:absolute; left:1px; bottom:0; color:var(--pink);
+  animation:caret 1s steps(1) infinite;
+}
+@keyframes caret{ 50%{ opacity:0; } }
+
+/* controles _ ▢ ✕ : no hacen lo que dicen… pero contestan */
+.hero-card .win-ctrls i{ cursor:pointer; transition:background-color .12s ease, color .12s ease; }
+.hero-card .win-ctrls i:hover{ background:var(--pink-light); }
+.hero-card .win-ctrls i:last-child:hover{ background:var(--pink); color:#fff; }
+.hero-card.shake{ animation:win-shake .42s steps(2) 1; }
+@keyframes win-shake{
+  0%,100%{ translate:0 0; } 20%{ translate:-3px 0; } 40%{ translate:3px 0; }
+  60%{ translate:-2px 0; } 80%{ translate:2px 0; }
+}
+
+/* ── 4 · MICROINTERACCIONES (solo con mouse de verdad) ───── */
+@media (hover:hover) and (pointer:fine){
+  /* tiles sociales: se levantan y se inclinan apenitas, cada uno a su lado */
+  .social:hover{ transform:translate(-2px,-2px) rotate(-3deg); box-shadow:5px 5px 0 var(--ink); }
+  .social.gh:hover{ transform:translate(-2px,-2px) rotate(3deg); }
+  .social:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); transition-duration:.05s; }
+  .social:hover .sprite{ animation:tile-hop .35s var(--ease-out) 1; }
+}
+@keyframes tile-hop{ 40%{ transform:translateY(-2px); } }
+
+/* ── 5 · TEXTO ANOTADO (mismo lenguaje que Sobre mí) ───────
+   La personalidad vive DENTRO del texto, no flotando alrededor:
+   trazos a mano sobre 2–3 palabras, el icono de Sobre mí que
+   "ilustra" la palabra, y una línea de identidad secundaria. */
+:root{ --pink-ink:#B23E68; }   /* rosa para texto (≈5.3:1), igual que sobremi.css */
+main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal */
+
+/* trazos a mano — mismas reglas que .mark en sobremi.css */
+.mark{ position:relative; display:inline-block; color:var(--ink); font-weight:600; white-space:nowrap; }
+.mark svg{ position:absolute; pointer-events:none; overflow:visible; }
+.mark path{ fill:none; stroke:var(--pink); stroke-linecap:round; stroke-linejoin:round; }
+.mark-under svg{ left:-2%; bottom:-.26em; width:104%; height:.42em; }
+.mark-under path{ stroke-width:3.2; vector-effect:non-scaling-stroke; }
+.mark-circle{ padding:0 .2em; margin:0 .16em; }
+.mark-circle svg{ left:-10%; top:-28%; width:120%; height:162%; z-index:-1; max-width:none; }
+.mark-circle path{ stroke-width:2.4; vector-effect:non-scaling-stroke; }
+/* se dibujan UNA vez, justo después de que entra la descripción; luego, quietos */
+@keyframes ab-draw{ to{ stroke-dashoffset:0; } }
+.hx-motion .hero-desc .mark path{
+  stroke-dasharray:1; stroke-dashoffset:1;
+  animation:ab-draw .7s ease-out var(--draw, 1s) forwards;
+}
+
+/* palabra + su icono viajan juntos (nunca se separan al cortar la línea) */
+.note{ white-space:nowrap; }
+.ico-note{ display:inline-block; line-height:0; margin-left:.3em; }
+.ico-note .px{ display:block; width:calc(var(--gw) * var(--ps)); max-width:none; height:auto; image-rendering:pixelated; }
+.ico-pal { --ps:1.8px; vertical-align:-.28em; }
+.ico-code{ --ps:1.8px; vertical-align:.08em; }
+/* reacción al hover: el icono "asiente", una vez */
+@keyframes ico-nod{ 0%,100%{ transform:rotate(0); } 30%{ transform:rotate(-10deg); } 65%{ transform:rotate(6deg); } }
+@media (hover:hover) and (pointer:fine){
+  .note:hover .ico-note .px{ animation:ico-nod .42s ease-in-out 1; }
+}
+
+/* identidad secundaria: "✦ y también developer / diseñadora / …" */
+.hero-also{
+  display:flex; align-items:center; gap:8px; margin-bottom:16px;
+  font-family:var(--font-term); font-size:1.2rem; line-height:1.1; color:var(--text-soft);
+}
+.also-ico{ line-height:0; }
+.also-ico .px{ width:14px; height:auto; display:block; image-rendering:pixelated; }
+/* todas las palabras ocupan la misma celda: el ancho es el de la más larga,
+   así nada se corre cuando cambia */
+.rot{ display:inline-grid; }
+.rot-w{
+  grid-area:1/1; white-space:nowrap;
+  font-family:var(--font-pixel); font-weight:600; font-size:1.05rem; color:var(--pink-ink);
+  opacity:0; translate:0 6px;
+  transition:opacity .35s ease, translate .35s var(--ease-out);
+}
+.rot-w.is-on { opacity:1; translate:0 0; }
+.rot-w.is-off{ opacity:0; translate:0 -6px; }
+.rot.is-static .rot-w{ transition:none; }
+
+/* ── 6 · "↓ desliza para explorar ↓" ───────────────────────── */
+.scroll-hint{ animation:none; transition:opacity .45s ease, translate .45s var(--ease-out); }
+/* las flechitas "asienten" 3 veces al cargar y luego se quedan quietas */
+.scroll-hint .arr{ display:inline-block; animation:arr-bob 1.6s ease-in-out 1.6s 3; }
+.scroll-hint .arr + .arr{ animation-delay:1.75s; }
+@keyframes arr-bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(3px); } }
+.scroll-hint.is-gone{ opacity:0; translate:0 6px; }
+
+/* ── 7 · (sin parallax: el grid y el hero se quedan quietos a propósito) */
+
+/* ── 8 · APARICIÓN AL SCROLL (bajando Y subiendo) ───────────
+   Mismo sistema y mismos valores que Sobre mí: opacidad .45s,
+   sube 30px en .55s. Solo si home.js puso .rv-motion. */
+@keyframes rv-fade{ from{ opacity:0; } to{ opacity:1; } }
+@keyframes rv-rise{ from{ translate:0 30px; } to{ translate:0 0; } }
+.rv-motion .rv{ opacity:0; }
+.rv-motion .rv.is-in{
+  opacity:1;
+  animation:rv-fade .45s ease var(--rv-delay,0s) both, rv-rise .55s var(--ease-soft) var(--rv-delay,0s) both;
+}
+
+/* ── 9 · easter egg del footer ───────────────────────────── */
+.egg-coffee{ position:relative; cursor:help; outline-offset:3px; }
+.egg-coffee::after{
+  content:attr(data-tip);
+  position:absolute; left:50%; bottom:calc(100% + 8px); translate:-50% 4px;
+  font-family:var(--font-term); font-size:1.05rem; white-space:nowrap; color:var(--ink);
+  background:#fff; border:2px solid var(--ink); padding:3px 8px 2px; box-shadow:2px 2px 0 var(--pink-mid);
+  opacity:0; pointer-events:none; transition:opacity .2s ease, translate .25s var(--ease-out);
+}
+.egg-coffee:hover::after, .egg-coffee:focus-visible::after{ opacity:1; translate:-50% 0; }
+
+/* ── 10 · chispita pixel al tocar un easter egg ───────────── */
+.px-spark{
+  position:fixed; z-index:200; width:0; height:0; pointer-events:none;
+}
+.px-spark i{
+  position:absolute; width:4px; height:4px; margin:-2px 0 0 -2px; background:var(--pink);
+  animation:spark .42s var(--ease-out) forwards;
+}
+.px-spark i:nth-child(1){ --sx:0;    --sy:-12px; }
+.px-spark i:nth-child(2){ --sx:12px; --sy:0; }
+.px-spark i:nth-child(3){ --sx:0;    --sy:12px; }
+.px-spark i:nth-child(4){ --sx:-12px; --sy:0; background:var(--ink); }
+@keyframes spark{ from{ translate:0 0; opacity:1; } to{ translate:var(--sx) var(--sy); opacity:0; } }
+
+/* ── 11 · CURSOR PIXEL (solo mouse; en táctil no existe) ─────
+   SVG inline: nítido en pantallas retina y sin archivos extra.
+   Normal: flechita pixel blanca. Sobre algo clickeable: flechita
+   rosa con un ♡. Los campos de texto conservan su cursor de texto. */
+@media (hover:hover) and (pointer:fine){
+  html{ cursor:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='28' viewBox='0 0 9 14' shape-rendering='crispEdges'%3E%3Cpath fill='%232C1A24' d='M0 0h1v1h-1zM0 1h2v1h-2zM0 2h1v1h-1zM2 2h1v1h-1zM0 3h1v1h-1zM3 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM0 5h1v1h-1zM5 5h1v1h-1zM0 6h1v1h-1zM6 6h1v1h-1zM0 7h1v1h-1zM7 7h1v1h-1zM0 8h1v1h-1zM5 8h4v1h-4zM0 9h1v1h-1zM2 9h1v1h-1zM5 9h1v1h-1zM0 10h2v1h-2zM3 10h1v1h-1zM6 10h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM5 13h2v1h-2z'/%3E%3Cpath fill='%23FFFFFF' d='M1 2h1v1h-1zM1 3h2v1h-2zM1 4h3v1h-3zM1 5h4v1h-4zM1 6h5v1h-5zM1 7h6v1h-6zM1 8h4v1h-4zM1 9h1v1h-1zM3 9h2v1h-2zM4 10h2v1h-2zM4 11h2v1h-2zM5 12h2v1h-2z'/%3E%3C/svg%3E") 1 1, auto; }
+  a, button, select, summary, label[for], [role="button"],
+  .btn, .social, .popup, .nav-toggle, .reset-btn, .hero-card .mon,
+  .hero-card .win-ctrls i, .egg, .egg-coffee{
+    cursor:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='28' viewBox='0 0 15 14' shape-rendering='crispEdges'%3E%3Cpath fill='%232C1A24' d='M0 0h1v1h-1zM0 1h2v1h-2zM0 2h1v1h-1zM2 2h1v1h-1zM0 3h1v1h-1zM3 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM0 5h1v1h-1zM5 5h1v1h-1zM0 6h1v1h-1zM6 6h1v1h-1zM0 7h1v1h-1zM7 7h1v1h-1zM0 8h1v1h-1zM5 8h4v1h-4zM0 9h1v1h-1zM2 9h1v1h-1zM5 9h1v1h-1zM0 10h2v1h-2zM3 10h1v1h-1zM6 10h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM5 13h2v1h-2z'/%3E%3Cpath fill='%23F4B8CC' d='M1 2h1v1h-1zM1 3h2v1h-2zM1 4h3v1h-3zM1 5h4v1h-4zM1 6h5v1h-5zM1 7h6v1h-6zM1 8h4v1h-4zM1 9h1v1h-1zM3 9h2v1h-2zM4 10h2v1h-2zM4 11h2v1h-2zM5 12h2v1h-2z'/%3E%3Cpath fill='%23E87EA1' d='M10 0h2v1h-2zM13 0h2v1h-2zM10 1h5v1h-5zM11 2h3v1h-3zM12 3h1v1h-1z'/%3E%3C/svg%3E") 1 1, pointer !important;
+  }
+  input, textarea, [contenteditable="true"]{ cursor:text !important; }
+}
+
+/* ── RESPONSIVE de lo nuevo ─────────────────────────────── */
+@media (max-width:760px){
+  .hero-status, .hero-also{ justify-content:center; }
+  .rot-w{ justify-self:center; }   /* centrado, la palabra corta no queda "corrida" */
+}
+@media (max-width:480px){
+  .hero-status{ font-size:1.05rem; }
+}
+
+/* ── MENOS MOVIMIENTO: todo quieto, todo visible ─────────── */
+@media (prefers-reduced-motion:reduce){
+  .hx-motion .hx, .hx-motion body::before{ animation:none; }
+  .scroll-hint .arr, .cap-type .caret::after{ animation:none; }
+  .rot-w{ transition:none; }
+  .hero-card.shake, .note:hover .ico-note .px, .social:hover .sprite{ animation:none; }
+  .rv-motion .rv{ opacity:1; animation:none; }
+  .px-spark{ display:none; }
 }
