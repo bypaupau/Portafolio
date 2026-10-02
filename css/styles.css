@@ -1159,3 +1159,12 @@ a.arow:focus-visible{ outline:3px dashed var(--pink); outline-offset:-4px; }
 /* archivo en tablet: la miniatura cede un poco de ancho al texto */
 @media (max-width:1024px) and (min-width:761px){ .arow{ grid-template-columns:176px minmax(0,1fr) auto; } .arow-thumb{ width:176px; } }
 @media (max-width:420px){ .arow{ grid-template-columns:112px minmax(0,1fr); } .arow-thumb{ width:112px; } }
+
+/* Proyectos aprovecha las pantallas anchas: contenedor de 1280px (1360px en pantallas muy anchas).
+   Destacados: 2×2 en pantallas medianas, los 4 en una fila desde 1280px. */
+body[data-page="projects"] .wrap{ width:min(1280px, 100% - var(--gutter)); }
+@media (min-width:1600px){ body[data-page="projects"] .wrap{ width:min(1360px, 100% - var(--gutter)); } }
+#feat-grid.pcards{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+@media (min-width:1280px){ #feat-grid.pcards{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:26px; } }
+@media (max-width:560px){ #feat-grid.pcards{ grid-template-columns:1fr; } }
+.s-sky{ background:var(--sky); } .s-mint{ background:var(--mint); }
