@@ -472,15 +472,26 @@
 
 /* ════════════════════════════════════════════════
    APARICIÓN AL HACER SCROLL
+   Réplica de "¿A dónde vamos?" (Inicio): opacidad .45s ease,
+   movimiento .55s, desde 30px más abajo. Sin scale ni rebote.
    Solo se activa si sobremi.js añade .ab-motion a <html>
    (hay JS, IntersectionObserver y el usuario no pidió menos movimiento).
    Sin eso, todo está visible desde el principio.
+
+   Se anima con `translate` (no `transform`) y con animation (no
+   transition): así no choca con el `transform` y las transiciones
+   del hover de .tool y .ev, que siguen intactos.
    ════════════════════════════════════════════════ */
-.ab-motion .ab-reveal{
-  opacity:0; transform:translateY(18px);
-  transition:opacity .5s ease, transform .55s var(--ease-soft);
+@keyframes ab-fade{ from{ opacity:0; } to{ opacity:1; } }
+@keyframes ab-rise{ from{ translate:0 30px; } to{ translate:0 0; } }
+
+.ab-motion .ab-rv{ opacity:0; }
+.ab-motion .ab-rv.is-in{
+  opacity:1;
+  animation:
+    ab-fade .45s ease var(--rv-delay, 0s) both,
+    ab-rise .55s var(--ease-soft) var(--rv-delay, 0s) both;
 }
-.ab-motion .ab-reveal.is-in{ opacity:1; transform:none; }
 
 /* ╔════════════════════════════════════════════════╗
    ║  RESPONSIVE — se reorganiza, no solo se encoge   ║
@@ -574,5 +585,5 @@
 }
 
 @media (prefers-reduced-motion:reduce){
-  .ab-motion .ab-reveal{ opacity:1; transform:none; transition:none; }
+  .ab-motion .ab-rv{ opacity:1; animation:none; }
 }
