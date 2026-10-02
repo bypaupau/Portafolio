@@ -1,88 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" sizes="64x64" href="../favicon.png?v=2">
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=2">
-    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-<title>pau.proyectos · materias</title>
-<meta name="description" content="Materias de Pau por semestre." />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css?v=15">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Materias dejó de ser una página: cada proyecto lleva su materia y el
+     índice académico vive en las carpetas "Año - Materia" del repositorio. -->
+<meta http-equiv="refresh" content="0; url=proyectos.html">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="proyectos.html">
+<title>pau.proyectos · proyectos</title>
+<script>location.replace('proyectos.html');</script>
 </head>
-<body data-page="subjects">
-
-<nav>
-  <a href="../index.html" class="nav-logo">pau<span>.</span>proyectos</a>
-  <button class="nav-toggle" id="nav-toggle" type="button"
-          aria-expanded="false" aria-controls="nav-tabs" aria-label="Abrir menú">
-    <span class="nav-burger" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span data-i18n="nav.menu">menú</span>
-  </button>
-  <ul class="nav-tabs" id="nav-tabs">
-    <li><a data-i18n="nav.home" href="../index.html">Inicio</a></li>
-    <li><a data-i18n="nav.about" href="sobremi.html">Sobre</a></li>
-    <li><a data-i18n="nav.subjects" href="materias.html" class="active">Materias</a></li>
-    <li><a data-i18n="nav.projects" href="proyectos.html">Proyectos</a></li>
-    <li><a data-i18n="nav.contact" href="contacto.html">Contacto</a></li>
-  </ul>
-</nav>
-
-<main>
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="sec-label" data-i18n="subjects.label">Proyectos académicos</p>
-      <h1 class="sec-title" data-i18n="subjects.title">Materias</h1>
-    </div>
-    <div class="materias-grid" id="materias-grid"></div>
-  </div>
-</main>
-
-<p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span></p>
-
-<!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
-<script src="../js/translations.js?v=5"></script>
-<script src="../js/i18n.js?v=1"></script>
-
-<script src="../data/proyectos.js?v=3"></script>
-<script>
-(function(){
-  /* textos de la interfaz → js/translations.js · textos de cada materia → data/proyectos.js */
-  var t = I18N.t, pick = I18N.pick;
-  var BADGE_CSS = { 'completado':'bd-done', 'en-progreso':'bd-wip', 'pronto':'bd-soon' };
-  var BAR = { pink:'', lav:'lav', mint:'mint', sky:'sky', peach:'peach' };
-  var grid = document.getElementById('materias-grid');
-  if(!grid || typeof MATERIAS==='undefined') return;
-
-  function render(){
-    grid.innerHTML = MATERIAS.map(function(m){
-      var bar = BAR[m.color] || '';
-      var items = m.proyectos.map(function(p){
-        var est = BADGE_CSS[p.estado] ? p.estado : 'pronto';
-        return '<li><a href="'+p.repo+'" class="proj-item" target="_blank" rel="noopener">'+pick(p.nombre)+
-               '<span class="badge '+BADGE_CSS[est]+'">'+t('badge.'+est)+'</span></a></li>';
-      }).join('');
-      return '<article class="win">'+
-        '<div class="win-bar '+bar+'"><span class="win-title">'+pick(m.periodo)+'</span>'+
-        '<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span></div>'+
-        '<div class="mat-body"><p class="mat-period">'+pick(m.periodo)+'</p>'+
-        '<h3 class="mat-name">'+pick(m.nombre)+'</h3>'+
-        '<ul class="proj-list">'+items+'</ul></div></article>';
-    }).join('') +
-    '<article class="win"><div class="win-bar peach"><span class="win-title">'+t('subjects.soon.bar')+'</span>'+
-    '<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span></div>'+
-    '<div class="mat-body"><p class="mat-period">'+t('subjects.soon.period')+'</p>'+
-    '<h3 class="mat-name">'+t('subjects.soon.name')+'</h3>'+
-    '<p style="font-size:.9rem;color:var(--text-soft)">'+t('subjects.soon.txt')+'</p>'+
-    '</div></article>';
-  }
-  render();
-  document.addEventListener('langchange', render);
-})();
-</script>
-<script src="../js/portfolio.js?v=3"></script>
+<body>
+<p>Esta página se mudó a <a href="proyectos.html">Proyectos</a>.</p>
 </body>
 </html>

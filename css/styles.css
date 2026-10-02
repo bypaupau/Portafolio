@@ -1082,3 +1082,8 @@ body{ padding-bottom:calc(var(--task-h) + env(safe-area-inset-bottom, 0px)); }
   .pcards{ grid-template-columns:1fr; gap:30px; }
   .pcard-media{ aspect-ratio:16/10; }
 }
+
+/* pie: enlace al índice académico (carpetas "Año - Materia" del repo) */
+.foot-link{ color:var(--pink-ink); text-decoration:none; border-bottom:1px dashed currentColor; }
+.foot-link:hover{ color:var(--ink); }
+.foot-link:focus-visible{ outline:3px dashed var(--pink); outline-offset:3px; }

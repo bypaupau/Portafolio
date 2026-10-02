@@ -36,7 +36,7 @@ var TRANSLATIONS = {
       menu: 'menú', open: 'Abrir menú', close: 'Cerrar menú'
     },
 
-    foot: { made: 'hecho con', rest: '+ pixeles · por Pau · © 2026' },
+    foot: { made: 'hecho con', rest: '+ pixeles · por Pau · © 2026', index: 'índice académico ↗' },
 
     /* ── taskbar (el pequeño sistema operativo) ── */
     task: {
@@ -256,7 +256,7 @@ var TRANSLATIONS = {
       menu: 'menu', open: 'Open menu', close: 'Close menu'
     },
 
-    foot: { made: 'made with', rest: '+ pixels · by Pau · © 2026' },
+    foot: { made: 'made with', rest: '+ pixels · by Pau · © 2026', index: 'academic index ↗' },
 
     task: {
       'app.home': 'home', 'app.about': 'about_me.txt', 'app.subjects': 'courses/',

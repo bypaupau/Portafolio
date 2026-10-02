@@ -1,4 +1,4 @@
-// materias y proyectos del portafolio
+// proyectos del portafolio: UNA sola lista (inicio, proyectos y el índice académico salen de aquí)
 // estados: "completado" | "en-progreso" | "pronto"
 //
 // IDIOMAS: cualquier texto puede ser
@@ -7,69 +7,9 @@
 // Si falta "en", se muestra el "es". Los textos de la interfaz (botones, filtros…)
 // están en js/translations.js.
 
-// ── MATERIAS (para la página "Materias") ──
-const MATERIAS = [
-
-  {
-    periodo: { es: "Base de Datos I · 2025", en: "Databases I · 2025" },
-    nombre:  { es: "Base de Datos I", en: "Databases I" },
-    color:   "sky",
-    proyectos: [
-      {
-        nombre: { es: "Simulación de Proceso de Adopción", en: "Adoption Process Simulation" },
-        repo:   "https://github.com/DanielV-13/BASE-DE-DATOS-ADOPCION-NI-O",
-        estado: "completado"
-      }
-    ]
-  },
-
-  {
-    periodo: { es: "Lenguajes de Programación · 2026", en: "Programming Languages · 2026" },
-    nombre:  { es: "Lenguajes de Programación", en: "Programming Languages" },
-    color:   "lav",
-    proyectos: [
-      {
-        nombre: { es: "App Web de Tracking de Libros", en: "Book Tracking Web App" },
-        repo:   "https://github.com/bypaupau/Biblioteca-Personal",
-        estado: "completado"
-      },
-      {
-        nombre: { es: "Simulación de Videojuego (Laravel + Prolog)", en: "Video Game Simulation (Laravel + Prolog)" },
-        repo:   "https://github.com/bypaupau/RPG-Game",
-        estado: "completado"
-      }
-    ]
-  },
-
-  {
-    periodo: { es: "Extraordinario I · 2026", en: "Special Term I · 2026" },
-    nombre:  { es: "Base de Datos II", en: "Databases II" },
-    color:   "pink",
-    proyectos: [
-      {
-        nombre: { es: "Dashboard BI", en: "BI Dashboard" },
-        repo:   "https://github.com/bypaupau/BI-Webpage-Base-De-Datos-Proyecto-II-Parcial",
-        estado: "completado"
-      }
-    ]
-  },
-
-  {
-    periodo: { es: "Sistemas Distribuidos · 2026", en: "Distributed Systems · 2026" },
-    nombre:  { es: "Sistemas Distribuidos", en: "Distributed Systems" },
-    color:   "mint",
-    proyectos: [
-      {
-        nombre: { es: "Inventario + Reportes con Docker", en: "Inventory + Reports with Docker" },
-        repo:   "https://github.com/bypaupau/proyectoSistemasDistribuidosP1",
-        estado: "completado"
-      }
-    ]
-  },
-
-];
-
-// ── PROYECTOS (para la página con filtros) ──
+// ── PROYECTOS ──
+// materia: la asignatura (proyectos de la universidad) o el evento (hackathones).
+//   Los académicos también aparecen en las carpetas "Año - Materia" del repositorio.
 // tipo: "academico" | "personal" | "hackathon"  ·  estado: "completado" | "en-progreso" | "pronto"
 // habilidades: lista libre de etiquetas (alimentan el filtro por habilidad)
 // img: ruta de la captura/thumbnail (ej: "img/peaknews.png"). Déjalo "" para mostrar un placeholder.
@@ -119,6 +59,7 @@ const PROYECTOS = [
   {
     nombre: "Catventures - Unity 2D",
     tipo: "academico, personal",
+    materia: { es: "Lenguajes de Programación", en: "Programming Languages" },
     periodo: { es: "Agosto 2026", en: "August 2026" },
     descripcion: {
       es: "Videojuego pixel art hecho en Unity para aprender C#; el diseño y la ilustración fueron parte del trabajo.",
@@ -140,9 +81,9 @@ const PROYECTOS = [
     },
     habilidades: ["Figma", "UX/UI", "Python", "Google Earth Engine", "Google Colab", "Data Science"],
     repo: "",
-    // sin repo público: el enlace lleva a la noticia del premio
-    enlace: "https://uees.edu.ec/uees-obtiene-el-primer-lugar-internacional-en-el-spacehack-for-sustainability/",
-    enlaceTxt: { es: "ver noticia →", en: "read the news →" },
+    // sin repo público: el enlace lleva al proyecto en Drive
+    enlace: "https://drive.google.com/file/d/14QEug3cvbm_SLL2dG_udZX4H6NDujfX7/view?usp=sharing",
+    enlaceTxt: { es: "ver proyecto →", en: "view project →" },
     img: "img/phoenix-grow.png",
     estado: "completado"
   },
