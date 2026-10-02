@@ -60,7 +60,11 @@
     var en = window.I18N && I18N.lang === 'en';
     document.querySelectorAll('[data-cv]').forEach(function (a) {
       a.setAttribute('href', a.getAttribute('data-cv') + (en ? 'eng.pdf' : 'esp.pdf'));
-      a.setAttribute('download', en ? 'Paula-Martillo-CV-EN.pdf' : 'Paula-Martillo-CV-ES.pdf');
+      if (!a.hasAttribute('data-cv-open'))   /* "ver CV" abre el PDF; el resto lo descarga */
+        a.setAttribute('download', en ? 'Paula-Martillo-CV-EN.pdf' : 'Paula-Martillo-CV-ES.pdf');
+    });
+    document.querySelectorAll('[data-cv-img]').forEach(function (img) {
+      img.setAttribute('src', img.getAttribute('data-cv-img') + (en ? 'cv-en.png' : 'cv-es.png'));
     });
   }
   syncCV();

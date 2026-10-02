@@ -59,9 +59,11 @@ body::before{
    Usamos "100% - margen" en vez de 92vw: vw incluye la barra de scroll y por eso
    aparecía 1px de desbordamiento horizontal en escritorio. */
 .wrap{
-  width:min(1000px, 100% - var(--gutter));
+  /* mismo contenedor en todo el sitio; los textos limitan su propio ancho (ch) */
+  width:min(1280px, 100% - var(--gutter));
   margin-inline:auto;
 }
+@media (min-width:1600px){ .wrap{ width:min(1360px, 100% - var(--gutter)); } }
 
 /* ════════ NAV (barra superior estilo ventana) ════════ */
 nav{
@@ -1010,7 +1012,10 @@ body{ padding-bottom:calc(var(--task-h) + env(safe-area-inset-bottom, 0px)); }
    y las disciplinas. Todo responde a la interacción; nada se mueve solo.
    ════════════════════════════════════════════════ */
 .featured{ padding:24px 0 72px; }
-.feat-head{ margin-bottom:30px; }
+.feat-head{ margin-bottom:30px; text-align:center; }
+/* "Tres cosas…" y "de ideas → a cosas reales" comparten tamaño a propósito:
+   son los dos encabezados centrados del inicio y se leen como una pareja */
+.bridge .sec-title, .feat-head .sec-title{ font-size:clamp(2rem,5vw,2.8rem); }
 .feat-head .sec-title{ text-shadow:3px 3px 0 var(--pink-mid); }
 .feat-sub{ color:var(--text-soft); margin-top:6px; }
 .feat-all{ margin-top:26px; text-align:right; }
@@ -1160,11 +1165,72 @@ a.arow:focus-visible{ outline:3px dashed var(--pink); outline-offset:-4px; }
 @media (max-width:1024px) and (min-width:761px){ .arow{ grid-template-columns:176px minmax(0,1fr) auto; } .arow-thumb{ width:176px; } }
 @media (max-width:420px){ .arow{ grid-template-columns:112px minmax(0,1fr); } .arow-thumb{ width:112px; } }
 
-/* Proyectos aprovecha las pantallas anchas: contenedor de 1280px (1360px en pantallas muy anchas).
-   Destacados: 2×2 en pantallas medianas, los 4 en una fila desde 1280px. */
-body[data-page="projects"] .wrap{ width:min(1280px, 100% - var(--gutter)); }
-@media (min-width:1600px){ body[data-page="projects"] .wrap{ width:min(1360px, 100% - var(--gutter)); } }
+/* Proyectos · destacados: 2×2 en pantallas medianas, los 4 en una fila desde 1280px. */
 #feat-grid.pcards{ grid-template-columns:repeat(2,minmax(0,1fr)); }
 @media (min-width:1280px){ #feat-grid.pcards{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:26px; } }
 @media (max-width:560px){ #feat-grid.pcards{ grid-template-columns:1fr; } }
 .s-sky{ background:var(--sky); } .s-mint{ background:var(--mint); }
+
+/* ════════════════════════════════════════════════
+   CONTACTO · escribir | CV
+   ════════════════════════════════════════════════ */
+.contact-layout{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:clamp(28px,3.5vw,48px); align-items:start; }
+.contact-win .win-body{ display:flex; flex-direction:column; gap:26px; }
+.contact-intro .about-lead{ margin:0 0 16px; max-width:52ch; }
+.contact-links{ display:flex; flex-wrap:wrap; gap:12px; }
+.contact-links .btn{ flex:1 1 auto; justify-content:center; white-space:nowrap; }
+.contact-row{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.contact-form{ border-top:2px dashed var(--pink-mid); padding-top:22px; }
+
+/* el CV como documento abierto: hoja blanca sobre el fondo rayado de las ventanas */
+.cv-menu .cv-page{ margin-left:auto; color:var(--text-muted); }
+.cv-body{
+  padding:clamp(18px,2.4vw,30px);
+  background:repeating-linear-gradient(45deg, var(--pink-pale) 0 12px, #fff 12px 24px);
+  border-bottom:3px solid var(--ink);
+}
+.cv-sheet{ display:block; max-width:440px; margin-inline:auto; background:#fff; border:2px solid var(--ink); box-shadow:5px 5px 0 var(--pink-mid); }
+.cv-sheet img{ display:block; width:100%; height:auto; }
+.cv-sheet:focus-visible{ outline:3px dashed var(--pink); outline-offset:4px; }
+.cv-actions{ display:flex; flex-wrap:wrap; gap:12px; padding:16px 18px; background:#fff; }
+.cv-actions .btn{ flex:1 1 140px; justify-content:center; }
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .cv-sheet{ transition:transform .2s var(--ease-soft), box-shadow .2s var(--ease-soft); }
+  .cv-sheet:hover{ transform:translateY(-3px) rotate(-.6deg); box-shadow:7px 9px 0 var(--pink-mid); }
+}
+@media (max-width:900px){
+  .contact-layout{ grid-template-columns:1fr; }
+  .cv-sheet{ max-width:360px; }
+}
+@media (max-width:480px){ .contact-row{ grid-template-columns:1fr; } }
+
+/* ════════════════════════════════════════════════
+   GRID COMÚN DEL SITIO (≥1100px)
+   Contenedor de 1280/1360px con dos columnas: una "lateral" para el título
+   de cada sección y una "principal" para su contenido (la misma proporción
+   de Sobre mí · 02). Cada página decide qué secciones la usan:
+   · Inicio: ninguna (el puente va centrado, los destacados son galería y el cierre una ventana)
+   · Sobre mí: hero, 02 y 03
+   · Proyectos: galería a todo el ancho · Contacto: sus propias dos áreas
+   ════════════════════════════════════════════════ */
+:root{ --g-side:1fr; --g-main:2.4fr; --g-gap:clamp(40px,5vw,72px); }
+@media (min-width:1100px){
+  .split{ display:grid; grid-template-columns:minmax(0,var(--g-side)) minmax(0,var(--g-main)); column-gap:var(--g-gap); align-items:start; }
+  .split > .split-head{ grid-column:1; margin-bottom:0; }
+  .split > .split-body{ grid-column:2; min-width:0; }
+  .split .sec-title{ font-size:clamp(1.7rem,2.3vw,2.1rem); }
+
+  /* hero: texto y pau.exe más cerca; sus bordes coinciden con los del grid */
+  .hero-inner{ grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); }
+  .hero-card{ max-width:560px; }
+  .hero-card .mon{ width:clamp(160px,13vw,208px); }
+  .hero-desc{ max-width:46ch; }
+
+  /* destacados: galería protagonista a todo el ancho, el título encima */
+  .featured{ padding:0 0 120px; }
+  .featured .feat-head{ margin-bottom:40px; }
+  .featured .pcards{ gap:clamp(28px,3vw,44px); }
+
+  /* cierre: una ventana centrada que vuelve a Pau */
+  .outro{ padding-bottom:96px; }
+}

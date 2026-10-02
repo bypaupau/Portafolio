@@ -528,3 +528,99 @@
 @media (prefers-reduced-motion:reduce){
   .ab-motion .ab-rv{ opacity:1; animation:none; }
 }
+
+/* ════════════════════════════════════════════════
+   CANVAS ANCHO (≥1100px): cada sección usa el ancho según su forma
+   · 01 ruta: horizontal por naturaleza → ocupa todo el ancho
+   · 02 herramientas y 03 pistas: el título se queda a la izquierda,
+     como la barra lateral de un editor, y el contenido a la derecha
+   ════════════════════════════════════════════════ */
+@media (min-width:1100px){
+  .ab-split{
+    display:grid; grid-template-columns:minmax(0,var(--g-side,1fr)) minmax(0,var(--g-main,2.4fr));
+    column-gap:var(--g-gap,clamp(40px,5vw,72px)); align-items:start;
+  }
+  .ab-split > .ab-head{
+    grid-column:1; grid-row:1 / span 3; margin-bottom:0;
+    position:sticky; top:calc(var(--nav-h, 54px) + 28px);
+  }
+  .ab-split > :not(.ab-head){ grid-column:2; min-width:0; }
+  .ab-split .ab-title{ font-size:clamp(1.7rem,2.3vw,2.1rem); }
+}
+
+/* ════════════════════════════════════════════════
+   HERO · LIENZO ANCHO (≥1100px)
+   [ margen ] [ foto ] [ aire ] [ texto ] [ margen ]
+   la foto + el texto siguen siendo el núcleo; los márgenes ya no son
+   espacio sobrante sino parte de la composición: piezas pequeñas y quietas
+   del mismo sistema pixel (ventanitas, cruces, puntos, nodos).
+   · regla: menos piezas, cada una con intención. la polaroid ya tiene
+     sus propios detalles, así que el margen izquierdo casi queda libre
+   · derecha = pequeña UI (build listo) → conector → resultado (rombo)
+   el margen derecho es un poco más ancho (1 : 1.3): el núcleo queda
+   apenas hacia la izquierda, como en el boceto, y no en el centro exacto.
+   ════════════════════════════════════════════════ */
+.ab-deco{ display:none; }
+
+@media (min-width:1100px){
+  .ab-hero{
+    grid-template-columns:
+      minmax(0,1fr)                         /* margen izq. */
+      clamp(270px,25vw,350px)               /* foto */
+      clamp(40px,4.5vw,72px)                /* aire foto ↔ texto */
+      minmax(0,clamp(520px,45vw,640px))     /* texto */
+      minmax(0,1.3fr);                      /* margen der. */
+    column-gap:0;
+    align-items:center;
+  }
+  .ab-photo{ grid-column:2; grid-row:1; }
+  .ab-intro{ grid-column:4; grid-row:1; }
+  .ab-lead{ max-width:none; }               /* el ancho lo marca la columna */
+
+  .ab-deco{
+    display:block; position:relative; grid-row:1;
+    align-self:stretch; min-height:360px;
+    pointer-events:none; user-select:none;
+  }
+  .ab-deco-l{ grid-column:1; }
+  .ab-deco-r{ grid-column:5; }
+
+  /* piezas: chicas, contorno malva (no tinta) y sombra rosa → quedan en segundo plano */
+  .dk{ position:absolute; display:block; line-height:0; }
+  .dk .px{ width:calc(var(--gw) * var(--ps, 3px)); max-width:none; height:auto; }
+
+  /* mini ventana genérica */
+  .dk-build{
+    background:#fff; border:1.5px solid var(--text-muted);
+    box-shadow:2px 2px 0 var(--pink-mid);
+  }
+  .dk-bar{
+    display:block; height:7px;
+    border-bottom:1.5px solid var(--text-muted);
+    background:
+      linear-gradient(var(--text-muted),var(--text-muted)) right 3px center / 2px 2px no-repeat,
+      linear-gradient(var(--text-muted),var(--text-muted)) right 7px center / 2px 2px no-repeat,
+      var(--pink-light);
+  }
+
+  /* ── izquierda: una sola cruz, abajo, lejos del lápiz (que está arriba) ── */
+  .dk-cross{ --ps:3px; top:68%; left:22%; opacity:.8; }
+
+  /* ── derecha: UI → conector → rombo, pequeño y con aire alrededor ── */
+  /* "build" listo: ✓ + barra de progreso llena */
+  .dk-build{ top:30%; left:22%; width:64px; }
+  .dk-run{ display:flex; align-items:center; gap:5px; padding:6px 7px 7px; }
+  .dk-run .px{ --ps:1.6px; flex:none; }
+  .dk-prog{
+    display:block; flex:1; height:6px; border:1.5px solid var(--text-muted);
+    background:repeating-linear-gradient(90deg, var(--pink-mid) 0 4px, #fff 4px 6px);
+  }
+
+  /* conector: del build baja y gira hacia el resultado */
+  .dk-wire{
+    top:calc(30% + 36px); left:calc(22% + 30px);
+    width:calc(78% - 30px - 30px); height:calc(42% - 36px);
+    border-left:1.5px dashed var(--pink-mid); border-bottom:1.5px dashed var(--pink-mid);
+  }
+  .dk-diamond{ --ps:4px; bottom:calc(28% - 14px); right:6%; }
+}
