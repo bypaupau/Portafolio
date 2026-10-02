@@ -308,11 +308,17 @@
 .ev{ display:flex; flex-direction:column; }
 .ev-inner{ display:flex; flex-direction:column; flex:1; }
 .ev-thumb{
+  position:relative; flex:none; min-height:0;
   aspect-ratio:16/10; overflow:hidden;
   border-bottom:3px solid var(--ink);
   background:repeating-linear-gradient(45deg, var(--pink-pale) 0 12px, #fff 12px 24px);
 }
-.ev-thumb img{ width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+.ev-thumb img{
+  /* la imagen nunca dicta el tamaño de la caja (iOS Safari la estiraba a su tamaño real) */
+  position:absolute; inset:0;
+  width:100%; height:100%; max-width:none;
+  object-fit:cover; object-position:center top; display:block;
+}
 .ev-body{ padding:18px 18px 20px; display:flex; flex-direction:column; flex:1; }
 
 /* sello del logro: lo primero que se lee en la tarjeta */
@@ -567,7 +573,7 @@
 /* ── ≤560 · celular: evidencia vuelve a apilarse (foto arriba) ── */
 @media (max-width:560px){
   .ev-inner{ display:flex; flex-direction:column; flex:1; }
-  .ev-thumb{ aspect-ratio:16/10; border-right:none; border-bottom:3px solid var(--ink); }
+  .ev-thumb{ aspect-ratio:16/10; min-height:0; width:100%; border-right:none; border-bottom:3px solid var(--ink); }
   .clues{ grid-template-columns:1fr; gap:14px; }
   .clue{ transform:none !important; }   /* en una columna la inclinación solo estorba la lectura */
   .ab-status{ display:flex; width:fit-content; max-width:100%; }
