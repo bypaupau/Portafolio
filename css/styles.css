@@ -191,15 +191,15 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
   .hero{ min-height:calc(100svh - var(--nav-h)); }
 }
 .hero-inner{ display:grid; grid-template-columns:1fr 1.12fr; gap:clamp(26px,4vw,40px); align-items:center; width:100%; }
-.hero-greeting{ font-family:var(--font-term); font-size:clamp(1.25rem,4vw,1.5rem); color:var(--pink); }
+.hero-greeting{ font-family:var(--font-term); font-size:clamp(1.4rem,4.4vw,1.8rem); color:var(--pink); }
 .hero-name{
   font-family:var(--font-pixel); font-weight:700;
-  font-size:clamp(2.8rem,13vw,5.4rem); line-height:.95; color:var(--ink);
+  font-size:clamp(3.1rem,14vw,6.3rem); line-height:.95; color:var(--ink);
   text-shadow:4px 4px 0 var(--pink-mid); margin:2px 0 14px;
 }
-.hero-role{ font-size:1.05rem; font-weight:600; color:var(--text-soft); }
-.hero-sem{ font-size:.9rem; color:var(--text-muted); margin-bottom:14px; }
-.hero-desc{ font-size:.98rem; color:var(--text-soft); line-height:1.7; max-width:42ch; margin-bottom:26px; }
+.hero-role{ font-size:clamp(1.12rem,1.7vw,1.3rem); font-weight:600; color:var(--text-soft); }
+.hero-sem{ font-size:clamp(.96rem,1.25vw,1.05rem); color:var(--text-muted); margin-bottom:14px; }
+.hero-desc{ font-size:clamp(1.02rem,1.5vw,1.14rem); color:var(--text-soft); line-height:1.75; max-width:42ch; margin-bottom:26px; }
 .hero-desc strong{ color:var(--ink); }
 .hero-btns{ display:flex; gap:14px; flex-wrap:wrap; }
 
@@ -643,7 +643,7 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
 main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal */
 
 /* trazos a mano — mismas reglas que .mark en sobremi.css */
-.mark{ position:relative; display:inline-block; color:var(--ink); font-weight:600; white-space:nowrap; }
+.mark{ position:relative; display:inline-block; color:var(--ink); font-weight:600; white-space:nowrap; line-height:1.2; }
 .mark svg{ position:absolute; pointer-events:none; overflow:visible; }
 .mark path{ fill:none; stroke:var(--pink); stroke-linecap:round; stroke-linejoin:round; }
 .mark-under svg{ left:-2%; bottom:-.26em; width:104%; height:.42em; }
@@ -689,6 +689,24 @@ main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal 
 .rot-w.is-on { opacity:1; translate:0 0; }
 .rot-w.is-off{ opacity:0; translate:0 -6px; }
 .rot.is-static .rot-w{ transition:none; }
+
+/* ── 5b · "Pau" + su mini polaroid ───────────────────────────
+   Nombre y foto se leen como UNA unidad de identidad: la persona
+   detrás de "Pau". Es la misma polaroid de Sobre mí, en chiquito.
+   Es un detalle que ACOMPAÑA al nombre, no compite con él:
+   ~23% más chica que la primera versión (.51em) y con más aire (.24em).
+   Alineación medida en la fuente: align-items:center deja la foto
+   centrada con "Pau" completo; translate .1em la baja hasta el
+   centro de "au" (el cuerpo visual de la palabra) + ~2px más.
+   Todo en em: la proporción se mantiene en cualquier pantalla. */
+.hero-name{ display:flex; align-items:center; gap:.24em; }
+.hero-snap{
+  display:block; flex:none; width:.51em; height:.51em;
+  object-fit:cover; object-position:50% 30%;
+  background:#fff; padding:3px; border:2px solid var(--ink);
+  box-shadow:2px 2px 0 var(--pink-mid);
+  rotate:5deg; translate:0 .1em;
+}
 
 /* ── 6 · "↓ desliza para explorar ↓" ───────────────────────── */
 .scroll-hint{ animation:none; transition:opacity .45s ease, translate .45s var(--ease-out); }
@@ -752,7 +770,7 @@ main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal 
 
 /* ── RESPONSIVE de lo nuevo ─────────────────────────────── */
 @media (max-width:760px){
-  .hero-status, .hero-also{ justify-content:center; }
+  .hero-status, .hero-also, .hero-name{ justify-content:center; }
   .rot-w{ justify-self:center; }   /* centrado, la palabra corta no queda "corrida" */
 }
 @media (max-width:480px){
