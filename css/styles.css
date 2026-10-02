@@ -28,8 +28,18 @@
   --win-shadow-ink: 4px 4px 0 var(--ink);
 
   /* ── medidas responsive ── */
-  --gutter:  2.5rem;   /* margen lateral total del .wrap (1.25rem por lado) */
   --nav-h:   54px;     /* alto del nav; se mantiene fijo en TODOS los tamaños */
+
+  /* ── sistema de anchos (ver "CONTENEDOR" más abajo) ── */
+  --edge:      clamp(1rem, 9vw - 2.5rem, 10rem);  /* aire mínimo por lado: 16px en celular → ~96px en laptop */
+  --w-content: 1080px;   /* texto, formularios y composiciones de dos columnas */
+  --w-wide:    1200px;   /* galerías y cuadrículas: las imágenes y las tarjetas necesitan espacio */
+  --w-canvas:  1280px;   /* lienzo: composiciones cuyos márgenes llevan decoración */
+}
+@media (min-width:1600px){
+  /* en pantallas grandes solo crecen las galerías y el lienzo; el contenido se queda
+     en 1080px y el aire extra va a los márgenes, como en el hero de Sobre mí */
+  :root{ --w-wide:1280px; --w-canvas:1360px; }
 }
 
 *,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
@@ -55,15 +65,28 @@ body::before{
   background-size:24px 24px;
 }
 
-/* Contenedor central.
-   Usamos "100% - margen" en vez de 92vw: vw incluye la barra de scroll y por eso
-   aparecía 1px de desbordamiento horizontal en escritorio. */
+/* ════════ CONTENEDOR · sistema de anchos ════════
+   Una sola regla de aire y tres anchos según lo que contiene la sección.
+   · --edge: el aire mínimo a cada lado. Es el mismo en todo el sitio y crece
+     con la ventana, así nada queda pegado al borde en laptops ni tablets.
+   · el ancho máximo depende del CONTENIDO, no de la página:
+       contenido 1080  → hero del Inicio y Contacto: texto, formularios, dos columnas
+                         (referencia: el aire del hero "hola, soy pau")
+       amplio    1200  → galerías y cuadrículas de varias piezas: Proyectos, los
+                         destacados del Inicio y las secciones 01–03 de Sobre mí
+                         (1280 desde 1600px)
+       lienzo    1280  → hero de Sobre mí: sus márgenes son parte de la composición
+                         (1360 desde 1600px)
+   Usamos "100% - margen" en vez de vw: vw incluye la barra de scroll y causaba
+   1px de desbordamiento horizontal en escritorio. */
 .wrap{
-  /* mismo contenedor en todo el sitio; los textos limitan su propio ancho (ch) */
-  width:min(1280px, 100% - var(--gutter));
+  width:min(var(--w, var(--w-content)), 100% - 2 * var(--edge));
   margin-inline:auto;
 }
-@media (min-width:1600px){ .wrap{ width:min(1360px, 100% - var(--gutter)); } }
+.wrap.featured,
+body[data-page="projects"] .wrap,
+body[data-page="about"] .wrap{ --w:var(--w-wide); }
+body[data-page="about"] .wrap.ab-hero{ --w:var(--w-canvas); }
 
 /* ════════ NAV (barra superior estilo ventana) ════════ */
 nav{
@@ -427,7 +450,6 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
 
 /* ── ≤1024px · tablet horizontal ── */
 @media (max-width:1024px){
-  :root{ --gutter:2rem; }
   .popups{ gap:22px; }
   .hero-card{ max-width:420px; }
 }
@@ -446,7 +468,6 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
    dentro de un panel desplegable, así main{padding-top} nunca
    se descuadra. ─────────────────────────────────────────────── */
 @media (max-width:760px){
-  :root{ --gutter:1.75rem; }
 
   /* nav → hamburguesa */
   .nav-toggle{ display:inline-flex; }
@@ -498,7 +519,6 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
 
 /* ── ≤480px · CELULAR CHICO ── */
 @media (max-width:480px){
-  :root{ --gutter:1.5rem; }
 
   .stats{ grid-template-columns:1fr 1fr; gap:12px; }
   .stat{ padding:14px 10px; }
@@ -1206,7 +1226,7 @@ a.arow:focus-visible{ outline:3px dashed var(--pink); outline-offset:-4px; }
 
 /* ════════════════════════════════════════════════
    GRID COMÚN DEL SITIO (≥1100px)
-   Contenedor de 1280/1360px con dos columnas: una "lateral" para el título
+   Dentro del contenedor (ver "sistema de anchos"), dos columnas: una "lateral" para el título
    de cada sección y una "principal" para su contenido (la misma proporción
    de Sobre mí · 02). Cada página decide qué secciones la usan:
    · Inicio: ninguna (el puente va centrado, los destacados son galería y el cierre una ventana)
