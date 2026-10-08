@@ -189,23 +189,15 @@
      Cambia de palabra cada ~3.5 s con un fade + 6px. Termina la
      transición y la palabra se queda QUIETA hasta el próximo cambio.
      Se pausa si el hero no se ve o la pestaña está oculta.
-     Con reduced-motion: se muestran todas juntas, sin cambiar. */
+     Con reduced-motion: las palabras SIGUEN cambiando, pero solo con un
+     fundido suave (sin desplazamiento) y más pausado (.is-calm). Antes se
+     juntaban todas en una línea ("a · b · c · d"), y así la veía cualquiera
+     con "reducir movimiento" activado en su sistema. */
   var rot = document.querySelector('.rot');
   if (rot) {
     var words = rot.querySelectorAll('.rot-w');
-    if (reduce) {
-      rot.classList.add('is-static');
-      var joinWords = function () {
-        rot.innerHTML = '<span class="rot-w is-on">' +
-          Array.prototype.map.call(words, function (w) { return w.textContent; }).join(' · ') + '</span>';
-      };
-      joinWords();
-      /* al cambiar de idioma, i18n.js ya tradujo los <span> originales (siguen en memoria) */
-      document.addEventListener('langchange', function () {
-        if (window.I18N) words.forEach(function (w) { w.textContent = I18N.t(w.getAttribute('data-i18n')); });
-        joinWords();
-      });
-    } else if (words.length > 1) {
+    if (words.length > 1) {
+      if (reduce) rot.classList.add('is-calm');
       var wi = 0;
       var nextWord = function () {
         if (awake()) {
@@ -218,7 +210,7 @@
           void inn.offsetWidth; inn.style.transition = '';
           inn.classList.add('is-on');
         }
-        setTimeout(nextWord, 3500);
+        setTimeout(nextWord, reduce ? 5000 : 3500);
       };
       setTimeout(nextWord, 4200);   /* la primera espera a que termine la entrada */
     }

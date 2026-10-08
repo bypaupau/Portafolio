@@ -710,7 +710,8 @@ main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal 
 }
 .rot-w.is-on { opacity:1; translate:0 0; }
 .rot-w.is-off{ opacity:0; translate:0 -6px; }
-.rot.is-static .rot-w{ transition:none; }
+/* reduced-motion: solo fundido, sin desplazarse */
+.rot.is-calm .rot-w, .rot.is-calm .rot-w.is-on, .rot.is-calm .rot-w.is-off{ translate:0 0; transition:opacity .6s ease; }
 
 /* ── 5b · "Pau" + su mini polaroid ───────────────────────────
    Nombre y foto se leen como UNA unidad de identidad: la persona
@@ -803,7 +804,6 @@ main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal 
 @media (prefers-reduced-motion:reduce){
   .hx-motion .hx, .hx-motion body::before{ animation:none; }
   .scroll-hint .arr, .cap-type .caret::after{ animation:none; }
-  .rot-w{ transition:none; }
   .hero-card.shake, .note:hover .ico-note .px, .social:hover .sprite{ animation:none; }
   .rv-motion .rv{ opacity:1; animation:none; }
   .px-spark{ display:none; }
