@@ -572,6 +572,19 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
   --ease-out: cubic-bezier(.22,1,.36,1);    /* entradas: rápido y suave */
   --ease-soft: cubic-bezier(.2,.7,.2,1);    /* la misma de sobremi.css */
   --ok-green: #3FA06A;                       /* el puntito de "abierta a pasantías" */
+
+  /* ── VELOCIDADES DEL SISTEMA ───────────────────────────────
+     Tres duraciones para todo el sitio, más la separación entre
+     hermanos. Si algo se siente lento o apurado, se cambia AQUÍ
+     y cambia en las cuatro páginas a la vez.
+       fast → feedback inmediato (hover, foco, botones)
+       base → entradas y transición entre páginas
+       slow → apariciones al scroll (recorren más distancia)
+       step → cuánto espera cada hermano respecto al anterior     */
+  --mo-fast: 180ms;
+  --mo-base: 320ms;
+  --mo-slow: 520ms;
+  --mo-step: 100ms;
 }
 
 .sr-only{
@@ -646,6 +659,51 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
   0%,100%{ translate:0 0; } 20%{ translate:-3px 0; } 40%{ translate:3px 0; }
   60%{ translate:-2px 0; } 80%{ translate:2px 0; }
 }
+
+/* ── 3b · pau.exe RESPONDE ────────────────────────────────
+   Regla de esta tanda: que lo que YA existe cobre vida. No hay ni un
+   elemento nuevo dentro de la ventana — solo atributos y clases sobre
+   el sprite y la ventana que ya estaban ahí.
+
+   LA PANTALLA (el rect más grande del sprite, 20×12 de 32×26) deja de
+   ser decorado fijo: toma el color del botón social que señalas. Esos
+   colores ya vivían en .social.mail / .gh / .in y no se relacionaban
+   con nada. Ahora el monitor hace de monitor.
+   Los tres colores son un paso MÁS SATURADO que el fondo de cada
+   botón, no el color exacto: el celeste de .social.in (--sky #D6EEFB)
+   resulta ser el mismo celeste de reposo de la pantalla, así que usar
+   el token tal cual dejaba a LinkedIn sin ningún cambio visible. Con
+   un paso más de saturación los tres se leen igual de claro y la
+   relación "la pantalla se tiñe de lo que señalas" se mantiene.      */
+:root{
+  --scr-mail: #F8CEDD;   /* un paso sobre --pink-light */
+  --scr-gh:   #D3BCF7;   /* un paso sobre --lav        */
+  --scr-in:   #B3DFF7;   /* un paso sobre --sky        */
+}
+.mon .scr{ transition:fill var(--mo-fast) ease; }
+.mon[data-scr="mail"]  .scr{ fill:var(--scr-mail); }
+.mon[data-scr="gh"]    .scr{ fill:var(--scr-gh); }
+.mon[data-scr="in"]    .scr{ fill:var(--scr-in); }
+/* golpe de luz de un cuadro (el ✕ y el clic en un botón social) */
+.mon[data-scr="flash"] .scr{ fill:#FFFFFF; transition:none; }
+/* dormitando: la pantalla baja un punto, así se lee incluso en una
+   captura quieta que está en reposo y no apagada */
+.mon.is-asleep .scr{ fill:#E3EDF4; }
+
+/* EL CLIC TIENE PESO: el sprite se hunde 2 px, el mismo gesto que ya
+   hacen .btn y .social al :active. Antes la compu cambiaba de cara
+   pero no se sentía tocada. */
+@keyframes mon-press{ 45%{ translate:0 2px; } }
+.hero-card .mon.is-pressed{ animation:mon-press .13s steps(2) 1; }
+
+/* LOS TRES CONTROLES, TRES GESTOS DISTINTOS.
+   _ se hunde · ▢ engorda su sombra · ✕ conserva su temblor.
+   'grow' anima box-shadow y no el borde: el borde movería el contenido
+   de adentro 2 px, la sombra no mueve nada. */
+@keyframes win-duck{ 0%,100%{ translate:0 0; } 45%{ translate:0 3px; } }
+@keyframes win-grow{ 0%,100%{ box-shadow:var(--win-shadow); } 50%{ box-shadow:8px 8px 0 var(--pink-mid); } }
+.hero-card.duck{ animation:win-duck .24s var(--ease-soft) 1; }
+.hero-card.grow{ animation:win-grow .3s var(--ease-soft) 1; }
 
 /* ── 4 · MICROINTERACCIONES (solo con mouse de verdad) ───── */
 @media (hover:hover) and (pointer:fine){
@@ -805,6 +863,11 @@ main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal 
   .hx-motion .hx, .hx-motion body::before{ animation:none; }
   .scroll-hint .arr, .cap-type .caret::after{ animation:none; }
   .hero-card.shake, .note:hover .ico-note .px, .social:hover .sprite{ animation:none; }
+  /* pau.exe sigue respondiendo: lo que se apaga son los gestos, no las
+     reacciones. El color de la pantalla y las caritas cambian igual,
+     solo que al instante. */
+  .hero-card.duck, .hero-card.grow, .hero-card .mon.is-pressed{ animation:none; }
+  .mon .scr{ transition:none; }
   .rv-motion .rv{ opacity:1; animation:none; }
   .px-spark{ display:none; }
 }
@@ -1254,3 +1317,112 @@ a.arow:focus-visible{ outline:3px dashed var(--pink); outline-offset:-4px; }
   /* cierre: una ventana centrada que vuelve a Pau */
   .outro{ padding-bottom:96px; }
 }
+
+
+/* ╔════════════════════════════════════════════════════════════╗
+   ║  MOTION · la capa compartida por las 4 páginas               ║
+   ║  "quiet, but alive": nada se mueve solo. Lo que hay aquí es   ║
+   ║  (a) transición al cambiar de página, (b) feedback cuando     ║
+   ║  alguien interactúa, (c) la aparición al entrar al viewport.  ║
+   ║  Todas las duraciones salen de --mo-fast / base / slow.       ║
+   ╚════════════════════════════════════════════════════════════╝ */
+
+/* ── 1 · TRANSICIÓN ENTRE PÁGINAS ─────────────────────────────
+   View Transitions para sitios de varias páginas: el navegador hace
+   el cruce entre documentos él solo. Sin router, sin JS, sin
+   interceptar clics (el botón "atrás" sigue funcionando igual).
+   El nav y la taskbar llevan nombre propio, así que NO entran en el
+   cruce: se quedan clavadas en su sitio mientras el contenido cambia.
+   Eso es lo que hace que navegar se sienta una sola aplicación.
+   En navegadores sin soporte no pasa nada: la navegación es la normal
+   y la entrada .hx cubre la sensación. */
+@view-transition{ navigation:auto; }
+
+nav{ view-transition-name:px-nav; }
+.taskbar{ view-transition-name:px-task; }
+
+@keyframes vt-out{ to{ opacity:0; } }
+@keyframes vt-in{ from{ opacity:0; translate:0 8px; } to{ opacity:1; translate:0 0; } }
+::view-transition-old(root){ animation:vt-out var(--mo-fast) ease both; }
+::view-transition-new(root){ animation:vt-in var(--mo-base) var(--ease-out) both; }
+/* las dos barras solo se funden entre sí (el link activo y el nombre de
+   la ventana cambian), nunca se desplazan */
+::view-transition-old(px-nav), ::view-transition-new(px-nav),
+::view-transition-old(px-task), ::view-transition-new(px-task){
+  animation-duration:var(--mo-fast);
+}
+
+
+/* ── 2 · PROYECTOS · el archivo se comporta como un explorador ──
+   Una fila que se "selecciona" al pasar por encima: franja rosa a la
+   izquierda, la miniatura cambia de sombra y el enlace se desliza.
+   Es la misma gramática de .win y .btn (sombras duras, 2–4 px), solo
+   aplicada a una lista. El borde es un ::before y no un border, para
+   que la cuadrícula no se mueva ni un píxel. */
+a.arow{ position:relative; }
+a.arow::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
+  background:var(--pink); opacity:0;
+}
+a.arow:hover::before, a.arow:focus-visible::before{ opacity:1; }
+a.arow .arow-go::after{ content:" →"; display:inline-block; }
+a.arow:hover .arow-go, a.arow:focus-visible .arow-go{ color:var(--ink); }
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  a.arow::before{ transition:opacity var(--mo-fast) ease; }
+  .arow-thumb{ transition:box-shadow var(--mo-fast) var(--ease-soft); }
+  a.arow .arow-go::after{ transition:transform var(--mo-fast) var(--ease-soft); }
+  a.arow:hover .arow-thumb, a.arow:focus-visible .arow-thumb{ box-shadow:5px 5px 0 var(--pink); }
+  a.arow:hover .arow-go::after{ transform:translateX(4px); }
+}
+/* al cambiar de filtro: cruce corto en lugar del cambio seco */
+@media (prefers-reduced-motion:no-preference){
+  .fx-swap{ animation:fx-in var(--mo-base) var(--ease-soft) both; }
+}
+
+
+/* ── 3 · CONTACTO · el formulario responde ────────────────────
+   Nada se mueve: lo que cambia es el color y un caret pixel en la
+   etiqueta del campo activo. El "Send" del menú de la ventana se
+   enciende cuando el formulario ya está completo — el único momento
+   del sitio donde una barra de menú dice algo verdadero. */
+.contact-form label{ position:relative; }
+.contact-form label > span:first-child::after{
+  content:"_"; color:var(--pink); opacity:0; margin-left:2px;
+}
+.contact-form label:focus-within > span:first-child{ color:var(--ink); }
+.contact-form label:focus-within > span:first-child::after{
+  opacity:1; animation:caret 1s steps(1) infinite;
+}
+.contact-form input:focus, .contact-form textarea:focus{
+  border-color:var(--pink); box-shadow:2px 2px 0 var(--pink);
+}
+/* Send apagado por defecto; se enciende con el formulario válido */
+.contact-win .win-menu span:nth-child(3){ color:var(--text-muted); }
+.contact-win:has(.contact-form:valid) .win-menu span:nth-child(3){
+  color:var(--ink); background:var(--yellow);
+}
+/* estado "enviando…" (lo pone js/portfolio.js al hacer submit) */
+.contact-form .btn.is-sending{ pointer-events:none; opacity:.75; }
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .contact-form input, .contact-form textarea{
+    transition:border-color var(--mo-fast) ease, box-shadow var(--mo-fast) ease;
+  }
+  .contact-win .win-menu span:nth-child(3){
+    transition:color var(--mo-fast) ease, background-color var(--mo-fast) ease;
+  }
+}
+
+
+/* ── 5 · MENOS MOVIMIENTO ─────────────────────────────────────
+   Todo lo de arriba queda quieto, pero TODO sigue funcionando:
+   el divisor se arrastra igual, solo sin animaciones de adorno. */
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*){ animation:none !important; }
+  .fx-swap{ animation:none; }
+  .contact-form label:focus-within > span:first-child::after{ animation:none; }
+}
+
+/* los ojos NUNCA se mueven suave: saltan de píxel en píxel (js/eyes.js) */
+.mon .e-open, .mon .e-closed, .mon .e-happy{ transition:none; }

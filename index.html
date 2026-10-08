@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=29">
+<link rel="stylesheet" href="css/styles.css?v=31">
 <!-- la animación de entrada solo se arma si hay JS y la persona no pidió menos movimiento;
      va aquí arriba para que no haya un "parpadeo" de contenido antes de animar -->
 <script>
@@ -77,10 +77,12 @@
           <!-- compu pixel cute (misma compu de siempre, dibujada al doble de
                resolución para que los ojos puedan parpadear y cambiar de forma).
                Ya no flota: su "vida" está en la carita, no en moverse. -->
+                    <!-- compu pixel cute. Su vida está en la carita y en cómo responde
+               (js/home.js): no se mueve sola, reacciona. -->
           <svg class="sprite mon" data-face="" viewBox="0 0 32 26" width="168" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img" aria-label="computadora pixel sonriendo" data-i18n-attr="aria-label:home.monitor">
             <rect x="2" y="0" width="28" height="20" fill="#2C1A24"/>
             <rect x="4" y="2" width="24" height="16" fill="#FFFFFF"/>
-            <rect x="6" y="4" width="20" height="12" fill="#D6EEFB"/>
+            <rect class="scr" x="6" y="4" width="20" height="12" fill="#D6EEFB"/>
             <g class="e-open" fill="#2C1A24"><rect class="l" x="10" y="8" width="2" height="2"/><rect class="r" x="20" y="8" width="2" height="2"/></g>
             <g class="e-closed" fill="#2C1A24"><rect class="l" x="9" y="9" width="4" height="1"/><rect class="r" x="19" y="9" width="4" height="1"/></g>
             <g class="e-happy" fill="#2C1A24"><path d="M9 9h1v1h-1zM10 8h2v1h-2zM12 9h1v1h-1zM19 9h1v1h-1zM20 8h2v1h-2zM22 9h1v1h-1z"/></g>
@@ -234,13 +236,14 @@
 <p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp egg-coffee" tabindex="0" data-tip="♡ made with curiosity + too much coffee">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span> · <a class="foot-link" href="https://github.com/bypaupau/Portafolio#%C3%ADndice-acad%C3%A9mico" target="_blank" rel="noopener" data-i18n="foot.index">índice académico ↗</a></p>
 
 <!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
-<script src="js/translations.js?v=11"></script>
+<script src="js/translations.js?v=13"></script>
 <script src="js/i18n.js?v=1"></script>
 
 <!-- el pop-in de las tarjetas y el menú móvil viven en js/portfolio.js;
      lo que hace "viva" a la portada (pau.exe, parallax, easter eggs) en js/home.js -->
-<script src="js/portfolio.js?v=4"></script>
-<script src="js/home.js?v=3"></script>
+<script src="js/portfolio.js?v=5"></script>
+<script src="js/eyes.js?v=2"></script>
+<script src="js/home.js?v=5"></script>
 <!-- <pausita.exe> hola, curios@ :) si estás leyendo el código, hay más secretitos escondidos en esta página ✦ -->
 </body>
 </html>

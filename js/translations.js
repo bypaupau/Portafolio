@@ -116,7 +116,9 @@ var TRANSLATIONS = {
       max:   'ya estoy en grande ✦',
       close: 'nice try :)',
       konami: 'achievement unlocked ✦',
-      lang:  'hablemos en español ✿'
+      lang:  'hablemos en español ✿',
+      /* despierta cuando el cursor entra a la ventana */
+      wake:  '¿hola? ✿'
     },
 
     /* ── SOBRE MÍ ── */
@@ -242,7 +244,8 @@ var TRANSLATIONS = {
       email: 'correo', 'email.ph': 'tu@correo.com',
       msg: 'mensaje', 'msg.ph': 'cuéntame en qué puedo ayudar ✿',
       subject: 'Nuevo mensaje desde tu portafolio ✿',
-      send: 'Enviar mensaje →'
+      send: 'Enviar mensaje →',
+      sending: 'enviando…'
     }
   },
 
@@ -343,7 +346,9 @@ var TRANSLATIONS = {
       max:   'already full size ✦',
       close: 'nice try :)',
       konami: 'achievement unlocked ✦',
-      lang:  'switching to english ✿'
+      lang:  'switching to english ✿',
+      /* wakes up when the cursor enters the window */
+      wake:  'oh, hi ✿'
     },
 
     about: {
@@ -464,7 +469,8 @@ var TRANSLATIONS = {
       email: 'email', 'email.ph': 'you@email.com',
       msg: 'message', 'msg.ph': 'tell me how I can help ✿',
       subject: 'New message from your portfolio ✿',
-      send: 'Send message →'
+      send: 'Send message →',
+      sending: 'sending…'
     }
   }
 };

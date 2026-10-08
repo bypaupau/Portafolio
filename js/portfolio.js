@@ -1,8 +1,15 @@
 /* ═══════════════════════════════════════════════════════════
    pau.proyectos · script compartido por todas las páginas
-   1) menú hamburguesa en celular
-   2) pop-in de las tarjetas .popup al hacer scroll (solo inicio)
-   1b) botones de CV que descargan el PDF del idioma activo
+     1)  menú hamburguesa en celular
+     1b) botones de CV que descargan el PDF del idioma activo
+     2)  MOTOR DE APARICIÓN AL SCROLL (window.PXReveal)
+         Antes vivía duplicado en home.js (.rv) y sobremi.js (.ab-rv)
+         con las mismas constantes escritas dos veces. Ahora el motor
+         es uno solo y cada página le entrega sus elementos; las dos
+         clases siguen existiendo porque cada hoja de estilo define
+         su propia animación.
+     3)  limpieza de .hx cuando termina la entrada de la página
+     4)  Contacto: estado "enviando…" al mandar el formulario
    ═══════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -70,38 +77,112 @@
   syncCV();
   document.addEventListener('langchange', syncCV);
 
-  /* ── 2 · POP-IN DE LAS TARJETAS DEL INICIO ──────────────── */
-  var popups = document.querySelectorAll('.popups');
-  if (!popups.length) return;
 
-  var sinMovimiento = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  /* ── 2 · APARICIÓN AL SCROLL · motor compartido ─────────────
+     Dos observadores:
+       entra → se anima en cuanto cruza el borde inferior (menos un 10%
+               de margen, para que no arranque pegado al filo)
+       sale  → al quedar 100% fuera se resetea, listo para repetirse
+     Separarlos es lo que evita que algo desaparezca mientras todavía
+     se ve un pedacito.
 
-  /* Sin IntersectionObserver (o con movimiento reducido): se muestran y ya */
-  if (sinMovimiento || !('IntersectionObserver' in window)) {
-    document.querySelectorAll('.popup').forEach(function (el) { el.classList.add('pop'); });
-    return;
-  }
+     El disparo es por BORDE y no por proporción (antes: "que se vea el
+     15% del elemento"). Con elementos chicos da igual, pero la ventana
+     del archivo de Proyectos mide varias pantallas de alto: pedirle un
+     15% obligaba a scrollear cientos de píxeles pasado su título antes
+     de que apareciera, y si quedaba justo en el filo no aparecía nunca. El stagger se calcula entre los elementos que
+     ENTRAN JUNTOS, en orden de lectura, con tope para que nadie
+     espere más de ~0.3 s.
 
-  /* Observamos CADA tarjeta por separado.
-     En celular las 3 quedan una debajo de otra: si observáramos el contenedor
-     entero (muy alto), habría que scrollear mucho antes de que aparecieran. */
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      var el = e.target;
-      if (e.isIntersecting) {
-        el.style.transitionDelay = (el.dataset.i * 0.12) + 's';
-        el.classList.add('pop');
-      } else {
-        el.classList.remove('pop');
+     Mejora progresiva: el contenido es visible por defecto; las clases
+     que lo esconden (.rv-motion / .ab-motion) solo se ponen si hay
+     IntersectionObserver y nadie pidió menos movimiento.          */
+  window.PXReveal = (function () {
+    var root   = document.documentElement;
+    var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var activo = !reduce && 'IntersectionObserver' in window;
+    var STEP = 0.1;    /* --mo-step */
+    var TOPE = 3;      /* nadie espera más de 0.3 s */
+    var orden = 0;     /* posición en el documento, para ordenar el stagger */
+    var entra, sale, redTimer = null;
+
+    if (activo) {
+      root.classList.add('rv-motion', 'ab-motion');
+
+      entra = new IntersectionObserver(function (items) {
+        items
+          .filter(function (e) {
+            return e.isIntersecting && !e.target.classList.contains('is-in');
+          })
+          .map(function (e) { return e.target; })
+          .sort(function (a, b) { return a.dataset.rv - b.dataset.rv; })
+          .forEach(function (el, k) {
+            el.style.setProperty('--rv-delay', (Math.min(k, TOPE) * STEP) + 's');
+            el.classList.add('is-in');
+          });
+      }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+
+      sale = new IntersectionObserver(function (items) {
+        items.forEach(function (e) {
+          if (!e.isIntersecting) e.target.classList.remove('is-in');
+        });
+      }, { threshold: 0 });
+    }
+
+    /* red de seguridad: si algo falla, lo que está en pantalla NUNCA
+       se queda invisible. Se reprograma en cada registro. */
+    function red() {
+      clearTimeout(redTimer);
+      redTimer = setTimeout(function () {
+        document.querySelectorAll('.rv:not(.is-in), .ab-rv:not(.is-in)').forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-in');
+        });
+      }, 1500);
+    }
+
+    function register(nodos) {
+      var lista = Array.prototype.slice.call(nodos || []);
+      if (!lista.length) return;
+      if (!activo) {                      /* sin motor: todo visible y ya */
+        lista.forEach(function (el) { el.classList.add('is-in'); });
+        return;
       }
-    });
-  }, { threshold: 0.35 });
+      lista.forEach(function (el) {
+        if (!el.dataset.rv) el.dataset.rv = ++orden;
+        entra.observe(el);
+        sale.observe(el);
+      });
+      red();
+    }
 
-  popups.forEach(function (cont) {
-    cont.querySelectorAll('.popup').forEach(function (el, i) {
-      el.dataset.i = i;
-      io.observe(el);
-    });
+    /* lo que ya está en el HTML cuando carga la página */
+    register(document.querySelectorAll('.rv, .ab-rv'));
+
+    return { register: register, activo: activo };
+  })();
+
+
+  /* ── 3 · FIN DE LA ENTRADA DE LA PÁGINA ─────────────────────
+     Al terminar, se quita .hx: así ninguna otra animación (el temblor
+     de la ventana, un hover) puede volver a dispararla. */
+  document.addEventListener('animationend', function (e) {
+    if (e.animationName === 'hx-in') e.target.classList.remove('hx');
   });
+
+
+  /* ── 4 · CONTACTO · "enviando…" ─────────────────────────────
+     El formulario de Formspree navega de verdad, así que el estado se
+     ve el ratito que tarda en irse la página. Es el único momento del
+     sitio donde hay una espera real que avisar. */
+  var form = document.querySelector('.contact-form');
+  if (form) {
+    form.addEventListener('submit', function () {
+      var b = form.querySelector('button[type="submit"]');
+      if (!b) return;
+      b.classList.add('is-sending');
+      b.textContent = (window.I18N ? I18N.t('contact.sending') : 'enviando…');
+    });
+  }
 
 })();

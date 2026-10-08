@@ -1,86 +1,65 @@
 /* ═══════════════════════════════════════════════════════════
    pau.proyectos · Sobre mí
-   Entrada al hacer scroll — mismo sistema que "¿A dónde vamos?"
-   en Inicio (js/portfolio.js):
-     · IntersectionObserver que observa CADA elemento por separado
-       (en celular las secciones son altas: observar la sección entera
-       obligaría a scrollear mucho antes de ver nada)
-     · sube 30px mientras aparece · stagger de 0.12s entre hermanos
-   Igual que en Inicio, se repite cada vez que el elemento sale del
-   viewport y vuelve a entrar (subiendo o bajando). Diferencia a
-   propósito: sin scale ni rebote.
+   Esta página ya no trae su propio observador: el motor de aparición
+   al scroll vive en js/portfolio.js (window.PXReveal) y lo comparten
+   las cuatro páginas. Aquí solo queda lo propio de Sobre mí:
 
-   Mejora progresiva: el contenido es visible por defecto. La clase
-   .ab-motion (la que oculta) solo se pone si hay IntersectionObserver
-   y el usuario NO pidió movimiento reducido.
+     1) QUÉ entra dentro de cada sección y en qué orden
+        (eyebrow → título → subtítulo → contenido)
+     2) la RUTA de 01: las paradas se encadenan de izquierda a derecha
+        y el camino punteado se dibuja mientras llegan. Es la única
+        animación del sitio que cuenta una historia en vez de solo
+        presentar contenido, así que tiene su propio orden.
+
+   La animación sigue siendo reversible (al salir y volver a entrar) y
+   sigue sin scale ni rebote, a propósito.
    ═══════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
   var sections = document.querySelectorAll('.ab-reveal');
-  if (!sections.length) return;
+  if (!sections.length || !window.PXReveal) return;
 
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce || !('IntersectionObserver' in window)) return;
-
-  /* qué entra dentro de cada sección, en orden de lectura:
-     eyebrow → título → subtítulo → contenido (ventana, cards, links) */
+  /* qué entra dentro de cada sección, en orden de lectura */
   var PIEZAS = [
-    ':scope > .ab-head > *',          /* 01 / ··· · título · subtítulo */
+    ':scope > .ab-head > *',                                    /* 01 / ··· · título · subtítulo */
     ':scope > .ab-title', ':scope > .ab-sub', ':scope > .hero-btns',  /* cierre */
-    ':scope > .win',                  /* ruta · pistas */
-    '.tool', ':scope > .ab-more',     /* herramientas */
-    '.ev', ':scope > .ab-all'         /* evidencia */
+    ':scope > .win',                                            /* ruta · pistas */
+    '.tool', ':scope > .ab-more',                               /* herramientas */
+    '.ev', ':scope > .ab-all'                                   /* evidencia */
   ].join(',');
-
-  var STEP = 0.12;      /* el mismo stagger que Inicio */
-  var MAX_STEPS = 3;    /* tope: nada espera más de 0.36s */
 
   var items = [];
   sections.forEach(function (sec) {
     sec.querySelectorAll(PIEZAS).forEach(function (el) {
       el.classList.add('ab-rv');
-      el.dataset.rv = items.length;    /* orden en el documento */
       items.push(el);
     });
   });
+  window.PXReveal.register(items);
 
-  document.documentElement.classList.add('ab-motion');
+  /* ── LA RUTA DE 01 ────────────────────────────────────────
+     Las paradas entran una tras otra y el camino se dibuja con ellas.
+     Se cuelga de la ventana que ya observa PXReveal: cuando esa
+     ventana recibe .is-in, las paradas arrancan; cuando la pierde,
+     vuelven a su estado inicial y la próxima vez se repite.
+     Si no hay motor (o hay reduced-motion), las paradas nunca se
+     esconden: el HTML ya es visible por defecto.                */
+  var route = document.querySelector('.route');
+  if (!route || !window.PXReveal.activo) return;
 
-  /* Dos observadores, para que la animación se repita al subir y al bajar
-     pero NUNCA mientras el elemento sigue en pantalla:
-       · entra  → cuando se ve ≥15% (con el mismo margen de antes) se anima,
-                  solo si no estaba ya animado.
-       · sale   → cuando queda 100% fuera del viewport se le quita .is-in,
-                  y queda listo para volver a entrar.
-     Separarlos evita que algo desaparezca mientras aún se ve un pedacito. */
-  var entra = new IntersectionObserver(function (entries) {
-    /* lo que entra junto se escalona en orden de lectura */
-    var llegan = entries
-      .filter(function (e) { return e.isIntersecting && e.intersectionRatio >= 0.14 &&
-               !e.target.classList.contains('is-in'); })
-      .map(function (e) { return e.target; })
-      .sort(function (a, b) { return a.dataset.rv - b.dataset.rv; });
+  var win = route.closest('.win');
+  if (!win) return;
 
-    llegan.forEach(function (el, k) {
-      el.style.setProperty('--rv-delay', (Math.min(k, MAX_STEPS) * STEP) + 's');
-      el.classList.add('is-in');      /* añadir la clase reinicia la animación */
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+  var stops = route.querySelectorAll('.stop');
+  route.classList.add('route-motion');
+  stops.forEach(function (s, i) { s.style.setProperty('--stop-i', i); });
 
-  var sale = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) e.target.classList.remove('is-in');
-    });
-  }, { threshold: 0 });
+  /* observamos la clase de la ventana: una sola fuente de verdad */
+  new MutationObserver(function () {
+    route.classList.toggle('is-walking', win.classList.contains('is-in'));
+  }).observe(win, { attributes: true, attributeFilter: ['class'] });
 
-  items.forEach(function (el) { entra.observe(el); sale.observe(el); });
-
-  /* red de seguridad: si algo falla, lo que está en pantalla no se queda invisible */
-  window.setTimeout(function () {
-    items.forEach(function (el) {
-      var r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-in');
-    });
-  }, 1500);
+  /* por si la ventana ya estaba dentro del viewport al cargar */
+  if (win.classList.contains('is-in')) route.classList.add('is-walking');
 })();

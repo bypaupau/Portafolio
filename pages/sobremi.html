@@ -11,8 +11,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css?v=28">
-<link rel="stylesheet" href="../css/sobremi.css?v=16">
+<link rel="stylesheet" href="../css/styles.css?v=30">
+<link rel="stylesheet" href="../css/sobremi.css?v=17">
+<!-- la animación de entrada solo se arma si hay JS y la persona no pidió menos
+     movimiento; va aquí arriba para que no haya un "parpadeo" de contenido -->
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    document.documentElement.classList.add('hx-motion');
+</script>
 </head>
 <body class="page-about" data-page="about">
 
@@ -40,11 +46,11 @@
 
     <!-- margen izquierdo: la polaroid ya trae sus propios detalles (lápiz, cinta, </>, cursor),
          así que aquí solo queda una cruz mínima que equilibra el peso del lápiz -->
-    <div class="ab-deco ab-deco-l" aria-hidden="true">
+    <div class="ab-deco ab-deco-l hx" style="--d:620ms" aria-hidden="true">
       <span class="dk dk-cross"><svg class="px" style="--gw:5;--gh:5" viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="0" width="1" height="5" fill="#F4B8CC"/><rect x="0" y="2" width="5" height="1" fill="#F4B8CC"/></svg></span>
     </div>
 
-    <figure class="ab-photo">
+    <figure class="ab-photo hx" style="--d:240ms">
       <div class="polaroid">
         <img src="../img/icon-polaroid.jpg" width="640" height="640"
              alt="Pau sonriendo, con lentes y vincha, en su cuarto lleno de dibujos y plantas" data-i18n-attr="alt:about.photo.alt">
@@ -58,24 +64,24 @@
     </figure>
 
     <div class="ab-intro">
-      <p class="ab-path" aria-hidden="true" data-i18n="about.path">C:/pau/sobre_mi.txt</p>
-      <h1 class="ab-hello" id="ab-hola"><span data-i18n="about.hello">hola, soy pau</span> <svg class="px" style="--gw:7;--gh:6" viewBox="0 0 7 6" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="0" width="2" height="1" fill="#E87EA1"/><rect x="4" y="0" width="2" height="1" fill="#E87EA1"/><rect x="0" y="1" width="7" height="1" fill="#E87EA1"/><rect x="0" y="2" width="7" height="1" fill="#E87EA1"/><rect x="1" y="3" width="5" height="1" fill="#E87EA1"/><rect x="2" y="4" width="3" height="1" fill="#E87EA1"/><rect x="3" y="5" width="1" height="1" fill="#E87EA1"/></svg></h1>
+      <p class="ab-path hx" style="--d:120ms" aria-hidden="true" data-i18n="about.path">C:/pau/sobre_mi.txt</p>
+      <h1 class="ab-hello hx" style="--d:180ms" id="ab-hola"><span data-i18n="about.hello">hola, soy pau</span> <svg class="px" style="--gw:7;--gh:6" viewBox="0 0 7 6" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="0" width="2" height="1" fill="#E87EA1"/><rect x="4" y="0" width="2" height="1" fill="#E87EA1"/><rect x="0" y="1" width="7" height="1" fill="#E87EA1"/><rect x="0" y="2" width="7" height="1" fill="#E87EA1"/><rect x="1" y="3" width="5" height="1" fill="#E87EA1"/><rect x="2" y="4" width="3" height="1" fill="#E87EA1"/><rect x="3" y="5" width="1" height="1" fill="#E87EA1"/></svg></h1>
 
-      <p class="ab-lead" data-i18n-html="about.lead1">Antes de programar, dibujaba. Pasé por la ilustración, el diseño y el marketing
+      <p class="ab-lead hx" style="--d:320ms" data-i18n-html="about.lead1">Antes de programar, dibujaba. Pasé por la ilustración, el diseño y el marketing
       antes de llegar a <strong>Ingeniería en Computación</strong>; y en algún momento entendí que no estaba
       cambiando de rumbo: todo apuntaba al mismo lugar.</p>
 
-      <p class="ab-lead"><span data-i18n="about.lead2.1">Me interesa cómo el diseño cambia la forma en que las personas</span>
+      <p class="ab-lead hx" style="--d:400ms"><span data-i18n="about.lead2.1">Me interesa cómo el diseño cambia la forma en que las personas</span>
       <span class="mark mark-under"><span data-i18n="about.lead2.interact">interactúan</span><svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M2 8.5 C 18 3.5, 34 10.5, 52 6 S 84 3, 98 7.5"/></svg></span>
       <span data-i18n="about.lead2.2">con la tecnología. Y como también programo, puedo llevar esas ideas más allá de la pantalla y convertirlas en algo que funciona,</span>
       <span class="mark mark-circle"><span data-i18n="about.lead2.myself">yo misma</span><svg viewBox="0 0 120 44" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M66 5 C 30 2, 5 9, 5 22 C 5 36, 38 40, 64 39 C 94 38, 115 31, 115 20 C 115 9, 94 3, 54 7"/></svg></span>.</p>
 
-      <p class="ab-status"><span class="ab-dot" aria-hidden="true"></span>
+      <p class="ab-status hx" style="--d:480ms"><span class="ab-dot" aria-hidden="true"></span>
         <span data-i18n="about.status">abierta a pasantías · UX/UI · product design</span></p>
     </div>
 
     <!-- margen derecho · lado "código": la idea ya funciona (build listo → resultado) -->
-    <div class="ab-deco ab-deco-r" aria-hidden="true">
+    <div class="ab-deco ab-deco-r hx" style="--d:680ms" aria-hidden="true">
 
   </section>
 
@@ -226,9 +232,9 @@
 <p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span> · <a class="foot-link" href="https://github.com/bypaupau/Portafolio#%C3%ADndice-acad%C3%A9mico" target="_blank" rel="noopener" data-i18n="foot.index">índice académico ↗</a></p>
 
 <!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
-<script src="../js/translations.js?v=11"></script>
+<script src="../js/translations.js?v=12"></script>
 <script src="../js/i18n.js?v=1"></script>
-<script src="../js/portfolio.js?v=4"></script>
-<script src="../js/sobremi.js?v=4"></script>
+<script src="../js/portfolio.js?v=5"></script>
+<script src="../js/sobremi.js?v=5"></script>
 </body>
 </html>

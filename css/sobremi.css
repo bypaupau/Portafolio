@@ -624,3 +624,49 @@
   }
   .dk-diamond{ --ps:4px; bottom:calc(28% - 14px); right:6%; }
 }
+
+
+/* ════════════════════════════════════════════════
+   01 · LA RUTA SE CAMINA
+   La única animación del sitio que cuenta una historia en vez de
+   solo presentar contenido: las paradas llegan en orden (ilustración
+   → diseño → marketing → computación → aquí estoy) y el camino
+   punteado se dibuja con ellas. Al terminar, todo queda QUIETO.
+
+   Se activa sola cuando la ventana de 01 recibe .is-in del motor de
+   PXReveal (lo cuelga js/sobremi.js), y se revierte al salir, así que
+   se repite cada vez que se vuelve a esa sección.
+
+   Mismo criterio que .ab-rv: se anima `translate` y `opacity` (nunca
+   `transform`), para no chocar con el hover de .stop-ico.
+   ════════════════════════════════════════════════ */
+.route-motion .stop{ opacity:0; translate:0 14px; }
+.route-motion.is-walking .stop{
+  opacity:1; translate:0 0;
+  transition:
+    opacity  var(--mo-base, 320ms) ease              calc(var(--stop-i, 0) * 110ms),
+    translate var(--mo-slow, 520ms) var(--ease-soft)  calc(var(--stop-i, 0) * 110ms);
+}
+/* el camino horizontal (escritorio): se dibuja de izquierda a derecha */
+.route-motion::before{ transform:scaleX(0); transform-origin:left center; }
+.route-motion.is-walking::before{
+  transform:scaleX(1);
+  transition:transform 780ms var(--ease-soft) 120ms;
+}
+/* el camino vertical (≤900px): cada parada dibuja su propio tramo */
+@media (max-width:900px){
+  .route-motion .stop:not(:last-child)::after{ transform:scaleY(0); transform-origin:top center; }
+  .route-motion.is-walking .stop:not(:last-child)::after{
+    transform:scaleY(1);
+    transition:transform 420ms var(--ease-soft) calc(var(--stop-i, 0) * 110ms + 140ms);
+  }
+}
+/* menos movimiento: la ruta está ahí, completa y quieta */
+@media (prefers-reduced-motion:reduce){
+  .route-motion .stop,
+  .route-motion.is-walking .stop{ opacity:1; translate:0 0; transition:none; }
+  .route-motion::before,
+  .route-motion.is-walking::before{ transform:none; transition:none; }
+  .route-motion .stop:not(:last-child)::after,
+  .route-motion.is-walking .stop:not(:last-child)::after{ transform:none; transition:none; }
+}

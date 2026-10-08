@@ -11,7 +11,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css?v=28">
+<link rel="stylesheet" href="../css/styles.css?v=30">
+<!-- la animación de entrada solo se arma si hay JS y la persona no pidió menos
+     movimiento; va aquí arriba para que no haya un "parpadeo" de contenido -->
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    document.documentElement.classList.add('hx-motion');
+</script>
 </head>
 <body data-page="projects">
 
@@ -33,26 +39,26 @@
 <main>
   <div class="wrap">
     <div class="sec-head">
-      <p class="sec-label" data-i18n="projects.label">hackathones, universidad y personales</p>
-      <h1 class="sec-title" data-i18n="projects.title">Proyectos</h1>
+      <p class="sec-label hx" style="--d:100ms" data-i18n="projects.label">hackathones, universidad y personales</p>
+      <h1 class="sec-title hx" style="--d:170ms" data-i18n="projects.title">Proyectos</h1>
       <p class="proj-intro" id="proj-intro" hidden></p>
     </div>
 
     <!-- filtros: una disciplina + un contexto (se combinan) -->
     <!-- filtros: pestañas por disciplina + contador -->
-    <div class="chipbar fx-c" role="group" aria-label="Filtrar proyectos" data-i18n-attr="aria-label:projects.chips.aria">
+    <div class="chipbar fx-c hx" style="--d:270ms" role="group" aria-label="Filtrar proyectos" data-i18n-attr="aria-label:projects.chips.aria">
       <div class="fx-c-tabs" id="chips-d"></div>
       <div class="fx-c-sub"><span class="fx-count" id="fx-count" aria-hidden="true"></span></div>
     </div>
 
     <section class="proj-sec" id="sec-feat" aria-labelledby="h-feat">
-      <h2 class="sec-label proj-h" id="h-feat" data-i18n="projects.feat">// destacados</h2>
+      <h2 class="sec-label proj-h rv" id="h-feat" data-i18n="projects.feat">// destacados</h2>
       <div class="pcards" id="feat-grid"></div>
     </section>
 
     <section class="proj-sec" id="sec-arch" aria-labelledby="h-arch">
-      <h2 class="sec-label proj-h" id="h-arch" data-i18n="projects.arch">// archivo</h2>
-      <div class="win arch-win">
+      <h2 class="sec-label proj-h rv" id="h-arch" data-i18n="projects.arch">// archivo</h2>
+      <div class="win arch-win rv">
         <div class="win-bar lav"><span class="win-title" id="arch-title">C:/pau/proyectos/archivo</span><span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span></div>
         <ul class="arch" id="arch-list"></ul>
       </div>
@@ -66,7 +72,7 @@
 <p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span> · <a class="foot-link" href="https://github.com/bypaupau/Portafolio#%C3%ADndice-acad%C3%A9mico" target="_blank" rel="noopener" data-i18n="foot.index">índice académico ↗</a></p>
 
 <!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
-<script src="../js/translations.js?v=11"></script>
+<script src="../js/translations.js?v=12"></script>
 <script src="../js/i18n.js?v=1"></script>
 
 <script src="../data/proyectos.js?v=7"></script>
@@ -116,7 +122,7 @@
   function featCard(p) {
     var h = hrefOf(p), tag = h ? 'a' : 'div';
     var attrs = h ? ' href="' + esc(h) + '" target="_blank" rel="noopener"' : '';
-    return '<' + tag + ' class="pcard pcard-full"' + attrs + '>' +
+    return '<' + tag + ' class="pcard pcard-full rv"' + attrs + '>' +
       (p.logro ? '<span class="pcard-sticker ' + esc(p.sello || 's-pink') + '">' + (SEAL[p.sello] || '') + '<span>' + esc(pick(p.logro)) + '</span></span>' : '') +
       '<span class="win pcard-win"><span class="win-bar ' + (BAR[p.color] || '') + '"><span class="win-title">' + esc(pick(p.archivo || p.nombre)) + '</span>' +
         '<span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span></span>' +
@@ -153,6 +159,7 @@
     '</' + tag + '></li>';
   }
 
+  var primero = true;   /* el primer render no es un cambio de filtro */
   function count(d, c) { return PROYECTOS.filter(function (p) { return match(p, d, c); }).length; }
   /* sin número en cada botón: una opción sin resultados solo se atenúa (data-zero) */
   function btn(kind, val, label, on) {
@@ -177,9 +184,19 @@
     var a = arch.filter(function (p) { return match(p, state.d, state.c); });
     featGrid.innerHTML = f.map(featCard).join('');
     archList.innerHTML = a.map(archRow).join('');
-    /* transición corta al cambiar el filtro */
-    featGrid.classList.remove('fx-swap'); archList.classList.remove('fx-swap'); void featGrid.offsetWidth;
-    featGrid.classList.add('fx-swap'); archList.classList.add('fx-swap');
+    /* Las tarjetas se dibujan desde aquí, así que hay que entregárselas al
+       motor de aparición compartido (js/portfolio.js) después de cada render:
+       entran con stagger en orden de lectura. En el PRIMER render PXReveal
+       todavía no existe (portfolio.js carga más abajo) y las recoge su
+       barrido inicial, que encuentra todo lo que tenga .rv en el HTML.
+       El cruce corto .fx-swap queda solo para el archivo y solo al cambiar
+       de filtro: en la primera carga el archivo aparece al hacer scroll. */
+    if (window.PXReveal) window.PXReveal.register(featGrid.querySelectorAll('.rv'));
+    if (!primero) {
+      archList.classList.remove('fx-swap'); void archList.offsetWidth;
+      archList.classList.add('fx-swap');
+    }
+    primero = false;
     $('sec-feat').hidden = !f.length;
     $('sec-arch').hidden = !a.length;
     $('arch-title').textContent = t('projects.arch.win').replace('{n}', a.length);
@@ -204,6 +221,6 @@
   document.addEventListener('langchange', render);
 })();
 </script>
-<script src="../js/portfolio.js?v=4"></script>
+<script src="../js/portfolio.js?v=5"></script>
 </body>
 </html>
