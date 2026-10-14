@@ -23,16 +23,18 @@ var TRANSLATIONS = {
       'title.about':    'pau.proyectos · sobre mí',
       'title.subjects': 'pau.proyectos · materias',
       'title.projects': 'pau.proyectos · proyectos',
+      'title.creative': 'pau.proyectos · creativo',
       'title.contact':  'pau.proyectos · contacto',
       'desc.home':      'Portafolio de Pau (Paula Martillo): diseño ideas y las convierto en realidad. UX/UI, product design y desarrollo, desde Guayaquil.',
       'desc.about':     'Pau — estudiante de Ingeniería en Computación que piensa y crea desde el diseño. UX/UI, product design y la intersección entre diseño y código.',
       'desc.subjects':  'Materias de Pau por semestre.',
       'desc.projects':  'Proyectos de Pau: diseño, desarrollo, datos y videojuegos — hackathones, universidad y personales.',
+      'desc.creative':  'Otros proyectos y curiosidades de Pau: ilustración, libros y experimentos creativos fuera del portafolio profesional.',
       'desc.contact':   'Contacta a Pau — email, GitHub, LinkedIn y CV.'
     },
 
     nav: {
-      home: 'Inicio', about: 'Sobre mí', subjects: 'Materias', projects: 'Proyectos', contact: 'Contacto',
+      home: 'Inicio', about: 'Sobre mí', subjects: 'Materias', projects: 'Proyectos', creative: 'Creativo', contact: 'Contacto',
       menu: 'menú', open: 'Abrir menú', close: 'Cerrar menú'
     },
 
@@ -41,7 +43,7 @@ var TRANSLATIONS = {
     /* ── taskbar (el pequeño sistema operativo) ── */
     task: {
       'app.home': 'inicio', 'app.about': 'sobre_mi.txt', 'app.subjects': 'materias/',
-      'app.projects': 'proyectos/', 'app.contact': 'contacto.exe',
+      'app.projects': 'proyectos/', 'app.creative': 'creativo/', 'app.contact': 'contacto.exe',
       top: 'Volver arriba',
       battery: 'batería creativa: 100% ✿',
       clock: 'Hora local'
@@ -226,6 +228,23 @@ var TRANSLATIONS = {
       empty: 'Sin proyectos con esos filtros… ¡pronto! ✿'
     },
 
+    /* ── CREATIVO ── */
+    creative: {
+      label: '// fuera del portafolio principal',
+      title: 'Otros proyectos & curiosidades',
+      intro: 'Aquí también hago otras cositas que me gusta compartir. No todo lo que creo encaja en mi perfil profesional, ¡pero eso no significa que no merezca un espacio! ♡',
+      view: 'ver trabajo',
+      gallery: 'Galería de trabajos',
+      'chips.aria': 'Filtrar trabajos', 'f.all': 'Todos',
+      'c.ilustracion': 'Ilustración', 'c.personal': 'Proyectos personales',
+      'c.experimento': 'Experimentos creativos', 'c.otros': 'Otros',
+      'count.all': '{n} trabajos', 'count.some': '{n} de {t} trabajos',
+      live: '{n} trabajos',
+      'soon.title': 'próximamente',
+      'soon.txt': 'este rincón va a seguir creciendo ✿',
+      empty: 'Nada por aquí todavía… ¡pronto! ✿'
+    },
+
     /* insignias de estado (materias + proyectos) */
     badge: { 'completado': 'listo', 'en-progreso': 'en progreso', 'pronto': 'pronto' },
 
@@ -256,16 +275,18 @@ var TRANSLATIONS = {
       'title.about':    'pau.proyectos · about me',
       'title.subjects': 'pau.proyectos · courses',
       'title.projects': 'pau.proyectos · projects',
+      'title.creative': 'pau.proyectos · creative',
       'title.contact':  'pau.proyectos · contact',
       'desc.home':      'Portfolio of Pau (Paula Martillo): I design ideas and bring them to life. UX/UI, product design and development, from Guayaquil.',
       'desc.about':     'Pau — a Computer Engineering student who thinks and builds through design. UX/UI, product design and where design meets code.',
       'desc.subjects':  'Pau’s courses by semester.',
       'desc.projects':  'Pau’s projects: design, development, data and games — hackathons, university and personal.',
+      'desc.creative':  'Pau’s other projects and curiosities: illustration, books and creative experiments outside the professional portfolio.',
       'desc.contact':   'Get in touch with Pau — email, GitHub, LinkedIn and CV.'
     },
 
     nav: {
-      home: 'Home', about: 'About me', subjects: 'Courses', projects: 'Projects', contact: 'Contact',
+      home: 'Home', about: 'About me', subjects: 'Courses', projects: 'Projects', creative: 'Creative', contact: 'Contact',
       menu: 'menu', open: 'Open menu', close: 'Close menu'
     },
 
@@ -273,7 +294,7 @@ var TRANSLATIONS = {
 
     task: {
       'app.home': 'home', 'app.about': 'about_me.txt', 'app.subjects': 'courses/',
-      'app.projects': 'projects/', 'app.contact': 'contact.exe',
+      'app.projects': 'projects/', 'app.creative': 'creative/', 'app.contact': 'contact.exe',
       top: 'Back to top',
       battery: 'creative battery: 100% ✿',
       clock: 'Local time'
@@ -451,6 +472,23 @@ var TRANSLATIONS = {
       soon: 'soon ✦',
       'thumb.soon': '▢ screenshot<br>soon',
       empty: 'No projects match those filters… yet! ✿'
+    },
+
+    /* ── CREATIVE ── */
+    creative: {
+      label: '// outside the main portfolio',
+      title: 'Other projects & curiosities',
+      intro: 'I also make other little things I like to share. Not everything I create fits my professional profile — but that doesn’t mean it doesn’t deserve a space! ♡',
+      view: 'view work',
+      gallery: 'Gallery of works',
+      'chips.aria': 'Filter works', 'f.all': 'All',
+      'c.ilustracion': 'Illustration', 'c.personal': 'Personal projects',
+      'c.experimento': 'Creative experiments', 'c.otros': 'Other',
+      'count.all': '{n} works', 'count.some': '{n} of {t} works',
+      live: '{n} works',
+      'soon.title': 'coming soon',
+      'soon.txt': 'this little corner keeps growing ✿',
+      empty: 'Nothing here yet… soon! ✿'
     },
 
     badge: { 'completado': 'done', 'en-progreso': 'in progress', 'pronto': 'soon' },

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="64x64" href="../favicon.png?v=2">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=2">
+<title>pau.proyectos · creativo</title>
+<meta name="description" content="Otros proyectos y curiosidades de Pau: ilustración, libros y experimentos creativos fuera del portafolio profesional." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css?v=31">
+<!-- la animación de entrada solo se arma si hay JS y la persona no pidió menos
+     movimiento; va aquí arriba para que no haya un "parpadeo" de contenido -->
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    document.documentElement.classList.add('hx-motion');
+</script>
+</head>
+<body data-page="creative">
+
+<nav>
+  <a href="../index.html" class="nav-logo">pau<span>.</span>proyectos</a>
+  <button class="nav-toggle" id="nav-toggle" type="button"
+          aria-expanded="false" aria-controls="nav-tabs" aria-label="Abrir menú">
+    <span class="nav-burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span data-i18n="nav.menu">menú</span>
+  </button>
+  <ul class="nav-tabs" id="nav-tabs">
+    <li><a data-i18n="nav.home" href="../index.html">Inicio</a></li>
+    <li><a data-i18n="nav.about" href="sobremi.html">Sobre</a></li>
+    <li><a data-i18n="nav.projects" href="proyectos.html">Proyectos</a></li>
+    <li><a data-i18n="nav.creative" href="creativo.html" class="active" aria-current="page">Creativo</a></li>
+    <li><a data-i18n="nav.contact" href="contacto.html">Contacto</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-label hx" style="--d:100ms" data-i18n="creative.label">// fuera del portafolio principal</p>
+      <h1 class="sec-title hx" style="--d:170ms" data-i18n="creative.title">Otros proyectos &amp; curiosidades</h1>
+      <p class="cr-intro hx" style="--d:240ms" data-i18n="creative.intro"></p>
+    </div>
+
+    <!-- filtros por categoría: se arman solos cuando la galería crezca
+         (4+ trabajos de 2+ categorías). Mientras tanto quedan ocultos. -->
+    <div class="chipbar fx-c hx" id="cr-chipbar" style="--d:300ms" role="group"
+         aria-label="Filtrar trabajos" data-i18n-attr="aria-label:creative.chips.aria" hidden>
+      <div class="fx-c-tabs" id="cr-chips"></div>
+      <div class="fx-c-sub"><span class="fx-count" id="cr-count" aria-hidden="true"></span></div>
+    </div>
+
+    <section class="proj-sec" aria-labelledby="h-cr">
+      <h2 class="sr-only" id="h-cr" data-i18n="creative.gallery">Galería de trabajos</h2>
+      <div class="cr-grid" id="cr-grid"></div>
+    </section>
+
+    <p class="no-proj" id="cr-empty" hidden></p>
+    <p class="sr-only" id="cr-live" aria-live="polite"></p>
+  </div>
+</main>
+
+<p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span></p>
+
+<!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
+<script src="../js/translations.js?v=15"></script>
+<script src="../js/i18n.js?v=1"></script>
+
+<script src="../data/creativos.js?v=1"></script>
+<script>
+(function(){
+  /* textos de la interfaz → js/translations.js · datos de cada trabajo → data/creativos.js
+     La tarjeta es la misma .pcard de Proyectos; lo único propio de esta
+     página es la cuadrícula (.cr-grid) y la ficha "próximamente". */
+  var t = I18N.t, pick = I18N.pick;
+  if (typeof CREATIVOS === 'undefined') return;
+
+  var CATS = ['ilustracion', 'personal', 'experimento', 'otros'];
+  var BAR  = { pink:'', peach:'peach', sky:'sky', mint:'mint', lav:'lav', yellow:'yellow' };
+  /* el mismo librito pixel que usa el sello de Proyectos */
+  var SELLO = {"libro": "<svg class=\"px\" style=\"--gw:13;--gh:7\" viewBox=\"0 0 13 7\" shape-rendering=\"crispEdges\" aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"0\" width=\"4\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"8\" y=\"0\" width=\"4\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"1\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"1\" width=\"4\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"5\" y=\"1\" width=\"3\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"8\" y=\"1\" width=\"4\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"12\" y=\"1\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"2\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"2\" width=\"1\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"2\" y=\"2\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"4\" y=\"2\" width=\"2\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"6\" y=\"2\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"7\" y=\"2\" width=\"1\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"8\" y=\"2\" width=\"2\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"10\" y=\"2\" width=\"2\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"12\" y=\"2\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"3\" width=\"5\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"6\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"7\" y=\"3\" width=\"5\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"12\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"4\" width=\"1\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"2\" y=\"4\" width=\"3\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"5\" y=\"4\" width=\"1\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"6\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"7\" y=\"4\" width=\"1\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"8\" y=\"4\" width=\"3\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"11\" y=\"4\" width=\"1\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"12\" y=\"4\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"0\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"5\" width=\"5\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"6\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"7\" y=\"5\" width=\"5\" height=\"1\" fill=\"#D7F3E0\"/><rect x=\"12\" y=\"5\" width=\"1\" height=\"1\" fill=\"#2C1A24\"/><rect x=\"1\" y=\"6\" width=\"11\" height=\"1\" fill=\"#2C1A24\"/></svg>"};
+
+  var $ = function (id) { return document.getElementById(id); };
+  var grid = $('cr-grid'), chipbar = $('cr-chipbar'), chips = $('cr-chips');
+
+  function esc(v) { return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  /* las rutas de los datos se guardan desde la RAÍZ; esta página vive en pages/ */
+  function root(v) { return v ? (/^(https?:|mailto:|\/|\.\.\/)/.test(v) ? v : '../' + v) : ''; }
+  function catOf(w) { var c = String(w.categoria || 'otros').trim().toLowerCase(); return CATS.indexOf(c) >= 0 ? c : 'otros'; }
+  function pills(w) {
+    return (w.herramientas || []).map(function (s) { return '<span class="pill">' + esc(pick(s)) + '</span>'; }).join('');
+  }
+
+  /* los filtros solo valen la pena cuando hay varias cosas que filtrar */
+  var cats = CREATIVOS.map(catOf).filter(function (c, i, a) { return a.indexOf(c) === i; });
+  var CON_FILTROS = CREATIVOS.length >= 4 && cats.length >= 2;
+  var state = { c: '' };
+
+  /* misma tarjeta grande que los destacados de Proyectos */
+  function card(w) {
+    var h = root(w.enlace), tag = h ? 'a' : 'div';
+    var attrs = h ? ' href="' + esc(h) + '" target="_blank" rel="noopener"' : '';
+    var cta = w.enlaceTxt ? pick(w.enlaceTxt) : t('creative.view');
+    return '<' + tag + ' class="pcard pcard-full rv"' + attrs + '>' +
+      (w.etiqueta ? '<span class="pcard-sticker ' + esc(w.selloColor || 's-pink') + '">' + (SELLO[w.sello] || '') +
+        '<span>' + esc(pick(w.etiqueta)) + '</span></span>' : '') +
+      '<span class="win pcard-win"><span class="win-bar ' + (BAR[w.color] || '') + '">' +
+        '<span class="win-title">' + esc(pick(w.archivo || w.nombre)) + '</span>' +
+        '<span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span></span>' +
+        '<span class="pcard-media">' + (w.img ? '<img src="' + esc(root(w.img)) + '" alt="" loading="lazy" decoding="async">' : '') + '</span></span>' +
+      '<span class="pcard-info">' +
+        '<span class="pcard-title">' + esc(pick(w.nombre)) + '</span>' +
+        '<span class="pcard-meta">' + esc(pick(w.meta)) + '</span>' +
+        '<span class="pcard-desc">' + esc(pick(w.descripcion)) + '</span>' +
+        '<span class="pcard-tools">' + pills(w) + '</span>' +
+        (h ? '<span class="pcard-cta">' + esc(cta) + ' <span class="pcard-arr" aria-hidden="true">↗</span></span>' : '') +
+      '</span></' + tag + '>';
+  }
+
+  /* hueco de la galería: deja claro que esto va a seguir creciendo,
+     sin inventar un trabajo que no existe */
+  function soon() {
+    return '<div class="cr-soon rv" aria-hidden="true">' +
+      '<span class="cr-soon-t">' + esc(t('creative.soon.title')) + '</span>' +
+      '<span class="cr-soon-x">' + esc(t('creative.soon.txt')) + '</span>' +
+    '</div>';
+  }
+
+  function chipBtn(val, label, on) {
+    return '<button type="button" class="chip' + (on ? ' is-on' : '') + '" data-val="' + val + '" aria-pressed="' + on + '">' + esc(label) + '</button>';
+  }
+
+  function render() {
+    var list = CREATIVOS.filter(function (w) { return !state.c || catOf(w) === state.c; });
+
+    chipbar.hidden = !CON_FILTROS;
+    if (CON_FILTROS) {
+      chips.innerHTML = chipBtn('', t('creative.f.all').toLowerCase(), !state.c) +
+        cats.map(function (c) { return chipBtn(c, t('creative.c.' + c).toLowerCase(), state.c === c); }).join('');
+      var tot = CREATIVOS.length;
+      $('cr-count').innerHTML = (list.length === tot ? t('creative.count.all') : t('creative.count.some'))
+        .replace('{n}', '<b>' + list.length + '</b>').replace('{t}', tot);
+    }
+
+    /* mientras la galería sea corta, una ficha "próximamente" ocupa el hueco */
+    grid.innerHTML = list.map(card).join('') + (list.length && list.length < 3 ? soon() : '');
+    if (window.PXReveal) window.PXReveal.register(grid.querySelectorAll('.rv'));
+
+    var none = $('cr-empty'); none.hidden = list.length > 0; none.textContent = t('creative.empty');
+    $('cr-live').textContent = t('creative.live').replace('{n}', list.length);
+  }
+
+  chipbar.addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b) return;
+    state.c = b.getAttribute('data-val');
+    render();
+    var again = chips.querySelector('.chip[data-val="' + state.c + '"]');
+    if (again) again.focus();
+  });
+
+  render();
+  document.addEventListener('langchange', render);
+})();
+</script>
+<script src="../js/portfolio.js?v=5"></script>
+</body>
+</html>

@@ -1426,3 +1426,35 @@ a.arow:hover .arow-go, a.arow:focus-visible .arow-go{ color:var(--ink); }
 
 /* los ojos NUNCA se mueven suave: saltan de píxel en píxel (js/eyes.js) */
 .mon .e-open, .mon .e-closed, .mon .e-happy{ transition:none; }
+
+/* ════════════════════════════════════════════════
+   CREATIVO · galería de trabajos fuera del portafolio principal
+   Las tarjetas son las mismas de Proyectos (.win + .pcard + .pill):
+   aquí solo vive la cuadrícula —que no estira las tarjetas cuando son
+   pocas— y la ficha "próximamente" que ocupa el hueco mientras crece.
+   ════════════════════════════════════════════════ */
+body[data-page="creative"] .wrap{ --w:var(--w-wide); }   /* es una galería: pide el ancho amplio */
+
+.cr-intro{ max-width:62ch; margin-top:14px; font-size:1rem; line-height:1.65; color:var(--text-soft); }
+
+/* auto-fit + tope de 380px: con un solo trabajo la tarjeta NO se estira a
+   todo el ancho, y las siguientes se van acomodando desde la izquierda. */
+.cr-grid{
+  display:grid; gap:28px; align-items:start; justify-content:start;
+  grid-template-columns:repeat(auto-fit, minmax(min(280px, 100%), 380px));
+}
+.cr-grid > *{ min-width:0; }
+
+/* hueco de la galería: ocupa justo lo que ocupa la ventana de una tarjeta */
+.cr-soon{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  aspect-ratio:4/3; padding:18px; text-align:center;
+  border:3px dashed var(--pink); background:var(--pink-pale);
+}
+.cr-soon-t{ font-family:var(--font-pixel); font-weight:700; font-size:1.15rem; color:var(--pink-ink); }
+.cr-soon-x{ font-family:var(--font-term); font-size:1.15rem; line-height:1.35; color:var(--text-soft); max-width:22ch; }
+
+@media (max-width:560px){
+  .cr-grid{ grid-template-columns:minmax(0,1fr); gap:30px; }
+  .cr-soon{ aspect-ratio:16/10; }
+}
