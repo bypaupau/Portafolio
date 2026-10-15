@@ -127,7 +127,7 @@
     's4.num': '04 / las pantallas',
     's4.h': 'La propuesta, pantalla por pantalla',
     's4.p1': 'El prototipo exploraba cómo acompañar el recorrido desde elegir qué cultivar hasta cuidar las plantas y aprovechar lo cosechado. Las pantallas muestran distintas partes de esa experiencia, además de otras funcionalidades que el equipo exploró durante el desarrollo de la propuesta.',
-    's4.p2': 'En ellas la aplicación aparece con el nombre <strong>PhoenixCultive</strong>.',
+    's4.p2': 'A continuación les presento <strong>GrowWithPhoenix</strong>.',
 
     'gA.h': 'Al abrir la aplicación',
     'gA.p1': 'La pantalla de carga da paso al inicio, donde la aplicación saluda a la persona, sitúa el lugar —Phoenix, Arizona— y muestra el estado del tiempo. Debajo, sus plantas aparecen como tarjetas con su propio estado, y una franja de avisos recuerda tareas pendientes como regar.',
@@ -200,7 +200,7 @@
     'f.win': 'Recognition',
     'f.win.v': 'First place among more than 80 international teams.',
     'f.equ': 'Team',
-    'f.equ.v': 'A team project: the other screens and other parts of the proposal were built by my teammates. The exact line-up and the split of tasks are still to be documented.',
+    'f.equ.v': 'A team project: the other screens and other parts of the proposal were built by my teammates.',
     'f.est': 'Status',
     'f.est.v': 'Prototype presented in 2025; research under review and a new version in development.',
 
@@ -270,7 +270,6 @@
 
     's2.d.h': 'From environmental conditions to plants',
     's2.d.p': 'Knowing the place was only the first step. Next I needed to research which plants and fruits could grow under those conditions, so I looked into scientific literature on species able to develop in demanding environments.',
-    's2.d.nota': '<b>The references and the specific species are still to be recovered.</b> Until I have them, this case attributes no conclusion to that review.',
 
     's2.src.h': 'The sources the deck documents',
     's2.src.p': 'The closing pages of the deck list the collections used. They are the same ones that appear in the two Google Earth Engine files I still have.',
@@ -283,12 +282,12 @@
     's3.t3': 'Cook', 's3.t3.p': 'Connect growing with recipes that make use of the harvest.',
     's3.gam.h': 'Gamification and motivation',
     's3.gam.p': 'To encourage people to keep going, a teammate proposed adding a social and gamification component: earning points by growing plants and cooking with the harvest, and spending those points on accessories for the app mascot.',
-    's3.nota': 'The three moments and the gamification belong <b>to the concept and the prototype</b>. They are not implemented or validated features.',
+    's3.nota': 'The three moments and the gamification belong <b>to the concept and the prototype</b>. ',
 
     's4.num': '04 / the screens',
     's4.h': 'The proposal, screen by screen',
     's4.p1': 'The prototype explored how to support the journey from choosing what to grow through caring for the plants and making use of the harvest. The screens show different parts of that experience, along with other features the team explored while developing the proposal.',
-    's4.p2': 'In them the app appears under the name <strong>PhoenixCultive</strong>.',
+    's4.p2': 'Now I will show you <strong>GrowWithPhoenix</strong>.',
 
     'gA.h': 'Opening the app',
     'gA.p1': 'The loading screen gives way to the home screen, where the app greets the person, places them in Phoenix, Arizona, and shows the weather. Below that, their plants appear as cards with their own status, and a strip of notices recalls pending tasks such as watering.',
@@ -306,14 +305,14 @@
 
     'gC.h': 'Scanning and logging a product',
     'gC.p1': 'The scanning menu offers a camera area and, below it, a list of already-registered products with a comment on each: oil levels, signs of contamination or packaging waste, with suggestions of nearby alternatives. The other screen shows the camera pointed at a real package with the scanning guides.',
-    'gC.p2': 'It is an additional feature the team explored. I describe the flow that is visible: point, register, get an assessment. How the recognition worked underneath is not documented.',
+    'gC.p2': 'It is an additional feature the team explored. I describe the flow that is visible: point, register, get an assessment.',
     'gC.c1': 'Scanning menu and log', 'gC.c2': 'Camera scanning',
     'gC.a1': 'Screen with an area to scan products and a list of registered products with recommendations.',
     'gC.a2': 'Camera screen pointed at a food package with scanning guides.',
 
     'gD.h': 'Progress, scored',
     'gD.p1': 'A leaderboard with weekly and all-time tabs ranks people by points. The profile sums up the tasks completed and the ones left for the week, with a rating of performance.',
-    'gD.p2': 'That is where the gamification shows up inside the prototype: points, ranking and task tracking. Its effect on anyone staying consistent was never measured.',
+    'gD.p2': 'That is where the gamification shows up inside the prototype: points, ranking and task tracking.',
     'gD.c1': 'Leaderboard', 'gD.c2': 'Profile and progress',
     'gD.a1': 'Leaderboard screen with a bar chart and a ranked list with points.',
     'gD.a2': 'Profile screen with completed tasks, remaining tasks and a rating.',
