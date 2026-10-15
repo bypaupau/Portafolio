@@ -121,6 +121,8 @@ const PROYECTOS = [
       en: "We analyzed the food deserts of Phoenix, Arizona with satellite data and designed a prototype app that helps people grow their own food."
     },
     habilidades: ["Figma", "UX/UI", "Python", "Google Earth Engine", "Google Colab", "Data Science"],
+    // tiene página propia: la tarjeta lleva al caso y el enlace externo vive dentro
+    caso: "caso/grow-with-phoenix.html",
     repo: "",
     // sin repo público: el enlace lleva al proyecto en Drive
     enlace: "https://drive.google.com/file/d/14QEug3cvbm_SLL2dG_udZX4H6NDujfX7/view?usp=sharing",

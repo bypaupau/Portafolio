@@ -72,10 +72,10 @@
 <p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span></p>
 
 <!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
-<script src="../js/translations.js?v=15"></script>
+<script src="../js/translations.js?v=16"></script>
 <script src="../js/i18n.js?v=1"></script>
 
-<script src="../data/proyectos.js?v=7"></script>
+<script src="../data/proyectos.js?v=8"></script>
 <script>
 (function(){
   /* textos de la interfaz → js/translations.js · datos de cada proyecto → data/proyectos.js */
@@ -101,7 +101,10 @@
     return (!d || (p.disciplinas || []).indexOf(d) >= 0) && (!c || ctxOf(p).indexOf(c) >= 0);
   }
   function imgOf(p) { return p.img ? (/^(https?:|\/|\.\.\/)/.test(p.img) ? p.img : '../' + p.img) : ''; }
-  function hrefOf(p) { var h = p.enlace || p.repo; return (h && h !== '#') ? h : ''; }
+  /* con `caso` la tarjeta lleva a la página del proyecto (enlace interno);
+     sin él, se comporta como siempre y abre el repo o el enlace externo */
+  function hrefOf(p) { if (p.caso) return p.caso; var h = p.enlace || p.repo; return (h && h !== '#') ? h : ''; }
+  function fuera(p) { return p.caso ? '' : ' target="_blank" rel="noopener"'; }
   function pills(p, n) {
     return (p.habilidades || []).slice(0, n).map(function (s) { return '<span class="pill">' + esc(pick(s)) + '</span>'; }).join('');
   }
@@ -121,7 +124,7 @@
   /* tarjeta grande: el mismo componente del inicio, pero con la descripción visible */
   function featCard(p) {
     var h = hrefOf(p), tag = h ? 'a' : 'div';
-    var attrs = h ? ' href="' + esc(h) + '" target="_blank" rel="noopener"' : '';
+    var attrs = h ? ' href="' + esc(h) + '"' + fuera(p) : '';
     return '<' + tag + ' class="pcard pcard-full rv"' + attrs + '>' +
       (p.logro ? '<span class="pcard-sticker ' + esc(p.sello || 's-pink') + '">' + (SEAL[p.sello] || '') + '<span>' + esc(pick(p.logro)) + '</span></span>' : '') +
       '<span class="win pcard-win"><span class="win-bar ' + (BAR[p.color] || '') + '"><span class="win-title">' + esc(pick(p.archivo || p.nombre)) + '</span>' +
@@ -132,20 +135,22 @@
         '<span class="pcard-meta">' + esc(pick(p.meta || p.periodo)) + '</span>' +
         '<span class="pcard-desc">' + esc(pick(p.descripcion)) + '</span>' +
         '<span class="pcard-tools">' + pills(p, 4) + '</span>' +
-        (h ? '<span class="pcard-cta">' + esc(t('projects.view')) + ' <span class="pcard-arr" aria-hidden="true">↗</span></span>' : '') +
+        (h ? '<span class="pcard-cta">' + esc(t(p.caso ? 'projects.caso' : 'projects.view')) +
+             ' <span class="pcard-arr" aria-hidden="true">' + (p.caso ? '→' : '↗') + '</span></span>' : '') +
       '</span></' + tag + '>';
   }
 
   /* fila del archivo: miniatura | nombre + descripción + contexto | enlace */
   function archRow(p) {
     var h = hrefOf(p), tag = h ? 'a' : 'div';
-    var attrs = h ? ' href="' + esc(h) + '" target="_blank" rel="noopener"' : '';
+    var attrs = h ? ' href="' + esc(h) + '"' + fuera(p) : '';
     var est = String(p.estado || '').trim().toLowerCase();
     var mat = pick(p.materia);
     var meta = ctxOf(p).map(function (c) { return t('projects.c.' + c); }).join(' + ');
     if (mat && mat !== '-') meta += ' · ' + mat;
     if (p.periodo) meta += ' · ' + pick(p.periodo);
-    var go = h ? (p.enlaceTxt ? pick(p.enlaceTxt) : t('projects.repo')) : t('projects.soon');
+    var go = p.caso ? t('projects.caso')
+           : h ? (p.enlaceTxt ? pick(p.enlaceTxt) : t('projects.repo')) : t('projects.soon');
     return '<li><' + tag + ' class="arow"' + attrs + '>' +
       '<span class="arow-thumb">' + (p.img ? '<img src="' + esc(imgOf(p)) + '" alt="" loading="lazy" decoding="async">' : '') + '</span>' +
       '<span class="arow-main">' +

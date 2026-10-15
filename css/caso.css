@@ -1,0 +1,478 @@
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  pau.proyectos · páginas de caso            (2ª iteración) ║
+   ║  Solo carga en pages/caso/*.html                          ║
+   ╚══════════════════════════════════════════════════════════╝
+   No inventa identidad: toma tokens, ventana, pills y badges de
+   styles.css. Lo nuevo es la maquetación editorial y el riel.
+
+   ESCALA TIPOGRÁFICA: el cuerpo usa la MISMA que `.ab-lead` de
+   Sobre mí — clamp(1.02rem,1.5vw,1.14rem) con interlineado 1.75.
+   Antes el caso iba a 1.02rem fijo y se veía más chico que el
+   resto del sitio en pantallas grandes.
+
+   EL COLOR NO VA AL FONDO: el fondo es la cuadrícula rosa, que es
+   identidad. Cada sección declara --cs y ese color aparece en su
+   punto del riel y en los acentos de sus bloques.
+
+   REGLA: si un caso necesita un bloque que no está aquí, se agrega
+   AQUÍ, nunca en el HTML del caso. */
+
+:root{
+  --cs-rail: 190px;
+  --cs-gap:  clamp(46px, 5.4vw, 76px);
+  /* Cuerpo del caso. Un punto por DEBAJO de `.ab-lead` de Sobre mí a
+     propósito: allí el texto es el protagonista, aquí acompaña a los
+     títulos pixel y a las pantallas, y a 1.14rem competía con ellos. */
+  --cs-body: clamp(0.97rem, 1.1vw, 1.06rem);
+}
+
+body.cs-body .wrap{ --w:var(--w-wide); }
+
+/* ════════ REJILLA · riel + contenido ════════ */
+.cs-grid{
+  display:grid;
+  grid-template-columns:var(--cs-rail) minmax(0,1fr);
+  gap:clamp(24px,4vw,56px);
+  align-items:start;
+}
+.cs-main{ min-width:0; }
+
+/* ════════ RIEL ════════
+   La ruta de "Sobre mí" girada 90°: paradas en orden, con un camino
+   que se va pintando. Sticky, no fijo: pertenece al contenido. */
+.cs-rail{
+  /* OJO: es un <nav>, y styles.css estiliza `nav` por ELEMENTO
+     (fixed, alto fijo, flex, fondo blanco, borde). Sin este reseteo
+     heredaba la barra superior y se aplastaba a 54 px. */
+  position:sticky; top:calc(var(--nav-h) + 26px);
+  left:auto; right:auto; z-index:auto;
+  display:block; height:auto; gap:0; align-items:initial;
+  background:none; border-bottom:0;
+  padding:0 0 0 22px;
+}
+.cs-rail-list{ list-style:none; display:grid; gap:26px; position:relative; }
+.cs-rail-list::before{
+  content:""; position:absolute; left:-15px; top:8px; bottom:8px;
+  width:3px; background:var(--pink-mid); opacity:.55;
+}
+.cs-rail-list::after{
+  content:""; position:absolute; left:-15px; top:8px;
+  width:3px; height:var(--cs-progress,0%);
+  background:var(--pink);
+  transition:height var(--mo-base,320ms) ease;
+}
+.cs-rail-item{ position:relative; }
+.cs-rail-item::before{
+  content:""; position:absolute; left:-21px; top:8px;
+  width:15px; height:15px; border:3px solid var(--ink);
+  background:var(--white); border-radius:50%;
+  transition:background var(--mo-fast,180ms) ease, transform var(--mo-fast,180ms) ease;
+  z-index:1;
+}
+.cs-rail-item.is-here::before{ background:var(--cs,var(--pink)); transform:scale(1.18); }
+
+.cs-rail-item a{
+  display:block; font-family:var(--font-pixel); font-size:1rem; font-weight:500;
+  color:var(--text-soft); text-decoration:none; line-height:1.25;
+  padding:5px 10px; border:2px solid transparent;
+  transition:all var(--mo-fast,180ms) ease;
+}
+.cs-rail-item a:hover{ color:var(--ink); border-color:var(--pink-mid); background:var(--pink-light); }
+.cs-rail-item.is-here a{
+  color:var(--ink); font-weight:600;
+  background:var(--cs,var(--pink-light)); border-color:var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+}
+.cs-rail-out{
+  display:inline-block; margin-top:30px;
+  font-family:var(--font-pixel); font-size:.95rem; font-weight:600;
+  color:var(--pink); text-decoration:none;
+  padding:7px 11px; background:#fff;
+  border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  transition:all var(--mo-fast,180ms) ease;
+}
+.cs-rail-out:hover{ transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); color:var(--ink); }
+.cs-rail-out:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+
+/* ════════ PORTADA ════════
+   Primero el nombre, la explicación y el contexto. La imagen
+   ACOMPAÑA: va al lado y contenida, no a toda página. */
+.cs-hero{ padding-top:clamp(26px,4vw,44px); margin-bottom:var(--cs-gap); }
+.cs-kicker{
+  font-family:var(--font-tiny); font-size:.58rem; letter-spacing:1.6px;
+  text-transform:uppercase; color:var(--pink); margin-bottom:16px;
+}
+.cs-title{
+  font-family:var(--font-pixel); font-weight:700; line-height:1.02;
+  font-size:clamp(2.4rem,6vw,3.9rem); color:var(--ink);
+  text-shadow:3px 3px 0 var(--pink-mid); margin-bottom:18px;
+}
+.cs-sub{
+  font-size:clamp(1.02rem,1.3vw,1.15rem); line-height:1.7;
+  color:var(--text-soft);
+}
+.cs-sub strong{ color:var(--ink); }
+
+.cs-wip{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--font-term); font-size:1.2rem; line-height:1;
+  padding:9px 14px; background:var(--yellow);
+  border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  color:var(--ink);
+}
+.cs-wip i{ width:9px; height:9px; flex:none; background:var(--pink); border:2px solid var(--ink); }
+
+/* texto a la izquierda, vista general del prototipo a la derecha */
+.cs-hero-top{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,380px);
+  gap:clamp(26px,4vw,52px); align-items:center;
+}
+.cs-hero-fig{ margin:0; }
+.cs-hero-fig img{
+  display:block; width:100%;
+  border:3px solid var(--ink); box-shadow:6px 6px 0 var(--peach);
+}
+.cs-hero-fig figcaption{
+  margin-top:11px; font-size:.95rem; line-height:1.55; color:var(--text-muted);
+}
+
+/* ════════ METADATOS ════════
+   Dos tarjetas protagonistas (rol y reconocimiento) y, debajo, una ficha
+   compacta de cuatro filas separadas por líneas. El borde grueso y la
+   sombra se reservan para las protagonistas: si todo lleva caja, nada
+   destaca, que era el problema de las seis tarjetas iguales. */
+/* «Mi rol» lleva tres frases largas y «Herramientas» tres etiquetas
+   cortas: a 50/50 la primera doblaba el alto de la segunda. Repartir la
+   columna según lo que pesa cada texto las deja casi a la par, y
+   `stretch` cierra el resto SIN inflar el interlineado ni la fuente. */
+.cs-stars{
+  display:grid; grid-template-columns:minmax(0,1.66fr) minmax(0,1fr);
+  gap:16px; margin-top:clamp(28px,4vw,42px);
+  align-items:stretch;
+}
+.cs-star{
+  border:3px solid var(--ink); box-shadow:5px 5px 0 var(--ink);
+  padding:20px 22px 22px; min-width:0;
+}
+.st-rol{ background:var(--pink-light); }
+.st-win{ background:var(--yellow); }
+.cs-star dt{
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:1.22rem; line-height:1.1; color:var(--ink); margin-bottom:10px;
+}
+.cs-star dd{ font-size:var(--cs-body); line-height:1.62; color:var(--ink); }
+.cs-star ul{ list-style:none; display:grid; gap:11px; }
+.cs-star li{ position:relative; padding-left:19px; line-height:1.55; }
+.cs-star li::before{
+  content:""; position:absolute; left:0; top:.5em;
+  width:7px; height:7px; background:var(--ink);
+}
+.cs-star li b{ font-weight:600; }
+/* el identificador de una colección de datos, dentro de una lista */
+.cs-src-id{ font-family:var(--font-term); font-size:1.02em; color:var(--text-soft); }
+
+/* ficha compacta: sin cajas, solo rótulo + valor y una línea entre filas */
+.cs-rows{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:clamp(24px,4vw,56px); margin-top:26px;
+}
+.cs-row{ padding:15px 0 17px; border-top:2px solid var(--pink-mid); min-width:0; }
+.cs-row dt{
+  font-family:var(--font-term); font-size:1.08rem; line-height:1;
+  letter-spacing:1.4px; text-transform:uppercase;
+  color:var(--pink); margin-bottom:8px;
+}
+.cs-row dd{ font-size:var(--cs-body); line-height:1.6; color:var(--ink); }
+
+/* herramientas: lista vertical con viñetas, cada nombre legible */
+.cs-tools{ list-style:none; display:grid; gap:7px; }
+.cs-tools li{
+  position:relative; padding-left:18px;
+  font-size:var(--cs-body); line-height:1.35; color:var(--ink);
+}
+.cs-tools li::before{
+  content:""; position:absolute; left:0; top:.45em;
+  width:7px; height:7px; background:var(--pink);
+}
+
+/* ════════ SECCIÓN ════════ */
+.cs-sec{ margin-bottom:var(--cs-gap); scroll-margin-top:calc(var(--nav-h) + 20px); }
+.cs-head{ margin-bottom:22px; }      /* sin filetes ni adornos: manda la tipografía */
+.cs-num{
+  font-family:var(--font-tiny); font-size:.55rem; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--text-muted); margin-bottom:11px;
+}
+.cs-h{
+  font-family:var(--font-pixel); font-weight:700; line-height:1.1;
+  font-size:clamp(1.75rem,3.6vw,2.5rem); color:var(--ink);
+}
+
+/* ════════ TEXTO ════════ */
+.cs-lead{
+  font-size:clamp(1.2rem,2.1vw,1.52rem); line-height:1.42; font-weight:500;
+  color:var(--ink); margin-bottom:22px;   /* sin max-width: el ancho lo pone la columna */
+}
+.cs-text{
+  /* sin franja estrecha: el párrafo comparte el ancho de su título.
+     El techo real lo pone --w-wide a través de la columna principal. */
+  font-size:var(--cs-body); line-height:1.72;
+  color:var(--text-soft);
+}
+.cs-text + .cs-text{ margin-top:16px; }
+.cs-text strong{ color:var(--ink); font-weight:600; }
+.cs-text a{ color:var(--pink); text-decoration:none; border-bottom:2px solid var(--pink-mid); }
+.cs-text a:hover{ color:var(--ink); border-color:var(--ink); }
+
+.cs-sub-h{
+  font-family:var(--font-pixel); font-weight:700; font-size:1.5rem;
+  color:var(--ink); margin:clamp(26px,3vw,36px) 0 10px;
+}
+
+/* ════════ ETIQUETAS DE FUENTE ════════ */
+.cs-srcs{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; align-items:center; }
+.cs-srcs-k{
+  font-family:var(--font-tiny); font-size:.5rem; letter-spacing:1.2px;
+  text-transform:uppercase; color:var(--text-muted); margin-right:3px;
+}
+.cs-src{
+  font-family:var(--font-term); font-size:1.05rem; line-height:1;
+  padding:5px 10px; background:var(--white);
+  border:2px solid var(--ink); color:var(--ink);
+}
+
+/* ════════ MARCAS DE HONESTIDAD ════════ */
+.cs-tag{
+  display:inline-block; font-family:var(--font-term); font-size:1.02rem; line-height:1;
+  padding:5px 10px; border:2px solid var(--ink); color:var(--ink);
+  vertical-align:middle;
+}
+.cs-tag.t-hecho{ background:var(--mint); }
+.cs-tag.t-propuesta{ background:var(--lav); }
+.cs-tag.t-revision{ background:var(--yellow); }
+.cs-tag.t-recuperar{ background:var(--peach); }
+.cs-tag.t-sinverif{ background:var(--pink-light); }
+
+/* ════════ NOTA · caja con etiqueta ════════ */
+.cs-note{
+  margin-top:26px; padding:22px 24px 24px;
+  background:var(--white); border:3px solid var(--ink);
+  box-shadow:5px 5px 0 var(--cs,var(--pink-mid));
+}
+.cs-note-top{ display:flex; flex-wrap:wrap; gap:9px; align-items:center; margin-bottom:13px; }
+.cs-note p{ font-size:var(--cs-body); line-height:1.7; color:var(--text-soft); }
+.cs-note p + p{ margin-top:11px; }
+.cs-note strong{ color:var(--ink); }
+
+/* ════════ GRUPOS DE PANTALLAS ════════
+   Cada grupo es un panel pastel con su título y su explicación.
+   Tres disposiciones que se alternan para dar ritmo editorial. */
+.cs-groups{ display:grid; gap:clamp(24px,3.2vw,38px); margin-top:26px; }
+.cs-g{
+  border:3px solid var(--ink); box-shadow:6px 6px 0 var(--ink);
+  background:var(--g,var(--pink-light));
+  padding:clamp(22px,3vw,34px);
+}
+.cs-g-h{
+  font-family:var(--font-pixel); font-weight:700; font-size:clamp(1.3rem,2.4vw,1.62rem);
+  line-height:1.15; color:var(--ink); margin-bottom:12px;
+}
+.cs-g-p{ font-size:var(--cs-body); line-height:1.7; color:var(--ink); }
+.cs-g-p + .cs-g-p{ margin-top:12px; }
+.cs-g-p strong{ font-weight:600; }
+
+/* las pantallas del grupo, juntas y a la misma altura visual.
+   Se escalan por ALTO y no por ancho: los PNG vienen con cantidades
+   distintas de espacio transparente y de inclinación, así que igualar
+   el ancho dejaba una pantalla visiblemente más baja que su pareja. */
+.cs-shots{
+  display:flex; gap:clamp(12px,1.8vw,22px);
+  align-items:flex-end; justify-content:center;
+  --h:clamp(240px,25vw,358px);
+}
+.cs-shot{ margin:0; min-width:0; flex:0 1 auto; }
+.cs-shot img{ display:block; height:var(--h); width:auto; max-width:100%; margin-inline:auto; }
+.cs-shot figcaption{
+  margin-top:10px; font-size:calc(var(--cs-body) * .92); line-height:1.45;
+  color:var(--ink); opacity:.78; text-align:center;
+}
+/* una pantalla puede pesar más que su compañera, sin que la otra se pierda */
+.cs-shot.is-lead img{ height:calc(var(--h) * 1.07); }
+.cs-shot.is-side img{ height:calc(var(--h) * 0.94); }
+
+/* texto a la izquierda, pantallas a la derecha (y al revés).
+   `max-content` deja que las pantallas pidan solo lo que ocupan y el
+   resto del ancho se lo queda el texto. */
+.g-side{ display:grid; grid-template-columns:minmax(0,1fr) max-content; gap:clamp(22px,3.4vw,44px); align-items:center; }
+.g-rev{ display:grid; grid-template-columns:max-content minmax(0,1fr); gap:clamp(22px,3.4vw,44px); align-items:center; }
+.g-rev .cs-g-txt{ order:2; }
+
+/* ════════ FIGURAS DE INVESTIGACIÓN ════════
+   Las visualizaciones originales de 2025. Van en rejilla, con su pie
+   debajo: el pie lleva lo que dice la leyenda original, no una lectura
+   nuestra. El panel pastel las separa del texto sin encerrarlas. */
+.cs-figs{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));
+  gap:clamp(16px,2.2vw,26px); margin-top:18px;
+}
+.cs-figs.uno{ grid-template-columns:minmax(0,1fr); }
+.cs-fig2{ margin:0; min-width:0; }
+.cs-fig2 img{
+  display:block; width:100%; height:auto;
+  border:3px solid var(--ink); box-shadow:4px 4px 0 var(--cs,var(--pink-mid));
+  background:#fff;
+}
+.cs-fig2 figcaption{
+  margin-top:9px; font-size:calc(var(--cs-body) * .95); line-height:1.58; color:var(--text-soft);
+}
+.cs-fig2 figcaption b{
+  display:block; font-family:var(--font-pixel); font-weight:600;
+  font-size:1.02rem; color:var(--ink); margin-bottom:4px;
+}
+/* PAREJA · dos figuras de proporciones distintas comparadas de tú a tú.
+   La caja manda el alto y `contain` conserva la proporción de cada
+   imagen: nada se recorta ni se amplía para rellenar el hueco, y los
+   pies arrancan a la misma altura. */
+.cs-figs.par{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(22px,3.2vw,44px); }
+.cs-figs.par .cs-fig2 img{
+  height:clamp(212px,23vw,300px); width:100%;
+  object-fit:contain; object-position:center; padding:7px;
+}
+
+/* PROPORCIONAL · cuando las dos figuras son gráficos sobre fondo blanco,
+   `contain` deja bandas y una acaba más baja que la otra. Repartir la
+   columna según la proporción de cada imagen (--c1/--c2, declarados
+   junto a las imágenes) las deja LLENAS y al mismo alto a cualquier
+   ancho, porque las dos columnas escalan juntas. */
+.cs-figs.prop{
+  grid-template-columns:var(--c1,1fr) var(--c2,1fr);
+  gap:clamp(22px,3.2vw,44px); align-items:start;
+}
+.cs-figs.prop .cs-fig2 img{ height:auto; width:100%; padding:0; object-fit:fill; }
+
+/* FICHA · contexto de una variable, con el vocabulario de las etiquetas
+   de las tarjetas de proyectos. Se lee sin pasar el cursor ni pulsar. */
+.cs-duo{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(216px,300px);
+  gap:clamp(20px,2.8vw,36px); align-items:center; margin-top:18px;
+}
+.cs-ficha{ display:grid; gap:12px; align-content:center; }
+.cs-ficha > div{
+  background:var(--white); border:2px solid var(--ink);
+  box-shadow:3px 3px 0 var(--cs,var(--pink-mid)); padding:9px 12px 11px;
+}
+.cs-ficha dt{
+  font-family:var(--font-term); font-size:1.04rem; line-height:1;
+  letter-spacing:1.2px; text-transform:uppercase; color:var(--pink); margin-bottom:5px;
+}
+.cs-ficha dd{ font-size:calc(var(--cs-body) * .95); line-height:1.5; color:var(--ink); }
+
+/* nota breve: la limitación va junto a lo que limita, no en una caja
+   del tamaño de media sección */
+/* La limitación va pegada a lo que limita. Es texto de lectura, no una
+   nota al pie: va casi al tamaño del cuerpo y sin max-width propio, que
+   era lo que la partía en renglones cortos. */
+.cs-nota{
+  margin-top:12px; padding-left:15px; border-left:4px solid var(--cs,var(--pink-mid));
+  font-size:calc(var(--cs-body) * .98); line-height:1.65; color:var(--text-soft);
+}
+.cs-nota b{ color:var(--ink); font-weight:600; }
+
+/* ════════ TRÍPTICO · los tres momentos del concepto ════════ */
+.cs-tri{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px; margin-top:22px;
+}
+.cs-tri-c{
+  border:3px solid var(--ink); box-shadow:4px 4px 0 var(--ink);
+  padding:20px 22px 22px; min-width:0;
+}
+.cs-tri-c:nth-child(1){ background:var(--sky); }
+.cs-tri-c:nth-child(2){ background:var(--mint); }
+.cs-tri-c:nth-child(3){ background:var(--peach); }
+.cs-tri-c h3{
+  font-family:var(--font-pixel); font-weight:700; font-size:1.3rem;
+  color:var(--ink); margin-bottom:9px;
+}
+.cs-tri-c p{ font-size:var(--cs-body); line-height:1.6; color:var(--ink); }
+
+/* ════════ SALIDAS ════════ */
+.cs-out{ margin-top:var(--cs-gap); padding-top:36px; border-top:3px dashed var(--pink-mid); }
+.cs-out-row{ display:flex; flex-wrap:wrap; gap:13px; align-items:center; }
+.cs-rel{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));
+  gap:14px; margin-top:24px;
+}
+.cs-rel a{
+  display:flex; gap:12px; align-items:center; text-decoration:none;
+  background:#fff; border:3px solid var(--ink); box-shadow:4px 4px 0 var(--pink-mid);
+  padding:11px 13px; transition:all var(--mo-fast,180ms) ease;
+}
+.cs-rel a:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--pink-mid); }
+.cs-rel a:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--pink-mid); }
+.cs-rel img{ width:64px; height:46px; object-fit:cover; border:2px solid var(--ink); flex:none; }
+.cs-rel b{ font-family:var(--font-pixel); font-size:1.05rem; color:var(--ink); font-weight:600; display:block; }
+.cs-rel span{ font-family:var(--font-term); font-size:1.08rem; color:var(--text-soft); }
+
+/* ════════ APARICIÓN AL SCROLL ════════ */
+.cs-motion .cs-rv{ opacity:0; transform:translateY(16px); }
+.cs-motion .cs-rv.is-in{
+  opacity:1; transform:none;
+  transition:opacity var(--mo-slow,520ms) ease var(--rv-delay,0s),
+             transform var(--mo-slow,520ms) var(--ease-out,ease) var(--rv-delay,0s);
+}
+
+/* ════════ RESPONSIVE ════════ */
+@media (max-width:1100px){
+  /* nada que reflowear: los metadatos ya son 2 columnas */
+}
+@media (max-width:1040px){
+  :root{ --cs-rail:150px; }
+  .cs-rail-item a{ font-size:.9rem; padding:4px 8px; }
+  .cs-hero-top{ grid-template-columns:1fr; }
+  .cs-tri{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+  .cs-hero-fig{ max-width:480px; }
+  .g-side, .g-rev{ grid-template-columns:minmax(0,1fr); }
+  .g-rev .cs-g-txt{ order:0; }
+  .g-side .cs-shots, .g-rev .cs-shots{ margin-top:26px; }
+}
+/* ── ≤860 · el riel se acuesta bajo el nav ── */
+@media (max-width:860px){
+  .cs-grid{ grid-template-columns:minmax(0,1fr); gap:0; }
+  .cs-rail{
+    position:sticky; top:var(--nav-h); z-index:40;
+    display:block; height:auto; min-width:0;
+    padding:9px 0; margin:0 calc(-1 * var(--edge)) 26px;
+    background:var(--pink-pale); border-bottom:3px solid var(--ink);
+  }
+  .cs-rail-list{
+    grid-auto-flow:column; grid-auto-columns:max-content; gap:8px;
+    overflow-x:auto; padding:2px var(--edge); scrollbar-width:none;
+  }
+  .cs-rail-list::-webkit-scrollbar{ display:none; }
+  .cs-rail-list::before, .cs-rail-list::after, .cs-rail-item::before{ display:none; }
+  .cs-rail-item a{ white-space:nowrap; border-color:var(--pink-mid); background:#fff; }
+  .cs-rail-out{ display:none; }
+  .cs-sec{ scroll-margin-top:calc(var(--nav-h) + 76px); }
+  .cs-stars{ grid-template-columns:minmax(0,1fr); }
+  .cs-duo{ grid-template-columns:minmax(0,1fr); }
+  .cs-rows{ grid-template-columns:minmax(0,1fr); }
+  .cs-tri{ grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:620px){
+  /* la pareja se apila: ya no hay nada con qué comparar lado a lado */
+  .cs-figs.par, .cs-figs.prop{ grid-template-columns:minmax(0,1fr); }
+  .cs-figs.par .cs-fig2 img{ height:auto; padding:0; }
+}
+@media (max-width:560px){
+  .cs-title{ text-shadow:2px 2px 0 var(--pink-mid); }
+  .cs-note{ padding:17px 18px 19px; box-shadow:4px 4px 0 var(--cs,var(--pink-mid)); }
+  .cs-hero-fig img{ box-shadow:4px 4px 0 var(--peach); }
+  .cs-g{ box-shadow:4px 4px 0 var(--ink); }
+  /* las pantallas de un grupo se quedan juntas, nunca una por fila */
+  .cs-shots{ gap:11px; }
+  .cs-shot, .cs-shot.is-lead, .cs-shot.is-side{ max-width:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  .cs-rail-list::after{ transition:none; }
+  .cs-rel a:hover{ transform:none; }
+}
