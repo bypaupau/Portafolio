@@ -1,14 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
-  <rect x="2" y="4" width="28" height="20" fill="#2C1A24"/>
-  <rect x="4" y="6" width="24" height="16" fill="#FFFFFF"/>
-  <rect x="6" y="8" width="20" height="12" fill="#D6EEFB"/>
-  <rect x="10" y="12" width="2" height="2" fill="#2C1A24"/>
-  <rect x="20" y="12" width="2" height="2" fill="#2C1A24"/>
-  <rect x="8" y="14" width="2" height="2" fill="#F4B8CC"/>
-  <rect x="22" y="14" width="2" height="2" fill="#F4B8CC"/>
-  <rect x="10" y="16" width="2" height="2" fill="#2C1A24"/>
-  <rect x="12" y="18" width="8" height="2" fill="#2C1A24"/>
-  <rect x="20" y="16" width="2" height="2" fill="#2C1A24"/>
-  <rect x="14" y="24" width="4" height="2" fill="#2C1A24"/>
-  <rect x="8" y="26" width="16" height="2" fill="#2C1A24"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 32 32">
+  <!-- Generator: Adobe Illustrator 30.8.2, SVG Export Plug-In . SVG Version: 2.1.4 Build 7)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #2c1a24;
+      }
+
+      .st1 {
+        fill: #f4b8cc;
+      }
+
+      .st2 {
+        fill: #fff;
+      }
+
+      .st3 {
+        fill: #d6eefb;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1" shape-rendering="crispEdges">
+    <rect class="st0" x="2" y="4" width="28" height="20"/>
+    <rect class="st2" x="4" y="6" width="24" height="16"/>
+    <rect class="st3" x="6" y="8" width="20" height="12"/>
+    <rect class="st0" x="10" y="12" width="2" height="2"/>
+    <rect class="st0" x="20" y="12" width="2" height="2"/>
+    <rect class="st1" x="8" y="14" width="2" height="2"/>
+    <rect class="st1" x="22" y="14" width="2" height="2"/>
+    <rect class="st0" x="10" y="16" width="2" height="2"/>
+    <rect class="st0" x="12" y="18" width="8" height="2"/>
+    <rect class="st0" x="20" y="16" width="2" height="2"/>
+    <rect class="st0" x="14" y="24" width="4" height="2"/>
+    <rect class="st0" x="8" y="26" width="16" height="2"/>
+  </g>
 </svg>
