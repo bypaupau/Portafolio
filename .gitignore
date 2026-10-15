@@ -1,0 +1,9 @@
+# ruido de macOS
+.DS_Store
+
+# material de origen de los casos: los PDF de las presentaciones y los
+# PNG exportados de Figma. Las versiones optimizadas que usa el sitio
+# viven en img/caso/, así que esto solo abultaría el repo (28 MB).
+# Si prefieres versionarlo, borra estas dos líneas.
+projects/*/*.pdf
+projects/*/img/*.png
