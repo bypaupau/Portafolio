@@ -307,7 +307,6 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
 /* sprites pixel (SVG) */
 .sprite{ image-rendering:pixelated; display:block; }
 .sprite.sm{ width:26px; }
-.float{ animation:bob 2.4s ease-in-out infinite; }
 @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-7px); } }
 
 /* ════════ ENCABEZADOS de sección ════════ */
@@ -592,9 +591,14 @@ main{ position:relative; z-index:2; padding-top:var(--nav-h); }
   overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
 }
 
-/* foco visible para teclado (antes no había ninguno) */
+/* foco visible para teclado (antes no había ninguno).
+   .link y .egg-coffee se sumaron después: recorriendo el sitio con Tab
+   eran los dos únicos que caían al anillo gris por defecto de Chrome
+   ("ver los 10 proyectos" y el <3 del pie), rompiendo la coherencia con
+   todo lo demás. */
 .btn:focus-visible, .social:focus-visible, .nav-tabs a:focus-visible,
-.nav-logo:focus-visible, .popup:focus-visible, .egg:focus-visible{
+.nav-logo:focus-visible, .popup:focus-visible, .egg:focus-visible,
+.link:focus-visible, .egg-coffee:focus-visible{
   outline:3px dashed var(--pink); outline-offset:4px;
 }
 
@@ -1054,8 +1058,36 @@ body{ padding-bottom:calc(var(--task-h) + env(safe-area-inset-bottom, 0px)); }
 .outro-sub{ font-family:var(--font-term); font-size:1.15rem; color:var(--text-soft); margin-bottom:6px; }
 .outro-col .btn{ margin-top:10px; }
 
+/* ── CADA VERBO SE MUEVE COMO LO QUE DICE ─────────────────────
+   Antes los tres verbos y los dos iconos del cierre compartían una sola
+   regla: `rotate(0) scale(1.06)`. Dos problemas. Uno, el mismo gesto
+   para tres conceptos distintos, que es no decir nada. Dos, un scale
+   sobre PIXEL ART: 1.06 no es múltiplo entero de la grilla, así que
+   desalinea los píxeles del sprite justo en los iconos que más se miran.
+   Ahora los cinco se ENDEREZAN (eso se queda: es "ponerse firme" cuando
+   los señalas) y encima cada uno hace UN gesto propio, de una pasada:
+     diseñar    el pincel traza — rota desde su PUNTA, no desde el centro
+     construir  la ventana se asienta: sube, cae y se acomoda, como una
+                pieza que se coloca. Anima `translate`, que es propiedad
+                aparte, para no pisar el `rotate` de la ventana
+     explorar   un paso de UN píxel de la grilla y vuelta, con steps():
+                es pixel art, SALTA (la misma regla que js/eyes.js)
+     cierre     un cabeceo corto con win-duck, el gesto que ya existe:
+                responde sin competir con los verbos
+   Los verbos son <li>, no enlaces ("describen, no navegan"), así que no
+   llevan estado de foco: no hay forma de llegar a ellos con el teclado. */
+@keyframes vb-set{ 0%{ translate:0 -3px; } 60%{ translate:0 2px; } 100%{ translate:0 0; } }
+@keyframes vb-scan{ 0%{ translate:var(--ps,5px) 0; } 50%{ translate:calc(var(--ps,5px) * -1) 0; } 100%{ translate:0 0; } }
+
 @media (hover:hover) and (prefers-reduced-motion:no-preference){
-  .verb:hover .mini-win, .outro-col:hover .outro-ico{ transform:rotate(0) scale(1.06); }
+  .verb:hover .mini-win{ transform:rotate(0); }
+  .outro-col:hover .outro-ico{ transform:rotate(0); animation:win-duck .26s var(--ease-soft) 1; }
+
+  /* nth-child cuenta tambien los .verb-plus (los "+"), por eso 1, 3 y 5.
+     Es el mismo conteo que ya usa la regla de reposo de la del medio. */
+  .verb:nth-child(1):hover .mini-body .px{ transform-origin:50% 100%; animation:ico-nod .42s ease-in-out 1; }
+  .verb:nth-child(3):hover .mini-win{ animation:vb-set .32s var(--ease-soft) 1; }
+  .verb:nth-child(5):hover .mini-body .px{ animation:vb-scan .36s steps(1) 1; }
 }
 
 /* tablet: los verbos se acercan */
@@ -1435,7 +1467,9 @@ a.arow:hover .arow-go, a.arow:focus-visible .arow-go{ color:var(--ink); }
    ════════════════════════════════════════════════ */
 body[data-page="creative"] .wrap{ --w:var(--w-wide); }   /* es una galería: pide el ancho amplio */
 
-.cr-intro{ max-width:62ch; margin-top:14px; font-size:1rem; line-height:1.65; color:var(--text-soft); }
+/* sin max-width: el párrafo corre hasta donde le pide su contenido y lo
+   parte el ancho de la sección, no un tope fijo que lo cortaba a media frase */
+.cr-intro{ margin-top:14px; font-size:1rem; line-height:1.65; color:var(--text-soft); }
 
 /* auto-fit + tope de 380px: con un solo trabajo la tarjeta NO se estira a
    todo el ancho, y las siguientes se van acomodando desde la izquierda. */
@@ -1453,6 +1487,36 @@ body[data-page="creative"] .wrap{ --w:var(--w-wide); }   /* es una galería: pid
 }
 .cr-soon-t{ font-family:var(--font-pixel); font-weight:700; font-size:1.15rem; color:var(--pink-ink); }
 .cr-soon-x{ font-family:var(--font-term); font-size:1.15rem; line-height:1.35; color:var(--text-soft); max-width:22ch; }
+
+/* ── CREATIVO RESPONDE CON SU PROPIO COLOR ────────────────────
+   Esta página reusaba .pcard tal cual y no tenía nada suyo. Sin añadir
+   un solo elemento nuevo (la regla que salió de pau.exe: lo que ya está
+   cobra vida, lo nuevo compite), dos detalles que pasan SOLO aquí:
+
+     · la sombra de cada tarjeta toma EL COLOR DE SU PROPIA VENTANA. El
+       color ya vivía en data/creativos.js y solo pintaba la barra de
+       título; ahora la tarjeta entera lo reconoce. Se lee con :has(),
+       lo mismo que ya hace el "Send" de Contacto.
+     · el sello (el librito pixel) da un cabeceo con ico-nod, la
+       animación que ya existe en esta hoja. Es la sección ilustrada:
+       el dibujo es lo que tiene que reaccionar.
+
+   Los valores NO son los tokens pastel: --sky y sus compañeros son
+   demasiado claros para leerse como sombra sobre --pink-pale. Van un
+   paso más saturados, por la misma razón y con el mismo criterio que
+   --scr-mail / --scr-gh / --scr-in en la pantalla de pau.exe. */
+.cr-grid .pcard-win{ --pc-sh:var(--pink-mid); }
+.cr-grid .pcard-win:has(.win-bar.sky){    --pc-sh:#A9D9F4; }
+.cr-grid .pcard-win:has(.win-bar.mint){   --pc-sh:#A5E0BC; }
+.cr-grid .pcard-win:has(.win-bar.lav){    --pc-sh:#C9B2F2; }
+.cr-grid .pcard-win:has(.win-bar.peach){  --pc-sh:#FFC89A; }
+.cr-grid .pcard-win:has(.win-bar.yellow){ --pc-sh:#FFD65E; }
+
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .cr-grid .pcard:hover .pcard-win,
+  .cr-grid .pcard:focus-visible .pcard-win{ box-shadow:6px 8px 0 var(--pc-sh); }
+  .cr-grid .pcard:hover .pcard-sticker .px{ animation:ico-nod .42s ease-in-out 1; }
+}
 
 @media (max-width:560px){
   .cr-grid{ grid-template-columns:minmax(0,1fr); gap:30px; }

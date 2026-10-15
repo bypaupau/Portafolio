@@ -75,9 +75,30 @@ body.cs-body .wrap{ --w:var(--w-wide); }
   display:block; font-family:var(--font-pixel); font-size:1rem; font-weight:500;
   color:var(--text-soft); text-decoration:none; line-height:1.25;
   padding:5px 10px; border:2px solid transparent;
-  transition:all var(--mo-fast,180ms) ease;
+  /* explícita y no `all`: con `all` el navegador vigila cada propiedad
+     del enlace (incluidas las que cambian al marcarse como activo) y en
+     celular eso se paga en cada scroll. */
+  transition:color var(--mo-fast,180ms) ease,
+             background-color var(--mo-fast,180ms) ease,
+             border-color var(--mo-fast,180ms) ease;
 }
 .cs-rail-item a:hover{ color:var(--ink); border-color:var(--pink-mid); background:var(--pink-light); }
+/* el riel también se presiona: no tiene sombra que hundir, así que el
+   peso lo da el color (el mismo recurso que usa .arow al seleccionarse) */
+.cs-rail-item a:active{ color:var(--ink); background:var(--pink-mid); }
+
+/* ── FOCO DE TECLADO ──────────────────────────────────────────
+   Esta hoja era la única del sitio sin un solo :focus-visible: el riel,
+   el botón de salida y los enlaces respondían al mouse y a nada más, así
+   que recorrer un caso con el teclado era avanzar a ciegas. Es el mismo
+   anillo rosa punteado que ya usan .btn, .social, el nav y las filas del
+   archivo, declarado una vez para los cuatro enlaces de la página. */
+.cs-rail-item a:focus-visible,
+.cs-rail-out:focus-visible,
+.cs-rel a:focus-visible,
+.cs-text a:focus-visible{
+  outline:3px dashed var(--pink); outline-offset:3px;
+}
 .cs-rail-item.is-here a{
   color:var(--ink); font-weight:600;
   background:var(--cs,var(--pink-light)); border-color:var(--ink);
@@ -89,7 +110,9 @@ body.cs-body .wrap{ --w:var(--w-wide); }
   color:var(--pink); text-decoration:none;
   padding:7px 11px; background:#fff;
   border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
-  transition:all var(--mo-fast,180ms) ease;
+  transition:color var(--mo-fast,180ms) ease,
+             transform var(--mo-fast,180ms) ease,
+             box-shadow var(--mo-fast,180ms) ease;
 }
 .cs-rail-out:hover{ transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); color:var(--ink); }
 .cs-rail-out:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
@@ -405,7 +428,8 @@ body.cs-body .wrap{ --w:var(--w-wide); }
 .cs-rel a{
   display:flex; gap:12px; align-items:center; text-decoration:none;
   background:#fff; border:3px solid var(--ink); box-shadow:4px 4px 0 var(--pink-mid);
-  padding:11px 13px; transition:all var(--mo-fast,180ms) ease;
+  padding:11px 13px;
+  transition:transform var(--mo-fast,180ms) ease, box-shadow var(--mo-fast,180ms) ease;
 }
 .cs-rel a:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--pink-mid); }
 .cs-rel a:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--pink-mid); }
@@ -472,7 +496,26 @@ body.cs-body .wrap{ --w:var(--w-wide); }
   .cs-shots{ gap:11px; }
   .cs-shot, .cs-shot.is-lead, .cs-shot.is-side{ max-width:none; }
 }
+/* pantallas táctiles: sin hover pegado, igual que el bloque equivalente
+   de styles.css. Al tocar una tarjeta relacionada o el botón de salida, el
+   desplazamiento se quedaba puesto hasta tocar en otra parte. */
+@media (hover:none){
+  .cs-rail-out:hover, .cs-rel a:hover{ transform:none; }
+  .cs-rail-out:hover{ box-shadow:3px 3px 0 var(--ink); }
+  .cs-rel a:hover{ box-shadow:4px 4px 0 var(--pink-mid); }
+}
+
 @media (prefers-reduced-motion:reduce){
-  .cs-rail-list::after{ transition:none; }
-  .cs-rel a:hover{ transform:none; }
+  /* se apagan las transiciones de TODAS las reglas que las tienen, no solo
+     la del camino: el riel seguía atenuándose y las tarjetas relacionadas
+     seguían desplazándose al pasar el cursor. */
+  .cs-rail-list::after,
+  .cs-rail-item::before,
+  .cs-rail-item a,
+  .cs-rail-out,
+  .cs-rel a{ transition:none; }
+  /* el desplazamiento del hover se va; el del :active se queda, porque es
+     respuesta a un gesto directo y no adorno. El punto de la parada activa
+     conserva su tamaño: marca dónde estás, no es movimiento. */
+  .cs-rail-out:hover, .cs-rel a:hover{ transform:none; }
 }

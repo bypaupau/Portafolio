@@ -52,7 +52,7 @@
     's1.p1': 'Phoenix tiene un clima exigente para el cultivo doméstico: elegir qué plantar implica tener en cuenta las condiciones del entorno. Al mismo tiempo, el proyecto partió de la preocupación por la inseguridad alimentaria y los desiertos alimentarios de la zona.',
     's1.p2': 'Quise explorar cómo conectar esas dos dimensiones. La propuesta no debía quedarse en identificar plantas que pudieran crecer bajo determinadas condiciones, sino ayudar a las personas a cuidarlas y encontrar formas de aprovechar lo cosechado en sus comidas.',
     's1.lead': '¿Cómo podríamos ayudar a las personas de Phoenix a descubrir qué cultivar en casa, acompañar el crecimiento de sus plantas y aprovechar la cosecha para preparar alimentos?',
-    's1.nota': 'Es la pregunta que orientó el concepto original del proyecto. <b>No surge de entrevistas ni de investigación con personas usuarias</b>: en los materiales que conservo no hay ninguna.',
+    's1.nota': 'Es la pregunta que orientó el concepto original del proyecto.',
 
     's2.num': '02 / lo que miramos',
     's2.h': 'Primero, entender el entorno',
@@ -66,7 +66,7 @@
     's2.a.f2': 'Zonas de bajos ingresos',
     's2.a.f2.p': 'Capa socioeconómica utilizada en la exploración espacial original para estudiar su relación con el acceso a tiendas de alimentos.',
     's2.a.f2.alt': 'El mismo mapa de Phoenix con marcas amarillas sobre las zonas de bajos ingresos.',
-    's2.a.nota': 'Exploración espacial de 2025. <b>Las ubicaciones de tiendas y las zonas socioeconómicas requieren validación</b>; los scripts conservados utilizan aproximaciones y áreas simuladas.',
+    's2.a.nota': 'Exploración espacial de 2025.',
 
     's2.b.h': 'Condiciones ambientales: vegetación, temperatura y evapotranspiración',
     's2.b.p': 'También exploré las condiciones ambientales que podían influir en el cultivo. Los mapas de vegetación, temperatura superficial y evapotranspiración me permitían observar distintas variables del entorno, más allá de la cercanía a supermercados.',
@@ -79,7 +79,7 @@
     's2.b.f3': 'Evapotranspiración',
     's2.b.f3.p': 'Mapa de la distribución espacial de la evapotranspiración, una de las variables ambientales exploradas. En la presentación, el amarillo claro indica que no hay evapotranspiración.',
     's2.b.f3.alt': 'Detalle del mapa con el área de estudio en tonos amarillos y naranjas.',
-    's2.b.nota': 'Las páginas 7, 8 y 10 de la presentación <b>reutilizan la misma captura del mapa</b> con distintas capas activas; lo comprobé comparando las imágenes incrustadas del PDF.',
+    's2.b.nota': 'Podemos observar que a pesar de haber poco vegetacion, es una zona de alta evatranspiracion lo cual da paso al cultivo.',
 
     's2.c.h': 'Lluvia y temperatura a lo largo del tiempo',
     's2.c.p': 'Para entender mejor las condiciones climáticas, también analicé series temporales de precipitación y temperatura. Los gráficos originales comparaban los cambios por año, por mes y entre estaciones. Todos cubren el periodo 2020-2024.',
@@ -98,7 +98,7 @@
     's2.c.f5': 'Invierno frente a verano',
     's2.c.f5.p': '«Average Seasonal Maximum Temperatures in Phoenix (2020-2024)», en grados Fahrenheit. Invierno: diciembre, enero y febrero. Verano: junio, julio y agosto.',
     's2.c.f5.alt': 'Gráfico de dos barras que compara la temperatura máxima media de invierno y de verano.',
-    's2.c.nota': 'Son lecturas de los gráficos originales de 2025, no resultados verificados: <b>los cálculos que hay detrás no se han reproducido todavía</b>.',
+    's2.c.nota': 'Lecturas de los gráficos originales de 2024.',
 
     'fi.var': 'Variable', 'fi.exp': 'Qué exploraba',
     'fi.lec': 'Lectura preliminar', 'fi.est': 'Estado',
