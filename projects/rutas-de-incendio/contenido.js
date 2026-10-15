@@ -55,7 +55,7 @@
   enlaces: [
     {
       "tipo": "repo",
-      "url": "https://github.com/DATATHON-WIDS/wids-datathon-2026-artemis-4",
+      "url": "https://github.com/bypaupau/WIDS-DATATHON-2026-ARTEMIS4",
       "texto": {
         "es": "ver el código",
         "en": "view the code"

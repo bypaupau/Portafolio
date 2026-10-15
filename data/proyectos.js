@@ -54,7 +54,7 @@ const PROYECTOS = [
       en: "Data science notebook to analyze and predict wildfire routes."
     },
     habilidades: ["Python", "Data Science", "Pandas", "Matplotlib"],
-    repo: "https://github.com/DATATHON-WIDS/wids-datathon-2026-artemis-4",
+    repo: "https://github.com/bypaupau/WIDS-DATATHON-2026-ARTEMIS4",
     img: "img/rutasincendio.png",
     estado: "completado"
   },
