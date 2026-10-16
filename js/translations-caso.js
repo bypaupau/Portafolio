@@ -79,7 +79,7 @@
     's2.b.f3': 'Evapotranspiración',
     's2.b.f3.p': 'Mapa de la distribución espacial de la evapotranspiración, una de las variables ambientales exploradas. En la presentación, el amarillo claro indica que no hay evapotranspiración.',
     's2.b.f3.alt': 'Detalle del mapa con el área de estudio en tonos amarillos y naranjas.',
-    's2.b.nota': 'Podemos observar que a pesar de haber poco vegetacion, es una zona de alta evatranspiracion lo cual da paso al cultivo.',
+    's2.b.nota': 'Podemos observar que, a pesar de haber poca vegetación, es una zona de alta evapotranspiración, lo cual da paso al cultivo.',
 
     's2.c.h': 'Lluvia y temperatura a lo largo del tiempo',
     's2.c.p': 'Para entender mejor las condiciones climáticas, también analicé series temporales de precipitación y temperatura. Los gráficos originales comparaban los cambios por año, por mes y entre estaciones. Todos cubren el periodo 2020-2024.',
@@ -200,7 +200,7 @@
     'f.win': 'Recognition',
     'f.win.v': 'First place among more than 80 international teams.',
     'f.equ': 'Team',
-    'f.equ.v': 'A team project: the other screens and other parts of the proposal were built by my teammates.',
+    'f.equ.v': 'A team project: the other screens and other parts of the proposal were built by my teammates. The exact line-up and the split of tasks are still to be documented.',
     'f.est': 'Status',
     'f.est.v': 'Prototype presented in 2025; research under review and a new version in development.',
 
@@ -213,7 +213,7 @@
     's1.p1': 'Phoenix has a demanding climate for home growing: choosing what to plant means taking the conditions of the place into account. At the same time, the project started from a concern about food insecurity and the food deserts of the area.',
     's1.p2': 'I wanted to explore how to connect those two dimensions. The proposal should not stop at identifying plants that could grow under certain conditions, but help people care for them and find ways to use the harvest in their meals.',
     's1.lead': 'How might we help people in Phoenix discover what to grow at home, support their plants as they grow, and use the harvest to prepare food?',
-    's1.nota': 'This is the question that guided the original concept. <b>It does not come from interviews or user research</b>: there is none in the materials I still have.',
+    's1.nota': 'It is the question that guided the original concept of the project.',
 
     's2.num': '02 / what we looked at',
     's2.h': 'First, understand the place',
@@ -227,7 +227,7 @@
     's2.a.f2': 'Low-income areas',
     's2.a.f2.p': 'Socioeconomic layer used in the original spatial exploration to study its relationship with access to food stores.',
     's2.a.f2.alt': 'The same map of Phoenix with yellow marks over the low-income areas.',
-    's2.a.nota': '2025 spatial exploration. <b>The store locations and socioeconomic areas need validation</b>; the surviving scripts use approximations and simulated areas.',
+    's2.a.nota': '2025 spatial exploration.',
 
     's2.b.h': 'Environmental conditions: vegetation, temperature and evapotranspiration',
     's2.b.p': 'I also explored the environmental conditions that could affect growing. The vegetation, land surface temperature and evapotranspiration maps let me look at different variables of the place, beyond proximity to a grocery store.',
@@ -240,7 +240,7 @@
     's2.b.f3': 'Evapotranspiration',
     's2.b.f3.p': 'Map of the spatial distribution of evapotranspiration, one of the environmental variables explored. In the deck, light yellow means there is no evapotranspiration.',
     's2.b.f3.alt': 'Detail of the map with the study area in yellow and orange tones.',
-    's2.b.nota': 'Pages 7, 8 and 10 of the deck <b>reuse the same map screenshot</b> with different layers switched on; I checked by comparing the embedded images in the PDF.',
+    's2.b.nota': 'We can see that, despite there being little vegetation, this is an area of high evapotranspiration, which makes growing possible.',
 
     's2.c.h': 'Rain and temperature over time',
     's2.c.p': 'To understand the climate better I also looked at time series of precipitation and temperature. The original charts compared changes by year, by month and between seasons. All of them cover 2020-2024.',
@@ -259,7 +259,7 @@
     's2.c.f5': 'Winter against summer',
     's2.c.f5.p': '“Average Seasonal Maximum Temperatures in Phoenix (2020-2024)”, in degrees Fahrenheit. Winter: December, January, February. Summer: June, July, August.',
     's2.c.f5.alt': 'Two-bar chart comparing average maximum temperature in winter and in summer.',
-    's2.c.nota': 'These are readings of the original 2025 charts, not verified results: <b>the calculations behind them have not been reproduced yet</b>.',
+    's2.c.nota': 'Readings of the original 2024 charts.',
 
     'fi.var': 'Variable', 'fi.exp': 'What it explored',
     'fi.lec': 'Preliminary reading', 'fi.est': 'Status',
@@ -270,6 +270,7 @@
 
     's2.d.h': 'From environmental conditions to plants',
     's2.d.p': 'Knowing the place was only the first step. Next I needed to research which plants and fruits could grow under those conditions, so I looked into scientific literature on species able to develop in demanding environments.',
+    's2.d.nota': '<b>The bibliographic references and the specific species are still to be recovered.</b> Until I have them, this case study attributes no conclusion to that review.',
 
     's2.src.h': 'The sources the deck documents',
     's2.src.p': 'The closing pages of the deck list the collections used. They are the same ones that appear in the two Google Earth Engine files I still have.',
@@ -282,7 +283,7 @@
     's3.t3': 'Cook', 's3.t3.p': 'Connect growing with recipes that make use of the harvest.',
     's3.gam.h': 'Gamification and motivation',
     's3.gam.p': 'To encourage people to keep going, a teammate proposed adding a social and gamification component: earning points by growing plants and cooking with the harvest, and spending those points on accessories for the app mascot.',
-    's3.nota': 'The three moments and the gamification belong <b>to the concept and the prototype</b>. ',
+    's3.nota': 'The three moments and the gamification belong <b>to the concept and the prototype</b> of the project. They are not implemented or validated features.',
 
     's4.num': '04 / the screens',
     's4.h': 'The proposal, screen by screen',
@@ -298,7 +299,7 @@
 
     'gB.h': 'From the plant to the plate',
     'gB.p1': 'A plant page shows its life cycle, its health and humidity, alongside growing metrics such as the days left until harvest. The recipe screen presents a dish with its calories, ingredients and description.',
-    'gB.p2': 'They are the two ends of the project idea: caring for what grows and using it in the kitchen. Whether the prototype linked one screen to the other automatically is not documented.',
+    'gB.p2': 'They are the two ends of the project idea: caring for what grows and using it in the kitchen.',
     'gB.c1': 'Plant statistics', 'gB.c2': 'Recipe',
     'gB.a1': 'Screen for a tomato plant with statistic rings and growing metrics.',
     'gB.a2': 'Screen for a chicken salad recipe with ingredients and a description.',
