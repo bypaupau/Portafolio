@@ -138,9 +138,9 @@ var TRANSLATIONS = {
 
       /* ¿qué estoy haciendo ahora? (mensajito bajo el hero) */
       'now.ask': '¿qué estoy haciendo en este momento...?',
-      'now.uiux': 'realizando Fundamentals of UI/UX Design by CalArts - Coursera',
-      'now.web': 'aprendiendo de The Complete Full-Stack Web Development Bootcamp by Angela Yu - Udemy',
-      'now.gci': 'aceptada en GCI World Data Science by University of Tokyo 2026',
+      'now.uiux': 'Realizando Fundamentals of UI/UX Design by CalArts - Coursera',
+      'now.web': 'Aprendiendo de The Complete Full-Stack Web Development Bootcamp by Angela Yu - Udemy',
+      'now.gci': 'Aceptada en GCI World Data Science by University of Tokyo 2026',
       'now.mine': 'Trabajando en mi portafolio, proyectos personales y de la universidad',
 
       'route.num': '01 / de dónde vengo',
