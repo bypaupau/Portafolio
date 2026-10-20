@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/styles.css?v=30">
-<link rel="stylesheet" href="../css/sobremi.css?v=17">
+<link rel="stylesheet" href="../css/sobremi.css?v=29">
 <!-- la animación de entrada solo se arma si hay JS y la persona no pidió menos
      movimiento; va aquí arriba para que no haya un "parpadeo" de contenido -->
 <script>
@@ -83,6 +83,39 @@
     <!-- margen derecho · lado "código": la idea ya funciona (build listo → resultado) -->
     <div class="ab-deco ab-deco-r hx" style="--d:680ms" aria-hidden="true">
 
+  </section>
+
+
+  <!-- ═══════════ ¿QUÉ ESTOY HACIENDO AHORA? ═══════════
+       Un mensajito pegado debajo del hero, no una sección: una sola caja,
+       un solo borde, cuatro frases y los logos chiquitos. Las etiquetas
+       (rosa y amarilla) van planas, sin borde, para no sumar más cajas. -->
+  <section class="ab-now wrap ab-reveal" aria-labelledby="ab-now-t">
+    <div class="now-msg">
+      <div class="now-head">
+        <p class="now-tag" aria-hidden="true">pau</p>
+        <h2 class="now-ask" id="ab-now-t" data-i18n="about.now.ask">¿qué estoy haciendo en este momento...?</h2>
+      </div>
+
+      <ul class="now-list">
+        <li class="now-line">
+          <img class="now-logo" src="../img/logos/coursera.png" width="48" height="48" alt="Coursera">
+          <span data-i18n="about.now.uiux">viendo Fundamentals of UI/UX Design by CalArts · Coursera</span>
+        </li>
+        <li class="now-line">
+          <img class="now-logo" src="../img/logos/udemy.png" width="48" height="48" alt="Udemy">
+          <span data-i18n="about.now.web">viendo The Complete Full-Stack Web Development Bootcamp by Angela Yu · Udemy</span>
+        </li>
+        <li class="now-line">
+          <img class="now-logo" src="../img/logos/utokyo.png" width="48" height="48" alt="University of Tokyo">
+          <span data-i18n="about.now.gci">registrada en GCI World Data Science by University of Tokyo 2026</span>
+        </li>
+        <li class="now-line">
+          <span class="now-logo now-logo-pix"><svg class="now-pix" viewBox="0 0 7 6" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="0" width="2" height="1" fill="#E87EA1"/><rect x="4" y="0" width="2" height="1" fill="#E87EA1"/><rect x="0" y="1" width="7" height="1" fill="#E87EA1"/><rect x="0" y="2" width="7" height="1" fill="#E87EA1"/><rect x="1" y="3" width="5" height="1" fill="#E87EA1"/><rect x="2" y="4" width="3" height="1" fill="#E87EA1"/><rect x="3" y="5" width="1" height="1" fill="#E87EA1"/></svg></span>
+          <span data-i18n="about.now.mine">Trabajando en mi portafolio, proyectos personales y de la universidad</span>
+        </li>
+      </ul>
+    </div>
   </section>
 
   <div class="wrap">
@@ -232,9 +265,9 @@
 <p class="foot"><span data-i18n="foot.made">hecho con</span> <span class="hp">&lt;3</span> <span data-i18n="foot.rest">+ pixeles · por Pau · © 2026</span></p>
 
 <!-- idioma (ES/EN) + taskbar: van primero para que todo lo demás ya salga traducido -->
-<script src="../js/translations.js?v=16"></script>
+<script src="../js/translations.js?v=18"></script>
 <script src="../js/i18n.js?v=1"></script>
 <script src="../js/portfolio.js?v=5"></script>
-<script src="../js/sobremi.js?v=5"></script>
+<script src="../js/sobremi.js?v=9"></script>
 </body>
 </html>

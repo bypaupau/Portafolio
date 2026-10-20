@@ -11,8 +11,7 @@
         animación del sitio que cuenta una historia en vez de solo
         presentar contenido, así que tiene su propio orden.
 
-   La animación sigue siendo reversible (al salir y volver a entrar) y
-   sigue sin scale ni rebote, a propósito.
+   Las secciones y el bocadillo usan el reveal compartido de PXReveal.
    ═══════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -22,6 +21,7 @@
 
   /* qué entra dentro de cada sección, en orden de lectura */
   var PIEZAS = [
+    ':scope > .now-msg',                                       /* presentación · bocadillo completo */
     ':scope > .ab-head > *',                                    /* 01 / ··· · título · subtítulo */
     ':scope > .ab-title', ':scope > .ab-sub', ':scope > .hero-btns',  /* cierre */
     ':scope > .win',                                            /* ruta · pistas */

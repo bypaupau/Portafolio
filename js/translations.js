@@ -136,8 +136,15 @@ var TRANSLATIONS = {
       'lead2.myself': 'yo misma',
       status: 'abierta a pasantías · UX/UI · product design',
 
+      /* ¿qué estoy haciendo ahora? (mensajito bajo el hero) */
+      'now.ask': '¿qué estoy haciendo en este momento...?',
+      'now.uiux': 'viendo Fundamentals of UI/UX Design by CalArts · Coursera',
+      'now.web': 'viendo The Complete Full-Stack Web Development Bootcamp by Angela Yu · Udemy',
+      'now.gci': 'registrada en GCI World Data Science by University of Tokyo 2026',
+      'now.mine': 'Trabajando en mi portafolio, proyectos personales y de la universidad',
+
       'route.num': '01 / de dónde vengo',
-      'route.title': 'No cambié de carrera: fui juntando piezas.',
+      'route.title': 'Juntando las piezas de mi camino',
       'route.sub': 'Cada etapa me dejó algo que hoy uso al diseñar.',
       'route.win': 'C:/pau/01_ruta',
       'route.ill': 'ilustración', 'route.ill.txt': 'Me enseñó a mirar con calma: proporción, color, detalle.',
@@ -184,9 +191,9 @@ var TRANSLATIONS = {
       'out.title': 'Pistas sobre mí.',
       'out.sub': 'Lo que hago cuando no estoy en clase (y que se cuela en lo que diseño).',
       'out.win': 'C:/pau/03_pistas',
-      'clue.draw':  '<b>Dibujo</b> chibis, libritos y bodegones — a veces todo en la misma página.',
-      'clue.paint': '<b>Pinto</b>, y el concept art de Studio Ghibli es mi debilidad.',
-      'clue.play':  '<b>Juego</b> videojuegos y, sin querer, termino analizando sus menús.',
+      'clue.draw':  '<b>Dibujo</b> en mi tiempo libro, es la bases de todo en mi proceso.',
+      'clue.paint': '<b>Pinto</b>, me encantan las ilustraciones, las pinturas y todo lo artístico.',
+      'clue.play':  '<b>Juego</b> y termino analizado el diseño de ellos. Especialmente juegos de Nintendo.',
       'clue.music': '<b>Música</b> de fondo para dibujar, programar o las dos cosas a la vez.',
       'clue.craft': '<b>Crochet y arcilla</b>: diseñar, pero con las manos.',
       'clue.read':  '<b>Leo</b> bastante. Por eso existe mi <a href="proyectos.html">app de tracking de libros</a>.',
@@ -384,8 +391,15 @@ var TRANSLATIONS = {
       'lead2.myself': 'myself',
       status: 'open to internships · UX/UI · product design',
 
+      /* what am I up to right now? (little note under the hero) */
+      'now.ask': 'what am I up to right now...?',
+      'now.uiux': 'watching Fundamentals of UI/UX Design by CalArts · Coursera',
+      'now.web': 'watching The Complete Full-Stack Web Development Bootcamp by Angela Yu · Udemy',
+      'now.gci': 'registered for GCI World Data Science by University of Tokyo 2026',
+      'now.mine': 'Working on my portfolio, personal projects and university',
+
       'route.num': '01 / where I come from',
-      'route.title': 'I didn’t switch careers: I kept collecting pieces.',
+      'route.title': 'Combining the pieces in my path.',
       'route.sub': 'Every stage left me something I use when I design today.',
       'route.win': 'C:/pau/01_path',
       'route.ill': 'illustration', 'route.ill.txt': 'Taught me to look slowly: proportion, color, detail.',

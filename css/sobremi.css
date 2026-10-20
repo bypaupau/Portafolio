@@ -670,3 +670,118 @@
   .route-motion .stop:not(:last-child)::after,
   .route-motion.is-walking .stop:not(:last-child)::after{ transform:none; transition:none; }
 }
+
+
+/* ════════════════════════════════════════════════
+   ¿QUÉ ESTOY HACIENDO AHORA? · mensajito pegado al hero
+   Una caja, un borde, cuatro frases. Nada de tarjetas por actividad ni
+   etiquetas de estado: el estado lo dice la frase ("viendo", "registrada
+   en"). El ancho es el mismo del hero para que se lean como una pieza.
+   ════════════════════════════════════════════════ */
+/* mismo lienzo que el hero (gana a la regla .wrap de la página) */
+/* el mensaje usa el mismo ancho que el resto de la página (--w-wide, vía la
+   regla .wrap de styles.css), así sus bordes caen justo sobre los de 01 */
+.ab-now{ margin-top:clamp(6px,1.2vw,18px); }
+
+.now-msg{
+  position:relative;
+  isolation:isolate;
+  background:transparent;
+  border:35px solid transparent;
+  border-width:35px 3.5px 3.5px 35px;
+  padding:0 clamp(18px,2.4vw,26px) 17px;
+}
+
+/* Capas de nueve cortes sincronizadas: el SVG auxiliar rellena la misma
+   silueta; el contorno usa el mismo trazado con un trazo de 11 (5.5 px al
+   escalar el corte 70×70 a 35 px). Los lados cortos reciben ese mismo ancho. */
+.now-msg::before,
+.now-msg::after{
+  content:"";
+  position:absolute;
+  inset:-35px -3.5px -3.5px -35px;
+  z-index:0;
+  box-sizing:border-box;
+  border-style:solid;
+  border-width:35px 3.5px 3.5px 35px;
+  border-image-slice:70 4 4 70 fill;
+  border-image-width:35px 3.5px 3.5px 35px;
+  border-image-repeat:stretch;
+  pointer-events:none;
+}
+.now-msg::before{
+  border-image-source:url("../resources/dialogue-box-fill.svg");
+  filter:drop-shadow(4px 4px 0 var(--pink-mid));
+}
+.now-msg::after{
+  border-image-source:url("../resources/dialogue-box-outline.svg");
+  border-image-slice:70 4 4 70;
+  border-image-width:35px 5.5px 5.5px 35px;
+  z-index:1;
+}
+
+/* ── las cuatro frases, dos columnas, cada una en una sola línea ── */
+.now-list{
+  position:relative; z-index:2;
+  list-style:none;
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px clamp(20px,2.6vw,38px);
+  margin-left:calc(clamp(18px,2.4vw,26px) - 33px);
+}
+.now-line{
+  display:flex; align-items:center; gap:10px; min-width:0;
+  font-size:.92rem; line-height:1.4; color:var(--text-soft);
+}
+.now-logo{
+  flex:none; width:24px; height:24px;
+  object-fit:contain;
+  display:grid; place-items:center;
+}
+.now-logo-pix .now-pix{ width:19px; height:auto; image-rendering:pixelated; }
+
+/* ── las dos etiquetas: arriba a la derecha, planas y apenas giradas.
+      Van en absoluto para que las frases usen el ancho entero; el
+      padding-top del mensaje les reserva el sitio, así nunca tapan texto. ── */
+.now-head{
+  /* right:-3.5px reaches the outer edge of the bubble's right border. */
+  position:absolute; top:-71px; right:-3.5px;
+  z-index:2;
+  display:flex; flex-direction:column; align-items:flex-end; gap:5px;
+}
+.now-tag{
+  font-family:var(--font-pixel); font-weight:600; font-size:1rem; line-height:1;
+  color:var(--ink); background:var(--pink-mid);
+  padding:5px 16px 6px; rotate:-2deg;
+}
+.now-ask{
+  font-family:var(--font-pixel); font-weight:600; font-size:.96rem; line-height:1.15;
+  color:var(--ink); background:var(--yellow);
+  padding:5px 11px 6px; rotate:-1deg;
+}
+
+/* ── ≤900 · las etiquetas bajan al flujo: nada queda flotando sobre el texto ── */
+@media (max-width:900px){
+  .now-msg{ padding:0 18px 16px; }
+  .now-head{
+    position:static; align-items:flex-end;
+    /* 18px content padding + 3.5px border, to keep the same outer edge. */
+    margin:-47px calc(-18px - 3.5px) 14px -15px;
+  }
+  .now-list{ grid-template-columns:1fr; gap:10px; margin-left:-15px; }
+  .now-line{ align-items:flex-start; }
+  .now-logo{ margin-top:1px; }
+}
+
+/* ── ≤760 · celular ── */
+@media (max-width:760px){
+  .now-msg{ padding:0 15px 15px; }
+  .now-head{ margin:-46px calc(-15px - 3.5px) 13px -18px; }
+  .now-list{ margin-left:-18px; }
+  .now-ask{ font-size:.9rem; }
+  .now-line{ font-size:.9rem; }
+}
+
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .now-logo{ transition:transform .25s var(--ease-pop); }
+  .now-line:hover .now-logo{ transform:scale(1.12); }
+}
