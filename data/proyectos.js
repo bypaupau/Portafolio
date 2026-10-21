@@ -37,7 +37,6 @@ const PROYECTOS = [
   },
   {
     nombre: { es: "Rutas de Incendio · WiDS Datathon", en: "Wildfire Routes · WiDS Datathon" },
-    destacado: 2,
     disciplinas: ["datos"],
     fecha: "2026-06",
     nombreCorto: { es: "Rutas de incendio", en: "Wildfire routes" },
@@ -131,6 +130,35 @@ const PROYECTOS = [
     estado: "completado"
   },
   {
+    nombre: "Schaman Analytics BI",
+    destacado: 2,
+    disciplinas: ["diseno", "datos", "desarrollo"],
+    fecha: "2026-10",
+    nombreCorto: "Schaman Analytics",
+    meta: { es: "Rediseño de interfaz · 2026", en: "Interface redesign · 2026" },
+    archivo: "schaman_analytics",
+    color: "sky",
+    logro: { es: "rediseño UX/UI", en: "UX/UI redesign" }, sello: "s-pink",
+    frase: {
+      es: "Rediseñé la interfaz de un dashboard de datos para que se pueda leer sin saber SQL.",
+      en: "I redesigned a data dashboard so it can be read without knowing SQL."
+    },
+    tipo: "academico",
+    // materia por confirmar: se deja "-" para no afirmar la asignatura equivocada
+    materia: "-",
+    periodo: { es: "Octubre 2026", en: "October 2026" },
+    descripcion: {
+      es: "Rediseño UX/UI de un dashboard para explorar sesiones de atención omnicanal, con un modelo dimensional y KPI de demostración como contexto.",
+      en: "UX/UI redesign of a dashboard for exploring omnichannel support sessions, with a dimensional model and demonstration KPIs as context."
+    },
+    habilidades: ["React", "Supabase", "PostgreSQL", { es: "Diseño UI", en: "UI Design" }, "Business Intelligence"],
+    // tiene página propia: la tarjeta lleva al caso
+    caso: "caso/schaman-analytics-bi.html",
+    repo: "",
+    img: "img/schaman-analytics.png",
+    estado: "en-progreso"
+  },
+  {
     nombre: { es: "Simulación de Videojuego · Laravel + Prolog", en: "Video Game Simulation · Laravel + Prolog" },
     disciplinas: ["juegos", "desarrollo"],
     fecha: "2026-06",
@@ -144,22 +172,6 @@ const PROYECTOS = [
     habilidades: ["Laravel", "Prolog", "PHP"],
     repo: "https://github.com/bypaupau/RPG-Game",
     img: "img/aventuraprolog.png",
-    estado: "completado"
-  },
-  {
-    nombre: { es: "Dashboard BI", en: "BI Dashboard" },
-    disciplinas: ["datos", "desarrollo"],
-    fecha: "2026-04",
-    tipo: "academico",
-    materia: { es: "Base de Datos II", en: "Databases II" },
-    periodo: { es: "Abril 2026", en: "April 2026" },
-    descripcion: {
-      es: "Tablero de inteligencia de negocios para analizar facturación, cobranza y servicios, con modelo de datos en SQL.",
-      en: "Business intelligence dashboard to analyze billing, collections and services, built on a SQL data model."
-    },
-    habilidades: ["SQL", "Data Science", "JavaScript"],
-    repo: "https://github.com/bypaupau/BI-Webpage-Base-De-Datos-Proyecto-II-Parcial",
-    img: "img/dashboardbi.png",
     estado: "completado"
   },
   {
