@@ -1,0 +1,76 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   El selector de idioma de la taskbar: botón 🌐 + ventanita.
+
+   Navegable con teclado (flechas, Inicio/Fin, Escape) — eso vive en
+   src/scripts/global/taskbar.ts. Aquí solo el marcado.
+
+   Se renderiza marcando el ESPAÑOL como activo, porque es el idioma
+   por defecto. Si la visitante ya había elegido inglés, el script de
+   idioma lo corrige al cargar (igual que hacía el sitio anterior).
+   ═══════════════════════════════════════════════════════════ */
+import { translate } from '../../i18n/translate';
+import { supportedLanguages, defaultLanguage, type Language } from '../../i18n/languages';
+import type { TranslationKey } from '../../i18n/keys';
+import IconoMundo from '../iconos/IconoMundo.astro';
+import IconoVisto from '../iconos/IconoVisto.astro';
+
+/* el nombre de cada idioma, escrito EN ese idioma (así se reconoce
+   siempre, incluso si no entiendes el idioma de la interfaz) */
+const nombreDelIdioma: Record<Language, TranslationKey> = {
+  es: 'language.spanish',
+  en: 'language.english',
+};
+---
+<div class="tb-lang-wrap">
+  <button
+    type="button"
+    class="tb-btn tb-lang"
+    id="tb-lang"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-controls="tb-lang-menu"
+    aria-label={`${translate('language.buttonLabel')} (${translate('language.currentLabel')})`}
+    title={translate('language.buttonLabel')}
+  >
+    <IconoMundo />
+    <span class="tb-code" aria-hidden="true">{defaultLanguage.toUpperCase()}</span>
+  </button>
+
+  <div class="win tb-pop" id="tb-lang-menu" hidden>
+    <div class="win-bar sky">
+      <span class="win-title" data-i18n="language.windowTitle">{translate('language.windowTitle')}</span>
+      <span class="win-ctrls">
+        <button
+          type="button"
+          class="tb-x"
+          aria-label={translate('navigation.closeLabel')}
+          data-i18n-attr="aria-label:navigation.closeLabel"
+          tabindex="-1"
+        >✕</button>
+      </span>
+    </div>
+
+    <p class="tb-pop-h" id="tb-lang-h" data-i18n="language.heading" aria-hidden="true">{translate('language.heading')}</p>
+
+    <ul class="tb-opts" role="menu" aria-labelledby="tb-lang">
+      {supportedLanguages.map((idioma) => (
+        <li role="none">
+          <button
+            type="button"
+            role="menuitemradio"
+            data-lang={idioma}
+            lang={idioma}
+            aria-checked={idioma === defaultLanguage ? 'true' : 'false'}
+            tabindex="-1"
+            class:list={['tb-opt', idioma === defaultLanguage && 'is-on']}
+          >
+            <span class="tb-opt-mark"><IconoVisto /></span>
+            <span class="tb-opt-name" data-i18n={nombreDelIdioma[idioma]}>{translate(nombreDelIdioma[idioma])}</span>
+            <span class="tb-opt-code" aria-hidden="true">{idioma.toUpperCase()}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

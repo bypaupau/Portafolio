@@ -1,0 +1,326 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   CASO · SCHAMAN ANALYTICS BI  →  /Portafolio/casos/schaman-analytics-bi
+
+   ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
+   contenido   src/content/casos/schaman-analytics-bi.ts  ← TODO el texto
+   estilo      src/styles/casos/caso.css    (compartida con el otro caso)
+   script      src/scripts/casos/riel.ts    (compartido)
+   piezas      src/components/paginas/casos/        (riel, figura, nota, cierre y
+                                             ParAntesDespues, que es de aquí)
+   imágenes    public/images/casos/schaman-analytics-bi/
+               (la portada reusa la imagen de Proyectos, en su versión más grande)
+   URL previa  /pages/caso/schaman-analytics-bi.html → redirige
+
+   ── EN QUÉ SE PARECE Y EN QUÉ NO AL OTRO CASO ──────────────
+   Comparte el riel, la hoja de estilo y las piezas chicas. NO comparte
+   la estructura: este caso trata de rediseñar algo que ya existía, así
+   que su pieza central son las comparaciones antes/después, y tiene
+   secciones que el otro no tiene (las cuatro decisiones de diseño, el
+   flujo de datos, las fórmulas de los indicadores).
+
+   Por eso cada caso tiene su propio archivo: forzar los dos en una
+   plantilla común obligaría a describir con opciones unas rejillas que
+   no se parecen, y sería más difícil de leer que esto.
+
+   data-page va como "caso-schaman" porque hay una regla de CSS que
+   depende de eso (css/caso.css, última línea).
+
+   ── CLAVES ─────────────────────────────────────────────────
+   Este caso tenía las claves más opacas: sch.dec.4.3, sch.f.rol.2.
+   Ahora son decisiones.lista[3].seEspera y miRol.puntos[1].
+   ═══════════════════════════════════════════════════════════ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Texto from '../../components/piezas/Texto.astro';
+import RielDeCaso from '../../components/paginas/casos/RielDeCaso.astro';
+import FiguraDeCaso from '../../components/paginas/casos/FiguraDeCaso.astro';
+import ParAntesDespues from '../../components/paginas/casos/ParAntesDespues.astro';
+import NotaDeCaso from '../../components/paginas/casos/NotaDeCaso.astro';
+import CierreDeCaso from '../../components/paginas/casos/CierreDeCaso.astro';
+import { conIdioma, altConIdioma, htmlConIdioma } from '../../lib/texto-bilingue';
+import { rutaPublica, rutaPagina } from '../../lib/rutas';
+import { imagen, imagenMasGrande } from '../../lib/imagenes';
+import { schamanAnalyticsBi as contenido } from '../../content/casos/schaman-analytics-bi';
+import '../../styles/casos/caso.css';
+
+const REPOSITORIO = 'https://github.com/bypaupau/Schaman-Analytics-BI/tree/rediseno-pau';
+const img = (archivo: string) => rutaPublica('images/casos/schaman-analytics-bi/' + archivo);
+
+/* un atajo, porque esta página pide mucho texto suelto */
+const t = conIdioma;
+
+/* los dos pares antes/después, con sus capturas */
+const comparaciones = [
+  {
+    id: 'g4a', color: 'var(--pink-light)',
+    antes: { imagen: img('01-panel-anterior.webp'), ancho: 1600, alto: 818 },
+    despues: { imagen: img('02-panel-redisenado.webp'), ancho: 1600, alto: 818 },
+  },
+  {
+    id: 'g4b', color: 'var(--sky)',
+    antes: { imagen: img('03-fallos-anterior.webp'), ancho: 1600, alto: 818 },
+    despues: { imagen: img('04-fallos-redisenado.webp'), ancho: 1600, alto: 818 },
+  },
+] as const;
+
+/* los dos diagramas de la sección 05. El pie va en la columna de al
+   lado y no debajo: mismo texto, mucho menos alto. */
+const diagramas = [
+  { id: 'g5a', lado: 'g-side', color: 'var(--mint)',
+    imagen: img('arquitectura-flujo.svg?v=2'), ancho: 1400, alto: 490 },
+  { id: 'g5b', lado: 'g-rev', color: 'var(--peach)',
+    imagen: img('07-modelo-estrella.webp'), ancho: 1600, alto: 1457 },
+] as const;
+
+/* las seis capturas de la galería final */
+const galeria = [
+  { imagen: img('00-portada-dashboard.webp'), ancho: 1600, alto: 818 },
+  { imagen: img('09-tendencias-y-canales.webp'), ancho: 1600, alto: 818 },
+  { imagen: img('04-fallos-redisenado.webp'), ancho: 1600, alto: 818 },
+  { imagen: img('10-prioridades-y-dispositivos.webp'), ancho: 1600, alto: 818 },
+  { imagen: img('05-sesiones.webp'), ancho: 1600, alto: 818 },
+  { imagen: img('06-metodologia.webp'), ancho: 1600, alto: 818 },
+] as const;
+/* la portada ocupa el ancho del contenedor, así que pide la versión más
+   grande que exista de la imagen que Proyectos ya usa como miniatura */
+const portadaDelCaso = imagenMasGrande('images/proyectos/schaman-analytics');
+
+---
+
+<BaseLayout
+  paginaActual="projects"
+  paginaDeDatos="caso-schaman"
+  claveTitulo="pages.projects.metaTitle"
+  claveDescripcion="pages.projects.metaDescription"
+  nombreDeVentana={contenido.documento.nombreDeVentana}
+  claseBody="cs-body"
+  tituloDelCaso={contenido.documento}
+>
+  <div class="wrap">
+    <div class="cs-grid">
+
+      <RielDeCaso portada={contenido.riel.portada} paradas={contenido.riel.paradas} />
+
+      <div class="cs-main">
+
+        {/* ══ PORTADA ══ */}
+        <header class="cs-hero" id="cs-portada" style="--cs:var(--pink-mid)">
+          <div class="cs-hero-top">
+            <div>
+              <Texto class="cs-kicker hx" style="--d:100ms" valor={contenido.portada.antetitulo} />
+              <h1 class="cs-title hx" style="--d:170ms">Schaman Analytics BI</h1>
+              <Texto class="cs-sub hx" style="--d:240ms" valor={contenido.portada.subtitulo} />
+              <Texto class="cs-text hx" style="--d:300ms" valor={contenido.portada.introduccion} />
+              <p class="hx cs-wip-row" style="--d:360ms">
+                <span class="cs-wip"><i aria-hidden="true"></i><Texto como="span" valor={contenido.portada.avisoEnCurso} /></span>
+              </p>
+            </div>
+            <figure class="cs-hero-fig hx" style="--d:420ms">
+              {/* La portada del caso es la MISMA imagen que la miniatura del
+                  proyecto en Proyectos, así que se referencia esa en vez de
+                  guardar una copia. Por eso no usa img(): no está en la
+                  carpeta de este caso. */}
+              <img src={portadaDelCaso.src} width={portadaDelCaso.ancho} height={portadaDelCaso.alto} loading="eager" decoding="async" {...altConIdioma(contenido.portada.imagen.alt)} />
+              <Texto como="figcaption" valor={contenido.portada.imagen.pie} />
+            </figure>
+          </div>
+
+          {/* el terreno del proyecto, en cuatro etiquetas */}
+          <p class="cs-srcs cs-rv">
+            <Texto como="span" class="cs-srcs-k" valor={contenido.terreno.etiqueta} />{contenido.terreno.campos.map((campo) => <Texto como="span" class="cs-src" valor={campo} />)}
+          </p>
+
+          {/* dos protagonistas: lo que hice y con qué */}
+          <dl class="cs-stars cs-rv">
+            <div class="cs-star st-rol">
+              <Texto como="dt" valor={contenido.miRol.etiqueta} />
+              <dd><ul>{contenido.miRol.puntos.map((punto) => <Texto como="li" valor={punto} />)}</ul></dd>
+            </div>
+            <div class="cs-star st-win">
+              <Texto como="dt" valor={contenido.herramientas.etiqueta} />
+              <dd><ul>{contenido.herramientas.puntos.map((punto) => {
+                const p = htmlConIdioma(punto);
+                return <li {...p.atributos} set:html={p.texto} />;
+              })}</ul></dd>
+            </div>
+          </dl>
+
+          {/* ficha compacta: equipo, estado y datos */}
+          <dl class="cs-rows cs-rv">
+            <div class="cs-row r-equipo">
+              <Texto como="dt" valor={contenido.ficha.equipo.etiqueta} />
+              <dd><ul class="cs-team-list">{contenido.ficha.equipo.integrantes.map((integrante) => <Texto como="li" valor={integrante} />)}</ul></dd>
+            </div>
+            <div class="cs-row"><Texto como="dt" valor={contenido.ficha.estado.etiqueta} /><Texto como="dd" valor={contenido.ficha.estado.valor} /></div>
+            <div class="cs-row"><Texto como="dt" valor={contenido.ficha.datos.etiqueta} /><Texto como="dd" valor={contenido.ficha.datos.valor} /></div>
+          </dl>
+        </header>
+
+        {/* ══ 01 · EL RETO ══ */}
+        <section class="cs-sec" id="cs-1" style="--cs:var(--peach)" aria-labelledby="h-cs-1">
+          <header class="cs-head cs-rv">
+            <Texto class="cs-num" valor={contenido.reto.numero} />
+            <Texto como="h2" class="cs-h" id="h-cs-1" valor={contenido.reto.titulo} />
+          </header>
+          {contenido.reto.parrafos.map((parrafo) => <Texto class="cs-text cs-rv" valor={parrafo} />)}
+          <NotaDeCaso texto={contenido.reto.contexto} />
+          <Texto class="cs-lead cs-rv" valor={contenido.reto.pregunta} />
+          <NotaDeCaso texto={contenido.reto.nota} />
+        </section>
+
+        {/* ══ 02 · ANÁLISIS DE LA INTERFAZ ══ */}
+        <section class="cs-sec" id="cs-2" style="--cs:var(--sky)" aria-labelledby="h-cs-2">
+          <header class="cs-head cs-rv">
+            <Texto class="cs-num" valor={contenido.analisis.numero} />
+            <Texto como="h2" class="cs-h" id="h-cs-2" valor={contenido.analisis.titulo} />
+          </header>
+          <Texto class="cs-text cs-rv" valor={contenido.analisis.parrafo} />
+          <ul class="cs-tools cs-rv">{contenido.analisis.observaciones.map((observacion) => {
+            const o = htmlConIdioma(observacion);
+            return <li {...o.atributos} set:html={o.texto} />;
+          })}</ul>
+          <NotaDeCaso texto={contenido.analisis.nota} />
+        </section>
+
+        {/* ══ 03 · DECISIONES DE DISEÑO ══
+            La necesidad va en el primer nivel; decisión, expectativa y
+            validación cuelgan de ella en vez de encadenarse con flechas. */}
+        <section class="cs-sec" id="cs-3" style="--cs:var(--mint)" aria-labelledby="h-cs-3">
+          <header class="cs-head cs-rv">
+            <Texto class="cs-num" valor={contenido.decisiones.numero} />
+            <Texto como="h2" class="cs-h" id="h-cs-3" valor={contenido.decisiones.titulo} />
+          </header>
+          <Texto class="cs-text cs-rv" valor={contenido.decisiones.parrafo} />
+          <ul class="cs-dec cs-rv">{contenido.decisiones.lista.map((decision) => (
+            <li>
+              <p class="cs-dec-n"><Texto como="b" valor={contenido.decisiones.etiquetas.necesidad} /> <Texto como="span" valor={decision.necesidad} /></p>
+              <ul>
+                <li><Texto como="b" valor={contenido.decisiones.etiquetas.decision} /> <Texto como="span" valor={decision.decision} /></li>
+                <li><Texto como="b" valor={contenido.decisiones.etiquetas.seEspera} /> <Texto como="span" valor={decision.seEspera} /></li>
+                <li><Texto como="b" valor={contenido.decisiones.etiquetas.validacion} /> <Texto como="span" valor={decision.validacion} /></li>
+              </ul>
+            </li>
+          ))}</ul>
+          <NotaDeCaso texto={contenido.decisiones.nota} />
+        </section>
+
+        {/* ══ 04 · EL REDISEÑO ══ */}
+        <section class="cs-sec" id="cs-4" style="--cs:var(--lav)" aria-labelledby="h-cs-4">
+          <header class="cs-head cs-rv">
+            <Texto class="cs-num" valor={contenido.redisenio.numero} />
+            <Texto como="h2" class="cs-h" id="h-cs-4" valor={contenido.redisenio.titulo} />
+          </header>
+          {contenido.redisenio.parrafos.map((parrafo) => <Texto class="cs-text cs-rv" valor={parrafo} />)}
+
+          {/* cada par antes/después en su panel pastel */}
+          <div class="cs-groups cs-rv">{comparaciones.map((par, i) => (
+            <ParAntesDespues
+              id={par.id}
+              color={par.color}
+              etiquetaAntes={contenido.redisenio.etiquetaAntes}
+              etiquetaDespues={contenido.redisenio.etiquetaDespues}
+              texto={contenido.redisenio.comparaciones[i]!}
+              antes={par.antes}
+              despues={par.despues}
+            />
+          ))}</div>
+
+          <Texto como="h3" class="cs-sub-h cs-rv" valor={contenido.redisenio.cambios.titulo} />
+          {/* las cinco decisiones, en tarjetas pastel: el mismo tríptico
+              de Grow With Phoenix, con la rejilla adaptada porque aquí
+              no son tres sino cinco */}
+          <div class="cs-tri auto cs-rv">{contenido.redisenio.cambios.lista.map((cambio) => (
+            <div class="cs-tri-c"><Texto como="h3" valor={cambio.nombre} /><Texto valor={cambio.texto} /></div>
+          ))}</div>
+          <NotaDeCaso texto={contenido.redisenio.nota} />
+        </section>
+
+        {/* ══ 05 · CONTEXTO TÉCNICO ══ */}
+        <section class="cs-sec" id="cs-5" style="--cs:var(--sky)" aria-labelledby="h-cs-5">
+          <header class="cs-head cs-rv">
+            <Texto class="cs-num" valor={contenido.contextoTecnico.numero} />
+            <Texto como="h2" class="cs-h" id="h-cs-5" valor={contenido.contextoTecnico.titulo} />
+          </header>
+          <Texto class="cs-text cs-rv" valor={contenido.contextoTecnico.parrafo} />
+          <ol class="cs-flow cs-rv">{contenido.contextoTecnico.flujo.map((paso) => (
+            <li><Texto como="b" valor={paso.nombre} /><Texto como="span" valor={paso.texto} /></li>
+          ))}</ol>
+
+          <div class="cs-groups cs-rv">{diagramas.map((diagrama, i) => {
+            const texto = contenido.contextoTecnico.diagramas[i]!;
+            const titulo = t(texto.titulo);
+            const parrafo = t(texto.parrafo);
+            return (
+              <section class={`cs-g ${diagrama.lado} g-wide`} style={`--g:${diagrama.color}`} aria-labelledby={`h-${diagrama.id}`}>
+                <div class="cs-g-txt">
+                  <h3 class="cs-g-h" id={`h-${diagrama.id}`} {...titulo.atributos}>{titulo.texto}</h3>
+                  <p class="cs-g-p" {...parrafo.atributos}>{parrafo.texto}</p>
+                </div>
+                <figure class="cs-fig2">
+                  <img src={diagrama.imagen} width={diagrama.ancho} height={diagrama.alto} loading="lazy" decoding="async" {...altConIdioma(texto.alt)} />
+                </figure>
+              </section>
+            );
+          })}</div>
+          <NotaDeCaso texto={contenido.contextoTecnico.nota} />
+        </section>
+
+        {/* ══ 06 · MÉTRICAS Y LÍMITES ══ */}
+        <section class="cs-sec" id="cs-6" style="--cs:var(--mint)" aria-labelledby="h-cs-6">
+          <header class="cs-head cs-rv">
+            <Texto class="cs-num" valor={contenido.metricas.numero} />
+            <Texto como="h2" class="cs-h" id="h-cs-6" valor={contenido.metricas.titulo} />
+          </header>
+          <Texto class="cs-text cs-rv" valor={contenido.metricas.parrafo} />
+          <ul class="cs-mets cs-rv">{contenido.metricas.lista.map((metrica) => (
+            <li><Texto como="b" valor={metrica.nombre} /><Texto como="span" valor={metrica.texto} /></li>
+          ))}</ul>
+          {contenido.metricas.notas.map((nota) => <NotaDeCaso texto={nota} />)}
+        </section>
+
+        {/* ══ 07 · LAS PANTALLAS ══ */}
+        <section class="cs-sec" id="cs-7" style="--cs:var(--yellow)" aria-labelledby="h-cs-7">
+          <header class="cs-head cs-rv">
+            <Texto class="cs-num" valor={contenido.pantallas.numero} />
+            <Texto como="h2" class="cs-h" id="h-cs-7" valor={contenido.pantallas.titulo} />
+          </header>
+          <Texto class="cs-text cs-rv" valor={contenido.pantallas.parrafo} />
+
+          {/* capturas de la interfaz rediseñada; el modelo ya salió en
+              Contexto técnico */}
+          <div class="cs-gal cs-rv">{galeria.map((captura, i) => (
+            <FiguraDeCaso
+              imagen={captura.imagen}
+              ancho={captura.ancho}
+              alto={captura.alto}
+              texto={contenido.pantallas.galeria[i]!}
+            />
+          ))}</div>
+          <NotaDeCaso texto={contenido.pantallas.nota} />
+        </section>
+
+        <CierreDeCaso
+          texto={{
+            volver: contenido.cierre.volver,
+            verProyecto: contenido.cierre.verRepositorio,
+            otrosProyectos: contenido.cierre.otrosProyectos,
+          }}
+          enlaceDelProyecto={REPOSITORIO}
+          claseDelBoton="btn btn-yellow"
+          iconoDelBoton={rutaPublica('images/logos/github-icon.png')}
+          relacionados={[
+            { nombre: 'Grow With Phoenix', meta: 'SpaceHACK · 2025',
+              enlace: rutaPagina('casos/grow-with-phoenix'),
+              imagen: imagen('images/proyectos/phoenix-grow', 416).src,
+              interno: true },
+          ]}
+        />
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import '../../scripts/casos/riel';
+  </script>
+</BaseLayout>

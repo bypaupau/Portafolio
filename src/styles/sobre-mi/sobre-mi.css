@@ -1,0 +1,28 @@
+/* ══════════════════════════════
+   SOBRE MÍ · ÍNDICE
+
+   Este archivo ya no tiene reglas: dice en qué ORDEN se cargan las
+   13 partes de partes/. Antes era un solo archivo de 821
+   líneas, que es donde deja de poder leerse y se empieza a buscar dentro.
+
+   El orden importa: en CSS, cuando dos reglas empatan en importancia y
+   especificidad, gana la última que se carga. Así que esta lista ES la
+   cascada, y conserva el orden exacto que tenían las secciones.
+
+   Si cambias el orden, corre  npm run cascada : compara contra el orden
+   original y avisa si algún par de reglas cambió de ganador.
+   ══════════════════════════════ */
+
+@import './partes/base.css';                              /* SOBRE MÍ · hoja de estilo página: src/pages/sobre-mi */
+@import './partes/hero.css';                              /* HERO */
+@import './partes/secciones-estructura-comun.css';        /* SECCIONES (estructura común) */
+@import './partes/01-ruta.css';                           /* 01 · RUTA */
+@import './partes/02-herramientas.css';                   /* 02 · HERRAMIENTAS */
+@import './partes/04-pistas.css';                         /* 04 · PISTAS */
+@import './partes/cierre.css';                            /* CIERRE */
+@import './partes/micro-interacciones.css';               /* MICRO-INTERACCIONES */
+@import './partes/aparicion-hacer-scroll.css';            /* APARICIÓN AL HACER SCROLL */
+@import './partes/canvas-ancho-1100px.css';               /* CANVAS ANCHO (≥1100px): cada sección usa el ancho se */
+@import './partes/hero-lienzo.css';                       /* HERO · LIENZO ANCHO (≥1100px) */
+@import './partes/01-ruta-camina.css';                    /* 01 · LA RUTA SE CAMINA */
+@import './partes/estoy-haciendo-ahora.css';              /* ¿QUÉ ESTOY HACIENDO AHORA? · mensajito pegado al her */

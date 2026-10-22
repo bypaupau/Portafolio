@@ -1,0 +1,22 @@
+/* las tarjetas de materias
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 334–350.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ MATERIAS (cards generadas) ════════ */
+/* min(280px,100%) evita que la columna mínima sea más ancha que la pantalla */
+.materias-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr)); gap:20px; }
+.mat-body{ padding:16px 18px 18px; }
+.mat-period{ font-family:var(--font-tiny); font-size:.55rem; letter-spacing:1px; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px; }
+.mat-name{ font-family:var(--font-pixel); font-weight:700; font-size:1.3rem; color:var(--ink); margin-bottom:12px; line-height:1.1; }
+.proj-list{ list-style:none; display:flex; flex-direction:column; gap:7px; }
+.proj-item{
+  display:flex; align-items:center; gap:8px; padding:10px 11px;
+  min-width:0;                     /* nombres largos se encogen en vez de desbordar */
+  background:var(--pink-pale); border:2px solid var(--ink);
+  font-size:.9rem; font-weight:600; color:var(--text-soft); text-decoration:none; transition:.12s;
+}
+.proj-item:hover{ background:var(--pink-light); color:var(--ink); transform:translateX(3px); }
+.badge{ margin-left:auto; font-family:var(--font-term); font-size:.92rem; padding:2px 8px; border:2px solid var(--ink); flex-shrink:0; }
+.bd-done{ background:var(--mint); color:#2f7d4a; } .bd-wip{ background:var(--yellow); color:#9a6a13; } .bd-soon{ background:var(--pink-light); color:var(--pink); }

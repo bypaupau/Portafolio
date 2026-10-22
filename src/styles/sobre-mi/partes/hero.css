@@ -1,0 +1,156 @@
+/* HERO
+
+   Parte de sobre-mi.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 44–193.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   HERO
+   ════════════════════════════════════════════════ */
+.ab-hero{
+  display:grid;
+  grid-template-columns:minmax(0,38fr) minmax(0,62fr);   /* 38 / 62 */
+  gap:clamp(36px,6vw,80px);
+  align-items:center;
+  padding:clamp(44px,7vw,84px) 0 clamp(16px,3vw,28px);
+}
+
+/* ── polaroid ── */
+.ab-photo{
+  position:relative;
+  margin:0;
+  padding:30px 26px 34px;          /* aire para los stickers */
+}
+.polaroid{
+  position:relative;
+  max-width:300px; 
+  margin-inline:auto;
+  background:#fff;
+  border:4px solid var(--ink);
+  padding:12px 12px 0;
+  box-shadow:6px 6px 0 var(--pink-mid);
+  transform:rotate(-3deg);
+}
+.polaroid img{
+  display:block; 
+  width:100%; 
+  height:auto;
+   aspect-ratio:1;
+  object-fit:cover;
+  border:2px solid var(--ink);
+  background:var(--pink-light);
+}
+.polaroid figcaption{
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  font-family:var(--font-term); font-size:1.55rem; line-height:1; color:var(--ink);
+  padding:11px 0 13px;
+}
+.polaroid figcaption .px{ width:14px; flex:none; }   /* 7 col × 2px */
+/* cinta washi */
+.polaroid::before{
+  content:""; position:absolute; z-index:2;
+  top:-15px; left:50%; width:96px; height:26px;
+  transform:translateX(-50%) rotate(4deg);
+  background:repeating-linear-gradient(90deg, rgba(244,184,204,.92) 0 8px, rgba(252,232,239,.92) 8px 16px);
+  border-left:2px dashed rgba(255,255,255,.7); border-right:2px dashed rgba(255,255,255,.7);
+}
+
+/* ── stickers alrededor ── */
+.stk{
+  position:absolute; 
+  z-index:3; 
+  display:block; 
+  pointer-events:none;
+  filter:drop-shadow(2px 2px 0 rgba(44,26,36,.16));
+}
+.stk-pencil{ --ps:5px; top:2px;  left:0; }          /* 14 col → 70px, ya dibujado en diagonal */
+.stk-code{
+  --ps:4px; top:40%; right:-8px;                      /* 16 col → 64px */
+  background:#fff; border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  padding:9px 10px;
+}
+/* la tarjeta conserva su tamaño de siempre (16 columnas de ancho);
+   el </> compacto (12 columnas) queda centrado adentro */
+.stk-code{
+  --ps:4px; 
+  top:40%; 
+  right:-8px;                    
+  background:#fff; 
+  border:2px 
+  solid var(--ink); 
+  box-shadow:3px 3px 0 var(--ink);
+  padding:9px 10px;
+  transform: rotate(4deg);          /* ← inclina tarjeta + ícono juntos */
+}
+/* el </> se muestra al 80% solo con CSS; la tarjeta no cambia (scale no altera el layout) y queda centrado */
+.stk-code .px{ transform:scale(.8);}
+.stk-cursor{ --ps:2.7px; bottom:5%; right:2%; transform: rotate(-8deg);}       /* 10 col → 40px */
+.stk-spark{  --ps:4px; top:6px;    right:15%; }      /*  7 col → 28px */
+
+/* ── intro ── */
+.ab-intro{ min-width:0; }
+.ab-path{
+  font-family:var(--font-term); font-size:1.2rem; color:var(--text-soft);
+  margin-bottom:6px;
+}
+.ab-hello{
+  font-family:var(--font-pixel); 
+  font-weight:700;
+  font-size:clamp(2.5rem,6.2vw,4.1rem); 
+  line-height:1;
+  color:var(--ink); 
+  text-shadow:4px 4px 0 var(--pink-mid);
+  margin-bottom:22px;
+  display:flex; align-items:center; gap:.3em; flex-wrap:wrap;
+}
+.ab-hello .px{ width:.6em; flex:none; }
+.ab-lead{
+  font-size:clamp(1.02rem,1.5vw,1.14rem); line-height:1.75;
+  color:var(--text-soft); max-width:54ch;
+}
+.ab-lead + .ab-lead{ margin-top:14px; }
+.ab-lead strong{ color:var(--ink); font-weight:600; }
+
+/* palabras con trazo a mano */
+.mark{ position:relative; 
+  display:inline-block; 
+  color:var(--ink); 
+  font-weight:600; 
+  white-space:nowrap; }
+
+.mark svg{ position:absolute; 
+  pointer-events:none; 
+  overflow:visible; }
+
+.mark path{ fill:none; 
+  stroke:var(--pink); 
+  stroke-linecap:round; 
+  stroke-linejoin:round; }
+
+.mark-under svg{ left:-2%; bottom:-.26em; width:104%; height:.42em; }
+.mark-under path{ stroke-width:var(--trazo-subrayado); vector-effect:non-scaling-stroke; }
+/* el óvalo rodea la frase por fuera: padding lateral para que no pise letras,
+   y alto extra para que pase por encima/debajo sin cruzar el texto */
+.mark-circle{ padding:0 .2em; margin:0 .16em; }
+.mark-circle svg{ left:-10%; top:-28%; width:120%; height:162%; z-index:-1;
+  max-width:none; }   /* styles.css limita todo svg al 100% del ancho: el óvalo debe sobresalir */
+.mark-circle path{ stroke-width:var(--trazo-circulo); vector-effect:non-scaling-stroke; }
+
+/* el trazo se "dibuja" una sola vez al cargar: guía el ojo a la idea central */
+@media (prefers-reduced-motion:no-preference){
+  .mark path{ stroke-dasharray:1; stroke-dashoffset:1; animation:ab-draw .7s ease-out forwards; }
+  .mark-under  path{ animation-delay:.45s; }
+  .mark-circle path{ animation-delay:1.05s; animation-duration:.8s; }
+}
+@keyframes ab-draw{ to{ stroke-dashoffset:0; } }
+
+/* estado */
+.ab-status{
+  display:inline-flex; align-items:center; gap:10px;
+  margin-top:26px;
+  font-family:var(--font-term); font-size:1.25rem; line-height:1.1; color:var(--ink);
+  background:#fff; border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  padding:7px 14px 6px;
+}
+.ab-dot{ width:10px; height:10px; flex:none; background:#3FA06A; box-shadow:0 0 0 2px var(--mint); }
+

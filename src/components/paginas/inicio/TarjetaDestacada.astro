@@ -1,0 +1,55 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   UNA TARJETA DE PROYECTO DESTACADO · solo en Inicio
+
+   Son tres y son iguales en estructura, así que van por aquí. No es la
+   misma que TarjetaDeTrabajo (la de Proyectos): esta se dibuja como una
+   ventanita con sticker, imagen y un texto que asoma al pasar el mouse.
+
+   Todo lo que cambia entre las tres llega como prop; lo que se traduce,
+   con su clave puesta, para que el cambio de idioma lo alcance.
+   ═══════════════════════════════════════════════════════════ */
+import Sello from '../../piezas/Sello.astro';
+import { translate } from '../../../i18n/translate';
+import type { TranslationKey } from '../../../i18n/keys';
+
+interface Props {
+  enlace: string;
+  /** true si sale del sitio: abre en otra pestaña */
+  fuera?: boolean;
+  sticker: { dibujo: 'trofeo' | 'medalla' | 'gato'; color: string; clave: TranslationKey };
+  /** el nombre de la ventanita. Si es una clave, se traduce */
+  ventana: { texto: string; clave?: TranslationKey; color: string };
+  imagen: { src: string; claveAlt: TranslationKey };
+  claveAsoma: TranslationKey;
+  chips: readonly TranslationKey[];
+  titulo: { texto: string; clave?: TranslationKey };
+  meta: string;
+}
+const { enlace, fuera = false, sticker, ventana, imagen, claveAsoma, chips, titulo, meta } = Astro.props;
+---
+<a class="pcard rv" href={enlace} {...fuera ? { target: '_blank', rel: 'noopener' } : {}}>
+  {/* Sello ya dibuja el <span class="pcard-sticker …"> completo:
+      aquí solo se le pasa el color, sin otro envoltorio. */}
+  <Sello
+    dibujo={sticker.dibujo}
+    color={sticker.color}
+    texto={translate(sticker.clave)}
+    atributosDeTexto={{ 'data-i18n': sticker.clave }}
+  />
+  <span class="win pcard-win">
+    <span class={`win-bar ${ventana.color}`}><span
+      class="win-title"
+      {...ventana.clave ? { 'data-i18n': ventana.clave } : {}}
+    >{ventana.clave ? translate(ventana.clave) : ventana.texto}</span><span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span></span>
+    <span class="pcard-media">
+      <img src={imagen.src} alt={translate(imagen.claveAlt)} data-i18n-attr={`alt:${imagen.claveAlt}`} loading="lazy" decoding="async" />
+      <span class="pcard-peek"><span class="pcard-peek-txt" data-i18n={claveAsoma}>{translate(claveAsoma)}</span><span class="pcard-chips">{chips.map((chip) => <span class="pcard-chip" data-i18n={chip}>{translate(chip)}</span>)}</span></span>
+    </span>
+  </span>
+  <span class="pcard-info">
+    <span class="pcard-title" {...titulo.clave ? { 'data-i18n': titulo.clave } : {}}>{titulo.clave ? translate(titulo.clave) : titulo.texto}</span>
+    <span class="pcard-meta">{meta}</span>
+    <span class="pcard-cta"><span data-i18n="pages.home.featured.viewProject">{translate('pages.home.featured.viewProject')}</span> <span class="pcard-arr" aria-hidden="true">↗</span></span>
+  </span>
+</a>

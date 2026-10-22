@@ -1,0 +1,117 @@
+/* APARICIÓN AL HACER SCROLL
+
+   Parte de sobre-mi.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 432–542.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   APARICIÓN AL HACER SCROLL
+   Réplica de "¿A dónde vamos?" (Inicio): opacidad .45s ease,
+   movimiento .55s, desde 30px más abajo. Sin scale ni rebote.
+   Solo se activa si sobremi.js añade .ab-motion a <html>
+   (hay JS, IntersectionObserver y el usuario no pidió menos movimiento).
+   Sin eso, todo está visible desde el principio.
+
+   Se anima con `translate` (no `transform`) y con animation (no
+   transition): así no choca con el `transform` y las transiciones
+   del hover de .tool y .ev, que siguen intactos.
+   ════════════════════════════════════════════════ */
+@keyframes ab-fade{ from{ opacity:0; } to{ opacity:1; } }
+@keyframes ab-rise{ from{ translate:0 30px; } to{ translate:0 0; } }
+
+.ab-motion .ab-rv{ opacity:0; }
+.ab-motion .ab-rv.is-in{
+  opacity:1;
+  animation:
+    ab-fade .45s ease var(--rv-delay, 0s) both,
+    ab-rise .55s var(--ease-soft) var(--rv-delay, 0s) both;
+}
+
+/* ╔════════════════════════════════════════════════╗
+   ║  RESPONSIVE — se reorganiza, no solo se encoge   ║
+   ╚════════════════════════════════════════════════╝ */
+
+/* ── ≤1024 · tablet horizontal: la ruta y las herramientas aprietan ── */
+@media (max-width:1024px){
+  .route{ gap:16px; }
+  .stop-txt{ font-size:.88rem; }
+}
+
+/* ── ≤900 · tablet vertical ──
+   hero: la polaroid se achica y va al lado de un intro más angosto.
+   ruta: pasa a vertical (5 columnas ya no caben con texto legible).
+   herramientas: diseño ocupa toda la fila; construir y analizar debajo.
+   evidencia: tarjetas horizontales (foto | texto), una por fila. */
+@media (max-width:900px){
+  .ab-hero{ grid-template-columns:minmax(0,40fr) minmax(0,60fr); gap:28px; }
+  .polaroid{ max-width:250px; }
+  .stk-pencil{ --ps:4px; }
+  .stk-code{ --ps:3px; padding:7px 8px; }
+
+  .route{ grid-template-columns:1fr; gap:22px; }
+  /* en vertical, cada parada dibuja su tramo hasta la siguiente: la línea termina justo en el último ícono */
+  .route::before{ display:none; }
+  .stop:not(:last-child)::after{
+    content:""; position:absolute; z-index:-1;
+    left:30px; top:64px; bottom:-22px;
+    border-left:3px dashed var(--pink-mid);
+  }
+  .stop{ display:grid; grid-template-columns:64px minmax(0,1fr); gap:18px; align-items:start; text-align:left; }
+  .stop-ico{ margin:0; }
+  .stop-txt{ font-size:.95rem; }
+  .stop-note{ position:static; display:inline-block; margin-bottom:6px; }
+  .stop-note .arr-l{ display:inline; } .stop-note .arr-r{ display:none; }
+
+  .tools{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .tool:first-child{ grid-column:1 / -1; }
+
+
+  .clues{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+/* ── ≤760 · celular ──
+   hero en una columna: primero quién (polaroid pequeña), luego qué.
+   la polaroid NO es un avatar gigante: se queda en ~210px para que el
+   texto aparezca sin tener que hacer scroll. */
+@media (max-width:760px){
+  .ab-hero{ grid-template-columns:1fr; gap:6px; padding-top:28px; }
+  .ab-photo{ padding:22px 34px 26px; max-width:320px; margin-inline:auto; width:100%; }
+  .polaroid{ max-width:210px; padding:9px 9px 0; }
+  .polaroid figcaption{ font-size:1.3rem; padding:9px 0 10px; }
+  .stk-pencil{ --ps:4px; top:0; left:4px; }
+  .stk-code{ --ps:2px; right:2px; padding:7px 8px; }
+  .stk-cursor{ --ps:3px; right:11%; }
+  .stk-spark{ --ps:3px; right:14%; }
+
+  .ab-intro{ text-align:left; }
+  .ab-hello{ margin-bottom:16px; }
+  .ab-status{ font-size:1.08rem; padding:6px 12px 5px; }
+  .stop-note{ position:static; }
+
+  .ab-head{ margin-bottom:18px; }
+  .tools{ grid-template-columns:1fr; }
+
+  .ab-all{ text-align:left; }
+}
+
+/* ── ≤560 · celular: evidencia vuelve a apilarse (foto arriba) ── */
+@media (max-width:560px){
+  .clues{ grid-template-columns:1fr; gap:14px; }
+  .clue{ transform:none !important; }   /* en una columna la inclinación solo estorba la lectura */
+  .ab-status{ display:flex; width:fit-content; max-width:100%; }
+}
+
+/* ── ≤380 · celular chico ── */
+@media (max-width:380px){
+  .ab-photo{ padding:20px 26px 22px; }
+  .polaroid{ max-width:190px; }
+  .stop{ grid-template-columns:56px minmax(0,1fr); gap:14px; }
+  .stop-ico{ width:56px; height:56px; --ps:2px; }
+  .stop:not(:last-child)::after{ left:26px; top:56px; }
+  .keys{ padding:14px 12px 16px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ab-motion .ab-rv{ opacity:1; animation:none; }
+}
+

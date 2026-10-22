@@ -1,0 +1,228 @@
+{
+  "images/proyectos/agenciaadopcion": {
+    "original": "images/proyectos/agenciaadopcion.png",
+    "anchoOriginal": 2224,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/agenciaadopcion-416.webp",
+        "ancho": 416,
+        "alto": 316
+      },
+      "1120": {
+        "ruta": "images/proyectos/agenciaadopcion-1120.webp",
+        "ancho": 1120,
+        "alto": 850
+      }
+    },
+    "grande": {
+      "ruta": "images/proyectos/agenciaadopcion.webp",
+      "ancho": 2000,
+      "alto": 1518
+    }
+  },
+  "images/proyectos/aventuraprolog": {
+    "original": "images/proyectos/aventuraprolog.png",
+    "anchoOriginal": 2712,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/aventuraprolog-416.webp",
+        "ancho": 416,
+        "alto": 234
+      },
+      "1120": {
+        "ruta": "images/proyectos/aventuraprolog-1120.webp",
+        "ancho": 1120,
+        "alto": 630
+      }
+    },
+    "grande": {
+      "ruta": "images/proyectos/aventuraprolog.webp",
+      "ancho": 2000,
+      "alto": 1125
+    }
+  },
+  "images/proyectos/catventures": {
+    "original": "images/proyectos/catventures.png",
+    "anchoOriginal": 1352,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/catventures-416.webp",
+        "ancho": 416,
+        "alto": 231
+      },
+      "1120": {
+        "ruta": "images/proyectos/catventures-1120.webp",
+        "ancho": 1120,
+        "alto": 623
+      }
+    },
+    "grande": null
+  },
+  "images/proyectos/inventariodocker": {
+    "original": "images/proyectos/inventariodocker.png",
+    "anchoOriginal": 2314,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/inventariodocker-416.webp",
+        "ancho": 416,
+        "alto": 235
+      },
+      "1120": {
+        "ruta": "images/proyectos/inventariodocker-1120.webp",
+        "ancho": 1120,
+        "alto": 632
+      }
+    },
+    "grande": {
+      "ruta": "images/proyectos/inventariodocker.webp",
+      "ancho": 2000,
+      "alto": 1129
+    }
+  },
+  "images/proyectos/peaknews": {
+    "original": "images/proyectos/peaknews.png",
+    "anchoOriginal": 2930,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/peaknews-416.webp",
+        "ancho": 416,
+        "alto": 225
+      },
+      "1120": {
+        "ruta": "images/proyectos/peaknews-1120.webp",
+        "ancho": 1120,
+        "alto": 606
+      }
+    },
+    "grande": {
+      "ruta": "images/proyectos/peaknews.webp",
+      "ancho": 2000,
+      "alto": 1083
+    }
+  },
+  "images/proyectos/phoenix-grow": {
+    "original": "images/proyectos/phoenix-grow.png",
+    "anchoOriginal": 1592,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/phoenix-grow-416.webp",
+        "ancho": 416,
+        "alto": 233
+      },
+      "1120": {
+        "ruta": "images/proyectos/phoenix-grow-1120.webp",
+        "ancho": 1120,
+        "alto": 628
+      }
+    },
+    "grande": {
+      "ruta": "images/proyectos/phoenix-grow.webp",
+      "ancho": 1592,
+      "alto": 892
+    }
+  },
+  "images/proyectos/pomodoro": {
+    "original": "images/proyectos/pomodoro.png",
+    "anchoOriginal": 1024,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/pomodoro-416.webp",
+        "ancho": 416,
+        "alto": 523
+      },
+      "1120": {
+        "ruta": "images/proyectos/pomodoro-1024.webp",
+        "ancho": 1024,
+        "alto": 1288
+      }
+    },
+    "grande": null
+  },
+  "images/proyectos/rutasincendio": {
+    "original": "images/proyectos/rutasincendio.png",
+    "anchoOriginal": 2190,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/rutasincendio-416.webp",
+        "ancho": 416,
+        "alto": 241
+      },
+      "1120": {
+        "ruta": "images/proyectos/rutasincendio-1120.webp",
+        "ancho": 1120,
+        "alto": 648
+      }
+    },
+    "grande": {
+      "ruta": "images/proyectos/rutasincendio.webp",
+      "ancho": 2000,
+      "alto": 1158
+    }
+  },
+  "images/proyectos/schaman-analytics": {
+    "original": "images/proyectos/schaman-analytics.png",
+    "anchoOriginal": 1800,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/schaman-analytics-416.webp",
+        "ancho": 416,
+        "alto": 243
+      },
+      "1120": {
+        "ruta": "images/proyectos/schaman-analytics-1120.webp",
+        "ancho": 1120,
+        "alto": 653
+      }
+    },
+    "grande": {
+      "ruta": "images/proyectos/schaman-analytics.webp",
+      "ancho": 1800,
+      "alto": 1050
+    }
+  },
+  "images/proyectos/trackinglibros": {
+    "original": "images/proyectos/trackinglibros.png",
+    "anchoOriginal": 3248,
+    "anchos": {
+      "416": {
+        "ruta": "images/proyectos/trackinglibros-416.webp",
+        "ancho": 416,
+        "alto": 251
+      },
+      "1120": {
+        "ruta": "images/proyectos/trackinglibros-1120.webp",
+        "ancho": 1120,
+        "alto": 675
+      }
+    },
+    "grande": {
+      "ruta": "images/proyectos/trackinglibros.webp",
+      "ancho": 2000,
+      "alto": 1206
+    }
+  },
+  "images/contacto/cv-preview-en": {
+    "original": "images/contacto/cv-preview-en.png",
+    "anchoOriginal": 935,
+    "anchos": {
+      "960": {
+        "ruta": "images/contacto/cv-preview-en-935.webp",
+        "ancho": 935,
+        "alto": 1210
+      }
+    },
+    "grande": null
+  },
+  "images/contacto/cv-preview-es": {
+    "original": "images/contacto/cv-preview-es.png",
+    "anchoOriginal": 935,
+    "anchos": {
+      "960": {
+        "ruta": "images/contacto/cv-preview-es-935.webp",
+        "ancho": 935,
+        "alto": 1210
+      }
+    },
+    "grande": null
+  }
+}

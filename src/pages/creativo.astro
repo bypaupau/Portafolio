@@ -1,0 +1,141 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   CREATIVO  →  /Portafolio/creativo
+
+   ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
+   contenido   src/content/creativos/trabajos.ts   (los trabajos)
+               src/content/creativos/tipos.ts      (qué campos lleva uno)
+   textos      src/i18n/es/creativo.ts  ·  src/i18n/en/creativo.ts
+   script      src/scripts/creativo/filtros.ts     (filtrar por categoría)
+   estilo      src/styles/global/global.css        (sin hoja propia)
+   tarjeta     src/components/piezas/TarjetaDeTrabajo.astro
+   imágenes    public/images/creativo/
+   documentos  public/documents/trabajos-disenio/
+   URL previa  /pages/creativo.html → redirige  (public/pages/creativo.html)
+
+   ── QUÉ CAMBIÓ RESPECTO AL SITIO ANTERIOR ──────────────────
+   Antes las tarjetas las dibujaba JavaScript desde el navegador: 95
+   líneas dentro del propio HTML, con el SVG del sticker metido como
+   cadena de texto. Si fallaba el JavaScript, la galería quedaba vacía.
+
+   Ahora las dibuja Astro al compilar, así que están en el HTML y se leen
+   siempre. El único JavaScript que queda es el filtro por categoría, y
+   filtra MOSTRANDO Y OCULTANDO las tarjetas que ya existen, en vez de
+   volver a construirlas. Así el marcado vive en un solo sitio.
+   ═══════════════════════════════════════════════════════════ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TarjetaDeTrabajo from '../components/piezas/TarjetaDeTrabajo.astro';
+import { translate } from '../i18n/translate';
+import { trabajosCreativos } from '../content/creativos/trabajos';
+import { categorias } from '../content/creativos/tipos';
+import { conIdioma, textoDeClave } from '../lib/texto-bilingue';
+import { rutaPublica } from '../lib/rutas';
+import type { TranslationKey } from '../i18n/keys';
+
+/* Los filtros solo valen la pena cuando hay varias cosas que filtrar.
+   Misma condición que el sitio anterior: 4+ trabajos de 2+ categorías. */
+const categoriasPresentes = categorias.filter((categoria) =>
+  trabajosCreativos.some((trabajo) => trabajo.categoria === categoria),
+);
+const mostrarFiltros = trabajosCreativos.length >= 4 && categoriasPresentes.length >= 2;
+
+/* La ficha "próximamente" ocupa el hueco mientras la galería es corta,
+   en vez de inventar un trabajo que no existe. */
+const mostrarProximamente = trabajosCreativos.length > 0 && trabajosCreativos.length < 3;
+
+/* igual que en Proyectos: la minúscula es estilo del chip, no del texto */
+const comoChip = (texto: string) => texto.toLowerCase();
+
+const claveDeCategoria: Record<(typeof categorias)[number], TranslationKey> = {
+  ilustracion: 'pages.creative.filters.illustration',
+  personal: 'pages.creative.filters.personal',
+  experimento: 'pages.creative.filters.experiment',
+  otros: 'pages.creative.filters.other',
+};
+---
+<BaseLayout
+  paginaActual="creative"
+  claveTitulo="pages.creative.metaTitle"
+  claveDescripcion="pages.creative.metaDescription"
+  claveNombreVentana="taskbar.windowName.creative"
+>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-label hx" style="--d:100ms" data-i18n="pages.creative.sectionLabel">
+        {translate('pages.creative.sectionLabel')}
+      </p>
+      <h1 class="sec-title hx" style="--d:170ms" data-i18n="pages.creative.sectionTitle">
+        {translate('pages.creative.sectionTitle')}
+      </h1>
+      <p class="cr-intro hx" style="--d:240ms" data-i18n="pages.creative.intro">
+        {translate('pages.creative.intro')}
+      </p>
+    </div>
+
+    <div
+      class="chipbar fx-c hx"
+      id="cr-chipbar"
+      style="--d:300ms"
+      role="group"
+      aria-label={translate('pages.creative.filters.ariaLabel')}
+      data-i18n-attr="aria-label:pages.creative.filters.ariaLabel"
+      hidden={!mostrarFiltros}
+      data-total={trabajosCreativos.length}
+    >
+      <div class="fx-c-tabs" id="cr-chips">
+        <button type="button" class="chip is-on" data-val="" aria-pressed="true"
+                data-i18n="pages.creative.filters.all" data-i18n-minuscula
+        >{comoChip(translate('pages.creative.filters.all'))}</button>
+        {categoriasPresentes.map((categoria) => (
+          <button type="button" class="chip" data-val={categoria} aria-pressed="false"
+                  data-i18n={claveDeCategoria[categoria]} data-i18n-minuscula
+          >{comoChip(translate(claveDeCategoria[categoria]))}</button>
+        ))}
+      </div>
+      <div class="fx-c-sub"><span class="fx-count" id="cr-count" aria-hidden="true"></span></div>
+    </div>
+
+    <section class="proj-sec" aria-labelledby="h-cr">
+      <h2 class="sr-only" id="h-cr" data-i18n="pages.creative.galleryHeading">
+        {translate('pages.creative.galleryHeading')}
+      </h2>
+      <div class="cr-grid" id="cr-grid">
+        {trabajosCreativos.map((trabajo) => (
+          <TarjetaDeTrabajo
+            archivo={conIdioma(trabajo.archivo)}
+            color={trabajo.color}
+            imagen={trabajo.imagen ? rutaPublica(trabajo.imagen) : undefined}
+            titulo={conIdioma(trabajo.nombre)}
+            meta={conIdioma(trabajo.meta)}
+            descripcion={conIdioma(trabajo.descripcion)}
+            etiquetas={trabajo.herramientas.map((h) => conIdioma(h))}
+            sticker={trabajo.etiqueta
+              ? { texto: conIdioma(trabajo.etiqueta), dibujo: trabajo.sello || undefined, color: trabajo.selloColor }
+              : undefined}
+            enlace={trabajo.enlace
+              ? (/^https?:/.test(trabajo.enlace) ? trabajo.enlace : rutaPublica(trabajo.enlace))
+              : undefined}
+            llamada={trabajo.enlaceTexto
+              ? conIdioma(trabajo.enlaceTexto)
+              : textoDeClave('pages.creative.viewWork', translate('pages.creative.viewWork'))}
+            flecha="↗"
+            datos={{ 'data-categoria': trabajo.categoria }}
+          />
+        ))}
+        {mostrarProximamente && (
+          <div class="cr-soon rv" aria-hidden="true">
+            <span class="cr-soon-t" data-i18n="pages.creative.soonTitle">{translate('pages.creative.soonTitle')}</span>
+            <span class="cr-soon-x" data-i18n="pages.creative.soonText">{translate('pages.creative.soonText')}</span>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <p class="no-proj" id="cr-empty" hidden></p>
+    <p class="sr-only" id="cr-live" aria-live="polite"></p>
+  </div>
+
+  <script>
+    import '../scripts/creativo/filtros';
+  </script>
+</BaseLayout>

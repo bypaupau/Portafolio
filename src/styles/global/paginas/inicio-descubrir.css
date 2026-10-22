@@ -1,0 +1,65 @@
+/* los pop-ups de "descubrir" al bajar
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 252–311.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ DESCUBRIR · pop-ups al bajar ════════ */
+.discover{ padding:30px 0 70px; text-align:center; }
+.discover .sec-title{ text-shadow:3px 3px 0 var(--pink-mid); }
+.popups{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; margin-top:38px; }
+.popup{
+  text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:16px;
+  opacity:0; transform:translateY(30px) scale(.9);
+  transition:transform .55s cubic-bezier(.34,1.56,.64,1), opacity .45s ease;
+}
+.popup.pop{ opacity:1; transform:translateY(0) scale(1); }
+/* círculo sólido detrás */
+.disc{
+  width:clamp(150px,20vw,200px); aspect-ratio:1; border-radius:50%;
+  border:3px solid var(--ink); display:grid; place-items:center;
+  box-shadow:5px 5px 0 rgba(44,26,36,.18);
+}
+.disc-pink{ background:var(--pink-mid); } .disc-sky{ background:var(--sky); } .disc-lav{ background:var(--lav); }
+/* mini-ventana encima */
+.mini-win{ width:clamp(96px,13vw,124px); background:#fff; border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink); transform:rotate(-3deg); transition:transform .2s ease; }
+.popup:nth-child(even) .mini-win{ transform:rotate(3deg); }
+.popup:hover .mini-win{ transform:rotate(0) scale(1.06); }
+.mini-bar{ display:flex; align-items:center; justify-content:flex-end; gap:3px; padding:4px 5px; background:var(--pink-light); border-bottom:2px solid var(--ink); }
+.mini-bar.sky{ background:var(--sky); } .mini-bar.lav{ background:var(--lav); }
+.mini-bar i{ width:8px; height:8px; border:1.5px solid var(--ink); background:#fff; display:block; }
+.mini-body{ display:grid; place-items:center; padding:14px 8px; min-height:64px; }
+.plabel{
+  font-family:var(--font-pixel); font-weight:600; font-size:1.3rem; color:var(--ink);
+  background:#fff; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); padding:3px 16px;
+}
+.popup:hover .plabel{ background:var(--yellow); }
+
+/* ventana decorativa del hero (sprite pixel, sin "foto aquí") */
+.hero-card{ justify-self:end; width:100%; max-width:480px; }
+.hero-card .win-body{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
+  background:
+    repeating-linear-gradient(45deg, var(--pink-pale) 0 10px, #fff 10px 20px);
+  min-height:340px; text-align:center;
+}
+.hero-card .sprite{ width:160px; height:auto; }
+.hero-card .cap{ font-family:var(--font-term); font-size:1.5rem; color:var(--text-soft); }
+/* tiles sociales dentro de pau.exe */
+.social-row{ display:flex; gap:12px; margin-top:2px; }
+.social{
+  width:48px; height:48px; display:grid; place-items:center;
+  background:#fff; border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  font-family:var(--font-pixel); font-weight:700; font-size:1.2rem; color:var(--ink);
+  text-decoration:none;
+  transition:transform .16s cubic-bezier(.3,.7,.4,1), box-shadow .16s cubic-bezier(.3,.7,.4,1);
+}
+.social:hover{ transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); }
+.social:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+.social.gh{ background:var(--lav); } .social.in{ background:var(--sky); } .social.mail{ background:var(--pink-light); }
+.social .sprite{ width:26px; }
+
+/* sprites pixel (SVG) */
+.sprite{ image-rendering:pixelated; display:block; }
+.sprite.sm{ width:26px; }
+@keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-7px); } }

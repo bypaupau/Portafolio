@@ -1,0 +1,29 @@
+/* SECCIONES (estructura común)
+
+   Parte de sobre-mi.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 194–216.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   SECCIONES (estructura común)
+   ════════════════════════════════════════════════ */
+.ab-sec{ margin-top:var(--sec-gap); }
+.ab-head{ margin-bottom:24px; }
+.ab-head .ab-sub{ max-width:60ch; }
+.ab-num{
+  font-family:var(--font-tiny); font-size:.62rem; letter-spacing:1px; line-height:1.6;
+  color:var(--pink-ink); text-transform:uppercase;
+}
+.ab-title{
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:clamp(1.65rem,3.7vw,2.35rem); line-height:1.12;
+  color:var(--ink); text-shadow:3px 3px 0 var(--pink-mid);
+  margin-top:8px;
+}
+.ab-sub{ margin-top:10px; font-size:1.02rem; line-height:1.6; color:var(--text-soft); }
+
+/* fondos de tiles reutilizables */
+.t-pink{ background:var(--pink-light); } .t-lav{ background:var(--lav); }
+.t-sky{ background:var(--sky); }        .t-mint{ background:var(--mint); }
+.t-yellow{ background:var(--yellow); }
+

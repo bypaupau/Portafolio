@@ -1,0 +1,83 @@
+/* el cierre de Inicio (conocer a Pau / escribirle)
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 1044–1121.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   INICIO · CIERRE (conocer a Pau / escribirle)
+   ════════════════════════════════════════════════ */
+.outro{ padding:0 0 72px; }
+.outro-win{ max-width:880px; margin-inline:auto; }
+.outro-body{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.outro-col{ display:flex; align-items:flex-start; gap:18px; padding:26px 24px; min-width:0; }
+.outro-col + .outro-col{ border-left:3px dashed var(--pink-mid); }
+.outro-ico{ width:72px; flex:none; }
+.outro-col:last-child .outro-ico{ transform:rotate(3deg); }
+.outro-ico .mini-body{ min-height:44px; padding:8px 6px; }
+.outro-ico .sprite{ image-rendering:pixelated; }
+.outro-q{ font-family:var(--font-pixel); font-weight:600; font-size:1.12rem; line-height:1.3; color:var(--ink); margin-bottom:6px; }
+.outro-q .st-dot{ display:inline-block; vertical-align:middle; margin:-3px 4px 0 0; }
+.outro-sub{ font-family:var(--font-term); font-size:1.15rem; color:var(--text-soft); margin-bottom:6px; }
+.outro-col .btn{ margin-top:10px; }
+
+/* ── CADA VERBO SE MUEVE COMO LO QUE DICE ─────────────────────
+   Antes los tres verbos y los dos iconos del cierre compartían una sola
+   regla: `rotate(0) scale(1.06)`. Dos problemas. Uno, el mismo gesto
+   para tres conceptos distintos, que es no decir nada. Dos, un scale
+   sobre PIXEL ART: 1.06 no es múltiplo entero de la grilla, así que
+   desalinea los píxeles del sprite justo en los iconos que más se miran.
+   Ahora los cinco se ENDEREZAN (eso se queda: es "ponerse firme" cuando
+   los señalas) y encima cada uno hace UN gesto propio, de una pasada:
+     diseñar    el pincel traza — rota desde su PUNTA, no desde el centro
+     construir  la ventana se asienta: sube, cae y se acomoda, como una
+                pieza que se coloca. Anima `translate`, que es propiedad
+                aparte, para no pisar el `rotate` de la ventana
+     explorar   un paso de UN píxel de la grilla y vuelta, con steps():
+                es pixel art, SALTA (la misma regla que js/eyes.js)
+     cierre     un cabeceo corto con win-duck, el gesto que ya existe:
+                responde sin competir con los verbos
+   Los verbos son <li>, no enlaces ("describen, no navegan"), así que no
+   llevan estado de foco: no hay forma de llegar a ellos con el teclado. */
+@keyframes vb-set{ 0%{ translate:0 -3px; } 60%{ translate:0 2px; } 100%{ translate:0 0; } }
+@keyframes vb-scan{ 0%{ translate:var(--ps,5px) 0; } 50%{ translate:calc(var(--ps,5px) * -1) 0; } 100%{ translate:0 0; } }
+
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .verb:hover .mini-win{ transform:rotate(0); }
+  .outro-col:hover .outro-ico{ transform:rotate(0); animation:win-duck .26s var(--ease-soft) 1; }
+
+  /* nth-child cuenta tambien los .verb-plus (los "+"), por eso 1, 3 y 5.
+     Es el mismo conteo que ya usa la regla de reposo de la del medio. */
+  .verb:nth-child(1):hover .mini-body .px{ transform-origin:50% 100%; animation:ico-nod .42s ease-in-out 1; }
+  .verb:nth-child(3):hover .mini-win{ animation:vb-set .32s var(--ease-soft) 1; }
+  .verb:nth-child(5):hover .mini-body .px{ animation:vb-scan .36s steps(1) 1; }
+}
+
+/* tablet: los verbos se acercan */
+@media (max-width:900px){
+  .verbs{ grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1fr); gap:0 6px; }
+  .verb-plus svg{ width:16px; height:16px; }
+  .verb-plus{ margin-top:calc(clamp(128px,15vw,164px) / 2 - 8px); }
+}
+/* celular: cada verbo es una fila (disco chico | texto) para no alargar la página */
+@media (max-width:760px){
+  .bridge{ padding-bottom:48px; }
+  .verbs{ grid-template-columns:1fr; gap:6px; max-width:420px; margin-top:26px; }
+  .verb{ display:grid; grid-template-columns:96px minmax(0,1fr); grid-template-rows:auto auto; column-gap:18px; row-gap:6px; align-items:center; text-align:left; }
+  .verb .disc{ width:96px; grid-row:1 / span 2; box-shadow:3px 3px 0 rgba(44,26,36,.18); }
+  .verb .mini-win{ width:64px; box-shadow:2px 2px 0 var(--ink); }
+  .verb .mini-bar{ padding:3px 4px; } .verb .mini-bar i{ width:6px; height:6px; }
+  .verb .mini-body{ min-height:40px; padding:6px 4px; }
+  .verb .mini-body .px{ width:calc(var(--gw) * var(--ps) * .6); }
+  .verb .plabel{ justify-self:start; align-self:end; font-size:1.15rem; padding:2px 12px; }
+  .verb-what{ align-self:start; max-width:none; }
+  .verb-plus{ margin:0; padding-left:39px; justify-content:start; }
+  .verb-plus svg{ width:14px; height:14px; }
+  .outro-body{ grid-template-columns:1fr; }
+  .outro-col + .outro-col{ border-left:none; border-top:3px dashed var(--pink-mid); }
+  .outro-col{ padding:22px 18px; }
+}
+@media (max-width:480px){
+  .outro-col .btn{ width:100%; justify-content:center; }
+  .outro-ico{ width:58px; }
+}

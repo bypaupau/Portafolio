@@ -1,0 +1,35 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   EL STICKER DE UNA TARJETA
+
+   Dos cosas que antes iban pegadas y ahora van sueltas:
+     dibujo  qué sprite se pinta  (libro · trofeo · medalla · gato)
+     color   la clase CSS del sticker  (s-sky · s-gold · s-pink · s-lav)
+
+   En el sitio anterior el campo `sello` era las DOS cosas a la vez, así
+   que no se podía poner un libro con fondo lavanda — justo lo que hacía
+   falta en Creativo, y que allí estaba resuelto con un campo aparte.
+   ═══════════════════════════════════════════════════════════ */
+import IconoLibro from '../iconos/IconoLibro.astro';
+import IconoTrofeo from '../iconos/IconoTrofeo.astro';
+import IconoMedalla from '../iconos/IconoMedalla.astro';
+import IconoGato from '../iconos/IconoGato.astro';
+
+interface Props {
+  dibujo?: 'libro' | 'trofeo' | 'medalla' | 'gato';
+  /** clase CSS del sticker; sin ella, el rosa */
+  color?: string;
+  /** el texto del sticker */
+  texto: string;
+  /** atributos para cambiar de idioma, si el texto difiere */
+  atributosDeTexto?: Record<string, string>;
+}
+const { dibujo, color = 's-pink', texto, atributosDeTexto = {} } = Astro.props;
+
+const Dibujo = dibujo === 'libro' ? IconoLibro
+  : dibujo === 'trofeo' ? IconoTrofeo
+  : dibujo === 'medalla' ? IconoMedalla
+  : dibujo === 'gato' ? IconoGato
+  : null;
+---
+<span class={`pcard-sticker ${color}`}>{Dibujo && <Dibujo />}<span {...atributosDeTexto}>{texto}</span></span>

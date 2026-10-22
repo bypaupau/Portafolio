@@ -1,0 +1,31 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA COLITA DEL BOCADILLO
+
+   El rabito que sale por arriba a la izquierda de la caja de "¿Qué estoy
+   haciendo ahora?". El trazado viene tal cual del dialogue-box-outline.svg
+   original, movido para que empiece en 0,0.
+
+   Por qué está en el marcado y no en el CSS: así su grosor y su color son
+   los MISMOS tokens que el borde de la caja (--trazo-bocadillo y --ink).
+   Antes todo el bocadillo era un border-image de nueve cortes, y el grosor
+   dependía a la vez del stroke del SVG y de cuatro números del CSS; peor
+   aún, el SVG no traía width ni height, así que el navegador lo estiraba
+   al tamaño de la caja ANTES de cortarlo y el trazo cambiaba de grosor
+   según cuánto texto hubiera dentro (2 px arriba, 4 px abajo).
+
+   vector-effect="non-scaling-stroke" es lo que mantiene el trazo en
+   píxeles de pantalla aunque preserveAspectRatio="none" deforme la curva.
+
+   El relleno baja 10,7 unidades más que el trazo (hasta 67,9 en vez de
+   57,2): ese sobrante en blanco tapa el tramo del borde de la caja que
+   queda ENTRE las dos patas, para que la línea se interrumpa ahí como en
+   el dibujo original. Por eso el alto en CSS es 19px y no 16px.
+   ═══════════════════════════════════════════════════════════ */
+---
+<svg class="now-cola" viewBox="0 0 49.9 67.9" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  {/* el relleno blanco tapa el tramo del borde de la caja que la colita sustituye */}
+  <path class="now-cola-relleno" d="M49.9,57.2 C22.1,44.4 12.1,0 12.1,0 c-12.1,29.5 .1,53.4 2.2,57.1 L2.2,67.9 L49.9,67.9 Z" />
+  {/* y el trazo, que es solo la curva: el cierre de abajo no se dibuja */}
+  <path class="now-cola-trazo" d="M49.9,57.2 C22.1,44.4 12.1,0 12.1,0 c-12.1,29.5 .1,53.4 2.2,57.1" />
+</svg>

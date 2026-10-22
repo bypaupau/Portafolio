@@ -1,0 +1,47 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   FILA DEL ARCHIVO (.arow)       página: src/pages/proyectos.astro
+
+   Miniatura · nombre + descripción + contexto + herramientas · enlace.
+   Es la fila compacta de los proyectos que no son destacados.
+
+   Como la tarjeta grande, recibe props sueltas: el componente no sabe
+   de dónde sale el contenido.
+   ═══════════════════════════════════════════════════════════ */
+import type { TextoConIdioma } from '../../lib/texto-bilingue';
+
+interface Props {
+  nombre: TextoConIdioma;
+  descripcion: TextoConIdioma;
+  /** "Hackathon · Spacehack 2026 · Abril 2026", ya compuesto */
+  metadatos: TextoConIdioma;
+  etiquetas: TextoConIdioma[];
+  imagen?: string;
+  enlace?: string;
+  externo?: boolean;
+  /** "ver el caso" · "ver repo →" · "pronto ✦" */
+  accion: TextoConIdioma;
+  /** la insignia de "en progreso", si aplica */
+  insignia?: TextoConIdioma;
+  datos?: Record<string, string>;
+}
+const { nombre, descripcion, metadatos, etiquetas, imagen, enlace,
+        externo = true, accion, insignia, datos = {} } = Astro.props;
+
+const Etiqueta = enlace ? 'a' : 'div';
+const atributos = enlace
+  ? { href: enlace, ...(externo ? { target: '_blank', rel: 'noopener' } : {}) }
+  : {};
+---
+<li {...datos}><Etiqueta class="arow" {...atributos}>
+  <span class="arow-thumb">{imagen && <img src={imagen} alt="" loading="lazy" decoding="async" />}</span>
+  <span class="arow-main">
+    <span class="arow-name"><span {...nombre.atributos}>{nombre.texto}</span>{insignia && (
+      <>{' '}<span class="badge bd-wip" {...insignia.atributos}>{insignia.texto}</span></>
+    )}</span>
+    <span class="arow-desc" {...descripcion.atributos}>{descripcion.texto}</span>
+    <span class="arow-meta" {...metadatos.atributos}>{metadatos.texto}</span>
+    <span class="arow-tools">{etiquetas.map((e) => <span class="pill" {...e.atributos}>{e.texto}</span>)}</span>
+  </span>
+  <span class="arow-go" {...accion.atributos}>{accion.texto}</span>
+</Etiqueta></li>

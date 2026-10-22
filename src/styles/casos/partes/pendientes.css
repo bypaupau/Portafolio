@@ -1,0 +1,20 @@
+/* PENDIENTES
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 865–878.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ PENDIENTES ════════
+   Casillas vacías a propósito: lo que viene no está hecho, y una
+   casilla sin marcar lo dice mejor que un párrafo. */
+.cs-next{ list-style:none; display:grid; gap:var(--sp-2); }
+.cs-next li{
+  position:relative; padding-left:30px;
+  font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--text-soft);
+}
+.cs-next li::before{
+  content:""; position:absolute; left:0; top:.3em;
+  width:15px; height:15px; background:var(--white);
+  border:2px solid var(--ink); box-shadow:2px 2px 0 var(--cs,var(--pink-mid));
+}
+

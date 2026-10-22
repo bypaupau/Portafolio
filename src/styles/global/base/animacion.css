@@ -1,0 +1,49 @@
+/* las velocidades del sistema (--mo-fast/base/slow), el foco de
+   teclado y la animación de entrada .hx
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 562–604.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ╔════════════════════════════════════════════════════════════╗
+   ║  INICIO · polish + personalidad                              ║
+   ║  Todo se monta ENCIMA del diseño existente: misma paleta,    ║
+   ║  mismas fuentes, mismo layout. Lo que se mueve, se mueve     ║
+   ║  pocos píxeles y casi nunca al mismo tiempo.                 ║
+   ║  Las animaciones de entrada solo existen si el <head> de     ║
+   ║  index.html puso .hx-motion (hay JS y NO hay reduced-motion). ║
+   ╚════════════════════════════════════════════════════════════╝ */
+:root{
+  --ease-out: cubic-bezier(.22,1,.36,1);    /* entradas: rápido y suave */
+  --ease-soft: cubic-bezier(.2,.7,.2,1);    /* la misma de sobremi.css */
+  --ok-green: #3FA06A;                       /* el puntito de "abierta a pasantías" */
+
+  /* ── VELOCIDADES DEL SISTEMA ───────────────────────────────
+     Tres duraciones para todo el sitio, más la separación entre
+     hermanos. Si algo se siente lento o apurado, se cambia AQUÍ
+     y cambia en las cuatro páginas a la vez.
+       fast → feedback inmediato (hover, foco, botones)
+       base → entradas y transición entre páginas
+       slow → apariciones al scroll (recorren más distancia)
+       step → cuánto espera cada hermano respecto al anterior     */
+  --mo-fast: 180ms;
+  --mo-base: 320ms;
+  --mo-slow: 520ms;
+  --mo-step: 100ms;
+}
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* foco visible para teclado (antes no había ninguno).
+   .link y .egg-coffee se sumaron después: recorriendo el sitio con Tab
+   eran los dos únicos que caían al anillo gris por defecto de Chrome
+   ("ver los 10 proyectos" y el <3 del pie), rompiendo la coherencia con
+   todo lo demás. */
+.btn:focus-visible, .social:focus-visible, .nav-tabs a:focus-visible,
+.nav-logo:focus-visible, .popup:focus-visible, .egg:focus-visible,
+.link:focus-visible, .egg-coffee:focus-visible{
+  outline:3px dashed var(--pink); outline-offset:4px;
+}

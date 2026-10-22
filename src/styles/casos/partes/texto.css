@@ -1,0 +1,26 @@
+/* TEXTO
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 356–375.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ TEXTO ════════ */
+.cs-lead{
+  font-size:clamp(1.2rem,2.1vw,1.52rem); line-height:1.42; font-weight:500;
+  color:var(--ink);                              /* sin max-width: el ancho lo pone la columna */
+}
+.cs-text{
+  /* sin franja estrecha: el párrafo comparte el ancho de su título.
+     El techo real lo pone --w-wide a través de la columna principal. */
+  font-size:var(--cs-body); line-height:var(--cs-lh);
+  color:var(--text-soft);
+}
+.cs-text strong{ color:var(--ink); font-weight:600; }
+.cs-text a{ color:var(--pink); text-decoration:none; border-bottom:2px solid var(--pink-mid); }
+.cs-text a:hover{ color:var(--ink); border-color:var(--ink); }
+
+.cs-sub-h{
+  font-family:var(--font-pixel); font-weight:700; font-size:var(--cs-h3);
+  color:var(--ink);
+}
+

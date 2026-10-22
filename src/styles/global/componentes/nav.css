@@ -1,0 +1,56 @@
+/* la barra superior, con forma de ventana
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 91–141.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ NAV (barra superior estilo ventana) ════════ */
+nav{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; gap:10px;
+  height:var(--nav-h); padding:0 clamp(12px,3vw,22px);
+  background:var(--white);
+  border-bottom:3px solid var(--ink);
+}
+.nav-logo{
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:clamp(1.05rem,3.4vw,1.25rem);
+  color:var(--ink); text-decoration:none; margin-right:auto; letter-spacing:.5px;
+  white-space:nowrap;
+}
+.nav-logo span{ color:var(--pink); }
+.nav-tabs{ display:flex; gap:4px; list-style:none; }
+.nav-tabs a{
+  display:block;
+  font-family:var(--font-pixel); font-size:1rem; font-weight:500;
+  text-decoration:none; color:var(--text-soft);
+  padding:8px 12px; border:2px solid transparent; border-radius:0;
+  transition:.12s ease;
+}
+.nav-tabs a:hover{ background:var(--pink-light); color:var(--ink); border-color:var(--pink-mid); }
+.nav-tabs a.active{ background:var(--pink-light); color:var(--pink); border-color:var(--pink); }
+
+/* ── botón hamburguesa estilo ventana retro (solo móvil) ── */
+.nav-toggle{
+  display:none;                       /* se enciende en el breakpoint móvil */
+  align-items:center; gap:8px;
+  font-family:var(--font-pixel); font-size:1rem; font-weight:600; color:var(--ink);
+  background:var(--pink-light); border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+  padding:7px 12px; cursor:pointer; border-radius:0;
+  min-height:38px;                    /* área táctil cómoda */
+  transition:.1s ease;
+}
+.nav-toggle:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
+.nav-toggle .nav-burger{ display:grid; gap:3px; }
+.nav-toggle .nav-burger i{
+  display:block; width:16px; height:3px; background:var(--ink);
+  transition:transform .18s ease, opacity .18s ease;
+}
+/* al abrir, las 3 rayas se vuelven una ✕ */
+.nav-toggle[aria-expanded="true"] .nav-burger i:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-burger i:nth-child(2){ opacity:0; }
+.nav-toggle[aria-expanded="true"] .nav-burger i:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+.nav-toggle[aria-expanded="true"]{ background:var(--pink); color:#fff; }
+.nav-toggle[aria-expanded="true"] .nav-burger i{ background:#fff; }
+
+main{ position:relative; z-index:2; padding-top:var(--nav-h); }

@@ -1,0 +1,90 @@
+/* METADATOS
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 228–311.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ METADATOS ════════
+   Dos tarjetas protagonistas (rol y reconocimiento) y, debajo, una ficha
+   compacta de cuatro filas separadas por líneas. El borde grueso y la
+   sombra se reservan para las protagonistas: si todo lleva caja, nada
+   destaca, que era el problema de las seis tarjetas iguales. */
+/* «Mi rol» lleva tres frases largas y «Herramientas» tres etiquetas
+   cortas: a 50/50 la primera doblaba el alto de la segunda. Repartir la
+   columna según lo que pesa cada texto las deja casi a la par, y
+   `stretch` cierra el resto SIN inflar el interlineado ni la fuente. */
+.cs-stars{
+  display:grid; grid-template-columns:minmax(0,1.66fr) minmax(0,1fr);
+  gap:var(--sp-3);
+  align-items:stretch;
+}
+.cs-star{
+  border:3px solid var(--ink); box-shadow:5px 5px 0 var(--ink);
+  padding:20px 22px 22px; min-width:0;
+}
+.st-rol{ background:var(--pink-light); }
+.st-win{ background:var(--yellow); }
+.cs-star dt{
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:var(--cs-h4); line-height:1.1; color:var(--ink); margin-bottom:var(--sp-1);
+}
+.cs-star dd{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
+.cs-star ul{ list-style:none; display:grid; gap:var(--sp-2); }
+.cs-star li{ position:relative; padding-left:19px; line-height:var(--cs-lh-card); }
+.cs-star li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:var(--ink);
+}
+.cs-star li b{ font-weight:600; }
+/* el identificador de una colección de datos, dentro de una lista */
+.cs-src-id{ font-family:var(--font-term); font-size:1.02em; color:var(--text-soft); }
+
+/* ficha compacta: sin cajas, solo rótulo + valor y una línea entre filas */
+.cs-rows{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:clamp(24px,4vw,56px);
+}
+.cs-row{ padding:var(--sp-3) 0 var(--sp-4); border-top:2px solid var(--pink-mid); min-width:0; }
+.cs-row dt{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1;
+  letter-spacing:1.4px; text-transform:uppercase;
+  color:var(--pink); margin-bottom:var(--sp-1);
+}
+.cs-row dd{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
+.cs-team-list{ list-style:none; display:grid; gap:var(--sp-2); }
+/* EQUIPO · es la única fila con varios nombres, así que ocupa el ancho
+   entero de la ficha y reparte a los integrantes en columnas. Así la
+   ficha deja de ser una fila larga frente a una corta. */
+.cs-row.r-equipo{ grid-column:1 / -1; }
+.cs-row.r-equipo .cs-team-list{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:var(--sp-2) clamp(18px,2.4vw,32px);
+}
+.cs-team-list li{ position:relative; padding-left:18px; }
+.cs-team-list li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:var(--pink);
+}
+
+/* herramientas: lista vertical con viñetas, cada nombre legible */
+/* ANTES: sin margin-top (quedaba pegada al párrafo) y con
+   line-height 1.35, el más apretado de la hoja, justo en las
+   viñetas más largas de la página. */
+.cs-tools{
+  list-style:none; display:grid;
+  gap:var(--sp-2);
+}
+.cs-tools li{
+  position:relative; padding-left:18px;
+  font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink);
+}
+/* variante: etiquetas cortas que caben de dos en dos */
+.cs-tools.dos{
+  grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));
+  column-gap:clamp(18px,2.4vw,32px);
+}
+.cs-tools li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:var(--pink);
+}
+

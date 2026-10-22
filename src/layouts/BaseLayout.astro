@@ -1,0 +1,134 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT BASE · el envoltorio de todas las páginas
+
+   Trae: <head>, fuentes, favicon, nav, pie, taskbar y los scripts
+   compartidos. Una página solo escribe su contenido.
+
+   Lo que una página le pasa:
+     paginaActual          id de src/lib/navegacion.ts  (ej. 'contact').
+                           Decide qué pestaña del menú sale marcada.
+     paginaDeDatos         opcional: lo que va en data-page del <body>.
+                           Por defecto, paginaActual. Las páginas de caso
+                           lo separan: marcan "Proyectos" en el menú pero
+                           su data-page es "caso" / "caso-schaman",
+                           porque hay CSS que depende de eso.
+     claveTitulo           clave del <title>            (ej. 'pages.contact.metaTitle')
+     claveDescripcion      clave de la <meta description>
+     claveNombreVentana    el nombre que sale en la taskbar (del diccionario)
+     nombreDeVentana       opcional: el mismo nombre, pero traído del
+                           CONTENIDO de la página ({ es, en } o una cadena).
+                           Si va, manda sobre claveNombreVentana. Las
+                           páginas de caso lo usan para no tener que añadir
+                           una clave a los dos diccionarios por cada caso.
+     claseBody             opcional: clase del <body>, cuando la hoja de
+                           estilo de la página la usa (ej. 'page-about')
+     pieConSecreto         opcional: el <3 del pie guarda un globito
+                           (solo Inicio)
+     tituloDelCaso         opcional: título y descripción que vienen del
+                           CONTENIDO y no de una clave, en los dos
+                           idiomas. Lo usan las páginas de caso, donde
+                           el título es parte del proyecto. Si va, manda
+                           sobre claveTitulo / claveDescripcion.
+
+   Las claves van como data-* en el <body> para que el script de
+   idioma pueda traducir el título y la descripción sin tener que
+   saber en qué página está.
+   ═══════════════════════════════════════════════════════════ */
+import { translate } from '../i18n/translate';
+import type { TranslationKey } from '../i18n/keys';
+import { defaultLanguage } from '../i18n/languages';
+import { rutaPublica } from '../lib/rutas';
+import { conIdioma, type TextoBilingue } from '../lib/texto-bilingue';
+import Navegacion from '../components/globales/Navegacion.astro';
+import Pie from '../components/globales/Pie.astro';
+import Taskbar from '../components/globales/Taskbar.astro';
+import '../styles/global/global.css';
+
+interface Props {
+  paginaActual: string;
+  claveTitulo: TranslationKey;
+  claveDescripcion: TranslationKey;
+  claveNombreVentana?: TranslationKey;
+  nombreDeVentana?: TextoBilingue;
+  claseBody?: string;
+  pieConSecreto?: boolean;
+  tituloDelCaso?: { titulo: TextoBilingue; descripcion: TextoBilingue };
+  paginaDeDatos?: string;
+}
+const {
+  paginaActual, claveTitulo, claveDescripcion, claveNombreVentana,
+  claseBody, pieConSecreto = false, tituloDelCaso,
+  paginaDeDatos, nombreDeVentana,
+} = Astro.props;
+
+const delCaso = tituloDelCaso
+  ? { titulo: conIdioma(tituloDelCaso.titulo), descripcion: conIdioma(tituloDelCaso.descripcion) }
+  : null;
+const titulo = delCaso ? delCaso.titulo.texto : translate(claveTitulo);
+const descripcion = delCaso ? delCaso.descripcion.texto : translate(claveDescripcion);
+
+/* Los datos que el script de idioma necesita para traducir el <title> y
+   la descripción sin saber en qué página está. Con clave, o con los dos
+   idiomas si vienen del contenido. */
+const datosDeIdioma = delCaso
+  ? {
+      'data-title-es': delCaso.titulo.atributos['data-i18n-es'] ?? titulo,
+      'data-title-en': delCaso.titulo.atributos['data-i18n-en'] ?? titulo,
+      'data-description-es': delCaso.descripcion.atributos['data-i18n-es'] ?? descripcion,
+      'data-description-en': delCaso.descripcion.atributos['data-i18n-en'] ?? descripcion,
+    }
+  : { 'data-title-key': claveTitulo, 'data-description-key': claveDescripcion };
+const urlCanonica = new URL(Astro.url.pathname, Astro.site);
+---
+<!DOCTYPE html>
+<html lang={defaultLanguage}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{titulo}</title>
+  <meta name="description" content={descripcion} />
+  <link rel="canonical" href={urlCanonica.href} />
+
+  <link rel="icon" type="image/png" sizes="64x64" href={rutaPublica('favicon.png?v=2')} />
+  <link rel="icon" type="image/svg+xml" href={rutaPublica('favicon.svg?v=2')} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap"
+  />
+
+  <!-- La animación de entrada solo se arma si hay JavaScript y nadie pidió
+       menos movimiento. Va INLINE y en el <head> a propósito: si se
+       retrasara, el contenido daría un parpadeo al cargar. -->
+  <script is:inline>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('hx-motion');
+    }
+  </script>
+</head>
+
+<body class={claseBody} data-page={paginaDeDatos ?? paginaActual} {...datosDeIdioma}>
+  <Navegacion paginaActual={paginaActual} />
+
+  <main>
+    <slot />
+  </main>
+
+  <Pie conSecreto={pieConSecreto} />
+  <Taskbar claveNombreVentana={claveNombreVentana} nombreDeVentana={nombreDeVentana} />
+
+  <script>
+    /* El idioma va primero: los demás leen de él.
+       Astro los junta en un solo módulo y respeta este orden. */
+    import '../scripts/global/language-runtime';
+    import '../scripts/global/taskbar';
+    import '../scripts/global/mobile-menu';
+    import '../scripts/global/resume-by-language';
+    import '../scripts/global/scroll-reveal';
+  </script>
+</body>
+</html>

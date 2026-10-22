@@ -1,0 +1,28 @@
+/* el sistema de anchos (.wrap y sus variantes)
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 68–90.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ CONTENEDOR · sistema de anchos ════════
+   Una sola regla de aire y tres anchos según lo que contiene la sección.
+   · --edge: el aire mínimo a cada lado. Es el mismo en todo el sitio y crece
+     con la ventana, así nada queda pegado al borde en laptops ni tablets.
+   · el ancho máximo depende del CONTENIDO, no de la página:
+       contenido 1080  → hero del Inicio y Contacto: texto, formularios, dos columnas
+                         (referencia: el aire del hero "hola, soy pau")
+       amplio    1200  → galerías y cuadrículas de varias piezas: Proyectos, los
+                         destacados del Inicio y las secciones 01–03 de Sobre mí
+                         (1280 desde 1600px)
+       lienzo    1280  → hero de Sobre mí: sus márgenes son parte de la composición
+                         (1360 desde 1600px)
+   Usamos "100% - margen" en vez de vw: vw incluye la barra de scroll y causaba
+   1px de desbordamiento horizontal en escritorio. */
+.wrap{
+  width:min(var(--w, var(--w-content)), 100% - 2 * var(--edge));
+  margin-inline:auto;
+}
+.wrap.featured,
+body[data-page="projects"] .wrap,
+body[data-page="about"] .wrap{ --w:var(--w-wide); }
+body[data-page="about"] .wrap.ab-hero{ --w:var(--w-canvas); }

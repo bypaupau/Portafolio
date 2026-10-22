@@ -1,0 +1,33 @@
+/* los campos del formulario de Contacto
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 351–378.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ contacto ════════ */
+.about-lead{ font-size:1.05rem; color:var(--text-soft); line-height:1.7; }
+.about-lead strong{ color:var(--ink); }
+/* dos columnas: intro+links a la izquierda, form a la derecha */
+.contact-cols{ display:grid; grid-template-columns:1fr 1.05fr; gap:30px; align-items:start; }
+.contact-intro .about-lead{ margin-top:12px; }
+.contact-grid{ display:flex; flex-direction:column; align-items:stretch; gap:12px; margin-top:18px; }
+.contact-grid .btn{ justify-content:center; }
+/* formulario Formspree */
+.contact-form{ display:flex; flex-direction:column; gap:14px; }
+.contact-form label{
+  font-family:var(--font-term); font-size:1.2rem; color:var(--text-soft);
+  display:flex; flex-direction:column; gap:5px;
+}
+.contact-form input, .contact-form textarea{
+  font-family:var(--font-body); font-size:.95rem; color:var(--ink);
+  background:#fff; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+  padding:10px 12px; border-radius:0; resize:vertical; width:100%;
+}
+.contact-form input:focus, .contact-form textarea:focus{ outline:none; box-shadow:2px 2px 0 var(--pink); }
+.contact-form .btn{ align-self:flex-start; margin-top:2px; }
+
+/* enlaces "ver ..." en líneas separadas dentro de tarjetas */
+.item-links{ display:flex; flex-direction:column; align-items:flex-start; gap:5px; margin-top:10px; }
+.item-links .link{ display:inline-block; }
+/* sprite pixel dentro de la cajita de logro */
+.item-row .badge-img .sprite{ width:40px; height:auto; }

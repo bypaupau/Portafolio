@@ -1,0 +1,38 @@
+/* DECISIONES · una necesidad y lo que colgó de ella
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 312–343.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ DECISIONES · una necesidad y lo que colgó de ella ════
+   Eran cuatro etiquetas encadenadas con flechas: en el boceto cabían
+   en un renglón, en pantalla ocupaban tres, y ahí la flecha deja de
+   leerse como "y entonces" y pasa a ser ruido. La misma secuencia en
+   vertical: la necesidad manda y debajo cuelga lo que salió de ella.
+
+   La viñeta maciza es el primer nivel y la hueca el segundo: el
+   mismo cuadrado de 7px, que es el vocabulario de viñetas del resto
+   del caso, sin inventar un símbolo nuevo para el sub-nivel. */
+.cs-dec{ list-style:none; display:grid; gap:var(--sp-4); }
+.cs-dec > li{ position:relative; padding-left:18px; min-width:0; }
+.cs-dec > li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:var(--pink);
+}
+.cs-dec-n{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
+.cs-dec-n b{ font-weight:600; }
+
+.cs-dec ul{
+  list-style:none; display:grid; gap:var(--sp-2);
+  margin-top:var(--sp-2); padding-left:14px;
+}
+.cs-dec ul li{
+  position:relative; padding-left:18px;
+  font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--text-soft);
+}
+.cs-dec ul li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:transparent; border:2px solid var(--pink);
+}
+.cs-dec ul b{ color:var(--ink); font-weight:600; }
+

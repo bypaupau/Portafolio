@@ -1,0 +1,18 @@
+/* SECCIÓN
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 344–355.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ SECCIÓN ════════ */
+.cs-sec{ margin-bottom:var(--cs-gap); scroll-margin-top:calc(var(--nav-h) + 20px); }
+.cs-head{}                                  /* sin filetes ni adornos: manda la tipografía */
+.cs-num{
+  font-family:var(--font-tiny); font-size:var(--cs-tiny); letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--text-muted); margin-bottom:var(--sp-1);
+}
+.cs-h{
+  font-family:var(--font-pixel); font-weight:700; line-height:1.1;
+  font-size:clamp(1.75rem,3.6vw,2.5rem); color:var(--ink);
+}
+

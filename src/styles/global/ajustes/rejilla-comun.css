@@ -1,0 +1,42 @@
+/* la rejilla de dos columnas del sitio (≥1100px)
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 1322–1353.
+   Las reglas están sin tocar.
+
+   Vive en ajustes/ porque es el escalón hacia ARRIBA (≥1100), el
+   espejo de responsive.css (≤1024): refina el hero, los destacados y
+   los títulos de sección que ya existen. Tiene que ir al final.
+   */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   GRID COMÚN DEL SITIO (≥1100px)
+   Dentro del contenedor (ver "sistema de anchos"), dos columnas: una "lateral" para el título
+   de cada sección y una "principal" para su contenido (la misma proporción
+   de Sobre mí · 02). Cada página decide qué secciones la usan:
+   · Inicio: ninguna (el puente va centrado, los destacados son galería y el cierre una ventana)
+   · Sobre mí: hero, 02 y 03
+   · Proyectos: galería a todo el ancho · Contacto: sus propias dos áreas
+   ════════════════════════════════════════════════ */
+:root{ --g-side:1fr; --g-main:2.4fr; --g-gap:clamp(40px,5vw,72px); }
+@media (min-width:1100px){
+  .split{ display:grid; grid-template-columns:minmax(0,var(--g-side)) minmax(0,var(--g-main)); column-gap:var(--g-gap); align-items:start; }
+  .split > .split-head{ grid-column:1; margin-bottom:0; }
+  .split > .split-body{ grid-column:2; min-width:0; }
+  .split .sec-title{ font-size:clamp(1.7rem,2.3vw,2.1rem); }
+
+  /* hero: texto y pau.exe más cerca; sus bordes coinciden con los del grid */
+  .hero-inner{ grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); }
+  .hero-card{ max-width:560px; }
+  .hero-card .mon{ width:clamp(160px,13vw,208px); }
+  .hero-desc{ max-width:46ch; }
+
+  /* destacados: galería protagonista a todo el ancho, el título encima */
+  .featured{ padding:0 0 120px; }
+  .featured .feat-head{ margin-bottom:40px; }
+  .featured .pcards{ gap:clamp(28px,3vw,44px); }
+
+  /* cierre: una ventana centrada que vuelve a Pau */
+  .outro{ padding-bottom:96px; }
+}
+

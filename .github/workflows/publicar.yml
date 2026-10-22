@@ -1,0 +1,78 @@
+# ═══════════════════════════════════════════════════════════
+#  PUBLICAR EL PORTAFOLIO
+#
+#  GitHub Pages sabe servir archivos, pero no sabe compilar Astro. Con
+#  "Deploy from a branch" serviría la raíz del repositorio tal cual, y ahí
+#  está el código fuente, no el sitio: dist/ está en el .gitignore a
+#  propósito, para no versionar la carpeta compilada.
+#
+#  Así que el sitio se compila aquí, en cada push a esta rama, y se publica
+#  el resultado. En el repositorio nunca hay nada compilado.
+#
+#  Para que esto funcione: Settings → Pages → Source → "GitHub Actions".
+#
+#  Para volver atrás: Source → "Deploy from a branch" → main / (root).
+#  Los archivos del sitio anterior siguen en la raíz de main hasta la etapa
+#  11, así que la vuelta es inmediata: vuelve a servirse el index.html viejo.
+#
+#  El .nojekyll de la raíz es importante: sin él, GitHub pasa los archivos
+#  por Jekyll, que interpreta {{ }} y {% %} —y hay 64 archivos del código
+#  fuente que los llevan— y además descarta las carpetas que empiezan por
+#  "_", como el _astro/ que genera la compilación.
+# ═══════════════════════════════════════════════════════════
+name: Publicar el portafolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # y a mano, desde la pestaña Actions
+
+# lo mínimo que necesita para publicar, y nada más
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# si subo dos veces seguidas, que no se pisen entre ellas
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Traer el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+        env:
+          # playwright solo se usa para las pruebas visuales en local;
+          # sin esto se descargaría un Chromium de 120 MB en cada publicación
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+
+      - name: Compilar
+        run: npm run build
+
+      - name: Empaquetar lo compilado
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publicar:
+    needs: compilar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: despliegue
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,64 @@
+/* APARICIÓN AL SCROLL
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 605–662.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ APARICIÓN AL SCROLL ════════ */
+.cs-motion .cs-rv{ opacity:0; transform:translateY(16px); }
+.cs-motion .cs-rv.is-in{
+  opacity:1; transform:none;
+  transition:opacity var(--mo-slow,520ms) ease var(--rv-delay,0s),
+             transform var(--mo-slow,520ms) var(--ease-out,ease) var(--rv-delay,0s);
+}
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  RITMO VERTICAL · la única fuente de los huecos           ║
+   ╚══════════════════════════════════════════════════════════╝
+   Va al final a propósito: ningún componente declara ya su propio
+   `margin-top`, así que este bloque es el único que decide cuánto
+   aire hay entre dos hermanos.
+
+   Lo importante no es la estética, es que NADA puede quedarse en
+   cero por olvido: la regla base atrapa cualquier pareja, incluida
+   una que todavía no exista. Antes esto se resolvía con reglas
+   sueltas del tipo `.cs-text + .cs-lead`, y bastaba que una
+   pregunta viniera después de una nota en vez de un párrafo para
+   que se quedara pegada a ella.
+
+   Jerarquía, de menos a más aire:
+     párrafo ↔ párrafo          --sp-3
+     cualquier otra pareja      --sp-4   ← la regla base
+     algo que ABRE o CIERRA     --sp-5   ← leads, H3 y figuras      */
+
+.cs-sec > * + *,
+.cs-out > * + *{ margin-top:var(--sp-4); }
+
+/* dentro de un panel pastel manda la misma escala. El panel que NO
+   reparte columnas apila título y figuras como lo haría una sección;
+   la columna de texto de un panel partido va un paso más corta,
+   porque ahí todo es prosa. */
+.cs-g:not(.g-side):not(.g-rev) > * + *{ margin-top:var(--sp-4); }
+.cs-g-txt > * + *{ margin-top:var(--sp-3); }
+
+/* la portada encadena bloques grandes (etiquetas, tarjetas, ficha):
+   todos abren con el paso mayor */
+.cs-hero > * + *{ margin-top:var(--sp-5); }
+
+/* dos párrafos seguidos son el mismo pensamiento */
+.cs-sec > .cs-text + .cs-text{ margin-top:var(--sp-3); }
+
+/* Una frase protagonista o un subtítulo ABREN idea: el aire grande
+   va ARRIBA. Lo que los matiza queda debajo, más cerca, porque les
+   pertenece. Esa asimetría no es un descuido: es lo que dice de
+   quién es cada nota sin tener que leerla. */
+.cs-sec > * + .cs-lead,
+.cs-sec > * + .cs-sub-h{ margin-top:var(--sp-5); }
+
+/* y lo que SIGUE a un bloque con pies de foto también abre, para que
+   el último pie no quede a la misma distancia de su imagen (--sp-1)
+   que del bloque siguiente. Uno a cuatro, no uno a dos. */
+.cs-sec > .cs-figs + *,
+.cs-sec > .cs-gal  + *,
+.cs-sec > .cs-ab   + *{ margin-top:var(--sp-5); }
+

@@ -1,0 +1,31 @@
+/* la entrada del hero de Inicio y su línea de estado
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 605–630.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ── 1 · ENTRADA DEL HERO ─────────────────────────────────────
+   "backwards": solo se aplica ANTES de empezar (mientras espera su
+   delay). Al terminar, el elemento vuelve a sus estilos normales,
+   así que no pisa el hover, el parallax ni el fade del scroll-hint. */
+@keyframes hx-in{ from{ opacity:0; translate:0 12px; } to{ opacity:1; translate:0 0; } }
+@keyframes hx-fade{ from{ opacity:0; } to{ opacity:1; } }
+.hx-motion .hx{ animation:hx-in .6s var(--ease-out) var(--d, 0ms) backwards; }
+.hx-motion body::before{ animation:hx-fade .5s ease backwards; }
+
+/* ── 2 · STATUS ───────────────────────────────────────────── */
+.hero-status{
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+  margin-top:20px;
+  font-family:var(--font-term); font-size:1.12rem; line-height:1.1; color:var(--text-soft);
+}
+.st-key{
+  display:inline-flex; align-items:center; gap:7px;
+  color:var(--ink); background:#fff; border:2px solid var(--ink);
+  padding:2px 8px 1px; box-shadow:2px 2px 0 var(--pink-mid);
+}
+/* puntito cuadrado (pixel), quieto */
+.st-dot{
+  width:8px; height:8px; flex:none; background:var(--ok-green);
+  box-shadow:0 0 0 2px var(--mint);
+}

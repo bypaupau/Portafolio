@@ -1,0 +1,97 @@
+/* RESPONSIVE
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 663–753.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ RESPONSIVE ════════ */
+@media (max-width:1100px){
+  /* nada que reflowear: los metadatos ya son 2 columnas */
+}
+@media (max-width:1040px){
+  :root{ --cs-rail:150px; }
+  .cs-row.r-equipo .cs-team-list{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .cs-rail-item a{ font-size:.9rem; padding:4px 8px; }
+  .cs-hero-top{ grid-template-columns:1fr; }
+  .cs-tri{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+  .cs-hero-fig{ max-width:480px; }
+  .g-side, .g-rev,
+  .cs-g.g-side.g-wide, .cs-g.g-rev.g-wide{ grid-template-columns:minmax(0,1fr); }
+  .g-rev .cs-g-txt{ order:0; }
+  .g-side .cs-shots, .g-rev .cs-shots{ margin-top:var(--sp-4); }
+}
+/* ── ≤860 · el riel se acuesta bajo el nav ── */
+@media (max-width:860px){
+  .cs-grid{ grid-template-columns:minmax(0,1fr); gap:0; }
+  .cs-rail{
+    position:sticky; top:var(--nav-h); z-index:40;
+    display:block; height:auto; min-width:0;
+    padding:9px 0; margin:0 calc(-1 * var(--edge)) 26px;
+    background:var(--pink-pale); border-bottom:3px solid var(--ink);
+  }
+  .cs-rail-list{
+    grid-auto-flow:column; grid-auto-columns:max-content; gap:8px;
+    overflow-x:auto; padding:2px var(--edge); scrollbar-width:none;
+  }
+  .cs-rail-list::-webkit-scrollbar{ display:none; }
+  .cs-rail-list::before, .cs-rail-list::after, .cs-rail-item::before{ display:none; }
+  .cs-rail-item a{ white-space:nowrap; border-color:var(--pink-mid); background:#fff; }
+  .cs-rail-out{ display:none; }
+  .cs-sec, .cs-hero{ scroll-margin-top:calc(var(--nav-h) + 76px); }
+  .cs-stars{ grid-template-columns:minmax(0,1fr); }
+  .cs-duo{ grid-template-columns:minmax(0,1fr); }
+  .cs-rows{ grid-template-columns:minmax(0,1fr); }
+  .cs-tri{ grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:620px){
+  .cs-row.r-equipo .cs-team-list{ grid-template-columns:minmax(0,1fr); }
+  /* la pareja se apila: ya no hay nada con qué comparar lado a lado */
+  .cs-figs.par, .cs-figs.prop{ grid-template-columns:minmax(0,1fr); }
+  .cs-figs.par .cs-fig2 img{ height:auto; padding:0; }
+}
+@media (max-width:560px){
+  .cs-title{ text-shadow:2px 2px 0 var(--pink-mid); }
+  .cs-note{ padding:17px 18px 19px; box-shadow:4px 4px 0 var(--cs,var(--pink-mid)); }
+  .cs-hero-fig img{ box-shadow:4px 4px 0 var(--peach); }
+  .cs-g{ box-shadow:4px 4px 0 var(--ink); }
+  /* las pantallas de un grupo se quedan juntas, nunca una por fila */
+  .cs-shots{ gap:11px; }
+  .cs-shot, .cs-shot.is-lead, .cs-shot.is-side{ max-width:none; }
+}
+/* pantallas táctiles: sin hover pegado, igual que el bloque equivalente
+   de styles.css. Al tocar una tarjeta relacionada o el botón de salida, el
+   desplazamiento se quedaba puesto hasta tocar en otra parte. */
+@media (hover:none){
+  .cs-rail-out:hover, .cs-rel a:hover{ transform:none; }
+  .cs-rail-out:hover{ box-shadow:3px 3px 0 var(--ink); }
+  .cs-rel a:hover{ box-shadow:4px 4px 0 var(--pink-mid); }
+}
+
+@media (prefers-reduced-motion:reduce){
+  /* se apagan las transiciones de TODAS las reglas que las tienen, no solo
+     la del camino: el riel seguía atenuándose y las tarjetas relacionadas
+     seguían desplazándose al pasar el cursor. */
+  .cs-rail-list::after,
+  .cs-rail-item::before,
+  .cs-rail-item a,
+  .cs-rail-out,
+  .cs-rel a{ transition:none; }
+  /* el desplazamiento del hover se va; el del :active se queda, porque es
+     respuesta a un gesto directo y no adorno. El punto de la parada activa
+     conserva su tamaño: marca dónde estás, no es movimiento. */
+  .cs-rail-out:hover, .cs-rel a:hover{ transform:none; }
+}
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  BLOQUES DEL CASO "SCHAMAN ANALYTICS BI"                  ║
+   ╚══════════════════════════════════════════════════════════╝
+   Todo lo de aquí abajo es ADITIVO: clases nuevas que no usa
+   ningún caso anterior. Grow With Phoenix no toca ninguna.
+
+   Se agregan en esta hoja y no en el HTML del caso, siguiendo la
+   regla del encabezado del archivo.
+
+   El caso Schaman usa capturas reales del dashboard y diagramas del
+   proyecto. Esta regla conserva el estilo editorial para los pocos
+   huecos que otros casos aún necesiten durante su construcción. */
+

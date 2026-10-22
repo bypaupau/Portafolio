@@ -1,0 +1,20 @@
+---
+/* El pie. El <3 rosa no se traduce: es un dibujo hecho de texto.
+
+   ⚠ LOS TRES <span> VAN EN UNA SOLA LÍNEA, A PROPÓSITO.
+   Astro trata el marcado como JSX: si los pones en líneas separadas,
+   DESCARTA los nodos de texto en blanco que quedan entre ellos y el
+   pie se lee «hecho con<3+ pixeles · por Pau». Los espacios de aquí
+   son contenido, no formato. Si necesitas partir la línea, usa {' '}
+   explícito en lugar de un salto de línea. */
+import { translate } from '../../i18n/translate';
+
+interface Props {
+  /* En Inicio, el <3 guarda un globito al pasar el mouse o con el
+     teclado. Es el mismo pie; solo esa página pide el secreto. */
+  conSecreto?: boolean;
+}
+const { conSecreto = false } = Astro.props;
+const claseDelCorazon = conSecreto ? 'hp egg-coffee' : 'hp';
+---
+<p class="foot"><span data-i18n="footer.madeWith">{translate('footer.madeWith')}</span> <span class={claseDelCorazon} tabindex={conSecreto ? 0 : undefined} data-tip={conSecreto ? '♡ made with curiosity + too much coffee' : undefined}>&lt;3</span> <span data-i18n="footer.credit">{translate('footer.credit')}</span></p>

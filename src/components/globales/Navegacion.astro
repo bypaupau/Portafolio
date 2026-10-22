@@ -1,0 +1,50 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   La barra superior: logo + menú.
+
+   En celular (≤760px) el <ul> se vuelve un panel oculto y lo abre
+   el botón hamburguesa. Esa lógica está en
+   src/scripts/global/mobile-menu.ts — aquí solo va el marcado.
+
+   Las clases (.nav-logo, .nav-toggle, .nav-burger, .nav-tabs, .active)
+   son las MISMAS del sitio anterior, a propósito: así css/styles.css
+   sigue aplicando sin tocar una sola regla.
+   ═══════════════════════════════════════════════════════════ */
+import { translate } from '../../i18n/translate';
+import { rutaPagina } from '../../lib/rutas';
+import { paginasDelSitio } from '../../lib/navegacion';
+
+interface Props {
+  /** id de la página actual (ver src/lib/navegacion.ts) */
+  paginaActual: string;
+}
+const { paginaActual } = Astro.props;
+---
+<nav>
+  <a href={rutaPagina('')} class="nav-logo">pau<span>.</span>proyectos</a>
+
+  <button
+    class="nav-toggle"
+    id="nav-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="nav-tabs"
+    aria-label={translate('navigation.menuOpen')}
+  >
+    <span class="nav-burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span data-i18n="navigation.menuLabel">{translate('navigation.menuLabel')}</span>
+  </button>
+
+  <ul class="nav-tabs" id="nav-tabs">
+    {paginasDelSitio.map((pagina) => (
+      <li>
+        <a
+          href={rutaPagina(pagina.ruta)}
+          data-i18n={pagina.claveEnlace}
+          class:list={[pagina.id === paginaActual && 'active']}
+          aria-current={pagina.id === paginaActual ? 'page' : undefined}
+        >{translate(pagina.claveEnlace)}</a>
+      </li>
+    ))}
+  </ul>
+</nav>

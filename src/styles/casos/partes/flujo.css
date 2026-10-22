@@ -1,0 +1,37 @@
+/* FLUJO · las paradas de la arquitectura
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 785–815.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ FLUJO · las paradas de la arquitectura ════════
+   La misma idea del riel, en vertical y dentro del contenido: una
+   línea que une pasos numerados. Se apila igual en cualquier ancho,
+   así que no hay flechas que se queden colgando al envolver. */
+.cs-flow{
+  list-style:none; display:grid; gap:var(--sp-2);
+  padding-left:34px; position:relative; counter-reset:paso;
+}
+.cs-flow::before{
+  content:""; position:absolute; left:11px; top:16px; bottom:16px;
+  width:3px; background:var(--pink-mid);
+}
+.cs-flow li{
+  position:relative; counter-increment:paso; min-width:0;
+  background:var(--white); border:2px solid var(--ink);
+  box-shadow:3px 3px 0 var(--cs,var(--pink-mid));
+  padding:12px 15px 14px;
+}
+.cs-flow li::before{
+  content:counter(paso);
+  position:absolute; left:-34px; top:12px;
+  width:23px; height:23px; display:grid; place-content:center;
+  font-family:var(--font-tiny); font-size:var(--cs-tiny); color:var(--ink);
+  background:var(--cs,var(--pink-mid)); border:2px solid var(--ink);
+}
+.cs-flow b{
+  display:block; font-family:var(--font-pixel); font-weight:600;
+  font-size:var(--cs-h5); line-height:1.25; color:var(--ink); margin-bottom:var(--sp-0);
+}
+.cs-flow span{ font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--text-soft); }
+

@@ -1,0 +1,50 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   UN TEXTO QUE VIENE DEL CONTENIDO
+
+   Antes, cada párrafo de una página de caso se escribía así:
+
+     <p class="cs-num" {...conIdioma(x).atributos}>{conIdioma(x).texto}</p>
+
+   Dos llamadas a lo mismo, en cada elemento. Con esto:
+
+     <Texto class="cs-num" valor={x} />
+
+   Qué hace por debajo: escribe el español y, solo si el inglés difiere,
+   deja los atributos que el script de idioma necesita para
+   intercambiarlo sin recargar. Igual que antes; solo deja de repetirse.
+
+   ── CÓMO SE USA ────────────────────────────────────────────
+     <Texto valor={x} />                        un <p>
+     <Texto como="h2" class="cs-h" valor={x} /> otra etiqueta
+     <Texto como="span" valor={x} />            dentro de una línea
+     <Texto como="li" html valor={x} />         si el texto lleva <b> o un enlace
+     <Texto valor={x} id="h-cs-1" style="…" />  cualquier otro atributo pasa igual
+
+   `html` usa set:html y resuelve los huecos {pagina:...} de los enlaces.
+   El contenido sale de src/content/, que es nuestro código fuente, no de
+   nada que escriba una visitante.
+   ═══════════════════════════════════════════════════════════ */
+import { conIdioma, htmlConIdioma } from '../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../lib/texto-bilingue';
+import { conEnlaces } from '../../i18n/enlaces';
+
+interface Props {
+  /** el texto: una cadena, o { es, en } */
+  valor: TextoBilingue;
+  /** la etiqueta HTML. <p> por defecto */
+  como?: string;
+  /** true si el texto lleva marcado dentro (<b>, <strong>, un enlace) */
+  html?: boolean;
+  /** cualquier otro atributo (class, id, style, aria-*) pasa tal cual */
+  [otro: string]: unknown;
+}
+const { valor, como = 'p', html = false, ...resto } = Astro.props;
+const Etiqueta = como as any;
+const texto = html ? htmlConIdioma(valor) : conIdioma(valor);
+---
+{html ? (
+  <Etiqueta {...resto} {...texto.atributos} set:html={conEnlaces(texto.texto)} />
+) : (
+  <Etiqueta {...resto} {...texto.atributos}>{texto.texto}</Etiqueta>
+)}

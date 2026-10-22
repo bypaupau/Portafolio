@@ -1,0 +1,61 @@
+/* 02 · HERRAMIENTAS
+
+   Parte de sobre-mi.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 260–314.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   02 · HERRAMIENTAS
+   ════════════════════════════════════════════════ */
+.tools{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+.tool{
+  min-width:0; background:#fff;
+  border:3px solid var(--ink); box-shadow:var(--win-shadow);
+}
+.tool-head{
+  display:flex; align-items:center; gap:14px;
+  padding:14px 16px; border-bottom:3px solid var(--ink);
+}
+.tool-ico{
+  flex:none; display:grid; place-items:center;
+  width:56px; height:56px; --ps:3px;
+  background:#fff; border:2px solid var(--ink);
+}
+.tool-verb{ font-family:var(--font-pixel); font-weight:700; font-size:1.35rem; line-height:1; color:var(--ink); }
+.tool-what{ font-family:var(--font-term); font-size:1.12rem; line-height:1.1; color:var(--text-soft); margin-top:4px; }
+
+/* teclas: mismo lenguaje que los botones biselados, a escala chica */
+.keys{ list-style:none; display:flex; flex-wrap:wrap; gap:10px 8px; padding:18px 16px 20px; }
+.keys li{
+  font-family:var(--font-pixel); font-weight:500; font-size:.98rem; line-height:1.2; color:var(--ink);
+  background:var(--pink-pale); border:2px solid var(--ink); box-shadow:0 3px 0 var(--ink);
+  padding:5px 10px 4px;
+}
+
+/* lo secundario: presente pero en voz baja */
+.ab-more{ margin-top:18px; }
+.ab-more summary{
+  display:inline-flex; align-items:center; gap:10px; cursor:pointer;
+  font-family:var(--font-pixel); font-weight:600; font-size:1rem; color:var(--pink-ink);
+  padding:8px 0; min-height:44px;        /* área táctil */
+  list-style:none;
+}
+.ab-more summary::-webkit-details-marker{ display:none; }
+/* indicador tipo botón de interfaz: ">" cerrado, gira hacia abajo al abrir */
+.ab-more summary::before{
+  content:">"; display:grid; place-items:center; flex:none;
+  width:22px; height:22px; border:2px solid var(--ink); background:#fff;
+  font-family:var(--font-tiny); font-size:.55rem; line-height:1; color:var(--ink);
+  padding:2px 0 0 1px;                   /* centra ópticamente el glifo pixel */
+}
+.ab-more[open] summary::before{ transform:rotate(90deg); padding:0 0 0 2px; }   /* al girar, el padding izquierdo baja el glifo */
+@media (prefers-reduced-motion:no-preference){
+  .ab-more summary::before{ transition:transform .15s steps(2); }
+}
+.ab-more summary:hover{ color:var(--ink); }
+.ab-more summary:hover::before{ background:var(--pink-light); }
+.ab-more summary:focus-visible{ outline:3px solid var(--pink); outline-offset:3px; }
+.keys-quiet{ padding:6px 0 0; }
+.keys-quiet li{ background:transparent; border-style:dashed; box-shadow:none; color:var(--text-soft); font-weight:400; }
+
+

@@ -1,0 +1,31 @@
+{
+  "name": "portafolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Portafolio de Paula Martillo (Pau) — UEES. Sitio estatico generado con Astro y publicado en GitHub Pages.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/validar-traducciones.mjs && astro build && node scripts/limpiar-dist.mjs",
+    "preview": "astro preview",
+    "validar": "node scripts/validar-traducciones.mjs",
+    "dependencias": "node scripts/comprobar-dependencias.mjs",
+    "comparar": "node scripts/comparar-visual.mjs",
+    "interaccion": "node scripts/probar-interaccion.mjs",
+    "revisar": "npm run build && npm run cambios && npm run cascada && npm run urls && npm run peso && npm run comparar && npm run interaccion",
+    "donde": "node scripts/donde-difiere.mjs",
+    "nuevo-caso": "node scripts/nuevo-caso.mjs",
+    "urls": "node scripts/comprobar-urls.mjs",
+    "cascada": "node scripts/analizar-cascada.mjs",
+    "imagenes": "node scripts/optimizar-imagenes.mjs",
+    "peso": "node scripts/comprobar-imagenes.mjs",
+    "duplicados": "node scripts/comprobar-duplicados.mjs",
+    "cambios": "node scripts/cambios-en-el-css.mjs"
+  },
+  "devDependencies": {
+    "astro": "7.4.1",
+    "playwright": "1.64.1",
+    "jsdom": "^27.0.0",
+    "sharp": "^0.34.0"
+  }
+}

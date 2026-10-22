@@ -1,0 +1,23 @@
+/* ÍCONO DENTRO DE UN BOTÓN
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 588–604.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ ÍCONO DENTRO DE UN BOTÓN ════════
+   NO es un botón nuevo. Es el `.btn` de styles.css con un hueco fijo
+   a la izquierda, así que comparte tipo, tamaño, biselado, sombra y
+   pulsación con "volver a proyectos": si un día cambia .btn, cambian
+   los dos a la vez. Un botón con su propia tipografía habría sido
+   justo el problema que este caso vino a arreglar.
+
+   El hueco mide lo mismo lleno que vacío: poner o quitar el PNG no
+   mueve el texto de al lado. */
+.btn-ico{
+  width:20px; height:20px; flex:none;
+  display:grid; place-content:center;
+}
+.btn-ico img{ display:block; width:100%; height:100%; object-fit:contain; }
+/* vacío se ve como lo que es: un sitio reservado */
+.btn-ico:not(:has(img)){ border:2px dashed currentColor; opacity:.4; }
+

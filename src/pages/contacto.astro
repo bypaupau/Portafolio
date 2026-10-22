@@ -1,0 +1,214 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   CONTACTO  →  /Portafolio/contacto
+
+   ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
+   textos      src/i18n/es/contacto.ts  ·  src/i18n/en/contacto.ts
+   script      src/scripts/contacto/submit-state.ts  (el "enviando…")
+   estilo      src/styles/global/global.css          (sin hoja propia)
+   imágenes    public/images/contacto/               (vista previa del CV)
+   documentos  public/documents/cv/esp.pdf · eng.pdf
+   URL previa  /pages/contacto.html → redirige  (public/pages/contacto.html)
+
+   Dos ventanas: escribir un mensaje a la izquierda, el CV como
+   documento abierto a la derecha. El marcado y las clases son los
+   mismos de pages/contacto.html, así que css/styles.css aplica igual.
+
+   Lo que cambió, y por qué:
+     · los textos salen de src/i18n/ (claves con nombre, no abreviadas)
+     · las rutas pasan por rutaPublica(), para que /Portafolio/ salga bien
+     · data-cv  →  data-resume-link      (dice qué es, no qué carpeta)
+     · data-cv-img  →  data-resume-preview
+   ═══════════════════════════════════════════════════════════ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { translate } from '../i18n/translate';
+import { rutaPublica } from '../lib/rutas';
+import { imagen } from '../lib/imagenes';
+
+/* Datos de contacto. Están aquí, a la vista, en vez de repartidos
+   por el marcado: cambiar un perfil es cambiar una línea. */
+const correo = 'paula.martilloq@gmail.com';
+const perfilGitHub = 'https://github.com/bypaupau';
+const perfilLinkedIn = 'https://www.linkedin.com/in/paula-m-quintana/';
+const formularioFormspree = 'https://formspree.io/f/xbglvbeq';
+
+/* El href apunta al PDF en español; si el idioma activo es inglés,
+   src/scripts/global/resume-by-language.ts cambia el archivo.
+   Así el enlace funciona también sin JavaScript. */
+const curriculumEspanol = rutaPublica('documents/cv/esp.pdf');
+/* Las dos vistas previas salen del manifiesto de imágenes, así el nombre del
+   archivo no está escrito a mano en ningún sitio. Viajan las DOS en el HTML
+   (data-vista-es / data-vista-en) para que el cambio de idioma no tenga que
+   adivinar el nombre del archivo del otro idioma. */
+const vistaPreviaCurriculum = {
+  es: imagen('images/contacto/cv-preview-es', 960),
+  en: imagen('images/contacto/cv-preview-en', 960),
+};
+---
+<BaseLayout
+  paginaActual="contact"
+  claveTitulo="pages.contact.metaTitle"
+  claveDescripcion="pages.contact.metaDescription"
+  claveNombreVentana="taskbar.windowName.contact"
+>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-label hx" style="--d:100ms" data-i18n="pages.contact.sectionLabel">
+        {translate('pages.contact.sectionLabel')}
+      </p>
+      <h1 class="sec-title hx" style="--d:170ms" data-i18n="pages.contact.sectionTitle">
+        {translate('pages.contact.sectionTitle')}
+      </h1>
+    </div>
+
+    <div class="contact-layout">
+
+      <!-- ══ izquierda · escribir un mensaje ══ -->
+      <div class="win contact-win hx" style="--d:280ms">
+        <div class="win-bar yellow">
+          <span class="win-title" data-i18n="pages.contact.composeWindowTitle">
+            {translate('pages.contact.composeWindowTitle')}
+          </span>
+          <span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span>
+        </div>
+        <div class="win-menu"><span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>S</u>end</span></div>
+
+        <div class="win-body">
+          <div class="contact-intro">
+            <p class="about-lead" data-i18n="pages.contact.lead">{translate('pages.contact.lead')}</p>
+
+            <div class="contact-links">
+              <a class="btn btn-primary" href={`mailto:${correo}`}>Email</a>
+              <a class="btn btn-sky" href={perfilGitHub} target="_blank" rel="noopener">GitHub</a>
+              <a class="btn btn-ghost" href={perfilLinkedIn} target="_blank" rel="noopener">LinkedIn</a>
+              <a
+                class="btn btn-yellow"
+                href={curriculumEspanol}
+                data-resume-link
+                download
+                data-i18n="pages.contact.resumeDownloadButton"
+              >{translate('pages.contact.resumeDownloadButton')}</a>
+            </div>
+          </div>
+
+          <form class="contact-form" action={formularioFormspree} method="POST">
+            <div class="contact-row">
+              <label>
+                <span data-i18n="pages.contact.form.nameLabel">{translate('pages.contact.form.nameLabel')}</span>
+                <input
+                  type="text"
+                  name="nombre"
+                  placeholder={translate('pages.contact.form.namePlaceholder')}
+                  data-i18n-attr="placeholder:pages.contact.form.namePlaceholder"
+                  required
+                />
+              </label>
+              <label>
+                <span data-i18n="pages.contact.form.emailLabel">{translate('pages.contact.form.emailLabel')}</span>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder={translate('pages.contact.form.emailPlaceholder')}
+                  data-i18n-attr="placeholder:pages.contact.form.emailPlaceholder"
+                  required
+                />
+              </label>
+            </div>
+
+            <label>
+              <span data-i18n="pages.contact.form.messageLabel">{translate('pages.contact.form.messageLabel')}</span>
+              <textarea
+                name="mensaje"
+                rows="6"
+                placeholder={translate('pages.contact.form.messagePlaceholder')}
+                data-i18n-attr="placeholder:pages.contact.form.messagePlaceholder"
+                required></textarea>
+            </label>
+
+            <!-- Formspree: asunto del correo e idioma de la respuesta -->
+            <input
+              type="hidden"
+              name="_subject"
+              value={translate('pages.contact.form.emailSubject')}
+              data-i18n-attr="value:pages.contact.form.emailSubject"
+            />
+            <input
+              type="hidden"
+              name="_language"
+              value={translate('language.formCode')}
+              data-i18n-attr="value:language.formCode"
+            />
+
+            <button class="btn btn-primary" type="submit" data-i18n="pages.contact.form.submitButton">
+              {translate('pages.contact.form.submitButton')}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ══ derecha · el CV como un documento abierto ══ -->
+      <aside class="win cv-win hx" style="--d:380ms" aria-labelledby="cv-title">
+        <div class="win-bar sky">
+          <span class="win-title" id="cv-title" data-i18n="pages.contact.resume.windowTitle">
+            {translate('pages.contact.resume.windowTitle')}
+          </span>
+          <span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span>
+        </div>
+        <div class="win-menu cv-menu">
+          <span><u>F</u>ile</span><span><u>V</u>iew</span>
+          <span class="cv-page" data-i18n="pages.contact.resume.pageCounter">
+            {translate('pages.contact.resume.pageCounter')}
+          </span>
+        </div>
+
+        <div class="cv-body">
+          <a
+            class="cv-sheet"
+            href={curriculumEspanol}
+            data-resume-link
+            data-resume-open
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src={vistaPreviaCurriculum.es.src}
+              data-resume-preview
+              data-vista-es={vistaPreviaCurriculum.es.src}
+              data-vista-en={vistaPreviaCurriculum.en.src}
+              width={vistaPreviaCurriculum.es.ancho}
+              height={vistaPreviaCurriculum.es.alto}
+              loading="lazy"
+              decoding="async"
+              alt={translate('pages.contact.resume.previewAlt')}
+              data-i18n-attr="alt:pages.contact.resume.previewAlt"
+            />
+          </a>
+        </div>
+
+        <div class="cv-actions">
+          <a
+            class="btn btn-primary"
+            href={curriculumEspanol}
+            data-resume-link
+            data-resume-open
+            target="_blank"
+            rel="noopener"
+            data-i18n="pages.contact.resume.viewButton"
+          >{translate('pages.contact.resume.viewButton')}</a>
+          <a
+            class="btn btn-ghost"
+            href={curriculumEspanol}
+            data-resume-link
+            download
+            data-i18n="pages.contact.resume.downloadButton"
+          >{translate('pages.contact.resume.downloadButton')}</a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <script>
+    import '../scripts/contacto/submit-state';
+  </script>
+</BaseLayout>

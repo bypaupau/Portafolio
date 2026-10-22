@@ -1,0 +1,27 @@
+/* los encabezados de sección y las tarjetas genéricas
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 312–333.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ ENCABEZADOS de sección ════════ */
+.sec-head{ margin:34px 0 22px; }
+.sec-label{
+  font-family:var(--font-tiny); font-size:.6rem; letter-spacing:1px;
+  color:var(--pink); text-transform:uppercase;
+}
+.sec-title{
+  font-family:var(--font-pixel); font-weight:700; font-size:clamp(2rem,5vw,2.8rem);
+  color:var(--ink); text-shadow:3px 3px 0 var(--pink-mid); margin-top:6px;
+}
+
+/* ════════ TARJETAS genéricas ════════ */
+.cards{ display:grid; gap:20px; }
+.grid-2{ grid-template-columns:repeat(2,1fr); }
+.grid-3{ grid-template-columns:repeat(3,1fr); }
+.cards .win-body h3{ font-family:var(--font-pixel); font-weight:600; font-size:1.25rem; color:var(--ink); margin-bottom:6px; }
+.cards .win-body p{ font-size:.92rem; color:var(--text-soft); }
+.meta{ font-family:var(--font-term); font-size:1.05rem; color:var(--pink); margin-bottom:4px; }
+.pill{ display:inline-block; font-family:var(--font-term); font-size:1rem; line-height:1; padding:5px 9px; margin:4px 5px 0 0; background:var(--pink-light); border:2px solid var(--ink); color:var(--ink); }
+.link{ font-family:var(--font-pixel); font-weight:600; font-size:1rem; color:var(--pink); text-decoration:none; border-bottom:2px solid var(--pink-mid); }
+.link:hover{ color:var(--ink); border-color:var(--ink); }

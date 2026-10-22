@@ -1,0 +1,11 @@
+---
+/* Una nota al pie de sección: <p class="cs-nota">. Lleva marcado
+   dentro (negritas, a veces un enlace), así que usa htmlConIdioma. */
+import { htmlConIdioma } from '../../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+import { conEnlaces } from '../../../i18n/enlaces';
+
+interface Props { texto: TextoBilingue }
+const nota = htmlConIdioma(Astro.props.texto);
+---
+<p class="cs-nota cs-rv" {...nota.atributos} set:html={conEnlaces(nota.texto)} />

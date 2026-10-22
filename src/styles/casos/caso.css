@@ -1,0 +1,40 @@
+/* ══════════════════════════════
+   LAS PÁGINAS DE CASO · ÍNDICE
+
+   Este archivo ya no tiene reglas: dice en qué ORDEN se cargan las
+   25 partes de partes/. Antes era un solo archivo de 905
+   líneas, que es donde deja de poder leerse y se empieza a buscar dentro.
+
+   El orden importa: en CSS, cuando dos reglas empatan en importancia y
+   especificidad, gana la última que se carga. Así que esta lista ES la
+   cascada, y conserva el orden exacto que tenían las secciones.
+
+   Si cambias el orden, corre  npm run cascada : compara contra el orden
+   original y avisa si algún par de reglas cambió de ganador.
+   ══════════════════════════════ */
+
+@import './partes/base.css';                              /* LAS PÁGINAS DE CASO · hoja de estilo compartida */
+@import './partes/rejilla.css';                           /* REJILLA · riel + contenido */
+@import './partes/riel.css';                              /* RIEL */
+@import './partes/portada.css';                           /* PORTADA */
+@import './partes/metadatos.css';                         /* METADATOS */
+@import './partes/decisiones.css';                        /* DECISIONES · una necesidad y lo que colgó de ella */
+@import './partes/seccion.css';                           /* SECCIÓN */
+@import './partes/texto.css';                             /* TEXTO */
+@import './partes/etiquetas-fuente.css';                  /* ETIQUETAS DE FUENTE */
+@import './partes/marcas-honestidad.css';                 /* MARCAS DE HONESTIDAD */
+@import './partes/nota.css';                              /* NOTA · caja con etiqueta */
+@import './partes/grupos-pantallas.css';                  /* GRUPOS DE PANTALLAS */
+@import './partes/figuras-investigacion.css';             /* FIGURAS DE INVESTIGACIÓN */
+@import './partes/triptico.css';                          /* TRÍPTICO · los tres momentos del concepto */
+@import './partes/salidas.css';                           /* SALIDAS */
+@import './partes/icono-boton.css';                       /* ÍCONO DENTRO DE UN BOTÓN */
+@import './partes/aparicion-scroll.css';                  /* APARICIÓN AL SCROLL */
+@import './partes/responsive.css';                        /* RESPONSIVE */
+@import './partes/espacio-reservado.css';                 /* ESPACIO RESERVADO */
+@import './partes/flujo.css';                             /* FLUJO · las paradas de la arquitectura */
+@import './partes/metricas.css';                          /* MÉTRICAS */
+@import './partes/antes-despues.css';                     /* ANTES / DESPUÉS */
+@import './partes/galeria.css';                           /* GALERÍA */
+@import './partes/pendientes.css';                        /* PENDIENTES */
+@import './partes/responsive-bloques-nuevos.css';         /* RESPONSIVE DE LOS BLOQUES NUEVOS */

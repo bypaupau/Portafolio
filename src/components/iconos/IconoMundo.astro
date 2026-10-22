@@ -1,0 +1,11 @@
+---
+/* El globo del selector de idioma. 11×11 px.
+   Datos de ruta copiados sin cambios de js/i18n.js (GLOBE). */
+interface Props { class?: string }
+const { class: clase = 'tb-globe' } = Astro.props;
+---
+<svg class={clase} viewBox="0 0 11 11" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <path fill="var(--ink)" d="M3 0h5v1H3zM1 1h2v1H1zM8 1h2v1H8zM1 2h1v1H1zM9 2h1v1H9zM0 3h1v5H0zM10 3h1v5h-1zM1 8h1v1H1zM9 8h1v1H9zM1 9h2v1H1zM8 9h2v1H8zM3 10h5v1H3z"/>
+  <path fill="var(--sky)" d="M3 1h5v1H3zM2 2h7v1H2zM1 3h9v5H1zM2 8h7v1H2zM3 9h5v1H3z"/>
+  <path fill="var(--pink)" d="M5 1h1v9H5zM1 5h9v1H1zM3 2h1v1H3zM7 2h1v1H7zM2 3h1v2H2zM8 3h1v2H8zM2 6h1v2H2zM8 6h1v2H8zM3 8h1v1H3zM7 8h1v1H7z"/>
+</svg>

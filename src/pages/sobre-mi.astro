@@ -1,0 +1,295 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   SOBRE MÍ  →  /Portafolio/sobre-mi
+
+   ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
+   textos      src/i18n/es/sobre-mi.ts · src/i18n/en/sobre-mi.ts
+   estilo      src/styles/sobre-mi/sobre-mi.css   (hoja propia)
+   scripts     src/scripts/sobre-mi/piezas-que-aparecen.ts  (qué aparece al bajar)
+               src/scripts/sobre-mi/ruta-animada.ts         (la ruta de 01)
+   dibujos     src/components/paginas/sobre-mi/            (los 21 sprites, con nombre)
+   imágenes    public/images/sobre-mi/polaroid.jpg
+               public/images/logos/                (coursera · udemy · utokyo)
+   URL previa  /pages/sobremi.html → redirige  (public/pages/sobremi.html)
+
+   ── DOS COSAS QUE HAY QUE SABER PARA EDITAR ESTE ARCHIVO ───
+   1. LOS ESPACIOS. Astro borra los saltos de línea que quedan ENTRE dos
+      elementos. Donde el HTML anterior tenía dos <span> en líneas
+      distintas, el navegador mostraba un espacio; aquí ese espacio hay
+      que escribirlo a mano con {' '}. Si se quita, dos palabras quedan
+      pegadas. Ya pasó en el pie del sitio.
+   2. EL TEXTO SALE DEL DICCIONARIO, no de este archivo. El sitio anterior
+      escribía el español en el HTML y luego JavaScript lo sobreescribía
+      con el diccionario, así que el HTML tenía texto que nadie veía.
+      Aquí {translate(...)} escribe desde el principio lo que se ve.
+   ═══════════════════════════════════════════════════════════ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ColaDeBocadillo from '../components/paginas/sobre-mi/ColaDeBocadillo.astro';
+import { translate } from '../i18n/translate';
+import { conEnlaces } from '../i18n/enlaces';
+import { rutaPublica, rutaPagina } from '../lib/rutas';
+import '../styles/sobre-mi/sobre-mi.css';
+
+import SignoMas from '../components/dibujos/SignoMas.astro';
+import Corazon from '../components/dibujos/Corazon.astro';
+import StickerLapiz from '../components/paginas/sobre-mi/StickerLapiz.astro';
+import StickerCursor from '../components/paginas/sobre-mi/StickerCursor.astro';
+import Destello from '../components/dibujos/Destello.astro';
+import SignoCodigo from '../components/dibujos/SignoCodigo.astro';
+import TrazoSubrayado from '../components/dibujos/TrazoSubrayado.astro';
+import TrazoCirculo from '../components/dibujos/TrazoCirculo.astro';
+import ParadaIlustracion from '../components/paginas/sobre-mi/ParadaIlustracion.astro';
+import ParadaDiseno from '../components/paginas/sobre-mi/ParadaDiseno.astro';
+import ParadaMarketing from '../components/paginas/sobre-mi/ParadaMarketing.astro';
+import ParadaAhora from '../components/paginas/sobre-mi/ParadaAhora.astro';
+import Paleta from '../components/dibujos/Paleta.astro';
+import Grafico from '../components/dibujos/Grafico.astro';
+import PistaDibujo from '../components/paginas/sobre-mi/PistaDibujo.astro';
+import PistaPintura from '../components/paginas/sobre-mi/PistaPintura.astro';
+import PistaVideojuegos from '../components/paginas/sobre-mi/PistaVideojuegos.astro';
+import PistaMusica from '../components/paginas/sobre-mi/PistaMusica.astro';
+import PistaManualidades from '../components/paginas/sobre-mi/PistaManualidades.astro';
+import PistaLibros from '../components/paginas/sobre-mi/PistaLibros.astro';
+
+/* Las cuatro paradas con texto + la quinta ("aquí estoy"), que es distinta
+   y va escrita aparte abajo. El orden es el del camino. */
+const paradas = [
+  { icono: ParadaIlustracion, color: 't-pink', nombre: 'pages.about.route.illustration', texto: 'pages.about.route.illustration.text' },
+  { icono: ParadaDiseno,      color: 't-lav',  nombre: 'pages.about.route.design',       texto: 'pages.about.route.design.text' },
+  { icono: ParadaMarketing,   color: 't-sky',  nombre: 'pages.about.route.marketing',    texto: 'pages.about.route.marketing.text' },
+  { icono: SignoCodigo,       color: 't-mint', nombre: 'pages.about.route.computing',    texto: 'pages.about.route.computing.text',
+    meta: 'pages.about.route.computing.meta' },
+] as const;
+
+/* Las tres cosas que hace con sus herramientas. Las listas NO se traducen:
+   son nombres propios de programas y lenguajes. */
+const herramientas = [
+  {
+    icono: Paleta, color: 't-pink',
+    verbo: 'pages.about.tools.design.verb', que: 'pages.about.tools.design.what',
+    nombres: ['Figma', 'Illustrator', 'Photoshop', 'Procreate'],
+  },
+  {
+    icono: SignoCodigo, color: 't-sky',
+    verbo: 'pages.about.tools.build.verb', que: 'pages.about.tools.build.what',
+    nombres: ['HTML & CSS', 'JavaScript', 'TypeScript', 'React', 'Python', "Java"],
+  },
+  {
+    icono: Grafico, color: 't-mint',
+    verbo: 'pages.about.tools.analyze.verb', que: 'pages.about.tools.analyze.what',
+    nombres: ['SQL', 'Pandas', 'Google Earth Engine', 'Spark'],
+  },
+] as const;
+
+const masHerramientas = ['PHP/Laravel', 'C#', 'Unity', 'Docker', 'Git & GitHub', 'SQLite', 'PostgreSQL'];
+
+/* Las seis pistas de "fuera de la pantalla": dibujo, cada una con su icono. */
+const pistas = [
+  { icono: PistaDibujo,        clave: 'pages.about.clues.draw' },
+  { icono: PistaPintura,       clave: 'pages.about.clues.paint' },
+  { icono: PistaVideojuegos,   clave: 'pages.about.clues.play' },
+  { icono: PistaMusica,        clave: 'pages.about.clues.music' },
+  { icono: PistaManualidades,  clave: 'pages.about.clues.craft' },
+  { icono: PistaLibros,        clave: 'pages.about.clues.read' },
+] as const;
+---
+
+<BaseLayout
+  paginaActual="about"
+  claveTitulo="pages.about.metaTitle"
+  claveDescripcion="pages.about.metaDescription"
+  claveNombreVentana="taskbar.windowName.about"
+  claseBody="page-about"
+>
+  {/* ═══════════ HERO · polaroid + intro ═══════════
+      Lo único que tiene que quedar claro en 5 segundos:
+      quién es, de dónde viene, qué busca. */}
+  <section class="ab-hero wrap" aria-labelledby="ab-hola">
+
+    {/* La polaroid ya trae sus propios detalles (lápiz, cinta, </>, cursor),
+        así que en el margen izquierdo solo va una cruz que equilibra el peso. */}
+    <div class="ab-deco ab-deco-l hx" style="--d:620ms" aria-hidden="true">
+      <span class="dk dk-cross"><SignoMas color="#F4B8CC" /></span>
+    </div>
+
+    <figure class="ab-photo hx" style="--d:240ms">
+      <div class="polaroid">
+        <img
+          src={rutaPublica('images/sobre-mi/polaroid.jpg')}
+          width="640" height="640"
+          alt={translate('pages.about.photo.alt')}
+          data-i18n-attr="alt:pages.about.photo.alt"
+        />
+        <figcaption><span data-i18n="pages.about.photo.caption">{translate('pages.about.photo.caption')}</span> <Corazon /></figcaption>
+      </div>
+      {/* stickers: cada uno es una pieza de la historia (dibujo · código · interacción) */}
+      <span class="stk stk-pencil"><StickerLapiz /></span>
+      <span class="stk stk-code"><SignoCodigo /></span>
+      <span class="stk stk-cursor"><StickerCursor /></span>
+      <span class="stk stk-spark"><Destello /></span>
+    </figure>
+
+    <div class="ab-intro">
+      <p class="ab-path hx" style="--d:120ms" aria-hidden="true" data-i18n="pages.about.filePath">{translate('pages.about.filePath')}</p>
+      <h1 class="ab-hello hx" style="--d:180ms" id="ab-hola"><span data-i18n="pages.about.hello">{translate('pages.about.hello')}</span> <Corazon /></h1>
+
+      <p
+        class="ab-lead hx" style="--d:320ms"
+        data-i18n-html="pages.about.lead.first"
+        set:html={translate('pages.about.lead.first')}
+      />
+
+      {/* Los {' '} son los espacios que el HTML anterior conseguía con un
+          salto de línea. Sin ellos, "personas" se pega a "interactúan". */}
+      <p class="ab-lead hx" style="--d:400ms"><span data-i18n="pages.about.lead.second.start">{translate('pages.about.lead.second.start')}</span>{' '}<span
+          class="mark mark-under"
+        ><span data-i18n="pages.about.lead.second.interact">{translate('pages.about.lead.second.interact')}</span><TrazoSubrayado /></span>{' '}<span
+          data-i18n="pages.about.lead.second.middle"
+        >{translate('pages.about.lead.second.middle')}</span>{' '}<span
+          class="mark mark-circle"
+        ><span data-i18n="pages.about.lead.second.myself">{translate('pages.about.lead.second.myself')}</span><TrazoCirculo /></span>.</p>
+
+      <p class="ab-status hx" style="--d:480ms"><span class="ab-dot" aria-hidden="true"></span>{' '}<span data-i18n="pages.about.status">{translate('pages.about.status')}</span></p>
+    </div>
+
+    {/* Margen derecho · lado "código". En el HTML anterior este <div> quedó
+        vacío y sin cerrar; el navegador lo cerraba solo al llegar a
+        </section>. Aquí se cierra de forma explícita: se dibuja igual. */}
+    <div class="ab-deco ab-deco-r hx" style="--d:680ms" aria-hidden="true"></div>
+
+  </section>
+
+  {/* ═══════════ ¿QUÉ ESTOY HACIENDO AHORA? ═══════════
+      Un mensajito pegado debajo del hero, no una sección: una sola caja,
+      un solo borde, cuatro frases y los logos chiquitos. */}
+  <section class="ab-now wrap ab-reveal" aria-labelledby="ab-now-t">
+    <div class="now-msg">
+      <ColaDeBocadillo />
+      <div class="now-head">
+        <p class="now-tag" aria-hidden="true">de: pau</p>
+        <h2 class="now-ask" id="ab-now-t" data-i18n="pages.about.now.question">{translate('pages.about.now.question')}</h2>
+      </div>
+
+      <ul class="now-list">
+        <li class="now-line">
+          <img class="now-logo" src={rutaPublica('images/logos/coursera.png')} width="48" height="48" alt="Coursera" />{' '}<span data-i18n="pages.about.now.uiuxCourse">{translate('pages.about.now.uiuxCourse')}</span>
+        </li>
+        <li class="now-line">
+          <img class="now-logo" src={rutaPublica('images/logos/udemy.png')} width="48" height="48" alt="Udemy" />{' '}<span data-i18n="pages.about.now.webBootcamp">{translate('pages.about.now.webBootcamp')}</span>
+        </li>
+        <li class="now-line">
+          <img class="now-logo" src={rutaPublica('images/logos/utokyo.png')} width="48" height="48" alt="University of Tokyo" />{' '}<span data-i18n="pages.about.now.dataScienceProgram">{translate('pages.about.now.dataScienceProgram')}</span>
+        </li>
+        <li class="now-line">
+          <span class="now-logo now-logo-pix"><Corazon class="now-pix" /></span>{' '}<span data-i18n="pages.about.now.ownProjects">{translate('pages.about.now.ownProjects')}</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    {/* ═══════════ 01 · RUTA ═══════════ */}
+    <section class="ab-sec ab-reveal" aria-labelledby="ab-ruta">
+      <header class="ab-head">
+        <p class="ab-num" data-i18n="pages.about.route.eyebrow">{translate('pages.about.route.eyebrow')}</p>
+        <h2 class="ab-title" id="ab-ruta" data-i18n="pages.about.route.title">{translate('pages.about.route.title')}</h2>
+        <p class="ab-sub" data-i18n="pages.about.route.subtitle">{translate('pages.about.route.subtitle')}</p>
+      </header>
+
+      <div class="win">
+        <div class="win-bar lav">
+          <span class="win-title" data-i18n="pages.about.route.windowTitle">{translate('pages.about.route.windowTitle')}</span>{' '}<span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+        </div>
+        <div class="win-body">
+          <ol class="route">
+            {paradas.map((parada) => (
+              <li class="stop">
+                <span class={`stop-ico ${parada.color}`}><parada.icono /></span>
+                <div>
+                  <h3 class="stop-name" data-i18n={parada.nombre}>{translate(parada.nombre)}</h3>
+                  <p class="stop-txt"><span data-i18n={parada.texto}>{translate(parada.texto)}</span>{'meta' in parada && <Fragment>{' '}<span class="stop-meta" data-i18n={parada.meta}>{translate(parada.meta)}</span></Fragment>}</p>
+                </div>
+              </li>
+            ))}
+
+            {/* la última parada no lleva nombre de etapa: lleva el "aquí estoy" */}
+            <li class="stop stop-now">
+              <span class="stop-ico t-yellow"><ParadaAhora /></span>
+              <div>
+                <p class="stop-note" aria-hidden="true"><span class="arr-l">&lt; </span><span data-i18n="pages.about.route.youAreHere">{translate('pages.about.route.youAreHere')}</span><span class="arr-r"> &gt;</span></p>
+                <h3 class="stop-name"><span class="sr-only" data-i18n="pages.about.route.nowLabel">{translate('pages.about.route.nowLabel')}</span> UX/UI · product design</h3>
+                <p class="stop-txt" data-i18n="pages.about.route.now.text">{translate('pages.about.route.now.text')}</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══════════ 02 · HERRAMIENTAS ═══════════
+        Agrupadas por lo que HACE con ellas (verbos), no por tecnología.
+        Lo secundario queda detrás de un <details>: está, pero no compite. */}
+    <section class="ab-sec ab-split ab-reveal" aria-labelledby="ab-tools">
+      <header class="ab-head">
+        <p class="ab-num" data-i18n="pages.about.tools.eyebrow">{translate('pages.about.tools.eyebrow')}</p>
+        <h2 class="ab-title" id="ab-tools" data-i18n="pages.about.tools.title">{translate('pages.about.tools.title')}</h2>
+      </header>
+
+      <div class="tools">
+        {herramientas.map((grupo) => (
+          <article class="tool">
+            <div class={`tool-head ${grupo.color}`}>
+              <span class="tool-ico"><grupo.icono /></span>
+              <div><h3 class="tool-verb" data-i18n={grupo.verbo}>{translate(grupo.verbo)}</h3><p class="tool-what" data-i18n={grupo.que}>{translate(grupo.que)}</p></div>
+            </div>
+            <ul class="keys">{grupo.nombres.map((nombre) => <li>{nombre}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+
+      <details class="ab-more">
+        <summary data-i18n="pages.about.tools.more">{translate('pages.about.tools.more')}</summary>
+        <ul class="keys keys-quiet">{masHerramientas.map((nombre) => <li>{nombre}</li>)}</ul>
+      </details>
+    </section>
+
+    {/* ═══════════ 03 · FUERA DE LA PANTALLA ═══════════ */}
+    <section class="ab-sec ab-split ab-reveal" aria-labelledby="ab-out">
+      <header class="ab-head">
+        <p class="ab-num" data-i18n="pages.about.clues.eyebrow">{translate('pages.about.clues.eyebrow')}</p>
+        <h2 class="ab-title" id="ab-out" data-i18n="pages.about.clues.title">{translate('pages.about.clues.title')}</h2>
+        <p class="ab-sub" data-i18n="pages.about.clues.subtitle">{translate('pages.about.clues.subtitle')}</p>
+      </header>
+
+      <div class="win">
+        <div class="win-bar">
+          <span class="win-title" data-i18n="pages.about.clues.windowTitle">{translate('pages.about.clues.windowTitle')}</span>{' '}<span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+        </div>
+        <div class="win-body clues-board">
+          <ul class="clues">
+            {pistas.map((pista) => (
+              <li class="clue"><span class="px-box"><pista.icono /></span><p data-i18n-html={pista.clave} set:html={conEnlaces(translate(pista.clave))} /></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══════════ CIERRE ═══════════ */}
+    <section class="ab-next ab-reveal" aria-labelledby="ab-next">
+      <h2 class="ab-title" id="ab-next" data-i18n="pages.about.next.title">{translate('pages.about.next.title')}</h2>
+      <p class="ab-sub" data-i18n="pages.about.next.subtitle">{translate('pages.about.next.subtitle')}</p>
+      <div class="hero-btns">
+        <a class="btn btn-primary" href={rutaPagina('proyectos')} data-i18n="pages.about.next.projects">{translate('pages.about.next.projects')}</a>
+        <a class="btn btn-ghost" href={rutaPagina('contacto')} data-i18n="pages.about.next.write">{translate('pages.about.next.write')}</a>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    import '../scripts/sobre-mi/piezas-que-aparecen';
+    import '../scripts/sobre-mi/ruta-animada';
+  </script>
+</BaseLayout>

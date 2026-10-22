@@ -1,0 +1,53 @@
+---
+/* Una paleta de pintura. 9×11 px.
+   En Sobre mí es el icono de "diseñar" (02 · herramientas); en Inicio
+   subraya la palabra "creatividad" y acompaña al verbo "diseñar".
+   Pixeles copiados sin cambios del sitio anterior. */
+interface Props {
+  class?: string;
+  /** tamaño de un pixel en pantalla (--ps). Inicio lo usa; Sobre mí no. */
+  ps?: string;
+}
+const { class: clase = 'px', ps } = Astro.props;
+---
+<svg class={clase} style={(ps ? `--ps:${ps};` : '') + "--gw:9;--gh:11"} viewBox="0 0 9 11" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <rect x="3" y="0" width="3" height="1" fill="var(--ink)"/>
+  <rect x="2" y="1" width="1" height="1" fill="var(--ink)"/>
+  <rect x="3" y="1" width="3" height="1" fill="var(--pink-mid)"/>
+  <rect x="6" y="1" width="1" height="1" fill="var(--ink)"/>
+  <rect x="1" y="2" width="7" height="1" fill="var(--ink)"/>
+  <rect x="1" y="3" width="1" height="1" fill="var(--ink)"/>
+  <rect x="2" y="3" width="5" height="1" fill="var(--pink)"/>
+  <rect x="7" y="3" width="1" height="1" fill="var(--ink)"/>
+  <rect x="0" y="4" width="1" height="1" fill="var(--ink)"/>
+  <rect x="1" y="4" width="2" height="1" fill="var(--pink)"/>
+  <rect x="3" y="4" width="3" height="1" fill="var(--ink)"/>
+  <rect x="6" y="4" width="2" height="1" fill="var(--pink)"/>
+  <rect x="8" y="4" width="1" height="1" fill="var(--ink)"/>
+  <rect x="0" y="5" width="1" height="1" fill="var(--ink)"/>
+  <rect x="1" y="5" width="2" height="1" fill="var(--pink)"/>
+  <rect x="3" y="5" width="1" height="1" fill="var(--ink)"/>
+  <rect x="4" y="5" width="1" height="1" fill="var(--white)"/>
+  <rect x="5" y="5" width="1" height="1" fill="var(--ink)"/>
+  <rect x="6" y="5" width="2" height="1" fill="var(--pink)"/>
+  <rect x="8" y="5" width="1" height="1" fill="var(--ink)"/>
+  <rect x="0" y="6" width="1" height="1" fill="var(--ink)"/>
+  <rect x="1" y="6" width="3" height="1" fill="var(--pink)"/>
+  <rect x="4" y="6" width="1" height="1" fill="var(--ink)"/>
+  <rect x="5" y="6" width="3" height="1" fill="var(--pink)"/>
+  <rect x="8" y="6" width="1" height="1" fill="var(--ink)"/>
+  <rect x="1" y="7" width="1" height="1" fill="var(--ink)"/>
+  <rect x="2" y="7" width="2" height="1" fill="var(--pink)"/>
+  <rect x="4" y="7" width="1" height="1" fill="var(--ink)"/>
+  <rect x="5" y="7" width="2" height="1" fill="var(--pink)"/>
+  <rect x="7" y="7" width="1" height="1" fill="var(--ink)"/>
+  <rect x="2" y="8" width="1" height="1" fill="var(--ink)"/>
+  <rect x="3" y="8" width="1" height="1" fill="var(--pink)"/>
+  <rect x="4" y="8" width="1" height="1" fill="var(--ink)"/>
+  <rect x="5" y="8" width="1" height="1" fill="var(--pink)"/>
+  <rect x="6" y="8" width="1" height="1" fill="var(--ink)"/>
+  <rect x="3" y="9" width="1" height="1" fill="var(--ink)"/>
+  <rect x="4" y="9" width="1" height="1" fill="var(--pink)"/>
+  <rect x="5" y="9" width="1" height="1" fill="var(--ink)"/>
+  <rect x="4" y="10" width="1" height="1" fill="var(--ink)"/>
+</svg>
