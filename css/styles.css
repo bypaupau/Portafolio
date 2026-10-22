@@ -775,7 +775,7 @@ main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal 
 /* reduced-motion: solo fundido, sin desplazarse */
 .rot.is-calm .rot-w, .rot.is-calm .rot-w.is-on, .rot.is-calm .rot-w.is-off{ translate:0 0; transition:opacity .6s ease; }
 
-/* ── 5b · "Pau" + su mini polaroid ───────────────────────────
+/* ── 5b · "Pau" + mi mini polaroid ───────────────────────────
    Nombre y foto se leen como UNA unidad de identidad: la persona
    detrás de "Pau". Es la misma polaroid de Sobre mí, en chiquito.
    Es un detalle que ACOMPAÑA al nombre, no compite con él:
