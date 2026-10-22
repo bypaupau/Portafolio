@@ -4,7 +4,9 @@
    Por cada página migrada, una entrada:
      id         nombre de la carpeta de capturas
      nueva      ruta en el sitio compilado (dentro de dist/)
-     anterior   ruta del archivo del sitio viejo, desde la raíz del repo.
+     (ya no hay 'anterior': el sitio viejo se retiró en la etapa 11, así
+     que la comparación dejó de ser "lo nuevo contra lo viejo" y pasó a ser
+     "lo de hoy contra la última versión que diste por buena".)
                 **OPCIONAL**: una página nueva (que no existía en el sitio
                 publicado) la omite. Entonces la comparación usa como
                 referencia su propia captura guardada en
@@ -22,31 +24,26 @@ export const paginasAComparar = [
   {
     id: 'contacto',
     nueva: '/Portafolio/contacto/',
-    anterior: '/antes/pages/contacto.html',
     assets: ['pages', 'css', 'js', 'img', 'cv', 'favicon.png', 'favicon.svg'],
   },
   {
     id: 'creativo',
     nueva: '/Portafolio/creativo',
-    anterior: '/antes/pages/creativo.html',
     assets: ['pages', 'css', 'js', 'data', 'img', 'trabajos-disenio', 'favicon.png', 'favicon.svg'],
   },
   {
     id: 'proyectos',
     nueva: '/Portafolio/proyectos',
-    anterior: '/antes/pages/proyectos.html',
     assets: ['pages', 'css', 'js', 'data', 'img', 'favicon.png', 'favicon.svg'],
   },
   {
     id: 'sobre-mi',
     nueva: '/Portafolio/sobre-mi',
-    anterior: '/antes/pages/sobremi.html',
     assets: ['pages', 'css', 'js', 'img', 'resources', 'favicon.png', 'favicon.svg'],
   },
   {
     id: 'inicio',
     nueva: '/Portafolio/',
-    anterior: '/antes/index.html',
     assets: ['pages', 'css', 'js', 'img', 'cv', 'favicon.png', 'favicon.svg'],
     /* "Paula Martillo · diseño + código ✿" es igual en español y en
        inglés: es su nombre. Así que aquí el título NO debe cambiar. */
@@ -55,13 +52,11 @@ export const paginasAComparar = [
   {
     id: 'caso-phoenix',
     nueva: '/Portafolio/casos/grow-with-phoenix',
-    anterior: '/antes/pages/caso/grow-with-phoenix.html',
     assets: ['pages', 'css', 'js', 'img', 'projects', 'favicon.png', 'favicon.svg'],
   },
   {
     id: 'caso-schaman',
     nueva: '/Portafolio/casos/schaman-analytics-bi',
-    anterior: '/antes/pages/caso/schaman-analytics-bi.html',
     assets: ['pages', 'css', 'js', 'img', 'projects', 'favicon.png', 'favicon.svg'],
   },
 ];

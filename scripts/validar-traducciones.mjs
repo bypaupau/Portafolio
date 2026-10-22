@@ -104,7 +104,10 @@ function revisarDuplicados(archivo) {
   }
 }
 
-/* ═══════════ PARTE 1 · EL SITIO NUEVO (src/) ═══════════ */
+/* ═══════════ LAS TRADUCCIONES DE src/ ═══════════
+   Hubo una PARTE 2 que validaba también los diccionarios del sitio
+   anterior (js/translations*.js) mientras convivían los dos sitios.
+   Se retiró con ellos en la etapa 11, tal como estaba previsto.   */
 /* Los diccionarios están divididos por página:
      src/i18n/es/global.ts, es/contacto.ts, es/casos/<slug>.ts …
    index.ts solo los mezcla, así que no se lee como diccionario. */
@@ -259,78 +262,6 @@ if (clavesDefinidas.es) {
   }
 }
 
-/* ═══════════ PARTE 2 · EL SITIO PUBLICADO HOY ═══════════
-   Mientras los archivos de la raíz sigan sirviendo el sitio, también
-   se validan. Esta parte desaparece sola en el corte final.        */
-const PAGINAS_ANTIGUAS = [
-  { html: 'index.html',                           dicts: ['js/translations.js'] },
-  { html: 'pages/contacto.html',                  dicts: ['js/translations.js'] },
-  { html: 'pages/creativo.html',                  dicts: ['js/translations.js'] },
-  { html: 'pages/proyectos.html',                 dicts: ['js/translations.js'] },
-  { html: 'pages/sobremi.html',                   dicts: ['js/translations.js'] },
-  { html: 'pages/caso/grow-with-phoenix.html',    dicts: ['js/translations.js', 'js/translations-caso.js'] },
-  { html: 'pages/caso/schaman-analytics-bi.html', dicts: ['js/translations.js', 'js/translations-caso-schaman.js'] },
-];
-
-for (const archivo of ['js/translations.js', 'js/translations-caso.js', 'js/translations-caso-schaman.js']) {
-  revisarDuplicados(archivo);
-}
-
-/* En el navegador `window` ES el objeto global, así que `var TRANSLATIONS`
-   y `window.TRANSLATIONS` son lo mismo. Hay que reproducirlo o el
-   diccionario parece vacío. */
-function cargarDiccionariosAntiguos(archivos) {
-  const global = { console: { warn() {}, log() {} } };
-  global.window = global; global.globalThis = global; global.self = global;
-  vm.createContext(global);
-  for (const f of archivos) {
-    if (existe(f)) new vm.Script(leer(f), { filename: f }).runInContext(global);
-  }
-  return global.TRANSLATIONS || {};
-}
-
-/* igual que lookup() de js/i18n.js: el primer punto separa grupo y clave */
-function buscarAntigua(diccionario, idioma, clave) {
-  const i = clave.indexOf('.');
-  if (i < 0) return undefined;
-  const grupo = diccionario[idioma] && diccionario[idioma][clave.slice(0, i)];
-  return grupo ? grupo[clave.slice(i + 1)] : undefined;
-}
-
-for (const pagina of PAGINAS_ANTIGUAS) {
-  if (!existe(pagina.html)) continue;
-  const crudo = leer(pagina.html);
-  /* una clave dentro de un comentario HTML NO se renderiza: no es un defecto */
-  const html = crudo.replace(/<!--[\s\S]*?-->/g, '');
-  const diccionario = cargarDiccionariosAntiguos(pagina.dicts);
-
-  const claves = new Set();
-  for (const m of html.matchAll(/data-i18n(?:-html)?="([^"]+)"/g)) claves.add(m[1]);
-  for (const m of html.matchAll(/data-i18n-attr="([^"]+)"/g)) {
-    for (const par of m[1].split(';')) {
-      const trozos = par.split(':');
-      if (trozos.length === 2) claves.add(trozos[1].trim());
-    }
-  }
-  const pagKey = (crudo.match(/data-page="([^"]+)"/) || [, 'home'])[1];
-  claves.add(`meta.title.${pagKey}`);
-  claves.add(`meta.desc.${pagKey}`);
-  claves.add(`task.app.${pagKey}`);
-
-  for (const clave of [...claves].sort()) {
-    const enEs = buscarAntigua(diccionario, 'es', clave) !== undefined;
-    const enEn = buscarAntigua(diccionario, 'en', clave) !== undefined;
-    if (!enEs && !enEn) {
-      nota(problemas, pagina.html,
-        `'${clave}' no existe en ningún idioma → js/i18n.js imprimiría el identificador en pantalla.`);
-    } else if (!enEs) {
-      nota(problemas, pagina.html, `'${clave}' falta en español (se vería el texto en inglés).`);
-    } else if (!enEn) {
-      nota(avisos, pagina.html, `'${clave}' falta en inglés (cae al español).`);
-    }
-  }
-}
-
 /* ═══════════ INFORME ═══════════ */
 const agrupar = (lista) => {
   const mapa = new Map();
@@ -363,4 +294,4 @@ if (problemas.length) {
 
 const totalClaves = clavesDefinidas.es ? clavesDefinidas.es.size : 0;
 console.log(`\n✓ Traducciones correctas · ${totalClaves} claves en español e inglés · ` +
-            `${usadasEnAstro.size} usadas en src/ · sitio anterior revisado · 0 duplicadas\n`);
+            `${usadasEnAstro.size} usadas en src/ · 0 duplicadas\n`);

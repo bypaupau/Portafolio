@@ -39,32 +39,47 @@ const heredadas = new Map(
 const urls = [];
 const agregar = (url, queEs) => urls.push({ url, queEs });
 
+/* ── las URLs del sitio ANTERIOR ────────────────────────────────────
+   Hasta la etapa 11 esta lista se construía leyendo las carpetas viejas
+   de la raíz. Al retirarlas, la lista se quedaba vacía y la herramienta
+   decía "0 redirigen" tan contenta: dejaba de comprobar justo lo que más
+   importa, que son los enlaces que ya compartiste y que no controlas.
+
+   Así que ahora están escritas aquí. Son una promesa: mientras esta
+   lista pase, cualquier enlace a tu portafolio que exista por ahí
+   —en tu CV, en LinkedIn, en un correo— sigue llevando a algún sitio. */
 agregar('/Portafolio/', 'la portada (es la URL que está en tu CV)');
-if (fs.existsSync(path.join(raiz, 'index.html'))) {
-  agregar('/Portafolio/index.html', 'la portada con index.html explícito');
-}
-for (const sub of ['pages', 'pages/caso']) {
-  const dir = path.join(raiz, sub);
-  if (!fs.existsSync(dir)) continue;
-  for (const f of fs.readdirSync(dir).filter((f) => f.endsWith('.html'))) {
-    agregar(`/Portafolio/${sub}/${f}`, 'página del sitio anterior');
-  }
-}
-for (const sub of ['cv', 'trabajos-disenio']) {
-  const dir = path.join(raiz, sub);
-  if (!fs.existsSync(dir)) continue;
-  for (const f of fs.readdirSync(dir)) {
-    agregar(`/Portafolio/${sub}/${f}`, sub === 'cv' ? 'tu CV' : 'un PDF de trabajos');
-  }
-}
-for (const f of ['favicon.png', 'favicon.svg']) {
-  if (fs.existsSync(path.join(raiz, f))) agregar(`/Portafolio/${f}`, 'el favicon');
-}
-/* y las URLs nuevas, para confirmar que también están */
+agregar('/Portafolio/index.html', 'la portada con index.html explícito');
+
+for (const [ruta, queEs] of [
+  ['pages/sobremi.html',                       'Sobre mí, del sitio anterior'],
+  ['pages/proyectos.html',                     'Proyectos, del sitio anterior'],
+  ['pages/creativo.html',                      'Creativo, del sitio anterior'],
+  ['pages/contacto.html',                      'Contacto, del sitio anterior'],
+  ['pages/materias.html',                      'Materias, del sitio anterior'],
+  ['pages/caso/grow-with-phoenix.html',        'el caso de Phoenix, del sitio anterior'],
+  ['pages/caso/schaman-analytics-bi.html',     'el caso de Schaman, del sitio anterior'],
+]) agregar(`/Portafolio/${ruta}`, queEs);
+
+for (const f of ['favicon.png', 'favicon.svg']) agregar(`/Portafolio/${f}`, 'el favicon');
+
+/* los PDF: sus rutas viejas las atiende la compilación (ver urls-heredadas.mjs)
+   y las nuevas viven en public/documents/ */
+for (const [ruta, queEs] of [
+  ['cv/esp.pdf',                                        'tu CV en español, ruta vieja'],
+  ['cv/eng.pdf',                                        'tu CV en inglés, ruta vieja'],
+  ['trabajos-disenio/GuiaDelAdultoChiquito.pdf',        'un PDF de trabajos, ruta vieja'],
+  ['documents/cv/esp.pdf',                              'tu CV en español'],
+  ['documents/cv/eng.pdf',                              'tu CV en inglés'],
+  ['documents/trabajos-disenio/GuiaDelAdultoChiquito.pdf', 'un PDF de trabajos'],
+]) agregar(`/Portafolio/${ruta}`, queEs);
+
+/* y las URLs nuevas */
 for (const p of ['sobre-mi', 'proyectos', 'creativo', 'contacto',
-  'casos/grow-with-phoenix', 'casos/schaman-analytics-bi']) {
+                 'casos/grow-with-phoenix', 'casos/schaman-analytics-bi']) {
   agregar(`/Portafolio/${p}`, 'URL nueva');
 }
+
 
 /* ── servidor sobre dist/ ────────────────────────────────────────── */
 const TIPOS = { '.html': 'text/html;charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',

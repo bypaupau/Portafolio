@@ -19,7 +19,6 @@
     "cascada": "node scripts/analizar-cascada.mjs",
     "imagenes": "node scripts/optimizar-imagenes.mjs",
     "peso": "node scripts/comprobar-imagenes.mjs",
-    "duplicados": "node scripts/comprobar-duplicados.mjs",
     "cambios": "node scripts/cambios-en-el-css.mjs"
   },
   "devDependencies": {

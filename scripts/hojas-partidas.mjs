@@ -5,6 +5,10 @@
    propias de página. Este archivo guarda, para cada una, el orden exacto
    en que estaban sus secciones cuando era un archivo solo.
 
+   Los originales ya no están en css/ —el sitio anterior se retiró en la
+   etapa 11— sino conservados en originales/sitio-anterior/, justo para
+   que `npm run cambios` siga teniendo con qué comparar.
+
    Lo guarda porque en CSS el orden ES la cascada: cuando dos reglas
    empatan en importancia y especificidad, gana la última. `npm run cascada`
    compara el orden de hoy contra estas listas y avisa si algún par de
@@ -20,7 +24,7 @@ export const HOJAS = [
   {
     nombre: 'global',
     indice: 'src/styles/global/global.css',
-    original: 'css/styles.css',
+    original: 'originales/sitio-anterior/styles.css',
     /* el suyo vive aparte desde la etapa 7: es el orden del archivo de 1524
        líneas, que NO es el de hoy (en la 7b se reagrupó por carpetas) */
     orden: ORDEN_ORIGINAL,
@@ -28,7 +32,7 @@ export const HOJAS = [
   {
     nombre: 'sobre-mi',
     indice: 'src/styles/sobre-mi/sobre-mi.css',
-    original: 'css/sobremi.css',
+    original: 'originales/sitio-anterior/sobremi.css',
     orden: [
       'partes/base.css',
       'partes/hero.css',
@@ -48,7 +52,7 @@ export const HOJAS = [
   {
     nombre: 'casos',
     indice: 'src/styles/casos/caso.css',
-    original: 'css/caso.css',
+    original: 'originales/sitio-anterior/caso.css',
     orden: [
       'partes/base.css',
       'partes/rejilla.css',
