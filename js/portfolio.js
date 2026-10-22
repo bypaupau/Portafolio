@@ -104,7 +104,7 @@
     var STEP = 0.1;    /* --mo-step */
     var TOPE = 3;      /* nadie espera más de 0.3 s */
     var orden = 0;     /* posición en el documento, para ordenar el stagger */
-    var entra, sale, redTimer = null;
+    var entra, redTimer = null;
 
     if (activo) {
       root.classList.add('rv-motion', 'ab-motion');
@@ -119,14 +119,16 @@
           .forEach(function (el, k) {
             el.style.setProperty('--rv-delay', (Math.min(k, TOPE) * STEP) + 's');
             el.classList.add('is-in');
+            entra.unobserve(el);   /* ya apareció: no vuelve a animarse */
           });
       }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
 
-      sale = new IntersectionObserver(function (items) {
-        items.forEach(function (e) {
-          if (!e.isIntersecting) e.target.classList.remove('is-in');
-        });
-      }, { threshold: 0 });
+      /* ANTES había aquí un segundo observador que, al salir un bloque
+         del todo de la pantalla, le quitaba .is-in para que pudiera
+         repetirse. En una página de caso con 48 bloques eso daba 149
+         re-animaciones en un solo viaje de ida y vuelta: al volver a
+         subir parecía que la página se recargaba. Un elemento aparece
+         una vez y se queda quieto. */
     }
 
     /* red de seguridad: si algo falla, lo que está en pantalla NUNCA
@@ -150,8 +152,8 @@
       }
       lista.forEach(function (el) {
         if (!el.dataset.rv) el.dataset.rv = ++orden;
+        if (el.classList.contains('is-in')) return;   /* ya apareció */
         entra.observe(el);
-        sale.observe(el);
       });
       red();
     }
