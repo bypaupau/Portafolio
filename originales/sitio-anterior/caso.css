@@ -1,0 +1,892 @@
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  pau.proyectos · páginas de caso            (2ª iteración) ║
+   ║  Solo carga en pages/caso/*.html                          ║
+   ╚══════════════════════════════════════════════════════════╝
+   No inventa identidad: toma tokens, ventana, pills y badges de
+   styles.css. Lo nuevo es la maquetación editorial y el riel.
+
+   ESCALA TIPOGRÁFICA: el cuerpo usa la MISMA que `.ab-lead` de
+   Sobre mí — clamp(1.02rem,1.5vw,1.14rem) con interlineado 1.75.
+   Antes el caso iba a 1.02rem fijo y se veía más chico que el
+   resto del sitio en pantallas grandes.
+
+   EL COLOR NO VA AL FONDO: el fondo es la cuadrícula rosa, que es
+   identidad. Cada sección declara --cs y ese color aparece en su
+   punto del riel y en los acentos de sus bloques.
+
+   REGLA: si un caso necesita un bloque que no está aquí, se agrega
+   AQUÍ, nunca en el HTML del caso. */
+
+:root{
+  --cs-rail: 190px;
+  --cs-gap:  clamp(52px, 5.8vw, 82px);
+  /* Cuerpo del caso. Un punto por DEBAJO de `.ab-lead` de Sobre mí a
+     propósito: allí el texto es el protagonista, aquí acompaña a los
+     títulos pixel y a las pantallas, y a 1.14rem competía con ellos. */
+  --cs-body: clamp(0.97rem, 1.1vw, 1.06rem);
+
+  /* ───────────────────────────────────────────────────────────
+     ESCALA DE ESPACIO · siete pasos, ni uno más. Cada hueco
+     vertical de un caso sale de aquí; si algo necesita un valor
+     que no está en la lista, lo que está mal es la jerarquía, no
+     el numero. De menor a mayor distancia de parentesco:
+
+       --sp-0  dentro de un elemento   rótulo ↔ su texto
+       --sp-1  pegado                  pie de foto ↔ SU imagen
+       --sp-2  hermanos de una lista   viñeta ↔ viñeta
+       --sp-3  párrafo ↔ párrafo
+       --sp-4  párrafo ↔ bloque        (listas, figuras, flujos…)
+       --sp-5  bloque ↔ bloque         y el aire antes de un H3
+       --cs-gap sección ↔ sección
+
+     REGLA DE PROXIMIDAD: un pie de foto esta a --sp-1 de su
+     imagen y a --sp-5 de la siguiente. Esa proporción de 1:4 es
+     la que dice de quien es el pie sin tener que leerlo.
+     ─────────────────────────────────────────────────────────── */
+  --sp-0: 6px;
+  --sp-1: 10px;
+  --sp-2: 14px;
+  --sp-3: 18px;
+  --sp-4: 30px;
+  --sp-5: clamp(38px, 4.4vw, 52px);
+
+  /* ───────────────────────────────────────────────────────────
+     ESCALA TIPOGRÁFICA · antes había seis multiplicadores sobre
+     --cs-body (×.92 ×.95 ×.95 ×.96 ×.96 ×.98): diferencias que
+     nadie ve pero que impiden que exista "el tamaño chico".
+     Ahora hay un cuerpo, un chico, y tres niveles de título.
+     ─────────────────────────────────────────────────────────── */
+  --cs-small: calc(var(--cs-body) * 0.95);
+  --cs-h3: clamp(1.32rem, 2.2vw, 1.62rem);  /* subtítulo dentro de una sección */
+  --cs-h4: 1.22rem;                         /* titulo de tarjeta */
+  --cs-h5: 1.06rem;                         /* rótulo de figura o de paso */
+  --cs-term: 1.06rem;                       /* VT323 · etiquetas de datos */
+  --cs-tiny: 0.55rem;                       /* Press Start 2P · antetítulos */
+
+  /* interlineado: uno para leer, otro para texto dentro de cajas */
+  --cs-lh: 1.72;
+  --cs-lh-card: 1.6;
+  /* posición óptica de la viñeta cuadrada de 7px con --cs-lh-card */
+  --cs-bul: 0.58em;
+}
+
+body.cs-body .wrap{ --w:var(--w-wide); }
+
+/* ════════ REJILLA · riel + contenido ════════ */
+.cs-grid{
+  display:grid;
+  grid-template-columns:var(--cs-rail) minmax(0,1fr);
+  gap:clamp(24px,4vw,56px);
+  align-items:start;
+}
+.cs-main{ min-width:0; }
+
+/* ════════ RIEL ════════
+   La ruta de "Sobre mí" girada 90°: paradas en orden, con un camino
+   que se va pintando. Sticky, no fijo: pertenece al contenido. */
+.cs-rail{
+  /* OJO: es un <nav>, y styles.css estiliza `nav` por ELEMENTO
+     (fixed, alto fijo, flex, fondo blanco, borde). Sin este reseteo
+     heredaba la barra superior y se aplastaba a 54 px. */
+  position:sticky; top:calc(var(--nav-h) + 26px);
+  left:auto; right:auto; z-index:auto;
+  display:block; height:auto; gap:0; align-items:initial;
+  background:none; border-bottom:0;
+  padding:0 0 0 22px;
+}
+.cs-rail-list{ list-style:none; display:grid; gap:26px; position:relative; }
+.cs-rail-list::before{
+  content:""; position:absolute; left:-15px; top:8px; bottom:8px;
+  width:3px; background:var(--pink-mid); opacity:.55;
+}
+.cs-rail-list::after{
+  content:""; position:absolute; left:-15px; top:8px;
+  width:3px; height:var(--cs-progress,0%);
+  background:var(--pink);
+  transition:height var(--mo-base,320ms) ease;
+}
+.cs-rail-item{ position:relative; }
+.cs-rail-item::before{
+  content:""; position:absolute; left:-21px; top:8px;
+  width:15px; height:15px; border:3px solid var(--ink);
+  background:var(--white); border-radius:50%;
+  transition:background var(--mo-fast,180ms) ease, transform var(--mo-fast,180ms) ease;
+  z-index:1;
+}
+.cs-rail-item.is-here::before{ background:var(--cs,var(--pink)); transform:scale(1.18); }
+
+.cs-rail-item a{
+  display:block; font-family:var(--font-pixel); font-size:1rem; font-weight:500;
+  color:var(--text-soft); text-decoration:none; line-height:1.25;
+  padding:5px 10px; border:2px solid transparent;
+  /* explícita y no `all`: con `all` el navegador vigila cada propiedad
+     del enlace (incluidas las que cambian al marcarse como activo) y en
+     celular eso se paga en cada scroll. */
+  transition:color var(--mo-fast,180ms) ease,
+             background-color var(--mo-fast,180ms) ease,
+             border-color var(--mo-fast,180ms) ease;
+}
+.cs-rail-item a:hover{ color:var(--ink); border-color:var(--pink-mid); background:var(--pink-light); }
+/* el riel también se presiona: no tiene sombra que hundir, así que el
+   peso lo da el color (el mismo recurso que usa .arow al seleccionarse) */
+.cs-rail-item a:active{ color:var(--ink); background:var(--pink-mid); }
+
+/* ── FOCO DE TECLADO ──────────────────────────────────────────
+   Esta hoja era la única del sitio sin un solo :focus-visible: el riel,
+   el botón de salida y los enlaces respondían al mouse y a nada más, así
+   que recorrer un caso con el teclado era avanzar a ciegas. Es el mismo
+   anillo rosa punteado que ya usan .btn, .social, el nav y las filas del
+   archivo, declarado una vez para los cuatro enlaces de la página. */
+.cs-rail-item a:focus-visible,
+.cs-rail-out:focus-visible,
+.cs-rel a:focus-visible,
+.cs-text a:focus-visible{
+  outline:3px dashed var(--pink); outline-offset:3px;
+}
+.cs-rail-item.is-here a{
+  color:var(--ink); font-weight:600;
+  background:var(--cs,var(--pink-light)); border-color:var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+}
+.cs-rail-out{
+  display:inline-block; margin-top:var(--sp-4);
+  font-family:var(--font-pixel); font-size:.95rem; font-weight:600;
+  color:var(--pink); text-decoration:none;
+  padding:7px 11px; background:#fff;
+  border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  transition:color var(--mo-fast,180ms) ease,
+             transform var(--mo-fast,180ms) ease,
+             box-shadow var(--mo-fast,180ms) ease;
+}
+.cs-rail-out:hover{ transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); color:var(--ink); }
+.cs-rail-out:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+
+/* ════════ PORTADA ════════
+   Primero el nombre, la explicación y el contexto. La imagen
+   ACOMPAÑA: va al lado y contenida, no a toda página. */
+/* scroll-margin-top también aquí: la portada es una parada del riel
+   y sin esto su título quedaba tapado por el nav fijo al pulsarla. */
+.cs-hero{
+  padding-top:clamp(26px,4vw,44px); margin-bottom:var(--cs-gap);
+  scroll-margin-top:calc(var(--nav-h) + 20px);
+}
+.cs-kicker{
+  font-family:var(--font-tiny); font-size:var(--cs-tiny); letter-spacing:1.6px;
+  text-transform:uppercase; color:var(--pink); margin-bottom:var(--sp-3);
+}
+.cs-title{
+  font-family:var(--font-pixel); font-weight:700; line-height:1.02;
+  font-size:clamp(2.4rem,6vw,3.9rem); color:var(--ink);
+  text-shadow:3px 3px 0 var(--pink-mid); margin-bottom:var(--sp-3);
+}
+.cs-sub{
+  font-size:clamp(1.02rem,1.3vw,1.15rem); line-height:var(--cs-lh);
+  color:var(--text-soft);
+}
+.cs-sub strong{ color:var(--ink); }
+/* el párrafo de entrada y el sello de estado: su aire vive aquí, no
+   en un style= del HTML (ver la REGLA del encabezado del archivo) */
+.cs-sub + .cs-text{ margin-top:var(--sp-3); }
+.cs-wip-row{ margin-top:var(--sp-4); }
+
+.cs-wip{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--font-term); font-size:calc(var(--cs-term) * 1.12); line-height:1;
+  padding:9px 14px; background:var(--yellow);
+  border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  color:var(--ink);
+}
+.cs-wip i{ width:9px; height:9px; flex:none; background:var(--pink); border:2px solid var(--ink); }
+
+/* texto a la izquierda, vista general del prototipo a la derecha */
+.cs-hero-top{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,380px);
+  gap:clamp(26px,4vw,52px); align-items:center;
+}
+.cs-hero-fig{ margin:0; }
+.cs-hero-fig img{
+  display:block; width:100%;
+  border:3px solid var(--ink); box-shadow:6px 6px 0 var(--peach);
+}
+.cs-hero-fig figcaption{
+  margin-top:var(--sp-1); font-size:var(--cs-small);
+  line-height:var(--cs-lh-card); color:var(--text-muted);
+}
+
+/* ════════ METADATOS ════════
+   Dos tarjetas protagonistas (rol y reconocimiento) y, debajo, una ficha
+   compacta de cuatro filas separadas por líneas. El borde grueso y la
+   sombra se reservan para las protagonistas: si todo lleva caja, nada
+   destaca, que era el problema de las seis tarjetas iguales. */
+/* «Mi rol» lleva tres frases largas y «Herramientas» tres etiquetas
+   cortas: a 50/50 la primera doblaba el alto de la segunda. Repartir la
+   columna según lo que pesa cada texto las deja casi a la par, y
+   `stretch` cierra el resto SIN inflar el interlineado ni la fuente. */
+.cs-stars{
+  display:grid; grid-template-columns:minmax(0,1.66fr) minmax(0,1fr);
+  gap:var(--sp-3);
+  align-items:stretch;
+}
+.cs-star{
+  border:3px solid var(--ink); box-shadow:5px 5px 0 var(--ink);
+  padding:20px 22px 22px; min-width:0;
+}
+.st-rol{ background:var(--pink-light); }
+.st-win{ background:var(--yellow); }
+.cs-star dt{
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:var(--cs-h4); line-height:1.1; color:var(--ink); margin-bottom:var(--sp-1);
+}
+.cs-star dd{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
+.cs-star ul{ list-style:none; display:grid; gap:var(--sp-2); }
+.cs-star li{ position:relative; padding-left:19px; line-height:var(--cs-lh-card); }
+.cs-star li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:var(--ink);
+}
+.cs-star li b{ font-weight:600; }
+/* el identificador de una colección de datos, dentro de una lista */
+.cs-src-id{ font-family:var(--font-term); font-size:1.02em; color:var(--text-soft); }
+
+/* ficha compacta: sin cajas, solo rótulo + valor y una línea entre filas */
+.cs-rows{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:clamp(24px,4vw,56px);
+}
+.cs-row{ padding:var(--sp-3) 0 var(--sp-4); border-top:2px solid var(--pink-mid); min-width:0; }
+.cs-row dt{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1;
+  letter-spacing:1.4px; text-transform:uppercase;
+  color:var(--pink); margin-bottom:var(--sp-1);
+}
+.cs-row dd{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
+.cs-team-list{ list-style:none; display:grid; gap:var(--sp-2); }
+/* EQUIPO · es la única fila con varios nombres, así que ocupa el ancho
+   entero de la ficha y reparte a los integrantes en columnas. Así la
+   ficha deja de ser una fila larga frente a una corta. */
+.cs-row.r-equipo{ grid-column:1 / -1; }
+.cs-row.r-equipo .cs-team-list{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:var(--sp-2) clamp(18px,2.4vw,32px);
+}
+.cs-team-list li{ position:relative; padding-left:18px; }
+.cs-team-list li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:var(--pink);
+}
+
+/* herramientas: lista vertical con viñetas, cada nombre legible */
+/* ANTES: sin margin-top (quedaba pegada al párrafo) y con
+   line-height 1.35, el más apretado de la hoja, justo en las
+   viñetas más largas de la página. */
+.cs-tools{
+  list-style:none; display:grid;
+  gap:var(--sp-2);
+}
+.cs-tools li{
+  position:relative; padding-left:18px;
+  font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink);
+}
+/* variante: etiquetas cortas que caben de dos en dos */
+.cs-tools.dos{
+  grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));
+  column-gap:clamp(18px,2.4vw,32px);
+}
+.cs-tools li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:var(--pink);
+}
+
+/* ════════ DECISIONES · una necesidad y lo que colgó de ella ════
+   Eran cuatro etiquetas encadenadas con flechas: en el boceto cabían
+   en un renglón, en pantalla ocupaban tres, y ahí la flecha deja de
+   leerse como "y entonces" y pasa a ser ruido. La misma secuencia en
+   vertical: la necesidad manda y debajo cuelga lo que salió de ella.
+
+   La viñeta maciza es el primer nivel y la hueca el segundo: el
+   mismo cuadrado de 7px, que es el vocabulario de viñetas del resto
+   del caso, sin inventar un símbolo nuevo para el sub-nivel. */
+.cs-dec{ list-style:none; display:grid; gap:var(--sp-4); }
+.cs-dec > li{ position:relative; padding-left:18px; min-width:0; }
+.cs-dec > li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:var(--pink);
+}
+.cs-dec-n{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
+.cs-dec-n b{ font-weight:600; }
+
+.cs-dec ul{
+  list-style:none; display:grid; gap:var(--sp-2);
+  margin-top:var(--sp-2); padding-left:14px;
+}
+.cs-dec ul li{
+  position:relative; padding-left:18px;
+  font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--text-soft);
+}
+.cs-dec ul li::before{
+  content:""; position:absolute; left:0; top:var(--cs-bul);
+  width:7px; height:7px; background:transparent; border:2px solid var(--pink);
+}
+.cs-dec ul b{ color:var(--ink); font-weight:600; }
+
+/* ════════ SECCIÓN ════════ */
+.cs-sec{ margin-bottom:var(--cs-gap); scroll-margin-top:calc(var(--nav-h) + 20px); }
+.cs-head{}                                  /* sin filetes ni adornos: manda la tipografía */
+.cs-num{
+  font-family:var(--font-tiny); font-size:var(--cs-tiny); letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--text-muted); margin-bottom:var(--sp-1);
+}
+.cs-h{
+  font-family:var(--font-pixel); font-weight:700; line-height:1.1;
+  font-size:clamp(1.75rem,3.6vw,2.5rem); color:var(--ink);
+}
+
+/* ════════ TEXTO ════════ */
+.cs-lead{
+  font-size:clamp(1.2rem,2.1vw,1.52rem); line-height:1.42; font-weight:500;
+  color:var(--ink);                              /* sin max-width: el ancho lo pone la columna */
+}
+.cs-text{
+  /* sin franja estrecha: el párrafo comparte el ancho de su título.
+     El techo real lo pone --w-wide a través de la columna principal. */
+  font-size:var(--cs-body); line-height:var(--cs-lh);
+  color:var(--text-soft);
+}
+.cs-text strong{ color:var(--ink); font-weight:600; }
+.cs-text a{ color:var(--pink); text-decoration:none; border-bottom:2px solid var(--pink-mid); }
+.cs-text a:hover{ color:var(--ink); border-color:var(--ink); }
+
+.cs-sub-h{
+  font-family:var(--font-pixel); font-weight:700; font-size:var(--cs-h3);
+  color:var(--ink);
+}
+
+/* ════════ ETIQUETAS DE FUENTE ════════ */
+.cs-srcs{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.cs-srcs-k{
+  font-family:var(--font-tiny); font-size:var(--cs-tiny); letter-spacing:1.2px;
+  text-transform:uppercase; color:var(--text-muted); margin-right:3px;
+}
+.cs-src{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1;
+  padding:5px 10px; background:var(--white);
+  border:2px solid var(--ink); color:var(--ink);
+}
+
+/* ════════ MARCAS DE HONESTIDAD ════════ */
+.cs-tag{
+  display:inline-block; font-family:var(--font-term); font-size:var(--cs-term); line-height:1;
+  padding:5px 10px; border:2px solid var(--ink); color:var(--ink);
+  vertical-align:middle;
+}
+.cs-tag.t-hecho{ background:var(--mint); }
+.cs-tag.t-propuesta{ background:var(--lav); }
+.cs-tag.t-revision{ background:var(--yellow); }
+.cs-tag.t-recuperar{ background:var(--peach); }
+.cs-tag.t-sinverif{ background:var(--pink-light); }
+
+/* ════════ NOTA · caja con etiqueta ════════ */
+.cs-note{
+  padding:22px 24px 24px;
+  background:var(--white); border:3px solid var(--ink);
+  box-shadow:5px 5px 0 var(--cs,var(--pink-mid));
+}
+.cs-note-top{ display:flex; flex-wrap:wrap; gap:9px; align-items:center; margin-bottom:var(--sp-2); }
+.cs-note p{ font-size:var(--cs-body); line-height:var(--cs-lh); color:var(--text-soft); }
+.cs-note p + p{ margin-top:var(--sp-3); }
+.cs-note strong{ color:var(--ink); }
+
+/* ════════ GRUPOS DE PANTALLAS ════════
+   Cada grupo es un panel pastel con su título y su explicación.
+   Tres disposiciones que se alternan para dar ritmo editorial. */
+.cs-groups{ display:grid; gap:clamp(24px,3.2vw,38px); }
+.cs-g{
+  border:3px solid var(--ink); box-shadow:6px 6px 0 var(--ink);
+  background:var(--g,var(--pink-light));
+  padding:clamp(22px,3vw,34px);
+}
+.cs-g-h{
+  font-family:var(--font-pixel); font-weight:700; font-size:var(--cs-h3);
+  line-height:1.15; color:var(--ink);
+}
+.cs-g-p{ font-size:var(--cs-body); line-height:var(--cs-lh); color:var(--ink); }
+.cs-g-p strong{ font-weight:600; }
+
+/* las pantallas del grupo, juntas y a la misma altura visual.
+   Se escalan por ALTO y no por ancho: los PNG vienen con cantidades
+   distintas de espacio transparente y de inclinación, así que igualar
+   el ancho dejaba una pantalla visiblemente más baja que su pareja. */
+.cs-shots{
+  display:flex; gap:clamp(12px,1.8vw,22px);
+  align-items:flex-end; justify-content:center;
+  --h:clamp(240px,25vw,358px);
+}
+.cs-shot{ margin:0; min-width:0; flex:0 1 auto; }
+.cs-shot img{ display:block; height:var(--h); width:auto; max-width:100%; margin-inline:auto; }
+.cs-shot figcaption{
+  margin-top:var(--sp-1); font-size:var(--cs-small); line-height:var(--cs-lh-card);
+  color:var(--ink); opacity:.78; text-align:center;
+}
+/* una pantalla puede pesar más que su compañera, sin que la otra se pierda */
+.cs-shot.is-lead img{ height:calc(var(--h) * 1.07); }
+.cs-shot.is-side img{ height:calc(var(--h) * 0.94); }
+
+/* texto a la izquierda, pantallas a la derecha (y al revés).
+   `max-content` deja que las pantallas pidan solo lo que ocupan y el
+   resto del ancho se lo queda el texto. */
+.g-side{ display:grid; grid-template-columns:minmax(0,1fr) max-content; gap:clamp(22px,3.4vw,44px); align-items:center; }
+.g-rev{ display:grid; grid-template-columns:max-content minmax(0,1fr); gap:clamp(22px,3.4vw,44px); align-items:center; }
+.g-rev .cs-g-txt{ order:2; }
+
+/* ── VARIANTE · la figura manda por ANCHO ──────────────────────
+   `.cs-shots` escala por ALTO, que es lo que necesita la maqueta de
+   un móvil. Un diagrama o una captura apaisada manda por ancho, y
+   `max-content` le daría el suyo entero (un SVG de 1400px se comería
+   la fila). Esta variante solo cambia el reparto de la rejilla: todo
+   lo demás —relleno, color, orden, apilado— lo sigue poniendo
+   `.g-side` / `.g-rev`. */
+.cs-g.g-side.g-wide{ grid-template-columns:minmax(0,1fr) minmax(0,1.45fr); }
+.cs-g.g-rev.g-wide { grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); }
+.cs-g.g-wide .cs-fig2{ min-width:0; }
+
+/* ════════ FIGURAS DE INVESTIGACIÓN ════════
+   Las visualizaciones originales de 2025. Van en rejilla, con su pie
+   debajo: el pie lleva lo que dice la leyenda original, no una lectura
+   nuestra. El panel pastel las separa del texto sin encerrarlas. */
+.cs-figs{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));
+  column-gap:var(--sp-4); row-gap:var(--sp-5);
+}
+.cs-figs.uno{ grid-template-columns:minmax(0,1fr); }
+.cs-fig2{ margin:0; min-width:0; }
+.cs-fig2 img{
+  display:block; width:100%; height:auto;
+  border:3px solid var(--ink); box-shadow:4px 4px 0 var(--cs,var(--pink-mid));
+  background:#fff;
+}
+.cs-fig2 figcaption{
+  margin-top:var(--sp-1); font-size:var(--cs-small);
+  line-height:var(--cs-lh-card); color:var(--text-soft);
+}
+.cs-fig2 figcaption b{
+  display:block; font-family:var(--font-pixel); font-weight:600;
+  font-size:var(--cs-h5); color:var(--ink); margin-bottom:var(--sp-0);
+}
+/* PAREJA · dos figuras de proporciones distintas comparadas de tú a tú.
+   La caja manda el alto y `contain` conserva la proporción de cada
+   imagen: nada se recorta ni se amplía para rellenar el hueco, y los
+   pies arrancan a la misma altura. */
+.cs-figs.par{ grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:clamp(22px,3.2vw,44px); row-gap:var(--sp-5); }
+.cs-figs.par .cs-fig2 img{
+  height:clamp(212px,23vw,300px); width:100%;
+  object-fit:contain; object-position:center; padding:7px;
+}
+
+/* PROPORCIONAL · cuando las dos figuras son gráficos sobre fondo blanco,
+   `contain` deja bandas y una acaba más baja que la otra. Repartir la
+   columna según la proporción de cada imagen (--c1/--c2, declarados
+   junto a las imágenes) las deja LLENAS y al mismo alto a cualquier
+   ancho, porque las dos columnas escalan juntas. */
+.cs-figs.prop{
+  grid-template-columns:var(--c1,1fr) var(--c2,1fr);
+  column-gap:clamp(22px,3.2vw,44px); row-gap:var(--sp-5); align-items:start;
+}
+.cs-figs.prop .cs-fig2 img{ height:auto; width:100%; padding:0; object-fit:fill; }
+
+/* FICHA · contexto de una variable, con el vocabulario de las etiquetas
+   de las tarjetas de proyectos. Se lee sin pasar el cursor ni pulsar. */
+.cs-duo{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(216px,300px);
+  gap:clamp(20px,2.8vw,36px); align-items:center;
+}
+.cs-ficha{ display:grid; gap:var(--sp-2); align-content:center; }
+.cs-ficha > div{
+  background:var(--white); border:2px solid var(--ink);
+  box-shadow:3px 3px 0 var(--cs,var(--pink-mid)); padding:9px 12px 11px;
+}
+.cs-ficha dt{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1;
+  letter-spacing:1.2px; text-transform:uppercase; color:var(--pink); margin-bottom:var(--sp-0);
+}
+.cs-ficha dd{ font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--ink); }
+
+/* nota breve: la limitación va junto a lo que limita, no en una caja
+   del tamaño de media sección */
+/* La limitación va pegada a lo que limita. Es texto de lectura, no una
+   nota al pie: va casi al tamaño del cuerpo y sin max-width propio, que
+   era lo que la partía en renglones cortos. */
+/* ANTES iba a 12px: MENOS que los 18px entre dos párrafos, así que
+   un bloque con borde quedaba más pegado a lo anterior que dos
+   párrafos sin borde. Y dos notas seguidas (sección 06) se leían
+   como una sola barra partida. Ahora abre como el bloque que es. */
+.cs-nota{
+  padding:var(--sp-0) 0 var(--sp-0) 18px;
+  border-left:4px solid var(--cs,var(--pink-mid));
+  font-size:var(--cs-body); line-height:var(--cs-lh); color:var(--text-soft);
+}
+.cs-nota b{ color:var(--ink); font-weight:600; }
+
+/* ════════ TRÍPTICO · los tres momentos del concepto ════════ */
+.cs-tri{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--sp-3);
+}
+.cs-tri-c{
+  border:3px solid var(--ink); box-shadow:4px 4px 0 var(--ink);
+  padding:20px 22px 22px; min-width:0;
+}
+/* VARIANTE · cuando los momentos no son tres. La rejilla se adapta al
+   ancho en vez de partir siempre en 3, así una fila de dos no se lee
+   como una fila a la que le falta algo. */
+.cs-tri.auto{ grid-template-columns:repeat(auto-fit,minmax(min(238px,100%),1fr)); }
+
+/* los pasteles rotan de cinco en cinco: con tres tarjetas da
+   exactamente lo mismo que antes (sky, mint, peach) */
+.cs-tri-c:nth-child(5n+1){ background:var(--sky); }
+.cs-tri-c:nth-child(5n+2){ background:var(--mint); }
+.cs-tri-c:nth-child(5n+3){ background:var(--peach); }
+.cs-tri-c:nth-child(5n+4){ background:var(--lav); }
+.cs-tri-c:nth-child(5n+5){ background:var(--yellow); }
+.cs-tri-c h3{
+  font-family:var(--font-pixel); font-weight:700; font-size:var(--cs-h4);
+  color:var(--ink); margin-bottom:var(--sp-1);
+}
+.cs-tri-c p{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
+
+/* ════════ SALIDAS ════════ */
+
+.cs-out{ margin-top:var(--cs-gap); padding-top:var(--sp-5); border-top:3px dashed var(--pink-mid); }
+.cs-out-row{ display:flex; flex-wrap:wrap; gap:var(--sp-2); align-items:center; }
+.cs-rel{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));
+  gap:var(--sp-2);
+}
+.cs-rel a{
+  display:flex; gap:12px; align-items:center; text-decoration:none;
+  background:#fff; border:3px solid var(--ink); box-shadow:4px 4px 0 var(--pink-mid);
+  padding:11px 13px;
+  transition:transform var(--mo-fast,180ms) ease, box-shadow var(--mo-fast,180ms) ease;
+}
+.cs-rel a:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--pink-mid); }
+.cs-rel a:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--pink-mid); }
+.cs-rel img{ width:64px; height:46px; object-fit:cover; border:2px solid var(--ink); flex:none; }
+.cs-rel b{ font-family:var(--font-pixel); font-size:var(--cs-h5); color:var(--ink); font-weight:600; display:block; }
+.cs-rel span{ font-family:var(--font-term); font-size:var(--cs-term); color:var(--text-soft); }
+
+/* ════════ ÍCONO DENTRO DE UN BOTÓN ════════
+   NO es un botón nuevo. Es el `.btn` de styles.css con un hueco fijo
+   a la izquierda, así que comparte tipo, tamaño, biselado, sombra y
+   pulsación con "volver a proyectos": si un día cambia .btn, cambian
+   los dos a la vez. Un botón con su propia tipografía habría sido
+   justo el problema que este caso vino a arreglar.
+
+   El hueco mide lo mismo lleno que vacío: poner o quitar el PNG no
+   mueve el texto de al lado. */
+.btn-ico{
+  width:20px; height:20px; flex:none;
+  display:grid; place-content:center;
+}
+.btn-ico img{ display:block; width:100%; height:100%; object-fit:contain; }
+/* vacío se ve como lo que es: un sitio reservado */
+.btn-ico:not(:has(img)){ border:2px dashed currentColor; opacity:.4; }
+
+/* ════════ APARICIÓN AL SCROLL ════════ */
+.cs-motion .cs-rv{ opacity:0; transform:translateY(16px); }
+.cs-motion .cs-rv.is-in{
+  opacity:1; transform:none;
+  transition:opacity var(--mo-slow,520ms) ease var(--rv-delay,0s),
+             transform var(--mo-slow,520ms) var(--ease-out,ease) var(--rv-delay,0s);
+}
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  RITMO VERTICAL · la única fuente de los huecos           ║
+   ╚══════════════════════════════════════════════════════════╝
+   Va al final a propósito: ningún componente declara ya su propio
+   `margin-top`, así que este bloque es el único que decide cuánto
+   aire hay entre dos hermanos.
+
+   Lo importante no es la estética, es que NADA puede quedarse en
+   cero por olvido: la regla base atrapa cualquier pareja, incluida
+   una que todavía no exista. Antes esto se resolvía con reglas
+   sueltas del tipo `.cs-text + .cs-lead`, y bastaba que una
+   pregunta viniera después de una nota en vez de un párrafo para
+   que se quedara pegada a ella.
+
+   Jerarquía, de menos a más aire:
+     párrafo ↔ párrafo          --sp-3
+     cualquier otra pareja      --sp-4   ← la regla base
+     algo que ABRE o CIERRA     --sp-5   ← leads, H3 y figuras      */
+
+.cs-sec > * + *,
+.cs-out > * + *{ margin-top:var(--sp-4); }
+
+/* dentro de un panel pastel manda la misma escala. El panel que NO
+   reparte columnas apila título y figuras como lo haría una sección;
+   la columna de texto de un panel partido va un paso más corta,
+   porque ahí todo es prosa. */
+.cs-g:not(.g-side):not(.g-rev) > * + *{ margin-top:var(--sp-4); }
+.cs-g-txt > * + *{ margin-top:var(--sp-3); }
+
+/* la portada encadena bloques grandes (etiquetas, tarjetas, ficha):
+   todos abren con el paso mayor */
+.cs-hero > * + *{ margin-top:var(--sp-5); }
+
+/* dos párrafos seguidos son el mismo pensamiento */
+.cs-sec > .cs-text + .cs-text{ margin-top:var(--sp-3); }
+
+/* Una frase protagonista o un subtítulo ABREN idea: el aire grande
+   va ARRIBA. Lo que los matiza queda debajo, más cerca, porque les
+   pertenece. Esa asimetría no es un descuido: es lo que dice de
+   quién es cada nota sin tener que leerla. */
+.cs-sec > * + .cs-lead,
+.cs-sec > * + .cs-sub-h{ margin-top:var(--sp-5); }
+
+/* y lo que SIGUE a un bloque con pies de foto también abre, para que
+   el último pie no quede a la misma distancia de su imagen (--sp-1)
+   que del bloque siguiente. Uno a cuatro, no uno a dos. */
+.cs-sec > .cs-figs + *,
+.cs-sec > .cs-gal  + *,
+.cs-sec > .cs-ab   + *{ margin-top:var(--sp-5); }
+
+/* ════════ RESPONSIVE ════════ */
+@media (max-width:1100px){
+  /* nada que reflowear: los metadatos ya son 2 columnas */
+}
+@media (max-width:1040px){
+  :root{ --cs-rail:150px; }
+  .cs-row.r-equipo .cs-team-list{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .cs-rail-item a{ font-size:.9rem; padding:4px 8px; }
+  .cs-hero-top{ grid-template-columns:1fr; }
+  .cs-tri{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+  .cs-hero-fig{ max-width:480px; }
+  .g-side, .g-rev,
+  .cs-g.g-side.g-wide, .cs-g.g-rev.g-wide{ grid-template-columns:minmax(0,1fr); }
+  .g-rev .cs-g-txt{ order:0; }
+  .g-side .cs-shots, .g-rev .cs-shots{ margin-top:var(--sp-4); }
+}
+/* ── ≤860 · el riel se acuesta bajo el nav ── */
+@media (max-width:860px){
+  .cs-grid{ grid-template-columns:minmax(0,1fr); gap:0; }
+  .cs-rail{
+    position:sticky; top:var(--nav-h); z-index:40;
+    display:block; height:auto; min-width:0;
+    padding:9px 0; margin:0 calc(-1 * var(--edge)) 26px;
+    background:var(--pink-pale); border-bottom:3px solid var(--ink);
+  }
+  .cs-rail-list{
+    grid-auto-flow:column; grid-auto-columns:max-content; gap:8px;
+    overflow-x:auto; padding:2px var(--edge); scrollbar-width:none;
+  }
+  .cs-rail-list::-webkit-scrollbar{ display:none; }
+  .cs-rail-list::before, .cs-rail-list::after, .cs-rail-item::before{ display:none; }
+  .cs-rail-item a{ white-space:nowrap; border-color:var(--pink-mid); background:#fff; }
+  .cs-rail-out{ display:none; }
+  .cs-sec, .cs-hero{ scroll-margin-top:calc(var(--nav-h) + 76px); }
+  .cs-stars{ grid-template-columns:minmax(0,1fr); }
+  .cs-duo{ grid-template-columns:minmax(0,1fr); }
+  .cs-rows{ grid-template-columns:minmax(0,1fr); }
+  .cs-tri{ grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:620px){
+  .cs-row.r-equipo .cs-team-list{ grid-template-columns:minmax(0,1fr); }
+  /* la pareja se apila: ya no hay nada con qué comparar lado a lado */
+  .cs-figs.par, .cs-figs.prop{ grid-template-columns:minmax(0,1fr); }
+  .cs-figs.par .cs-fig2 img{ height:auto; padding:0; }
+}
+@media (max-width:560px){
+  .cs-title{ text-shadow:2px 2px 0 var(--pink-mid); }
+  .cs-note{ padding:17px 18px 19px; box-shadow:4px 4px 0 var(--cs,var(--pink-mid)); }
+  .cs-hero-fig img{ box-shadow:4px 4px 0 var(--peach); }
+  .cs-g{ box-shadow:4px 4px 0 var(--ink); }
+  /* las pantallas de un grupo se quedan juntas, nunca una por fila */
+  .cs-shots{ gap:11px; }
+  .cs-shot, .cs-shot.is-lead, .cs-shot.is-side{ max-width:none; }
+}
+/* pantallas táctiles: sin hover pegado, igual que el bloque equivalente
+   de styles.css. Al tocar una tarjeta relacionada o el botón de salida, el
+   desplazamiento se quedaba puesto hasta tocar en otra parte. */
+@media (hover:none){
+  .cs-rail-out:hover, .cs-rel a:hover{ transform:none; }
+  .cs-rail-out:hover{ box-shadow:3px 3px 0 var(--ink); }
+  .cs-rel a:hover{ box-shadow:4px 4px 0 var(--pink-mid); }
+}
+
+@media (prefers-reduced-motion:reduce){
+  /* se apagan las transiciones de TODAS las reglas que las tienen, no solo
+     la del camino: el riel seguía atenuándose y las tarjetas relacionadas
+     seguían desplazándose al pasar el cursor. */
+  .cs-rail-list::after,
+  .cs-rail-item::before,
+  .cs-rail-item a,
+  .cs-rail-out,
+  .cs-rel a{ transition:none; }
+  /* el desplazamiento del hover se va; el del :active se queda, porque es
+     respuesta a un gesto directo y no adorno. El punto de la parada activa
+     conserva su tamaño: marca dónde estás, no es movimiento. */
+  .cs-rail-out:hover, .cs-rel a:hover{ transform:none; }
+}
+
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  BLOQUES DEL CASO "SCHAMAN ANALYTICS BI"                  ║
+   ╚══════════════════════════════════════════════════════════╝
+   Todo lo de aquí abajo es ADITIVO: clases nuevas que no usa
+   ningún caso anterior. Grow With Phoenix no toca ninguna.
+
+   Se agregan en esta hoja y no en el HTML del caso, siguiendo la
+   regla del encabezado del archivo.
+
+   El caso Schaman usa capturas reales del dashboard y diagramas del
+   proyecto. Esta regla conserva el estilo editorial para los pocos
+   huecos que otros casos aún necesiten durante su construcción. */
+
+/* ════════ ESPACIO RESERVADO ════════
+   Ocupa el mismo sitio que ocupará la captura, para que la página ya
+   se pueda juzgar con sus proporciones reales. Va dentro de una
+   <figure class="cs-fig2">, así hereda su pie. */
+.cs-ph{
+  display:grid; place-content:center; justify-items:center; gap:11px;
+  aspect-ratio:16/10; padding:20px; text-align:center;
+  /* trama diagonal rosa pálido: "esto está por llenarse" */
+  background:repeating-linear-gradient(45deg,
+             var(--pink-pale) 0 11px, var(--white) 11px 22px);
+  border:3px dashed var(--ink);
+  box-shadow:4px 4px 0 var(--cs,var(--pink-mid));
+}
+.cs-ph.alto{  aspect-ratio:4/3; }     /* diagramas: más altos que anchos */
+.cs-ph.ancho{ aspect-ratio:21/9; }    /* flujos: una banda larga */
+
+/* la etiqueta provisional: dice QUÉ va dentro */
+.cs-ph-k{
+  font-family:var(--font-tiny); font-size:var(--cs-tiny); letter-spacing:1.4px;
+  text-transform:uppercase; line-height:1.5; color:var(--ink);
+  padding:7px 10px; background:var(--yellow);
+  border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+}
+.cs-ph-t{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1.25;
+  color:var(--text-soft); max-width:34ch;
+}
+
+/* en la portada el hueco se comporta como la imagen destacada */
+.cs-hero-fig .cs-ph{ box-shadow:6px 6px 0 var(--peach); }
+
+/* ════════ FLUJO · las paradas de la arquitectura ════════
+   La misma idea del riel, en vertical y dentro del contenido: una
+   línea que une pasos numerados. Se apila igual en cualquier ancho,
+   así que no hay flechas que se queden colgando al envolver. */
+.cs-flow{
+  list-style:none; display:grid; gap:var(--sp-2);
+  padding-left:34px; position:relative; counter-reset:paso;
+}
+.cs-flow::before{
+  content:""; position:absolute; left:11px; top:16px; bottom:16px;
+  width:3px; background:var(--pink-mid);
+}
+.cs-flow li{
+  position:relative; counter-increment:paso; min-width:0;
+  background:var(--white); border:2px solid var(--ink);
+  box-shadow:3px 3px 0 var(--cs,var(--pink-mid));
+  padding:12px 15px 14px;
+}
+.cs-flow li::before{
+  content:counter(paso);
+  position:absolute; left:-34px; top:12px;
+  width:23px; height:23px; display:grid; place-content:center;
+  font-family:var(--font-tiny); font-size:var(--cs-tiny); color:var(--ink);
+  background:var(--cs,var(--pink-mid)); border:2px solid var(--ink);
+}
+.cs-flow b{
+  display:block; font-family:var(--font-pixel); font-weight:600;
+  font-size:var(--cs-h5); line-height:1.25; color:var(--ink); margin-bottom:var(--sp-0);
+}
+.cs-flow span{ font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--text-soft); }
+
+/* ════════ MÉTRICAS ════════
+   Un indicador por tarjeta: el nombre en pixel y, debajo, qué mide.
+   Los pasteles rotan para que la rejilla no se lea como una tabla. */
+.cs-mets{
+  list-style:none; display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(238px,100%),1fr));
+  gap:var(--sp-3);
+}
+.cs-mets li{
+  border:3px solid var(--ink); box-shadow:4px 4px 0 var(--ink);
+  padding:17px 19px 19px; min-width:0;
+}
+.cs-mets li:nth-child(6n+1){ background:var(--sky); }
+.cs-mets li:nth-child(6n+2){ background:var(--mint); }
+.cs-mets li:nth-child(6n+3){ background:var(--peach); }
+.cs-mets li:nth-child(6n+4){ background:var(--lav); }
+.cs-mets li:nth-child(6n+5){ background:var(--yellow); }
+.cs-mets li:nth-child(6n+6){ background:var(--pink-light); }
+.cs-mets b{
+  display:block; font-family:var(--font-pixel); font-weight:700;
+  font-size:var(--cs-h4); line-height:1.15; color:var(--ink); margin-bottom:var(--sp-1);
+}
+.cs-mets span{ display:block; font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--ink); }
+
+/* ════════ ANTES / DESPUÉS ════════
+   Dos estados de la MISMA pantalla, de tú a tú y con su rótulo
+   encima, para que no haya que adivinar cuál es cuál. Dentro van
+   figuras .cs-fig2, así el pie se escribe igual que en el resto. */
+.cs-ab{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:var(--sp-4); row-gap:var(--sp-5); align-items:start;
+}
+.cs-ab-k{
+  display:inline-block; font-family:var(--font-tiny); font-size:var(--cs-tiny);
+  letter-spacing:1.3px; text-transform:uppercase; line-height:1;
+  padding:7px 10px; margin-bottom:var(--sp-2); color:var(--ink);
+  border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+}
+.cs-ab-k.k-a{ background:var(--peach); }   /* antes   */
+.cs-ab-k.k-b{ background:var(--mint); }    /* después */
+
+/* ════════ GALERÍA ════════
+   Rejilla de espacios reemplazables. La misma figura que usa la
+   investigación de un caso, pero sin obligar a dos por fila. */
+.cs-gal{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
+  column-gap:var(--sp-4); row-gap:var(--sp-5);
+}
+
+/* ════════ PENDIENTES ════════
+   Casillas vacías a propósito: lo que viene no está hecho, y una
+   casilla sin marcar lo dice mejor que un párrafo. */
+.cs-next{ list-style:none; display:grid; gap:var(--sp-2); }
+.cs-next li{
+  position:relative; padding-left:30px;
+  font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--text-soft);
+}
+.cs-next li::before{
+  content:""; position:absolute; left:0; top:.3em;
+  width:15px; height:15px; background:var(--white);
+  border:2px solid var(--ink); box-shadow:2px 2px 0 var(--cs,var(--pink-mid));
+}
+
+/* ════════ RESPONSIVE DE LOS BLOQUES NUEVOS ════════ */
+@media (max-width:760px){
+  /* el par deja de compararse lado a lado: apilado, cada rótulo
+     "Antes"/"Después" sigue diciendo cuál es cuál */
+  .cs-ab{ grid-template-columns:minmax(0,1fr); row-gap:var(--sp-5); }
+  .cs-ph{ aspect-ratio:16/11; }
+  .cs-ph.ancho{ aspect-ratio:16/9; }
+}
+@media (max-width:560px){
+  .cs-hero-fig .cs-ph{ box-shadow:4px 4px 0 var(--peach); }
+  .cs-mets li{ box-shadow:3px 3px 0 var(--ink); }
+  .cs-ph{ padding:15px; gap:9px; }
+  .cs-ph.alto{ aspect-ratio:1; }
+}
+
+/* ── AJUSTES DE REVISIÓN ────────────────────────────────────
+   Dos correcciones vistas al revisar la página renderizada. */
+
+/* El hueco reserva el sitio, pero no se come la página: a ancho
+   completo, un 4/3 dejaba más de 800px de alto vacío. */
+.cs-ph{ width:100%; max-height:min(70vh, 520px); }
+
+/* Este caso tiene un antetítulo largo: en celular parte en tres
+   renglones y la fuente pixel los pegaba uno encima de otro.
+   Va acotado a esta página para no tocar los casos anteriores. */
+body[data-page="caso-schaman"] .cs-kicker{ line-height:1.8; }
