@@ -6,59 +6,21 @@ Portafolio de **Paula Martillo (Pau)**, estudiante de Ingeniería en Computació
 
 ## Qué es cada carpeta de la raíz
 
-Ahora mismo aquí conviven **dos sitios**: el que está publicado y el nuevo en
-Astro. Por eso hay tantas carpetas. Es temporal y a propósito — mientras el
-viejo siga aquí, volver atrás es cambiar un ajuste en GitHub.
-
-**El sitio nuevo (lo que edito):**
-
 | | |
 |---|---|
 | `src/` | las 7 páginas, sus textos, estilos, scripts y dibujos |
-| `public/` | imágenes, PDF y las redirecciones de las URLs viejas |
-| `scripts/` | las herramientas de revisión (no van al sitio) |
-| `originales/` | las imágenes de origen a tamaño completo. **No se publican**: de aquí sale lo que sí se publica, con `npm run imagenes`. Tiene su propio `LEEME.md` |
-| `docs/` | cómo está hecho y cómo agregar cosas |
+| `public/` | lo que se publica tal cual: imágenes, PDF y las redirecciones de las URLs viejas |
+| `originales/` | las imágenes a tamaño completo y el material de origen. **No se publica** |
+| `scripts/` | las herramientas de verificación (no van al sitio) |
+| `docs/` | cómo está hecho y cómo agregar cosas (no se versiona) |
+| `projects/` · `captures/` | material de los proyectos y capturas del README |
 | `astro.config.mjs` · `package.json` · `tsconfig.json` | configuración |
+| `node_modules/` · `dist/` · `.astro/` | se regeneran solas, no se versionan |
 
-Para saber qué hay en la raíz y qué se puede borrar, sin contarlo a mano:
+El sitio se publica solo: cada push a `main` dispara
+`.github/workflows/publicar.yml`, que compila y sube el resultado. En el
+repositorio nunca hay nada compilado.
 
-```
-npm run duplicados
-```
-
-Dice, archivo por archivo, qué del sitio anterior ya está byte a byte en el
-nuevo (hoy: 62 archivos, 13,4 MB), qué es huérfano de siempre, y qué es una
-decisión tuya. Hoy queda **una**: `img/logos/github.png`, un logo de 5000×5000
-que el sitio nuevo no usa porque le basta el icono de 64×64.
-
-**El sitio publicado hoy (se retira en la etapa 11, no antes):**
-
-| | |
-|---|---|
-| `index.html` · `pages/` | las páginas viejas |
-| `css/` · `js/` · `data/` | sus estilos, scripts y datos |
-| `img/` · `cv/` · `trabajos-disenio/` · `resources/` | sus archivos |
-| `favicon.png` · `favicon.svg` | (el nuevo tiene los suyos en `public/`) |
-
-**Material y apoyo:**
-
-| | |
-|---|---|
-| `projects/` | material de origen de los casos (PDF y PNG de Figma, 27 MB) |
-| `captures/` | las capturas que se ven más abajo en este README |
-
-**Se regenera solo — se puede borrar sin pensarlo:**
-
-| | |
-|---|---|
-| `node_modules/` | `npm install` lo rehace |
-| `dist/` | `npm run build` lo rehace |
-| `.astro/` | caché de Astro |
-| `_revision-visual/` | las capturas de la comparación · **pesa ~130 MB** |
-| `_borrar/` | lo que quedó de reorganizar |
-
-Los cinco de abajo están en `.gitignore`: no se suben nunca.
 
 ## Capturas
 
