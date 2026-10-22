@@ -2,8 +2,28 @@
 .DS_Store
 
 # material de origen de los casos: los PDF de las presentaciones y los
-# PNG exportados de Figma. Las versiones optimizadas que usa el sitio
-# viven en img/caso/, así que esto solo abultaría el repo (28 MB).
+# PNG exportados de Figma. Las versiones que usa el sitio nuevo viven en
+# public/images/casos/, así que esto solo abultaría el repo (27 MB).
 # Si prefieres versionarlo, borra estas dos líneas.
+#
+# OJO: originales/ es distinto y NO se ignora. Ahí están las capturas de
+# proyectos a tamaño completo, que son la fuente de lo que se publica:
+# npm run imagenes las necesita, así que tienen que estar en el repo.
 projects/*/*.pdf
 projects/*/img/*.png
+
+# ── Astro (migración 2026-10) ──
+node_modules/
+dist/
+.astro/
+*.log
+
+# capturas de la comparacion visual por etapa (se regeneran con
+# `npm run comparar`; no hace falta versionar imagenes pesadas)
+_revision-visual/
+
+# carpeta de descarte: lo que hay aquí se puede borrar sin pensarlo
+_borrar/
+
+# LOS DOCS SON SOLO PARA MI
+/docs
