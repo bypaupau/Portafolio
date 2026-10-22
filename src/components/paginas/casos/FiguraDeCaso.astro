@@ -1,0 +1,37 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   UNA FIGURA DE CASO · <figure class="cs-fig2">
+
+   Un mapa o un gráfico con su título en negrita y su pie. Aparece unas
+   diez veces en Grow With Phoenix, así que va por aquí.
+
+   El texto llega como contenido bilingüe (src/content/casos/…): Astro
+   escribe el español y deja el inglés en atributos, para que la página
+   se lea sin JavaScript y el cambio de idioma siga siendo instantáneo.
+   ═══════════════════════════════════════════════════════════ */
+import { conIdioma, altConIdioma } from '../../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  imagen: string;
+  ancho: number;
+  alto: number;
+  texto: { titulo: TextoBilingue; pie: TextoBilingue; alt: TextoBilingue };
+  /** 'eager' solo para la imagen de portada */
+  carga?: 'lazy' | 'eager';
+}
+const { imagen, ancho, alto, texto, carga = 'lazy' } = Astro.props;
+const titulo = conIdioma(texto.titulo);
+const pie = conIdioma(texto.pie);
+---
+<figure class="cs-fig2">
+  <img
+    src={imagen}
+    width={ancho}
+    height={alto}
+    loading={carga}
+    decoding="async"
+    {...altConIdioma(texto.alt)}
+  />
+  <figcaption><b {...titulo.atributos}>{titulo.texto}</b><span {...pie.atributos}>{pie.texto}</span></figcaption>
+</figure>

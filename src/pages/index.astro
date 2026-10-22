@@ -1,0 +1,265 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   INICIO  →  /Portafolio/
+
+   ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
+   textos      src/i18n/es/inicio.ts · src/i18n/en/inicio.ts  (incluye
+               lo que dice pau.exe, bajo pages.home.exe.*)
+   estilo      src/styles/global/global.css   (sin hoja propia)
+   scripts     src/scripts/inicio/pau-exe/    ← la compu, por partes
+               src/scripts/inicio/palabra-que-cambia.ts
+               src/scripts/inicio/pista-de-scroll.ts
+               src/scripts/inicio/easter-eggs.ts
+   dibujos     src/components/paginas/inicio/         (la compu, el sobre, la carpeta)
+               src/components/dibujos/        (los que comparte con Sobre mí)
+   tarjetas    src/components/paginas/inicio/TarjetaDestacada.astro
+   imágenes    public/images/proyectos/       ← SE REUSAN, no se duplican:
+               son las mismas tres miniaturas que usa Proyectos
+   URL previa  /index.html → la raíz del sitio, sin redirección aparte
+
+   ── pau.exe EN CINCO LÍNEAS ────────────────────────────────
+   La compu es <CompuPauExe />, y lo que hace está repartido así:
+     elementos.ts  las piezas y el ambiente (menos movimiento, táctil…)
+     carita.ts     expresiones, parpadeo, dormir y despertar
+     dialogo.ts    el texto que se escribe solo
+     gestos.ts     los movimientos cortos de la ventana
+     reacciones.ts el cableado: qué contesta a cada cosa
+   Para cambiar lo que DICE, ve a los textos. Para cambiar cómo se
+   MUEVE, a gestos.ts. Para cambiar cuándo, a reacciones.ts.
+
+   ── OJO CON --ps ───────────────────────────────────────────
+   Varios dibujos aparecen dos veces en esta página con TAMAÑO distinto.
+   El CSS los mide con calc(--gw * --ps): en los tres verbos el --ps va
+   puesto (4px o 5px), y en el texto del hero NO va, porque ahí manda el
+   valor general. Pasar un --ps donde no toca los agranda al triple.
+
+   ── LOS ESPACIOS ───────────────────────────────────────────
+   Astro borra los saltos de línea entre elementos. Los {' '} de abajo
+   son espacios de verdad, no formato: si se quitan, se pegan palabras.
+   ═══════════════════════════════════════════════════════════ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { translate } from '../i18n/translate';
+import { rutaPublica, rutaPagina } from '../lib/rutas';
+import { imagen } from '../lib/imagenes';
+
+import CompuPauExe from '../components/paginas/inicio/CompuPauExe.astro';
+import TarjetaDestacada from '../components/paginas/inicio/TarjetaDestacada.astro';
+import Sobre from '../components/paginas/inicio/Sobre.astro';
+import Carpeta from '../components/paginas/inicio/Carpeta.astro';
+import Corazon from '../components/dibujos/Corazon.astro';
+import Destello from '../components/dibujos/Destello.astro';
+import SignoMas from '../components/dibujos/SignoMas.astro';
+import SignoCodigo from '../components/dibujos/SignoCodigo.astro';
+import Paleta from '../components/dibujos/Paleta.astro';
+import Grafico from '../components/dibujos/Grafico.astro';
+import TrazoSubrayado from '../components/dibujos/TrazoSubrayado.astro';
+import TrazoSubrayadoOtro from '../components/dibujos/TrazoSubrayadoOtro.astro';
+import TrazoCirculo from '../components/dibujos/TrazoCirculo.astro';
+
+const curriculumEspanol = rutaPublica('documents/cv/esp.pdf');
+
+/* las cuatro palabras de "y también …". La primera arranca puesta. */
+const palabras = [
+  'pages.home.also.word.1',
+  'pages.home.also.word.2',
+  'pages.home.also.word.3',
+  'pages.home.also.word.4',
+] as const;
+
+/* los tres verbos del puente. Cada uno con su icono y su color de ventanita. */
+const verbos = [
+  { icono: Paleta,      color: '',      disco: 'disc-pink', ps: '5px',
+    nombre: 'pages.home.verbs.design',  que: 'pages.home.verbs.design.what' },
+  { icono: SignoCodigo, color: 'sky',   disco: 'disc-sky',  ps: '4px',
+    nombre: 'pages.home.verbs.build',   que: 'pages.home.verbs.build.what' },
+  { icono: Grafico,     color: 'mint',  disco: 'disc-mint', ps: '5px',
+    nombre: 'pages.home.verbs.explore', que: 'pages.home.verbs.explore.what' },
+] as const;
+---
+
+<BaseLayout
+  paginaActual="home"
+  claveTitulo="pages.home.metaTitle"
+  claveDescripcion="pages.home.metaDescription"
+  claveNombreVentana="taskbar.windowName.home"
+  pieConSecreto
+>
+  {/* ═══════════ HERO · quién es, en cinco segundos ═══════════ */}
+  <section class="hero wrap">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-greeting hx" style="--d:150ms" data-i18n="pages.home.greeting">{translate('pages.home.greeting')}</p>
+        <h1 class="hero-name hx" style="--d:200ms">Pau</h1>
+        <div class="hx" style="--d:450ms">
+          <p class="hero-role" data-i18n="pages.home.role">{translate('pages.home.role')}</p>
+          <p class="hero-sem" data-i18n="pages.home.studies">{translate('pages.home.studies')}</p>
+
+          {/* identidad secundaria: la palabra cambia cada tanto
+              (src/scripts/inicio/palabra-que-cambia.ts) */}
+          <p class="hero-also">
+            <span class="also-ico"><Destello /></span>{' '}<span class="also-lbl" data-i18n="pages.home.also">{translate('pages.home.also')}</span>{' '}<span class="rot" aria-hidden="true">{palabras.map((clave, i) => (
+              <span class={i === 0 ? 'rot-w is-on' : 'rot-w'} data-i18n={clave}>{translate(clave)}</span>
+            ))}</span>{' '}<span class="sr-only" data-i18n="pages.home.also.forScreenReaders">{translate('pages.home.also.forScreenReaders')}</span>
+          </p>
+
+          {/* texto anotado: el mismo trazo a mano y los mismos iconos que
+              Sobre mí (diseñar → creatividad · construir → tecnología) */}
+          <p class="hero-desc"><span data-i18n="pages.home.passion.start">{translate('pages.home.passion.start')}</span>{' '}<span
+              class="note"
+            ><span class="mark mark-under" style="--draw:1.15s"><span data-i18n="pages.home.passion.creativity">{translate('pages.home.passion.creativity')}</span><TrazoSubrayado /></span><span class="ico-note ico-pal"><Paleta /></span></span>{' '}<span
+              data-i18n="pages.home.passion.and"
+            >{translate('pages.home.passion.and')}</span>{' '}<span
+              class="note"
+            ><span class="mark mark-under" style="--draw:1.4s"><span data-i18n="pages.home.passion.technology">{translate('pages.home.passion.technology')}</span><TrazoSubrayadoOtro /></span><span class="ico-note ico-code"><SignoCodigo /></span></span>{' '}<span
+              data-i18n="pages.home.passion.middle"
+            >{translate('pages.home.passion.middle')}</span>{' '}<span
+              class="mark mark-circle" style="--draw:1.7s"
+            ><span data-i18n="pages.home.passion.unite">{translate('pages.home.passion.unite')}</span><TrazoCirculo /></span><span data-i18n="pages.home.passion.end">{translate('pages.home.passion.end')}</span></p>
+        </div>
+
+        <div class="hero-btns hx" style="--d:600ms">
+          <a class="btn btn-primary" href={rutaPagina('proyectos')} data-i18n="pages.home.button.projects">{translate('pages.home.button.projects')}</a>
+          <a
+            class="btn btn-ghost"
+            href={curriculumEspanol}
+            data-resume-link
+            download
+            data-i18n="pages.home.button.resume"
+          >{translate('pages.home.button.resume')}</a>
+        </div>
+
+        <p class="hero-status hx" style="--d:680ms">
+          <span class="st-key"><span class="st-dot" aria-hidden="true"></span><span data-i18n="pages.home.status.label">{translate('pages.home.status.label')}</span></span>{' '}<span data-i18n="pages.home.status.text">{translate('pages.home.status.text')}</span>
+        </p>
+      </div>
+
+      {/* ═══════════ pau.exe ═══════════
+          La única cosa del sitio que se mueve sola (la carita). Todo lo
+          demás reacciona. Ver src/scripts/inicio/pau-exe/ */}
+      <div class="win hero-card hx" style="--d:750ms">
+        <div class="win-bar">
+          <span class="win-title">pau.exe</span>{' '}<span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+        </div>
+        <div class="win-body">
+          <CompuPauExe
+            descripcion={translate('pages.home.exe.computerDescription')}
+            claveDescripcion="pages.home.exe.computerDescription"
+          />
+          <p class="cap"><span class="sr-only" data-i18n="pages.home.exe.welcomeForScreenReaders">{translate('pages.home.exe.welcomeForScreenReaders')}</span><span class="cap-type" aria-hidden="true">{translate('pages.home.exe.welcome')}</span></p>
+          <div class="social-row">
+            <a class="social mail" href="mailto:paula.martilloq@gmail.com" aria-label="Email" title="Email"><Sobre /></a>
+            <a class="social gh" href="https://github.com/bypaupau" target="_blank" rel="noopener" title="GitHub">GH</a>
+            <a class="social in" href="https://www.linkedin.com/in/paula-m-quintana/" target="_blank" rel="noopener" title="LinkedIn">in</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <span class="scroll-hint hx" style="--d:900ms" aria-hidden="true"><span class="arr">↓</span> <span data-i18n="pages.home.scrollHint">{translate('pages.home.scrollHint')}</span> <span class="arr">↓</span></span>
+  </section>
+
+  {/* ═══════════ PUENTE · quién soy → qué he hecho ═══════════
+      Los tres íconos de la portada anterior, con otra función: ya no son
+      un segundo menú, son tres verbos que la describen. */}
+  <section class="bridge wrap" aria-labelledby="bridge-title">
+    <p class="sec-label rv" data-i18n="pages.home.verbs.label">{translate('pages.home.verbs.label')}</p>
+    <h2 class="sec-title rv" id="bridge-title" data-i18n="pages.home.verbs.title">{translate('pages.home.verbs.title')}</h2>
+    <ul class="verbs">
+      {verbos.map((verbo, i) => (
+        <Fragment>
+          {i > 0 && <li class="verb-plus" aria-hidden="true"><SignoMas desnudo /></li>}
+          <li class="verb rv">
+            <span class={`disc ${verbo.disco}`} aria-hidden="true">
+              <span class="mini-win"><span class={verbo.color ? `mini-bar ${verbo.color}` : 'mini-bar'}><i></i><i></i><i></i></span><span class="mini-body"><verbo.icono class="px" ps={verbo.ps} /></span></span>
+            </span>
+            <span class="plabel" data-i18n={verbo.nombre}>{translate(verbo.nombre)}</span>
+            <span class="verb-what" data-i18n={verbo.que}>{translate(verbo.que)}</span>
+          </li>
+        </Fragment>
+      ))}
+    </ul>
+    <p class="bridge-end rv" data-i18n="pages.home.verbs.end">{translate('pages.home.verbs.end')}</p>
+  </section>
+
+  {/* ═══════════ PROYECTOS DESTACADOS ═══════════
+      Lo primero que alguien ve después del hero es trabajo, no un menú. */}
+  <section class="featured wrap" aria-labelledby="feat-title">
+    <header class="feat-head">
+      <p class="sec-label rv" data-i18n="pages.home.featured.label">{translate('pages.home.featured.label')}</p>
+      <h2 class="sec-title rv" id="feat-title" data-i18n="pages.home.featured.title">{translate('pages.home.featured.title')}</h2>
+      <p class="feat-sub rv" data-i18n="pages.home.featured.subtitle">{translate('pages.home.featured.subtitle')}</p>
+    </header>
+    <div class="pcards">
+      <TarjetaDestacada
+        enlace={rutaPagina('casos/grow-with-phoenix')}
+        sticker={{ dibujo: 'trofeo', color: 's-gold', clave: 'pages.home.featured.phoenix.award' }}
+        ventana={{ texto: 'grow_with_phoenix', color: 'peach' }}
+        imagen={{ src: imagen('images/proyectos/phoenix-grow', 1120).src, claveAlt: 'pages.home.featured.phoenix.imageAlt' }}
+        claveAsoma="pages.home.featured.phoenix.peek"
+        chips={['pages.home.featured.chip.uxui', 'pages.home.featured.chip.data']}
+        titulo={{ texto: 'Grow With Phoenix' }}
+        meta="SpaceHACK · 2025"
+      />
+      <TarjetaDestacada
+        enlace="https://github.com/bypaupau/WIDS-DATATHON-2026-ARTEMIS4"
+        fuera
+        sticker={{ dibujo: 'medalla', color: 's-pink', clave: 'pages.home.featured.wildfire.award' }}
+        ventana={{ texto: 'rutas_de_incendio', clave: 'pages.home.featured.wildfire.windowTitle', color: 'sky' }}
+        imagen={{ src: imagen('images/proyectos/rutasincendio', 1120).src, claveAlt: 'pages.home.featured.wildfire.imageAlt' }}
+        claveAsoma="pages.home.featured.wildfire.peek"
+        chips={['pages.home.featured.chip.data', 'pages.home.featured.chip.modeling']}
+        titulo={{ texto: 'Rutas de incendio', clave: 'pages.home.featured.wildfire.name' }}
+        meta="WiDS Datathon · 2026"
+      />
+      <TarjetaDestacada
+        enlace="https://github.com/bypaupau/JuegoGrupal-ProyectoIIParcial"
+        fuera
+        sticker={{ dibujo: 'gato', color: 's-lav', clave: 'pages.home.featured.catventures.award' }}
+        ventana={{ texto: 'catventures', color: 'mint' }}
+        imagen={{ src: imagen('images/proyectos/catventures', 1120).src, claveAlt: 'pages.home.featured.catventures.imageAlt' }}
+        claveAsoma="pages.home.featured.catventures.peek"
+        chips={['pages.home.featured.chip.game', 'pages.home.featured.chip.illustration']}
+        titulo={{ texto: 'Catventures' }}
+        meta="Unity 2D · 2026"
+      />
+    </div>
+    <p class="feat-all"><a class="link" href={rutaPagina('proyectos')}><Carpeta /> <span data-i18n="pages.home.featured.seeAll">{translate('pages.home.featured.seeAll')}</span></a></p>
+  </section>
+
+  {/* ═══════════ CIERRE · volver a la persona ═══════════ */}
+  <section
+    class="outro wrap"
+    aria-label={translate('pages.home.next.sectionLabel')}
+    data-i18n-attr="aria-label:pages.home.next.sectionLabel"
+  >
+    <div class="win outro-win rv">
+      <div class="win-bar lav">
+        <span class="win-title" data-i18n="pages.home.next.windowTitle">{translate('pages.home.next.windowTitle')}</span>{' '}<span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+      </div>
+      <div class="outro-body">
+        <div class="outro-col">
+          <span class="mini-win outro-ico" aria-hidden="true"><span class="mini-bar sky"><i></i><i></i><i></i></span><span class="mini-body"><Corazon class="sprite" ancho="36" /></span></span>
+          <div>
+            <p class="outro-q" data-i18n="pages.home.next.meet.question">{translate('pages.home.next.meet.question')}</p>
+            <a class="btn btn-ghost" href={rutaPagina('sobre-mi')} data-i18n="pages.home.next.meet.button">{translate('pages.home.next.meet.button')}</a>
+          </div>
+        </div>
+        <div class="outro-col">
+          <span class="mini-win outro-ico" aria-hidden="true"><span class="mini-bar lav"><i></i><i></i><i></i></span><span class="mini-body"><Sobre ancho="42" decorativo /></span></span>
+          <div>
+            <p class="outro-q"><span class="st-dot" aria-hidden="true"></span>{' '}<span data-i18n="pages.home.next.hire.question">{translate('pages.home.next.hire.question')}</span></p>
+            <p class="outro-sub" data-i18n="pages.home.next.hire.subtitle">{translate('pages.home.next.hire.subtitle')}</p>
+            <a class="btn btn-primary" href={rutaPagina('contacto')} data-i18n="pages.home.next.hire.button">{translate('pages.home.next.hire.button')}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/inicio/pau-exe/index';
+    import '../scripts/inicio/palabra-que-cambia';
+    import '../scripts/inicio/pista-de-scroll';
+    import '../scripts/inicio/easter-eggs';
+  </script>
+</BaseLayout>

@@ -1,0 +1,32 @@
+/* el archivo de Proyectos se comporta como un explorador
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 1388–1414.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ── 2 · PROYECTOS · el archivo se comporta como un explorador ──
+   Una fila que se "selecciona" al pasar por encima: franja rosa a la
+   izquierda, la miniatura cambia de sombra y el enlace se desliza.
+   Es la misma gramática de .win y .btn (sombras duras, 2–4 px), solo
+   aplicada a una lista. El borde es un ::before y no un border, para
+   que la cuadrícula no se mueva ni un píxel. */
+a.arow{ position:relative; }
+a.arow::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
+  background:var(--pink); opacity:0;
+}
+a.arow:hover::before, a.arow:focus-visible::before{ opacity:1; }
+a.arow .arow-go::after{ content:" →"; display:inline-block; }
+a.arow:hover .arow-go, a.arow:focus-visible .arow-go{ color:var(--ink); }
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  a.arow::before{ transition:opacity var(--mo-fast) ease; }
+  .arow-thumb{ transition:box-shadow var(--mo-fast) var(--ease-soft); }
+  a.arow .arow-go::after{ transition:transform var(--mo-fast) var(--ease-soft); }
+  a.arow:hover .arow-thumb, a.arow:focus-visible .arow-thumb{ box-shadow:5px 5px 0 var(--pink); }
+  a.arow:hover .arow-go::after{ transform:translateX(4px); }
+}
+/* al cambiar de filtro: cruce corto en lugar del cambio seco */
+@media (prefers-reduced-motion:no-preference){
+  .fx-swap{ animation:fx-in var(--mo-base) var(--ease-soft) both; }
+}
+

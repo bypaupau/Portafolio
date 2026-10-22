@@ -1,0 +1,19 @@
+/* el cursor pixel (solo con mouse de verdad)
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 842–855.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ── 11 · CURSOR PIXEL (solo mouse; en táctil no existe) ─────
+   SVG inline: nítido en pantallas retina y sin archivos extra.
+   Normal: flechita pixel blanca. Sobre algo clickeable: flechita
+   rosa con un ♡. Los campos de texto conservan su cursor de texto. */
+@media (hover:hover) and (pointer:fine){
+  html{ cursor:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='28' viewBox='0 0 9 14' shape-rendering='crispEdges'%3E%3Cpath fill='%232C1A24' d='M0 0h1v1h-1zM0 1h2v1h-2zM0 2h1v1h-1zM2 2h1v1h-1zM0 3h1v1h-1zM3 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM0 5h1v1h-1zM5 5h1v1h-1zM0 6h1v1h-1zM6 6h1v1h-1zM0 7h1v1h-1zM7 7h1v1h-1zM0 8h1v1h-1zM5 8h4v1h-4zM0 9h1v1h-1zM2 9h1v1h-1zM5 9h1v1h-1zM0 10h2v1h-2zM3 10h1v1h-1zM6 10h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM5 13h2v1h-2z'/%3E%3Cpath fill='%23FFFFFF' d='M1 2h1v1h-1zM1 3h2v1h-2zM1 4h3v1h-3zM1 5h4v1h-4zM1 6h5v1h-5zM1 7h6v1h-6zM1 8h4v1h-4zM1 9h1v1h-1zM3 9h2v1h-2zM4 10h2v1h-2zM4 11h2v1h-2zM5 12h2v1h-2z'/%3E%3C/svg%3E") 1 1, auto; }
+  a, button, select, summary, label[for], [role="button"],
+  .btn, .social, .popup, .nav-toggle, .reset-btn, .hero-card .mon,
+  .hero-card .win-ctrls i, .egg, .egg-coffee{
+    cursor:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='28' viewBox='0 0 15 14' shape-rendering='crispEdges'%3E%3Cpath fill='%232C1A24' d='M0 0h1v1h-1zM0 1h2v1h-2zM0 2h1v1h-1zM2 2h1v1h-1zM0 3h1v1h-1zM3 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM0 5h1v1h-1zM5 5h1v1h-1zM0 6h1v1h-1zM6 6h1v1h-1zM0 7h1v1h-1zM7 7h1v1h-1zM0 8h1v1h-1zM5 8h4v1h-4zM0 9h1v1h-1zM2 9h1v1h-1zM5 9h1v1h-1zM0 10h2v1h-2zM3 10h1v1h-1zM6 10h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM5 13h2v1h-2z'/%3E%3Cpath fill='%23F4B8CC' d='M1 2h1v1h-1zM1 3h2v1h-2zM1 4h3v1h-3zM1 5h4v1h-4zM1 6h5v1h-5zM1 7h6v1h-6zM1 8h4v1h-4zM1 9h1v1h-1zM3 9h2v1h-2zM4 10h2v1h-2zM4 11h2v1h-2zM5 12h2v1h-2z'/%3E%3Cpath fill='%23E87EA1' d='M10 0h2v1h-2zM13 0h2v1h-2zM10 1h5v1h-5zM11 2h3v1h-3zM12 3h1v1h-1z'/%3E%3C/svg%3E") 1 1, pointer !important;
+  }
+  input, textarea, [contenteditable="true"]{ cursor:text !important; }
+}

@@ -1,0 +1,230 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   PROYECTOS  →  /Portafolio/proyectos
+
+   ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
+   contenido   src/content/proyectos/proyectos.ts  (los 10 proyectos)
+               src/content/proyectos/tipos.ts      (qué campos lleva uno)
+   textos      src/i18n/es/proyectos.ts · src/i18n/en/proyectos.ts
+   script      src/scripts/proyectos/filtros.ts    (filtrar por disciplina)
+   estilo      src/styles/global/global.css        (sin hoja propia)
+   tarjetas    src/components/piezas/TarjetaDeTrabajo.astro      (destacados)
+               src/components/piezas/FilaDeArchivo.astro  (archivo)
+               src/components/piezas/Sello.astro          (los stickers)
+   imágenes    public/images/proyectos/
+   URL previa  /pages/proyectos.html → redirige  (public/pages/proyectos.html)
+               /pages/materias.html → también redirige aquí
+
+   ── QUÉ CAMBIÓ RESPECTO AL SITIO ANTERIOR ──────────────────
+   Las 150 líneas de JavaScript dentro del HTML ya no están: las tarjetas
+   y las filas las dibuja Astro al compilar, así que los diez proyectos
+   se leen sin JavaScript. El filtro por disciplina ahora MUESTRA Y OCULTA
+   lo que ya existe en vez de volver a construirlo.
+   ═══════════════════════════════════════════════════════════ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TarjetaDeTrabajo from '../components/piezas/TarjetaDeTrabajo.astro';
+import FilaDeArchivo from '../components/piezas/FilaDeProyectos.astro';
+import { translate } from '../i18n/translate';
+import { supportedLanguages, defaultLanguage, type Language } from '../i18n/languages';
+import type { TranslationKey } from '../i18n/keys';
+import { conIdioma, textoDeClave, enIdioma } from '../lib/texto-bilingue';
+import { rutaPublica, rutaPagina } from '../lib/rutas';
+import { imagen } from '../lib/imagenes';
+import { proyectos } from '../content/proyectos/proyectos';
+import { disciplinas, contextosDe, type Proyecto, type Contexto } from '../content/proyectos/tipos';
+
+/* destacados arriba por su número; el archivo, del más reciente al más viejo */
+const destacados = proyectos
+  .filter((p) => p.destacado)
+  .sort((a, b) => (a.destacado ?? 0) - (b.destacado ?? 0));
+const archivo = proyectos
+  .filter((p) => !p.destacado)
+  .sort((a, b) => String(b.fecha ?? '').localeCompare(String(a.fecha ?? '')));
+
+const claveDeDisciplina: Record<(typeof disciplinas)[number], TranslationKey> = {
+  diseno: 'pages.projects.filters.design',
+  desarrollo: 'pages.projects.filters.development',
+  datos: 'pages.projects.filters.data',
+  juegos: 'pages.projects.filters.games',
+};
+const claveDeContexto: Record<Contexto, TranslationKey> = {
+  hackathon: 'pages.projects.context.hackathon',
+  universidad: 'pages.projects.context.university',
+  personal: 'pages.projects.context.personal',
+};
+
+/* cuántos proyectos tiene cada disciplina: una opción sin resultados se
+   atenúa con data-zero, igual que antes */
+const cuantosEn = (disciplina: string) =>
+  proyectos.filter((p) => p.disciplinas.includes(disciplina as never)).length;
+
+/** El enlace de un proyecto: su caso gana al enlace externo, y ese al repo. */
+function enlaceDe(proyecto: Proyecto): { href?: string; externo: boolean } {
+  if (proyecto.caso) return { href: rutaPagina(`casos/${proyecto.caso}`), externo: false };
+  const externo = proyecto.enlace || proyecto.repositorio;
+  return externo && externo !== '#' ? { href: externo, externo: true } : { externo: true };
+}
+
+/* ── textos compuestos: mezclan traducción y datos, así que se arman en
+      los DOS idiomas y se comparan. Si salen iguales, no se añaden
+      atributos; si difieren, el script de idioma los intercambia. ── */
+function enAmbosIdiomas(construir: (idioma: Language) => string) {
+  const porIdioma = Object.fromEntries(
+    supportedLanguages.map((l) => [l, construir(l)]),
+  ) as Record<Language, string>;
+  const difieren = supportedLanguages.some((l) => porIdioma[l] !== porIdioma[defaultLanguage]);
+  const atributos: Record<string, string> = difieren
+    ? { 'data-i18n-es': porIdioma.es, 'data-i18n-en': porIdioma.en }
+    : {};
+  return {
+    texto: porIdioma[defaultLanguage],
+    atributos,
+  };
+}
+
+/** "Hackathon · Spacehack 2026 · Abril 2026" */
+const metadatosDe = (proyecto: Proyecto) =>
+  enAmbosIdiomas((idioma) => {
+    const partes = [contextosDe(proyecto).map((c) => translate(claveDeContexto[c], idioma)).join(' + ')];
+    const materia = enIdioma(proyecto.materia, idioma);
+    if (materia && materia !== '-') partes.push(materia);
+    if (proyecto.periodo) partes.push(enIdioma(proyecto.periodo, idioma));
+    return partes.filter(Boolean).join(' · ');
+  });
+
+/** "ver el caso" · lo que diga el proyecto · "ver repo →" · "pronto ✦" */
+const accionDe = (proyecto: Proyecto) =>
+  enAmbosIdiomas((idioma) => {
+    if (proyecto.caso) return translate('pages.projects.readCase', idioma);
+    const { href } = enlaceDe(proyecto);
+    if (!href) return translate('pages.projects.soon', idioma);
+    return proyecto.enlaceTexto
+      ? enIdioma(proyecto.enlaceTexto, idioma)
+      : translate('pages.projects.viewRepo', idioma);
+  });
+
+const totalProyectos = proyectos.length;
+
+/* Las pestañas van en minúscula: es una decisión de ESTILO de los chips,
+   no del texto. Por eso el diccionario guarda la etiqueta legible
+   ("Diseño / UX") y la minúscula se aplica aquí, al dibujar — igual que
+   hacía el sitio anterior. Si mañana quieres chips capitalizados, se
+   quita esta función y ya. */
+const comoChip = (texto: string) => texto.toLowerCase();
+---
+<BaseLayout
+  paginaActual="projects"
+  claveTitulo="pages.projects.metaTitle"
+  claveDescripcion="pages.projects.metaDescription"
+  claveNombreVentana="taskbar.windowName.projects"
+>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="sec-label hx" style="--d:100ms" data-i18n="pages.projects.sectionLabel">
+        {translate('pages.projects.sectionLabel')}
+      </p>
+      <h1 class="sec-title hx" style="--d:170ms" data-i18n="pages.projects.sectionTitle">
+        {translate('pages.projects.sectionTitle')}
+      </h1>
+      <p class="proj-intro" id="proj-intro" hidden></p>
+    </div>
+
+    <!-- pestañas por disciplina + contador -->
+    <div
+      class="chipbar fx-c hx"
+      style="--d:270ms"
+      role="group"
+      aria-label={translate('pages.projects.filters.ariaLabel')}
+      data-i18n-attr="aria-label:pages.projects.filters.ariaLabel"
+      data-total={totalProyectos}
+    >
+      <div class="fx-c-tabs" id="chips-d">
+        <button type="button" class="chip is-on" data-val="" aria-pressed="true"
+                data-i18n="pages.projects.filters.all" data-i18n-minuscula
+        >{comoChip(translate('pages.projects.filters.all'))}</button>
+        {disciplinas.map((disciplina) => (
+          <button type="button" class="chip" data-val={disciplina} aria-pressed="false"
+                  data-i18n={claveDeDisciplina[disciplina]} data-i18n-minuscula
+                  data-zero={cuantosEn(disciplina) === 0 ? '' : undefined}
+          >{comoChip(translate(claveDeDisciplina[disciplina]))}</button>
+        ))}
+      </div>
+      <div class="fx-c-sub"><span class="fx-count" id="fx-count" aria-hidden="true"></span></div>
+    </div>
+
+    <section class="proj-sec" id="sec-feat" aria-labelledby="h-feat">
+      <h2 class="sec-label proj-h rv" id="h-feat" data-i18n="pages.projects.featuredHeading">
+        {translate('pages.projects.featuredHeading')}
+      </h2>
+      <div class="pcards" id="feat-grid">
+        {destacados.map((proyecto) => {
+          const { href, externo } = enlaceDe(proyecto);
+          return (
+            <TarjetaDeTrabajo
+              archivo={conIdioma(proyecto.archivo ?? proyecto.nombre)}
+              color={proyecto.color ?? ''}
+              imagen={proyecto.imagen ? imagen(proyecto.imagen, 1120).src : undefined}
+              titulo={conIdioma(proyecto.nombreCorto ?? proyecto.nombre)}
+              meta={conIdioma(proyecto.meta ?? proyecto.periodo)}
+              descripcion={conIdioma(proyecto.descripcion)}
+              etiquetas={proyecto.habilidades.slice(0, 4).map((h) => conIdioma(h))}
+              sticker={proyecto.logro
+                ? { texto: conIdioma(proyecto.logro), dibujo: proyecto.sello, color: proyecto.selloColor }
+                : undefined}
+              enlace={href}
+              externo={externo}
+              llamada={href
+                ? textoDeClave(
+                    proyecto.caso ? 'pages.projects.readCase' : 'pages.projects.viewProject',
+                    translate(proyecto.caso ? 'pages.projects.readCase' : 'pages.projects.viewProject'))
+                : undefined}
+              flecha={proyecto.caso ? '→' : '↗'}
+              datos={{ 'data-disciplinas': proyecto.disciplinas.join('|') }}
+            />
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="proj-sec" id="sec-arch" aria-labelledby="h-arch">
+      <h2 class="sec-label proj-h rv" id="h-arch" data-i18n="pages.projects.archiveHeading">
+        {translate('pages.projects.archiveHeading')}
+      </h2>
+      <div class="win arch-win rv">
+        <div class="win-bar lav">
+          <span class="win-title" id="arch-title"
+          >{translate('pages.projects.archiveWindowTitle').replace('{n}', String(archivo.length))}</span>
+          <span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+        </div>
+        <ul class="arch" id="arch-list">
+          {archivo.map((proyecto) => {
+            const { href, externo } = enlaceDe(proyecto);
+            return (
+              <FilaDeArchivo
+                nombre={conIdioma(proyecto.nombre)}
+                descripcion={conIdioma(proyecto.descripcion)}
+                metadatos={metadatosDe(proyecto)}
+                etiquetas={proyecto.habilidades.slice(0, 3).map((h) => conIdioma(h))}
+                imagen={proyecto.imagen ? imagen(proyecto.imagen, 416).src : undefined}
+                enlace={href}
+                externo={externo}
+                accion={accionDe(proyecto)}
+                insignia={proyecto.estado === 'en-progreso'
+                  ? { texto: translate('pages.projects.badge.inProgress'), atributos: { 'data-i18n': 'pages.projects.badge.inProgress' } }
+                  : undefined}
+                datos={{ 'data-disciplinas': proyecto.disciplinas.join('|') }}
+              />
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+
+    <p class="no-proj" id="no-proj" hidden></p>
+    <p class="sr-only" id="proj-live" aria-live="polite"></p>
+  </div>
+
+  <script>
+    import '../scripts/proyectos/filtros';
+  </script>
+</BaseLayout>

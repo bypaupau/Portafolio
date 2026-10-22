@@ -1,0 +1,68 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA COMPU DE pau.exe · 32×26 px
+
+   No es un dibujo quieto: es la pieza con la que hablan los scripts de
+   src/scripts/inicio/pau-exe/. Cada grupo con nombre existe para que
+   algo pueda cambiarlo, así que NO se renombran ni se quitan:
+
+     .scr        la pantalla. Cambia de color con data-scr (el botón que
+                 señalas) y da un golpe de luz con data-scr="flash".
+     .e-open     ojos abiertos          ┐ las tres parejas de ojos se
+     .e-closed   ojos cerrados          │ mueven JUNTAS para que, al
+     .e-happy    ojos contentos (^ ^)   ┘ parpadear, sigan mirando igual
+     .m-smile    boca sonriendo         ┐ el CSS enseña una u otra
+     .m-oh       boca de sorpresa (o)   ┘ según data-face
+
+   data-face = '' | 'blink' | 'happy' | 'wink' | 'oh'   (lo pone carita.ts)
+   El CSS de .mon[data-face] decide qué pareja se ve en cada estado.
+
+   La descripción para lectores de pantalla llega como prop porque se
+   traduce; el resto del dibujo es idéntico al del sitio anterior.
+   ═══════════════════════════════════════════════════════════ */
+interface Props {
+  /** texto del aria-label, ya traducido */
+  descripcion: string;
+  /** clave de traducción, para que el cambio de idioma lo alcance */
+  claveDescripcion: string;
+}
+const { descripcion, claveDescripcion } = Astro.props;
+---
+<svg
+  class="sprite mon"
+  data-face=""
+  viewBox="0 0 32 26"
+  width="168"
+  xmlns="http://www.w3.org/2000/svg"
+  shape-rendering="crispEdges"
+  role="img"
+  aria-label={descripcion}
+  data-i18n-attr={`aria-label:${claveDescripcion}`}
+>
+  <rect x="2" y="0" width="28" height="20" fill="var(--ink)"/>
+  <rect x="4" y="2" width="24" height="16" fill="var(--white)"/>
+  <rect class="scr" x="6" y="4" width="20" height="12" fill="var(--sky)"/>
+  <g class="e-open" fill="var(--ink)">
+    <rect class="l" x="10" y="8" width="2" height="2"/>
+    <rect class="r" x="20" y="8" width="2" height="2"/>
+  </g>
+  <g class="e-closed" fill="var(--ink)">
+    <rect class="l" x="9" y="9" width="4" height="1"/>
+    <rect class="r" x="19" y="9" width="4" height="1"/>
+  </g>
+  <g class="e-happy" fill="var(--ink)">
+    <path d="M9 9h1v1h-1zM10 8h2v1h-2zM12 9h1v1h-1zM19 9h1v1h-1zM20 8h2v1h-2zM22 9h1v1h-1z"/>
+  </g>
+  <rect x="8" y="10" width="2" height="2" fill="var(--pink-mid)"/>
+  <rect x="22" y="10" width="2" height="2" fill="var(--pink-mid)"/>
+  <g class="m-smile" fill="var(--ink)">
+    <rect x="10" y="12" width="2" height="2"/>
+    <rect x="12" y="14" width="8" height="2"/>
+    <rect x="20" y="12" width="2" height="2"/>
+  </g>
+  <g class="m-oh" fill="var(--ink)">
+    <path d="M14 12h4v1h-4zM13 13h1v2h-1zM18 13h1v2h-1zM14 15h4v1h-4z"/>
+  </g>
+  <rect x="14" y="20" width="4" height="2" fill="var(--ink)"/>
+  <rect x="8" y="22" width="16" height="2" fill="var(--ink)"/>
+  </svg>

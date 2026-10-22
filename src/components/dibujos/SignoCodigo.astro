@@ -1,0 +1,28 @@
+---
+/* El signo </> de 16×5. Se usa tres veces: sticker de la polaroid,
+   parada "computación" de la ruta y herramienta "construir".
+   Pixeles copiados sin cambios de pages/sobremi.html. */
+interface Props {
+  class?: string;
+  /** tamaño de un pixel en pantalla (--ps). Inicio lo usa; Sobre mí no. */
+  ps?: string;
+}
+const { class: clase = 'px', ps } = Astro.props;
+---
+<svg class={clase} style={(ps ? `--ps:${ps};` : '') + "--gw:16;--gh:5"} viewBox="0 0 16 5" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <rect x="2" y="0" width="2" height="1" fill="var(--pink)"/>
+  <rect x="9" y="0" width="2" height="1" fill="var(--ink)"/>
+  <rect x="12" y="0" width="2" height="1" fill="var(--pink)"/>
+  <rect x="1" y="1" width="2" height="1" fill="var(--pink)"/>
+  <rect x="8" y="1" width="2" height="1" fill="var(--ink)"/>
+  <rect x="13" y="1" width="2" height="1" fill="var(--pink)"/>
+  <rect x="0" y="2" width="2" height="1" fill="var(--pink)"/>
+  <rect x="7" y="2" width="2" height="1" fill="var(--ink)"/>
+  <rect x="14" y="2" width="2" height="1" fill="var(--pink)"/>
+  <rect x="1" y="3" width="2" height="1" fill="var(--pink)"/>
+  <rect x="6" y="3" width="2" height="1" fill="var(--ink)"/>
+  <rect x="13" y="3" width="2" height="1" fill="var(--pink)"/>
+  <rect x="2" y="4" width="2" height="1" fill="var(--pink)"/>
+  <rect x="5" y="4" width="2" height="1" fill="var(--ink)"/>
+  <rect x="12" y="4" width="2" height="1" fill="var(--pink)"/>
+</svg>

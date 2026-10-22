@@ -1,0 +1,75 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   TARJETA GRANDE (.pcard)
+
+   La usan Proyectos (destacados) y Creativo. Por eso recibe PROPS
+   SUELTAS y no un objeto de proyecto o de trabajo: la tarjeta no sabe de
+   dónde viene el contenido, y cada página arma lo suyo a la vista, en su
+   propio archivo.
+
+   Si hay `enlace` es un <a>; si no, un <div> que no se puede pulsar.
+   Esa condición ya estaba en el sitio anterior.
+
+   Los textos bilingües llegan ya resueltos al español, con los atributos
+   data-i18n-es/en que permiten cambiar de idioma sin recargar.
+   Ver src/lib/texto-bilingue.ts
+   ═══════════════════════════════════════════════════════════ */
+import Sello from './Sello.astro';
+
+export interface TextoConIdioma {
+  texto: string;
+  atributos: Record<string, string>;
+}
+interface Props {
+  /** título de la barra de la ventana */
+  archivo: TextoConIdioma;
+  /** '' es el rosa */
+  color?: string;
+  imagen?: string;
+  titulo: TextoConIdioma;
+  meta: TextoConIdioma;
+  descripcion: TextoConIdioma;
+  etiquetas: TextoConIdioma[];
+  sticker?: { texto: TextoConIdioma; dibujo?: 'libro' | 'trofeo' | 'medalla' | 'gato'; color?: string };
+  enlace?: string;
+  /** false para los enlaces internos, que no abren pestaña nueva */
+  externo?: boolean;
+  llamada?: TextoConIdioma;
+  /** '↗' para salir del sitio, '→' para quedarse dentro */
+  flecha?: string;
+  /** para filtrar sin volver a dibujar */
+  datos?: Record<string, string>;
+}
+const {
+  archivo, color = '', imagen, titulo, meta, descripcion, etiquetas,
+  sticker, enlace, externo = true, llamada, flecha = '↗', datos = {},
+} = Astro.props;
+
+const Etiqueta = enlace ? 'a' : 'div';
+const atributos = enlace
+  ? { href: enlace, ...(externo ? { target: '_blank', rel: 'noopener' } : {}) }
+  : {};
+---
+<Etiqueta class="pcard pcard-full rv" {...atributos} {...datos}>
+  {sticker && (
+    <Sello dibujo={sticker.dibujo} color={sticker.color} texto={sticker.texto.texto} atributosDeTexto={sticker.texto.atributos} />
+  )}
+
+  <span class="win pcard-win">
+    <span class={`win-bar ${color}`}>
+      <span class="win-title" {...archivo.atributos}>{archivo.texto}</span>
+      <span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+    </span>
+    <span class="pcard-media">{imagen && <img src={imagen} alt="" loading="lazy" decoding="async" />}</span>
+  </span>
+
+  <span class="pcard-info">
+    <span class="pcard-title" {...titulo.atributos}>{titulo.texto}</span>
+    <span class="pcard-meta" {...meta.atributos}>{meta.texto}</span>
+    <span class="pcard-desc" {...descripcion.atributos}>{descripcion.texto}</span>
+    <span class="pcard-tools">{etiquetas.map((e) => <span class="pill" {...e.atributos}>{e.texto}</span>)}</span>
+    {enlace && llamada && (
+      <span class="pcard-cta"><span {...llamada.atributos}>{llamada.texto}</span>{' '}<span class="pcard-arr" aria-hidden="true">{flecha}</span></span>
+    )}
+  </span>
+</Etiqueta>

@@ -1,0 +1,130 @@
+/* LA ESCALERA DE BREAKPOINTS del sitio: ≤1024 · ≤900 · ≤760 (aquí
+   entra la hamburguesa) · ≤480, y las pantallas táctiles
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 443–561.
+   Las reglas están sin tocar.
+
+   Vive en ajustes/ porque su trabajo es REESCRIBIR: vuelve a poner
+   propiedades que nav, botones, el hero y las tarjetas ya pusieron.
+   Por eso se carga al final; más arriba no tendría efecto.
+   */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ╔════════════════════════════════════════════════════════════╗
+   ║  RESPONSIVE                                                 ║
+   ║  Escalones:  ≤1024 tablet grande · ≤900 tablet ·            ║
+   ║              ≤760 celular (aquí entra el menú hamburguesa) ·║
+   ║              ≤480 celular chico                             ║
+   ╚════════════════════════════════════════════════════════════╝ */
+
+/* ── ≤1024px · tablet horizontal ── */
+@media (max-width:1024px){
+  .popups{ gap:22px; }
+  .hero-card{ max-width:420px; }
+}
+
+/* ── ≤900px · tablet vertical ── */
+@media (max-width:900px){
+  .grid-3{ grid-template-columns:repeat(2,1fr); }
+  .hero-inner{ grid-template-columns:1fr .95fr; }
+  .stats{ grid-template-columns:repeat(2,1fr); }
+  .contact-cols{ grid-template-columns:1fr; gap:26px; }
+  .materias-grid{ grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); }
+}
+
+/* ── ≤760px · CELULAR ─────────────────────────────────────────
+   El nav conserva su alto fijo (54px) y los links se esconden
+   dentro de un panel desplegable, así main{padding-top} nunca
+   se descuadra. ─────────────────────────────────────────────── */
+@media (max-width:760px){
+
+  /* nav → hamburguesa */
+  .nav-toggle{ display:inline-flex; }
+  .nav-tabs{
+    position:absolute; top:100%; left:0; right:0;
+    flex-direction:column; gap:0;
+    background:var(--white);
+    border-bottom:3px solid var(--ink);
+    box-shadow:0 6px 0 rgba(44,26,36,.12);
+    /* oculto por defecto, sin sacarlo del árbol de accesibilidad de golpe */
+    display:none;
+  }
+  .nav-tabs.open{ display:flex; }
+  .nav-tabs li{ border-top:2px solid var(--pink-mid); }
+  .nav-tabs li:first-child{ border-top:none; }
+  .nav-tabs a{
+    padding:14px 20px;              /* área táctil ≥44px de alto */
+    font-size:1.1rem; border:none;
+  }
+  .nav-tabs a:hover,
+  .nav-tabs a.active{ border:none; background:var(--pink-light); }
+  .nav-tabs a.active{ box-shadow:inset 5px 0 0 var(--pink); }
+
+  /* layout general → una columna */
+  .hero{ padding:28px 0 40px; }
+  .hero-inner{ grid-template-columns:1fr; gap:30px; text-align:center; }
+  .hero-desc{ margin-inline:auto; }
+  .hero-btns{ justify-content:center; }
+  .hero-card{ justify-self:center; max-width:380px; margin-inline:auto; }
+  .hero-card .win-body{ min-height:280px; }
+  .grid-3,.grid-2{ grid-template-columns:1fr; }
+  .contact-cols{ grid-template-columns:1fr; gap:24px; }
+  .resumen-grid{ grid-template-columns:1fr; }
+  .popups{ grid-template-columns:1fr; gap:26px; }
+  .sec-head{ margin:26px 0 18px; }
+
+  /* 16px mínimo en campos: por debajo de eso Safari en iPhone hace zoom solo
+     al tocar el input y descuadra la página */
+  .contact-form input, .contact-form textarea, .dd select{ font-size:16px; }
+
+  /* filtros de proyectos: que no queden apretados */
+  .filters-bar{ gap:12px; }
+  .dd{ flex:1 1 46%; }
+  .dd select{ width:100%; min-width:0; }
+  .reset-btn{ flex:1 1 100%; }
+
+  .win-menu{ gap:12px; padding:4px 10px; }
+}
+
+/* ── ≤480px · CELULAR CHICO ── */
+@media (max-width:480px){
+
+  .stats{ grid-template-columns:1fr 1fr; gap:12px; }
+  .stat{ padding:14px 10px; }
+  .stat .num{ font-size:1.9rem; }
+  .stat .lbl{ font-size:1rem; line-height:1.15; }
+
+  /* botones a lo ancho: más fáciles de tocar */
+  .hero-btns{ flex-direction:column; align-items:stretch; }
+  .hero-btns .btn{ justify-content:center; }
+
+  .materias-grid{ grid-template-columns:1fr; }
+  .filters-bar .dd{ flex:1 1 100%; }
+
+  /* tarjetas de logros/hackathones: el ícono arriba, no al lado */
+  .item-row{ flex-direction:column; align-items:flex-start; gap:10px; }
+  .item-row .badge-img{ width:52px; height:52px; font-size:1.5rem; }
+
+  .win-body{ padding:16px; }
+  .mat-body{ padding:14px; }
+  .logros-win .win-body{ gap:12px; }
+  .logros-win .trophy{ font-size:2.1rem; }
+  .foot{ font-size:1.05rem; padding:16px 0 30px; }
+}
+
+/* ── pantallas táctiles: sin efectos hover pegados ── */
+@media (hover:none){
+  .btn:hover{ transform:none; box-shadow:var(--win-shadow-ink); }
+  .social:hover{ transform:none; box-shadow:3px 3px 0 var(--ink); }
+  .reset-btn:hover{ transform:none; box-shadow:2px 2px 0 var(--ink); }
+  .popup:hover .mini-win{ transform:rotate(-3deg); }
+  .popup:nth-child(even):hover .mini-win{ transform:rotate(3deg); }
+  .proj-item:hover{ transform:none; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .float,.scroll-hint{ animation:none; }
+  html{ scroll-behavior:auto; }
+  .popup{ transition:none; }
+}
+

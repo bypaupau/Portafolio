@@ -1,0 +1,83 @@
+/* FIGURAS DE INVESTIGACIÓN
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 464–540.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ FIGURAS DE INVESTIGACIÓN ════════
+   Las visualizaciones originales de 2025. Van en rejilla, con su pie
+   debajo: el pie lleva lo que dice la leyenda original, no una lectura
+   nuestra. El panel pastel las separa del texto sin encerrarlas. */
+.cs-figs{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));
+  column-gap:var(--sp-4); row-gap:var(--sp-5);
+}
+.cs-figs.uno{ grid-template-columns:minmax(0,1fr); }
+.cs-fig2{ margin:0; min-width:0; }
+.cs-fig2 img{
+  display:block; width:100%; height:auto;
+  border:3px solid var(--ink); box-shadow:4px 4px 0 var(--cs,var(--pink-mid));
+  background:#fff;
+}
+.cs-fig2 figcaption{
+  margin-top:var(--sp-1); font-size:var(--cs-small);
+  line-height:var(--cs-lh-card); color:var(--text-soft);
+}
+.cs-fig2 figcaption b{
+  display:block; font-family:var(--font-pixel); font-weight:600;
+  font-size:var(--cs-h5); color:var(--ink); margin-bottom:var(--sp-0);
+}
+/* PAREJA · dos figuras de proporciones distintas comparadas de tú a tú.
+   La caja manda el alto y `contain` conserva la proporción de cada
+   imagen: nada se recorta ni se amplía para rellenar el hueco, y los
+   pies arrancan a la misma altura. */
+.cs-figs.par{ grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:clamp(22px,3.2vw,44px); row-gap:var(--sp-5); }
+.cs-figs.par .cs-fig2 img{
+  height:clamp(212px,23vw,300px); width:100%;
+  object-fit:contain; object-position:center; padding:7px;
+}
+
+/* PROPORCIONAL · cuando las dos figuras son gráficos sobre fondo blanco,
+   `contain` deja bandas y una acaba más baja que la otra. Repartir la
+   columna según la proporción de cada imagen (--c1/--c2, declarados
+   junto a las imágenes) las deja LLENAS y al mismo alto a cualquier
+   ancho, porque las dos columnas escalan juntas. */
+.cs-figs.prop{
+  grid-template-columns:var(--c1,1fr) var(--c2,1fr);
+  column-gap:clamp(22px,3.2vw,44px); row-gap:var(--sp-5); align-items:start;
+}
+.cs-figs.prop .cs-fig2 img{ height:auto; width:100%; padding:0; object-fit:fill; }
+
+/* FICHA · contexto de una variable, con el vocabulario de las etiquetas
+   de las tarjetas de proyectos. Se lee sin pasar el cursor ni pulsar. */
+.cs-duo{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(216px,300px);
+  gap:clamp(20px,2.8vw,36px); align-items:center;
+}
+.cs-ficha{ display:grid; gap:var(--sp-2); align-content:center; }
+.cs-ficha > div{
+  background:var(--white); border:2px solid var(--ink);
+  box-shadow:3px 3px 0 var(--cs,var(--pink-mid)); padding:9px 12px 11px;
+}
+.cs-ficha dt{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1;
+  letter-spacing:1.2px; text-transform:uppercase; color:var(--pink); margin-bottom:var(--sp-0);
+}
+.cs-ficha dd{ font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--ink); }
+
+/* nota breve: la limitación va junto a lo que limita, no en una caja
+   del tamaño de media sección */
+/* La limitación va pegada a lo que limita. Es texto de lectura, no una
+   nota al pie: va casi al tamaño del cuerpo y sin max-width propio, que
+   era lo que la partía en renglones cortos. */
+/* ANTES iba a 12px: MENOS que los 18px entre dos párrafos, así que
+   un bloque con borde quedaba más pegado a lo anterior que dos
+   párrafos sin borde. Y dos notas seguidas (sección 06) se leían
+   como una sola barra partida. Ahora abre como el bloque que es. */
+.cs-nota{
+  padding:var(--sp-0) 0 var(--sp-0) 18px;
+  border-left:4px solid var(--cs,var(--pink-mid));
+  font-size:var(--cs-body); line-height:var(--cs-lh); color:var(--text-soft);
+}
+.cs-nota b{ color:var(--ink); font-weight:600; }
+

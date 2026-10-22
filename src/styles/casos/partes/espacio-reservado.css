@@ -1,0 +1,37 @@
+/* ESPACIO RESERVADO
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 754–784.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ ESPACIO RESERVADO ════════
+   Ocupa el mismo sitio que ocupará la captura, para que la página ya
+   se pueda juzgar con sus proporciones reales. Va dentro de una
+   <figure class="cs-fig2">, así hereda su pie. */
+.cs-ph{
+  display:grid; place-content:center; justify-items:center; gap:11px;
+  aspect-ratio:16/10; padding:20px; text-align:center;
+  /* trama diagonal rosa pálido: "esto está por llenarse" */
+  background:repeating-linear-gradient(45deg,
+             var(--pink-pale) 0 11px, var(--white) 11px 22px);
+  border:3px dashed var(--ink);
+  box-shadow:4px 4px 0 var(--cs,var(--pink-mid));
+}
+.cs-ph.alto{  aspect-ratio:4/3; }     /* diagramas: más altos que anchos */
+.cs-ph.ancho{ aspect-ratio:21/9; }    /* flujos: una banda larga */
+
+/* la etiqueta provisional: dice QUÉ va dentro */
+.cs-ph-k{
+  font-family:var(--font-tiny); font-size:var(--cs-tiny); letter-spacing:1.4px;
+  text-transform:uppercase; line-height:1.5; color:var(--ink);
+  padding:7px 10px; background:var(--yellow);
+  border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+}
+.cs-ph-t{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1.25;
+  color:var(--text-soft); max-width:34ch;
+}
+
+/* en la portada el hueco se comporta como la imagen destacada */
+.cs-hero-fig .cs-ph{ box-shadow:6px 6px 0 var(--peach); }
+

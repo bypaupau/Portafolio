@@ -1,0 +1,23 @@
+---
+/* Un destello de cuatro puntas. 7×7 px.
+   Sticker de la polaroid en Sobre mí, y en Inicio va antes de
+   "y también …".
+   Pixeles copiados sin cambios del sitio anterior. */
+interface Props {
+  class?: string;
+  /** tamaño de un pixel en pantalla (--ps). Inicio lo usa; Sobre mí no. */
+  ps?: string;
+}
+const { class: clase = 'px', ps } = Astro.props;
+---
+<svg class={clase} style={(ps ? `--ps:${ps};` : '') + "--gw:7;--gh:7"} viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <rect x="3" y="0" width="1" height="1" fill="var(--pink)"/>
+  <rect x="3" y="1" width="1" height="1" fill="var(--pink)"/>
+  <rect x="2" y="2" width="3" height="1" fill="var(--pink)"/>
+  <rect x="0" y="3" width="3" height="1" fill="var(--pink)"/>
+  <rect x="3" y="3" width="1" height="1" fill="var(--pink-light)"/>
+  <rect x="4" y="3" width="3" height="1" fill="var(--pink)"/>
+  <rect x="2" y="4" width="3" height="1" fill="var(--pink)"/>
+  <rect x="3" y="5" width="1" height="1" fill="var(--pink)"/>
+  <rect x="3" y="6" width="1" height="1" fill="var(--pink)"/>
+</svg>

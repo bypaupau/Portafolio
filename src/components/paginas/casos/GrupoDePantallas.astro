@@ -1,0 +1,54 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   UN GRUPO DE PANTALLAS · <section class="cs-g">
+
+   Texto a un lado y dos capturas al otro. Se repite cinco veces en
+   Grow With Phoenix, alternando el lado (g-side / g-rev) y el color.
+   ═══════════════════════════════════════════════════════════ */
+import { conIdioma, altConIdioma } from '../../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  id: string;
+  /** 'g-side' = texto a la izquierda · 'g-rev' = pantallas a la izquierda */
+  lado: 'g-side' | 'g-rev';
+  color: string;
+  texto: {
+    titulo: TextoBilingue;
+    parrafos: readonly TextoBilingue[];
+    pantallas: readonly { pie: TextoBilingue; alt: TextoBilingue }[];
+  };
+  /** una por captura, en el mismo orden que el contenido */
+  capturas: readonly { imagen: string; ancho: number; alto: number; clase?: string }[];
+}
+const { id, lado, color, texto, capturas } = Astro.props;
+const titulo = conIdioma(texto.titulo);
+---
+<section class={`cs-g ${lado} cs-rv`} style={`--g:${color}`} aria-labelledby={`h-${id}`}>
+  <div class="cs-g-txt">
+    <h3 class="cs-g-h" id={`h-${id}`} {...titulo.atributos}>{titulo.texto}</h3>
+    {texto.parrafos.map((parrafo) => {
+      const p = conIdioma(parrafo);
+      return <p class="cs-g-p" {...p.atributos}>{p.texto}</p>;
+    })}
+  </div>
+  <div class="cs-shots">
+    {capturas.map((captura, i) => {
+      const pantalla = texto.pantallas[i]!;
+      const pie = conIdioma(pantalla.pie);
+      return (
+        <figure class={captura.clase ? `cs-shot ${captura.clase}` : 'cs-shot'}>
+          <img
+            src={captura.imagen}
+            width={captura.ancho}
+            height={captura.alto}
+            loading="lazy"
+            decoding="async"
+            {...altConIdioma(pantalla.alt)}
+          />
+          <figcaption {...pie.atributos}>{pie.texto}</figcaption>
+        </figure>
+      );
+    })}
+  </div>
+</section>

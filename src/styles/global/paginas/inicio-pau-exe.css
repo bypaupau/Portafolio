@@ -1,0 +1,96 @@
+/* pau.exe: la carita, cómo responde y las microinteracciones
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 631–721.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ── 3 · pau.exe ─────────────────────────────────────────── */
+/* la carita: cada expresión es un <g>; data-face decide cuál se ve */
+.mon .e-closed, .mon .e-happy, .mon .m-oh{ display:none; }
+.mon[data-face="blink"] .e-open,
+.mon[data-face="happy"] .e-open{ display:none; }
+.mon[data-face="blink"] .e-closed,
+.mon[data-face="happy"] .e-happy{ display:inline; }
+.mon[data-face="wink"]  .e-open .r{ display:none; }
+.mon[data-face="wink"]  .e-closed .r{ display:inline; }
+.mon[data-face="wink"]  .e-closed .l{ display:none; }
+.mon[data-face="wink"]  .e-closed{ display:inline; }
+.mon[data-face="oh"] .m-smile{ display:none; }
+.mon[data-face="oh"] .m-oh{ display:inline; }
+.hero-card .mon{ cursor:pointer; }
+
+/* texto que se escribe solo: el resto del mensaje ya ocupa su lugar
+   (invisible), así el texto centrado no "baila" mientras aparece */
+.cap{ min-height:1.2em; }
+.cap-type .off{ visibility:hidden; }
+.cap-type .caret{ position:relative; display:inline-block; width:0; }
+.cap-type .caret::after{
+  content:"_"; position:absolute; left:1px; bottom:0; color:var(--pink);
+  animation:caret 1s steps(1) infinite;
+}
+@keyframes caret{ 50%{ opacity:0; } }
+
+/* controles _ ▢ ✕ : no hacen lo que dicen… pero contestan */
+.hero-card .win-ctrls i{ cursor:pointer; transition:background-color .12s ease, color .12s ease; }
+.hero-card .win-ctrls i:hover{ background:var(--pink-light); }
+.hero-card .win-ctrls i:last-child:hover{ background:var(--pink); color:#fff; }
+.hero-card.shake{ animation:win-shake .42s steps(2) 1; }
+@keyframes win-shake{
+  0%,100%{ translate:0 0; } 20%{ translate:-3px 0; } 40%{ translate:3px 0; }
+  60%{ translate:-2px 0; } 80%{ translate:2px 0; }
+}
+
+/* ── 3b · pau.exe RESPONDE ────────────────────────────────
+   Regla de esta tanda: que lo que YA existe cobre vida. No hay ni un
+   elemento nuevo dentro de la ventana — solo atributos y clases sobre
+   el sprite y la ventana que ya estaban ahí.
+
+   LA PANTALLA (el rect más grande del sprite, 20×12 de 32×26) deja de
+   ser decorado fijo: toma el color del botón social que señalas. Esos
+   colores ya vivían en .social.mail / .gh / .in y no se relacionaban
+   con nada. Ahora el monitor hace de monitor.
+   Los tres colores son un paso MÁS SATURADO que el fondo de cada
+   botón, no el color exacto: el celeste de .social.in (--sky #D6EEFB)
+   resulta ser el mismo celeste de reposo de la pantalla, así que usar
+   el token tal cual dejaba a LinkedIn sin ningún cambio visible. Con
+   un paso más de saturación los tres se leen igual de claro y la
+   relación "la pantalla se tiñe de lo que señalas" se mantiene.      */
+:root{
+  --scr-mail: #F8CEDD;   /* un paso sobre --pink-light */
+  --scr-gh:   #D3BCF7;   /* un paso sobre --lav        */
+  --scr-in:   #B3DFF7;   /* un paso sobre --sky        */
+}
+.mon .scr{ transition:fill var(--mo-fast) ease; }
+.mon[data-scr="mail"]  .scr{ fill:var(--scr-mail); }
+.mon[data-scr="gh"]    .scr{ fill:var(--scr-gh); }
+.mon[data-scr="in"]    .scr{ fill:var(--scr-in); }
+/* golpe de luz de un cuadro (el ✕ y el clic en un botón social) */
+.mon[data-scr="flash"] .scr{ fill:#FFFFFF; transition:none; }
+/* dormitando: la pantalla baja un punto, así se lee incluso en una
+   captura quieta que está en reposo y no apagada */
+.mon.is-asleep .scr{ fill:#E3EDF4; }
+
+/* EL CLIC TIENE PESO: el sprite se hunde 2 px, el mismo gesto que ya
+   hacen .btn y .social al :active. Antes la compu cambiaba de cara
+   pero no se sentía tocada. */
+@keyframes mon-press{ 45%{ translate:0 2px; } }
+.hero-card .mon.is-pressed{ animation:mon-press .13s steps(2) 1; }
+
+/* LOS TRES CONTROLES, TRES GESTOS DISTINTOS.
+   _ se hunde · ▢ engorda su sombra · ✕ conserva su temblor.
+   'grow' anima box-shadow y no el borde: el borde movería el contenido
+   de adentro 2 px, la sombra no mueve nada. */
+@keyframes win-duck{ 0%,100%{ translate:0 0; } 45%{ translate:0 3px; } }
+@keyframes win-grow{ 0%,100%{ box-shadow:var(--win-shadow); } 50%{ box-shadow:8px 8px 0 var(--pink-mid); } }
+.hero-card.duck{ animation:win-duck .24s var(--ease-soft) 1; }
+.hero-card.grow{ animation:win-grow .3s var(--ease-soft) 1; }
+
+/* ── 4 · MICROINTERACCIONES (solo con mouse de verdad) ───── */
+@media (hover:hover) and (pointer:fine){
+  /* tiles sociales: se levantan y se inclinan apenitas, cada uno a su lado */
+  .social:hover{ transform:translate(-2px,-2px) rotate(-3deg); box-shadow:5px 5px 0 var(--ink); }
+  .social.gh:hover{ transform:translate(-2px,-2px) rotate(3deg); }
+  .social:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); transition-duration:.05s; }
+  .social:hover .sprite{ animation:tile-hop .35s var(--ease-out) 1; }
+}
+@keyframes tile-hop{ 40%{ transform:translateY(-2px); } }

@@ -1,0 +1,86 @@
+/* RIEL
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 96–175.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ RIEL ════════
+   La ruta de "Sobre mí" girada 90°: paradas en orden, con un camino
+   que se va pintando. Sticky, no fijo: pertenece al contenido. */
+.cs-rail{
+  /* OJO: es un <nav>, y styles.css estiliza `nav` por ELEMENTO
+     (fixed, alto fijo, flex, fondo blanco, borde). Sin este reseteo
+     heredaba la barra superior y se aplastaba a 54 px. */
+  position:sticky; top:calc(var(--nav-h) + 26px);
+  left:auto; right:auto; z-index:auto;
+  display:block; height:auto; gap:0; align-items:initial;
+  background:none; border-bottom:0;
+  padding:0 0 0 22px;
+}
+.cs-rail-list{ list-style:none; display:grid; gap:26px; position:relative; }
+.cs-rail-list::before{
+  content:""; position:absolute; left:-15px; top:8px; bottom:8px;
+  width:3px; background:var(--pink-mid); opacity:.55;
+}
+.cs-rail-list::after{
+  content:""; position:absolute; left:-15px; top:8px;
+  width:3px; height:var(--cs-progress,0%);
+  background:var(--pink);
+  transition:height var(--mo-base,320ms) ease;
+}
+.cs-rail-item{ position:relative; }
+.cs-rail-item::before{
+  content:""; position:absolute; left:-21px; top:8px;
+  width:15px; height:15px; border:3px solid var(--ink);
+  background:var(--white); border-radius:50%;
+  transition:background var(--mo-fast,180ms) ease, transform var(--mo-fast,180ms) ease;
+  z-index:1;
+}
+.cs-rail-item.is-here::before{ background:var(--cs,var(--pink)); transform:scale(1.18); }
+
+.cs-rail-item a{
+  display:block; font-family:var(--font-pixel); font-size:1rem; font-weight:500;
+  color:var(--text-soft); text-decoration:none; line-height:1.25;
+  padding:5px 10px; border:2px solid transparent;
+  /* explícita y no `all`: con `all` el navegador vigila cada propiedad
+     del enlace (incluidas las que cambian al marcarse como activo) y en
+     celular eso se paga en cada scroll. */
+  transition:color var(--mo-fast,180ms) ease,
+             background-color var(--mo-fast,180ms) ease,
+             border-color var(--mo-fast,180ms) ease;
+}
+.cs-rail-item a:hover{ color:var(--ink); border-color:var(--pink-mid); background:var(--pink-light); }
+/* el riel también se presiona: no tiene sombra que hundir, así que el
+   peso lo da el color (el mismo recurso que usa .arow al seleccionarse) */
+.cs-rail-item a:active{ color:var(--ink); background:var(--pink-mid); }
+
+/* ── FOCO DE TECLADO ──────────────────────────────────────────
+   Esta hoja era la única del sitio sin un solo :focus-visible: el riel,
+   el botón de salida y los enlaces respondían al mouse y a nada más, así
+   que recorrer un caso con el teclado era avanzar a ciegas. Es el mismo
+   anillo rosa punteado que ya usan .btn, .social, el nav y las filas del
+   archivo, declarado una vez para los cuatro enlaces de la página. */
+.cs-rail-item a:focus-visible,
+.cs-rail-out:focus-visible,
+.cs-rel a:focus-visible,
+.cs-text a:focus-visible{
+  outline:3px dashed var(--pink); outline-offset:3px;
+}
+.cs-rail-item.is-here a{
+  color:var(--ink); font-weight:600;
+  background:var(--cs,var(--pink-light)); border-color:var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+}
+.cs-rail-out{
+  display:inline-block; margin-top:var(--sp-4);
+  font-family:var(--font-pixel); font-size:.95rem; font-weight:600;
+  color:var(--pink); text-decoration:none;
+  padding:7px 11px; background:#fff;
+  border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+  transition:color var(--mo-fast,180ms) ease,
+             transform var(--mo-fast,180ms) ease,
+             box-shadow var(--mo-fast,180ms) ease;
+}
+.cs-rail-out:hover{ transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); color:var(--ink); }
+.cs-rail-out:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+

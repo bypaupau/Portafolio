@@ -1,0 +1,68 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   La taskbar del "pequeño sistema operativo de Pau":
+   ventana activa · 🌐 idioma · batería · reloj
+
+   ANTES: js/i18n.js la construía entera desde JavaScript,
+   concatenando ~60 líneas de SVG con `+`. Para cambiar un pixel
+   había que editar una cadena de texto.
+
+   AHORA: es marcado normal. El JavaScript que queda
+   (src/scripts/global/taskbar.ts) solo se encarga del
+   COMPORTAMIENTO: el reloj, abrir y cerrar la ventanita, el teclado.
+   ═══════════════════════════════════════════════════════════ */
+import { translate } from '../../i18n/translate';
+import type { TranslationKey } from '../../i18n/keys';
+import { conIdioma, type TextoBilingue } from '../../lib/texto-bilingue';
+import IconoVentana from '../iconos/IconoVentana.astro';
+import IconoBateria from '../iconos/IconoBateria.astro';
+import SelectorDeIdioma from './SelectorDeIdioma.astro';
+
+interface Props {
+  /** clave del nombre de la "ventana" de esta página (ej: taskbar.windowName.contact) */
+  claveNombreVentana?: TranslationKey;
+  /** o, si el nombre vive en el CONTENIDO de la página y no en el
+      diccionario, el texto bilingüe directamente. Lo usan las páginas de
+      caso: el nombre del archivo es parte del proyecto, no de la
+      interfaz, y así agregar un caso no obliga a tocar los diccionarios. */
+  nombreDeVentana?: TextoBilingue;
+}
+const { claveNombreVentana, nombreDeVentana } = Astro.props;
+
+const nombre = nombreDeVentana !== undefined
+  ? conIdioma(nombreDeVentana)
+  : { texto: translate(claveNombreVentana!), atributos: { 'data-i18n': claveNombreVentana! } };
+---
+<div class="taskbar">
+  <button
+    type="button"
+    class="tb-app"
+    aria-label={translate('taskbar.backToTop')}
+    title={translate('taskbar.backToTop')}
+    data-i18n-attr="aria-label:taskbar.backToTop; title:taskbar.backToTop"
+  >
+    <IconoVentana />
+    <span class="tb-app-name" {...nombre.atributos}>{nombre.texto}</span>
+  </button>
+
+  <div class="tb-tray">
+    <SelectorDeIdioma />
+
+    <span class="tb-sep" aria-hidden="true"></span>
+
+    <span
+      class="tb-bat"
+      role="img"
+      aria-label={translate('taskbar.battery')}
+      title={translate('taskbar.battery')}
+      data-i18n-attr="aria-label:taskbar.battery; title:taskbar.battery"
+    >
+      <IconoBateria /><span aria-hidden="true">100%</span>
+    </span>
+
+    <time class="tb-clock" data-i18n-attr="title:taskbar.clock"></time>
+  </div>
+
+  <!-- anuncia el cambio de idioma a un lector de pantalla -->
+  <p class="sr-only" aria-live="polite" id="tb-live"></p>
+</div>

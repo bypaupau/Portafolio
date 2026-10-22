@@ -1,0 +1,44 @@
+---
+/* Un gráfico de barras. 12×9 px.
+   En Sobre mí es el icono de "analizar"; en Inicio, el del verbo
+   "explorar" y el del enlace a los diez proyectos.
+   Pixeles copiados sin cambios del sitio anterior. */
+interface Props {
+  class?: string;
+  /** tamaño de un pixel en pantalla (--ps). Inicio lo usa; Sobre mí no. */
+  ps?: string;
+}
+const { class: clase = 'px', ps } = Astro.props;
+---
+<svg class={clase} style={(ps ? `--ps:${ps};` : '') + "--gw:12;--gh:9"} viewBox="0 0 12 9" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="1" height="1" fill="var(--ink)"/>
+  <rect x="0" y="1" width="1" height="1" fill="var(--ink)"/>
+  <rect x="8" y="1" width="2" height="1" fill="var(--ink)"/>
+  <rect x="0" y="2" width="1" height="1" fill="var(--ink)"/>
+  <rect x="8" y="2" width="2" height="1" fill="var(--ink)"/>
+  <rect x="0" y="3" width="1" height="1" fill="var(--ink)"/>
+  <rect x="4" y="3" width="2" height="1" fill="var(--ink)"/>
+  <rect x="8" y="3" width="2" height="1" fill="var(--ink)"/>
+  <rect x="0" y="4" width="1" height="1" fill="var(--ink)"/>
+  <rect x="4" y="4" width="2" height="1" fill="var(--ink)"/>
+  <rect x="8" y="4" width="2" height="1" fill="var(--ink)"/>
+  <rect x="0" y="5" width="1" height="1" fill="var(--ink)"/>
+  <rect x="2" y="5" width="9" height="1" fill="var(--ink)"/>
+  <rect x="0" y="6" width="1" height="1" fill="var(--ink)"/>
+  <rect x="2" y="6" width="1" height="1" fill="var(--ink)"/>
+  <rect x="3" y="6" width="1" height="1" fill="var(--dib-verde)"/>
+  <rect x="4" y="6" width="2" height="1" fill="var(--ink)"/>
+  <rect x="6" y="6" width="1" height="1" fill="var(--dib-celeste)"/>
+  <rect x="7" y="6" width="2" height="1" fill="var(--ink)"/>
+  <rect x="9" y="6" width="1" height="1" fill="var(--pink)"/>
+  <rect x="10" y="6" width="1" height="1" fill="var(--ink)"/>
+  <rect x="0" y="7" width="1" height="1" fill="var(--ink)"/>
+  <rect x="2" y="7" width="1" height="1" fill="var(--ink)"/>
+  <rect x="3" y="7" width="1" height="1" fill="var(--dib-verde)"/>
+  <rect x="4" y="7" width="2" height="1" fill="var(--ink)"/>
+  <rect x="6" y="7" width="1" height="1" fill="var(--dib-celeste)"/>
+  <rect x="7" y="7" width="2" height="1" fill="var(--ink)"/>
+  <rect x="9" y="7" width="1" height="1" fill="var(--pink)"/>
+  <rect x="10" y="7" width="1" height="1" fill="var(--ink)"/>
+  <rect x="0" y="8" width="12" height="1" fill="var(--ink)"/>
+</svg>

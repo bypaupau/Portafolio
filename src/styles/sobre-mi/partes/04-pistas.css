@@ -1,0 +1,34 @@
+/* 04 · PISTAS
+
+   Parte de sobre-mi.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 315–342.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   04 · PISTAS
+   ════════════════════════════════════════════════ */
+.clues-board{
+  background-color:var(--pink-pale);
+  background-image:radial-gradient(rgba(232,126,161,.28) 1.2px, transparent 1.3px);
+  background-size:16px 16px;
+}
+.clues{
+  list-style:none;
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(18px,3vw,30px);
+}
+.clue{
+  min-width:0;
+  display:flex; align-items:center; gap:14px;
+  background:#fff; border:2px solid var(--ink); box-shadow:3px 3px 0 var(--pink-mid);
+  padding:14px 16px;
+}
+/* inclinaciones distintas: notas pegadas a mano, no una tabla */
+.clue:nth-child(3n+2){ transform:translateY(8px); }   /* desfase leve: notas pegadas, no tabla */
+.clue{ --ps:4px; }
+.clue .px-box{ flex:none; width:56px; display:grid; place-items:center; }
+.clue p{ font-size:.93rem; line-height:1.5; color:var(--text-soft); }
+.clue b{ font-family:var(--font-pixel); font-weight:600; font-size:1.06rem; color:var(--ink); }
+.clue a{ color:var(--pink-ink); text-decoration-thickness:2px; text-underline-offset:2px; }
+.clue a:hover{ color:var(--ink); }
+

@@ -1,0 +1,52 @@
+/* el hero de Inicio y su resumen tipo CV
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 205–251.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ HERO (inicio) ════════ */
+/* 100svh = alto "pequeño" del viewport: en el celular no salta cuando aparece o
+   desaparece la barra de direcciones del navegador. Con fallback a vh. */
+/* OJO: .hero es flex en COLUMNA. Antes era en fila, así que el "↓ desliza para
+   explorar" se colocaba AL LADO del contenido y le robaba casi la mitad del ancho. */
+.hero{
+  min-height:calc(100vh - var(--nav-h));
+  display:flex; flex-direction:column; justify-content:center;
+  padding:40px 0;
+}
+@supports (height:100svh){
+  .hero{ min-height:calc(100svh - var(--nav-h)); }
+}
+.hero-inner{ display:grid; grid-template-columns:1fr 1.12fr; gap:clamp(26px,4vw,40px); align-items:center; width:100%; }
+.hero-greeting{ font-family:var(--font-term); font-size:clamp(1.4rem,4.4vw,1.8rem); color:var(--pink); }
+.hero-name{
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:clamp(2.4rem,10vw,4.2rem); line-height:.95; color:var(--ink);
+  text-shadow:4px 4px 0 var(--pink-mid); margin:2px 0 14px;
+}
+.hero-role{ font-size:clamp(1.2rem,2vw,1.5rem); font-weight:600; color:var(--ink); }
+.hero-sem{ font-size:clamp(.96rem,1.25vw,1.05rem); color:var(--text-muted); margin-bottom:14px; }
+.hero-desc{ font-size:clamp(1.02rem,1.5vw,1.14rem); color:var(--text-soft); line-height:1.75; max-width:42ch; margin-bottom:26px; }
+.hero-desc strong{ color:var(--ink); }
+.hero-btns{ display:flex; gap:14px; flex-wrap:wrap; }
+
+/* indicador de scroll (va DEBAJO del hero, centrado) */
+.scroll-hint{
+  display:block; text-align:center; margin:26px auto 0; width:100%;
+  font-family:var(--font-term); font-size:1.2rem; color:var(--text-muted);
+  animation:bob 2s ease-in-out infinite;
+}
+
+/* ════════ RESUMEN del inicio (tipo CV) ════════ */
+.resumen{ padding:10px 0 20px; }
+.stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.stat{
+  background:#fff; border:3px solid var(--ink); box-shadow:4px 4px 0 var(--pink-mid);
+  padding:18px 14px; text-align:center;
+}
+.stat .num{ font-family:var(--font-pixel); font-weight:700; font-size:2.4rem; line-height:1; color:var(--pink); text-shadow:2px 2px 0 var(--ink); }
+.stat .lbl{ font-family:var(--font-term); font-size:1.15rem; color:var(--text-soft); margin-top:6px; }
+.resumen-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px; }
+.destacado .meta{ font-family:var(--font-term); font-size:1.05rem; color:var(--pink); }
+.logros-win .win-body{ display:flex; align-items:center; gap:16px; }
+.logros-win .trophy{ font-size:2.6rem; flex-shrink:0; }

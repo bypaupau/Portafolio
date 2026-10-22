@@ -1,0 +1,49 @@
+/* la ventana retro reutilizable (.win y su barra)
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 142–185.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ VENTANA RETRO reutilizable ════════ */
+.win{
+  background:var(--white);
+  border:3px solid var(--ink);
+  box-shadow:var(--win-shadow);
+  border-radius:0;
+  min-width:0;   /* como item de grid/flex: puede encogerse por debajo de su
+                    contenido en vez de estirar la columna fuera de pantalla */
+  max-width:100%;
+}
+/* misma regla para cualquier hijo directo de nuestras rejillas */
+.materias-grid > *, .cards > *, .popups > *, .stats > *, .resumen-grid > *{ min-width:0; }
+.win-bar{
+  display:flex; align-items:center; gap:10px;
+  padding:7px 10px;
+  background:var(--pink-light);
+  border-bottom:3px solid var(--ink);
+}
+.win-bar.lav{ background:var(--lav); } .win-bar.mint{ background:var(--mint); }
+.win-bar.sky{ background:var(--sky); } .win-bar.peach{ background:var(--peach); }
+.win-bar.yellow{ background:var(--yellow); }
+.win-title{
+  flex:1;
+  min-width:0;   /* CLAVE: sin esto un título largo (nombre de proyecto) no se
+                    encoge y estira toda la tarjeta fuera de la pantalla */
+  font-family:var(--font-term); font-size:1.15rem; line-height:1;
+  color:var(--ink); letter-spacing:.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+/* controles _ ▢ ✕ */
+.win-ctrls{ display:flex; gap:5px; }
+.win-ctrls i{
+  width:18px; height:16px; display:grid; place-items:center;
+  border:2px solid var(--ink); background:var(--white);
+  font-family:var(--font-tiny); font-size:.42rem; color:var(--ink); font-style:normal; line-height:1;
+}
+/* menú File Edit View */
+.win-menu{
+  display:flex; gap:16px; padding:4px 12px;
+  border-bottom:2px solid var(--ink);
+  font-family:var(--font-term); font-size:1.05rem; color:var(--text-soft); background:#fff;
+}
+.win-menu span u{ text-decoration:underline; }
+.win-body{ padding:clamp(18px,3vw,30px); }

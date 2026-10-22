@@ -1,0 +1,38 @@
+/* la rejilla de Contacto (escribir | CV)
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 1289–1321.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   CONTACTO · escribir | CV
+   ════════════════════════════════════════════════ */
+.contact-layout{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:clamp(28px,3.5vw,48px); align-items:start; }
+.contact-win .win-body{ display:flex; flex-direction:column; gap:26px; }
+.contact-intro .about-lead{ margin:0 0 16px; max-width:52ch; }
+.contact-links{ display:flex; flex-wrap:wrap; gap:12px; }
+.contact-links .btn{ flex:1 1 auto; justify-content:center; white-space:nowrap; }
+.contact-row{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.contact-form{ border-top:2px dashed var(--pink-mid); padding-top:22px; }
+
+/* el CV como documento abierto: hoja blanca sobre el fondo rayado de las ventanas */
+.cv-menu .cv-page{ margin-left:auto; color:var(--text-muted); }
+.cv-body{
+  padding:clamp(18px,2.4vw,30px);
+  background:repeating-linear-gradient(45deg, var(--pink-pale) 0 12px, #fff 12px 24px);
+  border-bottom:3px solid var(--ink);
+}
+.cv-sheet{ display:block; max-width:440px; margin-inline:auto; background:#fff; border:2px solid var(--ink); box-shadow:5px 5px 0 var(--pink-mid); }
+.cv-sheet img{ display:block; width:100%; height:auto; }
+.cv-sheet:focus-visible{ outline:3px dashed var(--pink); outline-offset:4px; }
+.cv-actions{ display:flex; flex-wrap:wrap; gap:12px; padding:16px 18px; background:#fff; }
+.cv-actions .btn{ flex:1 1 140px; justify-content:center; }
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .cv-sheet{ transition:transform .2s var(--ease-soft), box-shadow .2s var(--ease-soft); }
+  .cv-sheet:hover{ transform:translateY(-3px) rotate(-.6deg); box-shadow:7px 9px 0 var(--pink-mid); }
+}
+@media (max-width:900px){
+  .contact-layout{ grid-template-columns:1fr; }
+  .cv-sheet{ max-width:360px; }
+}
+@media (max-width:480px){ .contact-row{ grid-template-columns:1fr; } }

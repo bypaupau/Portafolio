@@ -1,0 +1,89 @@
+/* los trazos a mano, la palabra que cambia y la polaroid chica
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 722–805.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ── 5 · TEXTO ANOTADO (mismo lenguaje que Sobre mí) ───────
+   La personalidad vive DENTRO del texto, no flotando alrededor:
+   trazos a mano sobre 2–3 palabras, el icono de Sobre mí que
+   "ilustra" la palabra, y una línea de identidad secundaria. */
+/* --pink-ink vive en base/tokens.css: antes estaba escrito aquí Y en sobre-mi.css */
+main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal */
+
+/* trazos a mano — mismas reglas que .mark en sobremi.css */
+.mark{ position:relative; display:inline-block; color:var(--ink); font-weight:600; white-space:nowrap; line-height:1.2; }
+.mark svg{ position:absolute; pointer-events:none; overflow:visible; }
+.mark path{ fill:none; stroke:var(--pink); stroke-linecap:round; stroke-linejoin:round; }
+.mark-under svg{ left:-2%; bottom:-.26em; width:104%; height:.42em; }
+.mark-under path{ stroke-width:var(--trazo-subrayado); vector-effect:non-scaling-stroke; }
+.mark-circle{ padding:0 .2em; margin:0 .16em; }
+.mark-circle svg{ left:-10%; top:-28%; width:120%; height:162%; z-index:-1; max-width:none; }
+.mark-circle path{ stroke-width:var(--trazo-circulo); vector-effect:non-scaling-stroke; }
+/* se dibujan UNA vez, justo después de que entra la descripción; luego, quietos */
+@keyframes ab-draw{ to{ stroke-dashoffset:0; } }
+.hx-motion .hero-desc .mark path{
+  stroke-dasharray:1; stroke-dashoffset:1;
+  animation:ab-draw .7s ease-out var(--draw, 1s) forwards;
+}
+
+/* palabra + su icono viajan juntos (nunca se separan al cortar la línea) */
+.note{ white-space:nowrap; }
+.ico-note{ display:inline-block; line-height:0; margin-left:.3em; }
+.ico-note .px{ display:block; width:calc(var(--gw) * var(--ps)); max-width:none; height:auto; image-rendering:pixelated; }
+.ico-pal { --ps:1.8px; vertical-align:-.28em; }
+.ico-code{ --ps:1.8px; vertical-align:.08em; }
+/* reacción al hover: el icono "asiente", una vez */
+@keyframes ico-nod{ 0%,100%{ transform:rotate(0); } 30%{ transform:rotate(-10deg); } 65%{ transform:rotate(6deg); } }
+@media (hover:hover) and (pointer:fine){
+  .note:hover .ico-note .px{ animation:ico-nod .42s ease-in-out 1; }
+}
+
+/* identidad secundaria: "✦ y también developer / diseñadora / …" */
+.hero-also{
+  display:flex; align-items:center; gap:8px; margin-bottom:16px;
+  font-family:var(--font-term); font-size:1.2rem; line-height:1.1; color:var(--text-soft);
+}
+.also-ico{ line-height:0; }
+.also-ico .px{ width:14px; height:auto; display:block; image-rendering:pixelated; }
+/* todas las palabras ocupan la misma celda: el ancho es el de la más larga,
+   así nada se corre cuando cambia */
+.rot{ display:inline-grid; }
+.rot-w{
+  grid-area:1/1; white-space:nowrap;
+  font-family:var(--font-pixel); font-weight:600; font-size:1.05rem; color:var(--pink-ink);
+  opacity:0; translate:0 6px;
+  transition:opacity .35s ease, translate .35s var(--ease-out);
+}
+.rot-w.is-on { opacity:1; translate:0 0; }
+.rot-w.is-off{ opacity:0; translate:0 -6px; }
+/* reduced-motion: solo fundido, sin desplazarse */
+.rot.is-calm .rot-w, .rot.is-calm .rot-w.is-on, .rot.is-calm .rot-w.is-off{ translate:0 0; transition:opacity .6s ease; }
+
+/* ── 5b · "Pau" + su mini polaroid ───────────────────────────
+   Nombre y foto se leen como UNA unidad de identidad: la persona
+   detrás de "Pau". Es la misma polaroid de Sobre mí, en chiquito.
+   Es un detalle que ACOMPAÑA al nombre, no compite con él:
+   ~23% más chica que la primera versión (.51em) y con más aire (.24em).
+   Alineación medida en la fuente: align-items:center deja la foto
+   centrada con "Pau" completo; translate .1em la baja hasta el
+   centro de "au" (el cuerpo visual de la palabra) + ~2px más.
+   Todo en em: la proporción se mantiene en cualquier pantalla. */
+.hero-name{ display:flex; align-items:center; gap:.24em; }
+.hero-snap{
+  display:block; flex:none; width:.51em; height:.51em;
+  object-fit:cover; object-position:50% 30%;
+  background:#fff; padding:3px; border:2px solid var(--ink);
+  box-shadow:2px 2px 0 var(--pink-mid);
+  rotate:5deg; translate:0 .1em;
+}
+
+/* ── 6 · "↓ desliza para explorar ↓" ───────────────────────── */
+.scroll-hint{ animation:none; transition:opacity .45s ease, translate .45s var(--ease-out); }
+/* las flechitas "asienten" 3 veces al cargar y luego se quedan quietas */
+.scroll-hint .arr{ display:inline-block; animation:arr-bob 1.6s ease-in-out 1.6s 3; }
+.scroll-hint .arr + .arr{ animation-delay:1.75s; }
+@keyframes arr-bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(3px); } }
+.scroll-hint.is-gone{ opacity:0; translate:0 6px; }
+
+/* ── 7 · (sin parallax: el grid y el hero se quedan quietos a propósito) */

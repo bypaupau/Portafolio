@@ -1,0 +1,29 @@
+/* los skills agrupados de Sobre mí
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 379–402.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ SOBRE MÍ · skills agrupados ════════ */
+.skill-group{ margin-bottom:18px; }
+.skill-group h4{ font-family:var(--font-term); font-size:1.25rem; color:var(--pink); margin-bottom:8px; }
+.skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+.skill{
+  font-family:var(--font-pixel); font-weight:500; font-size:1rem; color:var(--ink);
+  background:var(--pink-light); border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
+  padding:5px 12px;
+}
+.skill.dev{ background:var(--sky); } .skill.data{ background:var(--mint); } .skill.design{ background:var(--peach); } .skill.tool{ background:var(--lav); }
+
+/* tarjetas cert / hackathon */
+.item-row{ display:flex; gap:14px; align-items:flex-start; }
+.item-row .badge-img{
+  flex-shrink:0; width:64px; height:64px; display:grid; place-items:center;
+  background:var(--pink-light); border:3px solid var(--ink); font-size:1.8rem;
+}
+.item-row .badge-img.win-yellow{ background:var(--yellow); }
+.item-row .badge-img.win-lav{ background:var(--lav); }
+.item-meta{ font-family:var(--font-term); font-size:1.05rem; color:var(--text-muted); }
+.item-title{ font-family:var(--font-pixel); font-weight:600; font-size:1.2rem; color:var(--ink); margin:2px 0 6px; }
+.item-desc{ font-size:.9rem; color:var(--text-soft); }
+.tag-win{ display:inline-block; font-family:var(--font-term); font-size:.95rem; padding:2px 8px; margin:6px 5px 0 0; background:var(--mint); border:2px solid var(--ink); color:#2f7d4a; }

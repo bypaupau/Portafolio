@@ -1,0 +1,39 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   EL RIEL DE SECCIONES · <nav class="cs-rail">
+
+   La lista de paradas del caso. Sin JavaScript es una lista de anclas
+   que funciona; src/scripts/casos/riel.ts la hace reaccionar al scroll.
+
+   Los dos casos lo usan igual, con sus propias paradas.
+   ═══════════════════════════════════════════════════════════ */
+import { conIdioma } from '../../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+import { translate } from '../../../i18n/translate';
+
+interface Props {
+  /** la primera parada, la portada del caso */
+  portada: TextoBilingue;
+  /** las demás, en orden; el ancla es #cs-1, #cs-2… */
+  paradas: readonly TextoBilingue[];
+  /* Opcional: el caso de Schaman no lleva enlace en el riel (su
+     repositorio va en el cierre), y el sitio anterior lo tenía
+     comentado esperando que el proyecto fuera público. */
+  salida?: { texto: TextoBilingue; enlace: string };
+}
+const { portada, paradas, salida } = Astro.props;
+const primera = conIdioma(portada);
+const textoDeSalida = salida ? conIdioma(salida.texto) : null;
+---
+<nav class="cs-rail" aria-label={translate('cases.railLabel')} data-i18n-attr="aria-label:cases.railLabel">
+  <ul class="cs-rail-list">
+    <li class="cs-rail-item is-here"><a href="#cs-portada" {...primera.atributos}>{primera.texto}</a></li>
+    {paradas.map((parada, i) => {
+      const texto = conIdioma(parada);
+      return <li class="cs-rail-item"><a href={`#cs-${i + 1}`} {...texto.atributos}>{texto.texto}</a></li>;
+    })}
+  </ul>
+  {salida && textoDeSalida && (
+    <a class="cs-rail-out" href={salida.enlace} target="_blank" rel="noopener" {...textoDeSalida.atributos}>{textoDeSalida.texto}</a>
+  )}
+</nav>

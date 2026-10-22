@@ -1,0 +1,57 @@
+/* MICRO-INTERACCIONES
+
+   Parte de sobre-mi.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 381–431.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   MICRO-INTERACCIONES
+   Solo con puntero real (hover:hover) y sin movimiento reducido.
+   Rápidas (≈180–350ms), cortas y solo al interactuar: nada se mueve solo.
+   ════════════════════════════════════════════════ */
+@keyframes ab-wiggle{
+  0%,100%{ rotate:0deg; }
+  30%{ rotate:-7deg; }
+  60%{ rotate:5deg; }
+  85%{ rotate:-2deg; }
+}
+
+@media (prefers-reduced-motion:no-preference){
+  .page-about .link, .clue a{ transition:color .15s ease, background-size .28s var(--ease-soft); }
+}
+
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+
+  /* 1 · foto: solo la imagen crece un poco; marco, cinta y stickers quietos */
+  .polaroid img{ transition:transform .3s var(--ease-soft); }
+  .polaroid:hover img{ transform:scale(1.03); }
+
+  /* 2 · ruta: el cuadro sube, su sombra pixel se queda "en el piso"
+         y el ícono hace un wiggle de una sola vez */
+  .stop-ico{ transition:transform .2s var(--ease-soft), box-shadow .2s var(--ease-soft); }
+  .stop:hover .stop-ico{
+    transform:translateY(-3px) scale(1.06);
+    box-shadow:3px 6px 0 var(--ico-sh);
+  }
+  .stop:hover .stop-ico .px{ animation:ab-wiggle .42s ease-in-out 1; }
+
+  /* 3 · diseñar / construir / analizar */
+  .tool{ transition:transform .2s var(--ease-soft), box-shadow .2s var(--ease-soft); }
+  .tool:hover{ transform:translateY(-3px); box-shadow:6px 8px 0 var(--pink-mid); }
+  .tool-ico .px{ transition:transform .25s var(--ease-pop); }
+  .tool:hover .tool-ico .px{ transform:scale(1.08); }
+
+
+  /* 6 · pistas: mismo gesto (escala + leve giro/desplazamiento),
+         distinta personalidad por ícono */
+  .clue{ --hx:0px; --hy:-2px; --hr:0deg; --hs:1.1; }
+  .clue .px{ transition:transform .28s var(--ease-pop); }
+  .clue:hover .px{ transform:translate(var(--hx), var(--hy)) rotate(var(--hr)) scale(var(--hs)); }
+  .clue:nth-child(1){ --hr:-8deg; }                       /* dibujo: trazo inclinado */
+  .clue:nth-child(2){ --hr:6deg;  --hx:1px; }              /* pinto: paleta que se ladea */
+  .clue:nth-child(3){ --hy:1px;   --hs:1.08; }             /* juego: "presiona" un botón */
+  .clue:nth-child(4){ --hy:-3px;  --hr:-4deg; }            /* música: sigue el ritmo */
+  .clue:nth-child(5){ --hr:12deg; --hy:0px; }              /* crochet: el ovillo rueda */
+  .clue:nth-child(6){ --hy:-3px;  --hr:-3deg; --hs:1.08; } /* leo: el libro se levanta */
+}
+

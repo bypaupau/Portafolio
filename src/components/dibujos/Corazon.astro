@@ -1,0 +1,36 @@
+---
+/* Un corazón rosa. 7×6 px.
+   Era el mismo dibujo escrito tres veces en el sitio anterior: en el pie
+   de la polaroid, junto a "hola, soy pau" y en la lista de "¿qué estoy
+   haciendo ahora?" (allí con la clase now-pix). Los tres pintaban
+   exactamente los mismos pixeles.
+
+   Inicio lo usa en el cierre con la clase sprite y un ancho fijo, así
+   que las dos cosas son props. La grilla solo va con las clases que la
+   necesitan; con sprite, el tamaño lo da el atributo width. */
+interface Props {
+  class?: string;
+  /** atributo width, en px. Sin él, lo dimensiona el CSS. */
+  ancho?: string;
+}
+const { class: clase = 'px', ancho } = Astro.props;
+const conGrilla = clase === 'px' || clase === 'now-pix';
+---
+<svg
+  class={clase}
+  style={conGrilla ? '--gw:7;--gh:6' : undefined}
+  viewBox="0 0 7 6"
+  width={ancho}
+  xmlns="http://www.w3.org/2000/svg"
+  shape-rendering="crispEdges"
+  aria-hidden="true"
+  focusable="false"
+>
+  <rect x="1" y="0" width="2" height="1" fill="var(--pink)"/>
+  <rect x="4" y="0" width="2" height="1" fill="var(--pink)"/>
+  <rect x="0" y="1" width="7" height="1" fill="var(--pink)"/>
+  <rect x="0" y="2" width="7" height="1" fill="var(--pink)"/>
+  <rect x="1" y="3" width="5" height="1" fill="var(--pink)"/>
+  <rect x="2" y="4" width="3" height="1" fill="var(--pink)"/>
+  <rect x="3" y="5" width="1" height="1" fill="var(--pink)"/>
+</svg>

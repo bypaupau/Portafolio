@@ -1,0 +1,23 @@
+/* ═══════════════════════════════════════════════════════════
+   EL HERO ENTRE LAS DOS BARRAS
+
+   Qué es: el alto del hero de Inicio, descontando el nav de arriba
+   y la taskbar de abajo.
+
+   Por qué está aquí y no en paginas/inicio-hero.css: necesita
+   --task-h, que lo define componentes/taskbar.css, y tiene que
+   pisar el min-height que inicio-hero.css ya puso. Las dos cosas
+   lo obligan a cargarse después de esos dos archivos, y eso es
+   exactamente lo que significa estar en ajustes/.
+
+   De dónde viene: estaba al final de componentes/taskbar.css, que
+   no era su sitio (no es una regla del taskbar, es una del hero).
+   Se movió tal cual en la etapa 7b, sin tocar una línea.
+   ═══════════════════════════════════════════════════════════ */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* el hero ocupa el espacio VISIBLE entre las dos barras (nav arriba, taskbar abajo),
+   así el "↓ desliza para explorar" no queda escondido detrás de la taskbar */
+.hero{ min-height:calc(100vh - var(--nav-h) - var(--task-h)); }
+@supports (height:100svh){
+  .hero{ min-height:calc(100svh - var(--nav-h) - var(--task-h)); }
+}

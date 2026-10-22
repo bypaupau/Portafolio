@@ -1,0 +1,9 @@
+---
+/* El ✓ que marca el idioma activo. 7×5 px.
+   Usa currentColor, así hereda el color del botón. */
+interface Props { class?: string }
+const { class: clase = 'tb-check' } = Astro.props;
+---
+<svg class={clase} viewBox="0 0 7 5" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <path fill="currentColor" d="M6 0h1v1H6zM5 1h1v1H5zM0 2h1v1H0zM4 2h1v1H4zM1 3h1v1H1zM3 3h1v1H3zM2 4h1v1H2z"/>
+</svg>

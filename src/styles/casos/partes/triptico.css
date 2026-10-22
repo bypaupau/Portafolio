@@ -1,0 +1,33 @@
+/* TRÍPTICO · los tres momentos del concepto
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 541–567.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ TRÍPTICO · los tres momentos del concepto ════════ */
+.cs-tri{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--sp-3);
+}
+.cs-tri-c{
+  border:3px solid var(--ink); box-shadow:4px 4px 0 var(--ink);
+  padding:20px 22px 22px; min-width:0;
+}
+/* VARIANTE · cuando los momentos no son tres. La rejilla se adapta al
+   ancho en vez de partir siempre en 3, así una fila de dos no se lee
+   como una fila a la que le falta algo. */
+.cs-tri.auto{ grid-template-columns:repeat(auto-fit,minmax(min(238px,100%),1fr)); }
+
+/* los pasteles rotan de cinco en cinco: con tres tarjetas da
+   exactamente lo mismo que antes (sky, mint, peach) */
+.cs-tri-c:nth-child(5n+1){ background:var(--sky); }
+.cs-tri-c:nth-child(5n+2){ background:var(--mint); }
+.cs-tri-c:nth-child(5n+3){ background:var(--peach); }
+.cs-tri-c:nth-child(5n+4){ background:var(--lav); }
+.cs-tri-c:nth-child(5n+5){ background:var(--yellow); }
+.cs-tri-c h3{
+  font-family:var(--font-pixel); font-weight:700; font-size:var(--cs-h4);
+  color:var(--ink); margin-bottom:var(--sp-1);
+}
+.cs-tri-c p{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
+

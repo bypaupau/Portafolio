@@ -1,0 +1,69 @@
+/* la galería de Creativo y su ficha de "próximamente"
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 1462–1525.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   CREATIVO · galería de trabajos fuera del portafolio principal
+   Las tarjetas son las mismas de Proyectos (.win + .pcard + .pill):
+   aquí solo vive la cuadrícula —que no estira las tarjetas cuando son
+   pocas— y la ficha "próximamente" que ocupa el hueco mientras crece.
+   ════════════════════════════════════════════════ */
+body[data-page="creative"] .wrap{ --w:var(--w-wide); }   /* es una galería: pide el ancho amplio */
+
+/* sin max-width: el párrafo corre hasta donde le pide su contenido y lo
+   parte el ancho de la sección, no un tope fijo que lo cortaba a media frase */
+.cr-intro{ margin-top:14px; font-size:1rem; line-height:1.65; color:var(--text-soft); }
+
+/* auto-fit + tope de 380px: con un solo trabajo la tarjeta NO se estira a
+   todo el ancho, y las siguientes se van acomodando desde la izquierda. */
+.cr-grid{
+  display:grid; gap:28px; align-items:start; justify-content:start;
+  grid-template-columns:repeat(auto-fit, minmax(min(280px, 100%), 380px));
+}
+.cr-grid > *{ min-width:0; }
+
+/* hueco de la galería: ocupa justo lo que ocupa la ventana de una tarjeta */
+.cr-soon{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  aspect-ratio:4/3; padding:18px; text-align:center;
+  border:3px dashed var(--pink); background:var(--pink-pale);
+}
+.cr-soon-t{ font-family:var(--font-pixel); font-weight:700; font-size:1.15rem; color:var(--pink-ink); }
+.cr-soon-x{ font-family:var(--font-term); font-size:1.15rem; line-height:1.35; color:var(--text-soft); max-width:22ch; }
+
+/* ── CREATIVO RESPONDE CON SU PROPIO COLOR ────────────────────
+   Esta página reusaba .pcard tal cual y no tenía nada suyo. Sin añadir
+   un solo elemento nuevo (la regla que salió de pau.exe: lo que ya está
+   cobra vida, lo nuevo compite), dos detalles que pasan SOLO aquí:
+
+     · la sombra de cada tarjeta toma EL COLOR DE SU PROPIA VENTANA. El
+       color ya vivía en data/creativos.js y solo pintaba la barra de
+       título; ahora la tarjeta entera lo reconoce. Se lee con :has(),
+       lo mismo que ya hace el "Send" de Contacto.
+     · el sello (el librito pixel) da un cabeceo con ico-nod, la
+       animación que ya existe en esta hoja. Es la sección ilustrada:
+       el dibujo es lo que tiene que reaccionar.
+
+   Los valores NO son los tokens pastel: --sky y sus compañeros son
+   demasiado claros para leerse como sombra sobre --pink-pale. Van un
+   paso más saturados, por la misma razón y con el mismo criterio que
+   --scr-mail / --scr-gh / --scr-in en la pantalla de pau.exe. */
+.cr-grid .pcard-win{ --pc-sh:var(--pink-mid); }
+.cr-grid .pcard-win:has(.win-bar.sky){    --pc-sh:#A9D9F4; }
+.cr-grid .pcard-win:has(.win-bar.mint){   --pc-sh:#A5E0BC; }
+.cr-grid .pcard-win:has(.win-bar.lav){    --pc-sh:#C9B2F2; }
+.cr-grid .pcard-win:has(.win-bar.peach){  --pc-sh:#FFC89A; }
+.cr-grid .pcard-win:has(.win-bar.yellow){ --pc-sh:#FFD65E; }
+
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .cr-grid .pcard:hover .pcard-win,
+  .cr-grid .pcard:focus-visible .pcard-win{ box-shadow:6px 8px 0 var(--pc-sh); }
+  .cr-grid .pcard:hover .pcard-sticker .px{ animation:ico-nod .42s ease-in-out 1; }
+}
+
+@media (max-width:560px){
+  .cr-grid{ grid-template-columns:minmax(0,1fr); gap:30px; }
+  .cr-soon{ aspect-ratio:16/10; }
+}

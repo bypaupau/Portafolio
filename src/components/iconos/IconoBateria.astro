@@ -1,0 +1,9 @@
+---
+/* La "batería creativa", siempre al 100%. 14×7 px. */
+interface Props { class?: string }
+const { class: clase = 'tb-bat-ico' } = Astro.props;
+---
+<svg class={clase} viewBox="0 0 14 7" shape-rendering="crispEdges" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <path fill="var(--ink)" d="M0 0h12v1H0zM0 6h12v1H0zM0 1h1v5H0zM11 1h1v5h-1zM12 2h2v3h-2z"/>
+  <path fill="var(--dib-verde-fuerte)" d="M2 2h2v3H2zM5 2h2v3H5zM8 2h2v3H8z"/>
+</svg>

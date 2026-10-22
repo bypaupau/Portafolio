@@ -1,0 +1,92 @@
+/* LAS PÁGINAS DE CASO · hoja de estilo compartida
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 1–86.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ═══════════════════════════════════════════════════════════
+   LAS PÁGINAS DE CASO · hoja de estilo compartida
+   páginas: src/pages/casos/grow-with-phoenix.astro
+            src/pages/casos/schaman-analytics-bi.astro
+
+   Copia de css/caso.css sin un solo cambio: no referencia imágenes,
+   así que no hubo rutas que ajustar.
+
+   Los dos casos comparten esta hoja a propósito: comparten el riel, la
+   rejilla y las fichas. Lo que NO comparten es la estructura de la
+   página, y por eso cada uno tiene su propio .astro.
+   ═══════════════════════════════════════════════════════════ */
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  pau.proyectos · páginas de caso            (2ª iteración) ║
+   ║  Solo carga en pages/caso/*.html                          ║
+   ╚══════════════════════════════════════════════════════════╝
+   No inventa identidad: toma tokens, ventana, pills y badges de
+   styles.css. Lo nuevo es la maquetación editorial y el riel.
+
+   ESCALA TIPOGRÁFICA: el cuerpo usa la MISMA que `.ab-lead` de
+   Sobre mí — clamp(1.02rem,1.5vw,1.14rem) con interlineado 1.75.
+   Antes el caso iba a 1.02rem fijo y se veía más chico que el
+   resto del sitio en pantallas grandes.
+
+   EL COLOR NO VA AL FONDO: el fondo es la cuadrícula rosa, que es
+   identidad. Cada sección declara --cs y ese color aparece en su
+   punto del riel y en los acentos de sus bloques.
+
+   REGLA: si un caso necesita un bloque que no está aquí, se agrega
+   AQUÍ, nunca en el HTML del caso. */
+
+:root{
+  --cs-rail: 190px;
+  --cs-gap:  clamp(52px, 5.8vw, 82px);
+  /* Cuerpo del caso. Un punto por DEBAJO de `.ab-lead` de Sobre mí a
+     propósito: allí el texto es el protagonista, aquí acompaña a los
+     títulos pixel y a las pantallas, y a 1.14rem competía con ellos. */
+  --cs-body: clamp(0.97rem, 1.1vw, 1.06rem);
+
+  /* ───────────────────────────────────────────────────────────
+     ESCALA DE ESPACIO · siete pasos, ni uno más. Cada hueco
+     vertical de un caso sale de aquí; si algo necesita un valor
+     que no está en la lista, lo que está mal es la jerarquía, no
+     el numero. De menor a mayor distancia de parentesco:
+
+       --sp-0  dentro de un elemento   rótulo ↔ su texto
+       --sp-1  pegado                  pie de foto ↔ SU imagen
+       --sp-2  hermanos de una lista   viñeta ↔ viñeta
+       --sp-3  párrafo ↔ párrafo
+       --sp-4  párrafo ↔ bloque        (listas, figuras, flujos…)
+       --sp-5  bloque ↔ bloque         y el aire antes de un H3
+       --cs-gap sección ↔ sección
+
+     REGLA DE PROXIMIDAD: un pie de foto esta a --sp-1 de su
+     imagen y a --sp-5 de la siguiente. Esa proporción de 1:4 es
+     la que dice de quien es el pie sin tener que leerlo.
+     ─────────────────────────────────────────────────────────── */
+  --sp-0: 6px;
+  --sp-1: 10px;
+  --sp-2: 14px;
+  --sp-3: 18px;
+  --sp-4: 30px;
+  --sp-5: clamp(38px, 4.4vw, 52px);
+
+  /* ───────────────────────────────────────────────────────────
+     ESCALA TIPOGRÁFICA · antes había seis multiplicadores sobre
+     --cs-body (×.92 ×.95 ×.95 ×.96 ×.96 ×.98): diferencias que
+     nadie ve pero que impiden que exista "el tamaño chico".
+     Ahora hay un cuerpo, un chico, y tres niveles de título.
+     ─────────────────────────────────────────────────────────── */
+  --cs-small: calc(var(--cs-body) * 0.95);
+  --cs-h3: clamp(1.32rem, 2.2vw, 1.62rem);  /* subtítulo dentro de una sección */
+  --cs-h4: 1.22rem;                         /* titulo de tarjeta */
+  --cs-h5: 1.06rem;                         /* rótulo de figura o de paso */
+  --cs-term: 1.06rem;                       /* VT323 · etiquetas de datos */
+  --cs-tiny: 0.55rem;                       /* Press Start 2P · antetítulos */
+
+  /* interlineado: uno para leer, otro para texto dentro de cajas */
+  --cs-lh: 1.72;
+  --cs-lh-card: 1.6;
+  /* posición óptica de la viñeta cuadrada de 7px con --cs-lh-card */
+  --cs-bul: 0.58em;
+}
+
+body.cs-body .wrap{ --w:var(--w-wide); }
+

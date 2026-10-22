@@ -1,0 +1,29 @@
+---
+/* Un signo + (o una cruz, según dónde se mire). 5×5 px.
+
+   En Sobre mí es el adorno del margen del hero: lleva la clase px y la
+   grilla (--gw/--gh), en rosa claro.
+   En Inicio es el "+" que separa los tres verbos, y ahí el sitio
+   anterior lo escribía SIN clase y SIN grilla, porque lo dimensiona el
+   CSS de .verb-plus. De ahí la prop `desnudo`. */
+interface Props {
+  class?: string;
+  /** sin clase ni grilla: lo dimensiona el CSS de alrededor */
+  desnudo?: boolean;
+  /** rosa fuerte por defecto; Sobre mí pide el claro */
+  color?: string;
+}
+const { class: clase = 'px', desnudo = false, color = 'var(--pink)' } = Astro.props;
+---
+<svg
+  class={desnudo ? undefined : clase}
+  style={desnudo ? undefined : '--gw:5;--gh:5'}
+  viewBox="0 0 5 5"
+  shape-rendering="crispEdges"
+  aria-hidden="true"
+  focusable="false"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <rect x="2" y="0" width="1" height="5" fill={color}/>
+  <rect x="0" y="2" width="5" height="1" fill={color}/>
+</svg>

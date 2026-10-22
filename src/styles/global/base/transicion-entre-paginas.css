@@ -1,0 +1,39 @@
+/* la transición al cambiar de página (view transitions)
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 1354–1387.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ╔════════════════════════════════════════════════════════════╗
+   ║  MOTION · la capa compartida por las 4 páginas               ║
+   ║  "quiet, but alive": nada se mueve solo. Lo que hay aquí es   ║
+   ║  (a) transición al cambiar de página, (b) feedback cuando     ║
+   ║  alguien interactúa, (c) la aparición al entrar al viewport.  ║
+   ║  Todas las duraciones salen de --mo-fast / base / slow.       ║
+   ╚════════════════════════════════════════════════════════════╝ */
+
+/* ── 1 · TRANSICIÓN ENTRE PÁGINAS ─────────────────────────────
+   View Transitions para sitios de varias páginas: el navegador hace
+   el cruce entre documentos él solo. Sin router, sin JS, sin
+   interceptar clics (el botón "atrás" sigue funcionando igual).
+   El nav y la taskbar llevan nombre propio, así que NO entran en el
+   cruce: se quedan clavadas en su sitio mientras el contenido cambia.
+   Eso es lo que hace que navegar se sienta una sola aplicación.
+   En navegadores sin soporte no pasa nada: la navegación es la normal
+   y la entrada .hx cubre la sensación. */
+@view-transition{ navigation:auto; }
+
+nav{ view-transition-name:px-nav; }
+.taskbar{ view-transition-name:px-task; }
+
+@keyframes vt-out{ to{ opacity:0; } }
+@keyframes vt-in{ from{ opacity:0; translate:0 8px; } to{ opacity:1; translate:0 0; } }
+::view-transition-old(root){ animation:vt-out var(--mo-fast) ease both; }
+::view-transition-new(root){ animation:vt-in var(--mo-base) var(--ease-out) both; }
+/* las dos barras solo se funden entre sí (el link activo y el nombre de
+   la ventana cambian), nunca se desplazan */
+::view-transition-old(px-nav), ::view-transition-new(px-nav),
+::view-transition-old(px-task), ::view-transition-new(px-task){
+  animation-duration:var(--mo-fast);
+}
+

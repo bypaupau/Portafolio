@@ -1,0 +1,59 @@
+/* GRUPOS DE PANTALLAS
+
+   Parte de caso.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 411–463.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════ GRUPOS DE PANTALLAS ════════
+   Cada grupo es un panel pastel con su título y su explicación.
+   Tres disposiciones que se alternan para dar ritmo editorial. */
+.cs-groups{ display:grid; gap:clamp(24px,3.2vw,38px); }
+.cs-g{
+  border:3px solid var(--ink); box-shadow:6px 6px 0 var(--ink);
+  background:var(--g,var(--pink-light));
+  padding:clamp(22px,3vw,34px);
+}
+.cs-g-h{
+  font-family:var(--font-pixel); font-weight:700; font-size:var(--cs-h3);
+  line-height:1.15; color:var(--ink);
+}
+.cs-g-p{ font-size:var(--cs-body); line-height:var(--cs-lh); color:var(--ink); }
+.cs-g-p strong{ font-weight:600; }
+
+/* las pantallas del grupo, juntas y a la misma altura visual.
+   Se escalan por ALTO y no por ancho: los PNG vienen con cantidades
+   distintas de espacio transparente y de inclinación, así que igualar
+   el ancho dejaba una pantalla visiblemente más baja que su pareja. */
+.cs-shots{
+  display:flex; gap:clamp(12px,1.8vw,22px);
+  align-items:flex-end; justify-content:center;
+  --h:clamp(240px,25vw,358px);
+}
+.cs-shot{ margin:0; min-width:0; flex:0 1 auto; }
+.cs-shot img{ display:block; height:var(--h); width:auto; max-width:100%; margin-inline:auto; }
+.cs-shot figcaption{
+  margin-top:var(--sp-1); font-size:var(--cs-small); line-height:var(--cs-lh-card);
+  color:var(--ink); opacity:.78; text-align:center;
+}
+/* una pantalla puede pesar más que su compañera, sin que la otra se pierda */
+.cs-shot.is-lead img{ height:calc(var(--h) * 1.07); }
+.cs-shot.is-side img{ height:calc(var(--h) * 0.94); }
+
+/* texto a la izquierda, pantallas a la derecha (y al revés).
+   `max-content` deja que las pantallas pidan solo lo que ocupan y el
+   resto del ancho se lo queda el texto. */
+.g-side{ display:grid; grid-template-columns:minmax(0,1fr) max-content; gap:clamp(22px,3.4vw,44px); align-items:center; }
+.g-rev{ display:grid; grid-template-columns:max-content minmax(0,1fr); gap:clamp(22px,3.4vw,44px); align-items:center; }
+.g-rev .cs-g-txt{ order:2; }
+
+/* ── VARIANTE · la figura manda por ANCHO ──────────────────────
+   `.cs-shots` escala por ALTO, que es lo que necesita la maqueta de
+   un móvil. Un diagrama o una captura apaisada manda por ancho, y
+   `max-content` le daría el suyo entero (un SVG de 1400px se comería
+   la fila). Esta variante solo cambia el reparto de la rejilla: todo
+   lo demás —relleno, color, orden, apilado— lo sigue poniendo
+   `.g-side` / `.g-rev`. */
+.cs-g.g-side.g-wide{ grid-template-columns:minmax(0,1fr) minmax(0,1.45fr); }
+.cs-g.g-rev.g-wide { grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); }
+.cs-g.g-wide .cs-fig2{ min-width:0; }
+

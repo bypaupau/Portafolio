@@ -1,0 +1,34 @@
+/* los tres verbos (diseñar + construir + explorar)
+
+   Parte de la hoja compartida. Se carga desde global.css, que es
+   quien manda el ORDEN: aquí eran las líneas 1015–1043.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   INICIO · PUENTE (diseñar + construir + explorar)
+   Mismo lenguaje que los íconos de la portada anterior (disco + mini-ventana
+   ladeada), pero no son enlaces: describen, no navegan.
+   ════════════════════════════════════════════════ */
+.bridge{ padding:8px 0 64px; text-align:center; }
+.bridge .sec-title{ text-shadow:3px 3px 0 var(--pink-mid); }
+.verbs{
+  list-style:none; margin:34px auto 0; padding:0; max-width:880px;
+  display:grid; grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr);
+  align-items:start; gap:0 10px;
+}
+.verb{ display:flex; flex-direction:column; align-items:center; gap:12px; min-width:0; }
+.verb .disc{ width:clamp(128px,15vw,164px); }
+.verb .mini-win{ width:clamp(88px,10.5vw,112px); }
+.verb:nth-child(3) .mini-win{ transform:rotate(3deg); }       /* la del medio se ladea al revés */
+.verb .mini-body{ min-height:68px; padding:12px 8px; }
+.verb .mini-body .px{ width:calc(var(--gw) * var(--ps)); max-width:none; height:auto; display:block; image-rendering:pixelated; }
+.verb-what{ font-size:.95rem; line-height:1.45; color:var(--text-soft); max-width:22ch; }
+.verb-plus{ align-self:start; margin-top:calc(clamp(128px,15vw,164px) / 2 - 10px); display:grid; place-items:center; }
+.verb-plus svg{ width:20px; height:20px; image-rendering:pixelated; }
+.disc-mint{ background:var(--mint); }
+.mini-bar.mint{ background:var(--mint); }
+.bridge-end{ margin-top:30px; font-family:var(--font-term); font-size:1.3rem; color:var(--pink-ink); }
+
+/* el link "ver los 10 proyectos" lleva la carpeta de la portada anterior */
+.feat-all .link{ display:inline-flex; align-items:center; gap:8px; }
+.feat-all .sprite{ flex:none; image-rendering:pixelated; }

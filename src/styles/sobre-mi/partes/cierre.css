@@ -1,0 +1,44 @@
+/* CIERRE
+
+   Parte de sobre-mi.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 343–380.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ════════════════════════════════════════════════
+   CIERRE
+   ════════════════════════════════════════════════ */
+.ab-next{
+  margin-top:var(--sec-gap);
+  text-align:center;
+  display:flex; flex-direction:column; align-items:center;
+}
+.ab-next .ab-sub{ margin-bottom:24px; }
+.ab-next .hero-btns{ justify-content:center; }
+
+/* el .link global usa --pink (#E87EA1), que no llega a AA en texto chico;
+   en esta página lo oscurecemos al rosa de texto */
+.page-about .link{ color:var(--pink-ink); }
+.page-about .link:hover{ color:var(--ink); }
+
+/* subrayado: en reposo, la misma línea de siempre (2px --pink-mid en .link,
+   2px --pink-ink en los links dentro del texto). Al hover, una línea --pink
+   crece de izquierda a derecha encima. Se dibuja con fondos en vez de
+   border / text-decoration para poder animar su ancho. */
+.page-about .link,
+.clue a{
+  --u-base:var(--pink-mid);
+  border-bottom:0; padding-bottom:2px;       /* reemplaza el border-bottom de 2px */
+  text-decoration:none;
+  background:
+    linear-gradient(var(--pink), var(--pink)) 0 100% / 0% 2px no-repeat,
+    linear-gradient(var(--u-base), var(--u-base)) 0 100% / 100% 2px no-repeat;
+  -webkit-box-decoration-break:clone; box-decoration-break:clone;
+}
+.clue a{ --u-base:var(--pink-ink); padding-bottom:0; }
+.page-about .link:hover, .page-about .link:focus-visible,
+.clue a:hover, .clue a:focus-visible{ background-size:100% 2px, 100% 2px; }
+
+/* foco visible consistente en toda la página */
+.page-about a:focus-visible,
+.page-about .btn:focus-visible{ outline:3px solid var(--pink); outline-offset:3px; }
+

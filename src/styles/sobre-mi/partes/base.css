@@ -1,0 +1,49 @@
+/* SOBRE MÍ · hoja de estilo        página: src/pages/sobre-mi.astro
+
+   Parte de sobre-mi.css. Se carga desde ahí, que es quien
+   manda el ORDEN: aquí eran las líneas 1–43.
+   Las reglas están sin tocar. */
+/* ── fin de la nota · abajo empieza el CSS tal cual ── */
+/* ═══════════════════════════════════════════════════════════
+   SOBRE MÍ · hoja de estilo        página: src/pages/sobre-mi.astro
+
+   Copia de css/sobremi.css con DOS líneas cambiadas, las de
+   border-image-source: el bocadillo de "¿qué estoy haciendo ahora?"
+   apuntaba a ../resources/, que era una carpeta de la raíz del sitio
+   anterior. Ahora los dos SVG viven al lado de esta hoja, en
+   recursos/, y es Astro quien calcula la URL final. Así el bocadillo
+   no se rompe al compilar ni al publicar en /Portafolio/.
+   El resto del archivo está sin tocar.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  /* --pink-ink vive en global/base/tokens.css: estaba escrito aquí Y en
+     inicio-texto-anotado.css, con el mismo valor en los dos sitios. */
+  --sec-gap:   clamp(64px, 9vw, 112px);
+  /* curvas de movimiento: las mismas que ya usaba el sitio */
+  --ease-soft: cubic-bezier(.2,.7,.2,1);     /* aparición al scroll */
+  --ease-pop:  cubic-bezier(.34,1.56,.64,1); /* .popup de la portada */
+}
+
+.sr-only{
+  position:absolute; 
+  width:1px; 
+  height:1px; 
+  padding:0; 
+  margin:-1px;
+  overflow:hidden; 
+  clip:rect(0 0 0 0); 
+  white-space:nowrap; 
+  border:0;
+}
+
+/* sprites pixel genéricos */
+.px{ display:block; 
+  width:100%; 
+  height:auto; 
+  image-rendering:pixelated; }
+/* escala de píxel fija: ancho = columnas de la cuadrícula × --ps */
+.stk .px, .stop-ico .px, .tool-ico .px, .clue .px{
+  width:calc(var(--gw) * var(--ps, 3px)); max-width:none; height:auto; flex:none;
+}
+

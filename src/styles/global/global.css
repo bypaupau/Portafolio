@@ -1,0 +1,97 @@
+/* ═══════════════════════════════════════════════════════════
+   ÍNDICE DE ESTILOS GLOBALES
+
+   Este archivo no tiene CSS propio: solo dice en qué ORDEN se cargan
+   los 35 archivos de estilos. Y el orden importa de verdad, porque en
+   CSS, cuando dos reglas empatan en importancia y especificidad, gana
+   la última que se carga. Así que este índice ES la cascada.
+
+   Están agrupados en cuatro, de lo más general a lo más específico:
+
+     base/          los cimientos
+     componentes/   las piezas que se repiten
+     paginas/       una página cada vez
+     ajustes/       lo que reescribe a todo lo de arriba
+
+   La regla de oro: un archivo puede pisar a los de arriba, nunca a los
+   de abajo. Si escribes algo en base/ y no se ve, es porque algo más
+   abajo lo está pisando: búscalo ahí, no subas tu regla.
+
+   ── ¿dónde pongo un archivo nuevo? ──
+   · ¿define algo que usarán varias páginas?  → base/
+   · ¿es una pieza que se repite (una barra, una tarjeta)?  → componentes/
+   · ¿es de una página sola?  → paginas/, y va al final de su página
+   · ¿su trabajo es pisar lo que ya existe (un escalón de tamaño, un
+     modo, un parche)?  → ajustes/
+   Si dudas entre paginas/ y ajustes/, pregúntate si la regla volvería a
+   escribir una propiedad que ya está puesta más arriba. Si sí, es ajustes/.
+
+   ── ¿y cómo sé que no rompí nada al mover algo? ──
+     npm run cascada
+   Compara este orden contra el que tenía el archivo único de 1524
+   líneas (guardado en scripts/orden-original-css.mjs) y avisa si algún
+   par de reglas cambió de ganador. Hoy dice que no cambió ninguno, con
+   los 35 archivos reagrupados y dos de ellos movidos de sitio.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── base/ · LOS CIMIENTOS ──
+   Variables, el sistema de anchos, los encabezados y tarjetas que usan
+   todas las páginas, las animaciones y el cursor. Nada de aquí reescribe
+   nada: aquí se define por primera vez. */
+@import './base/tokens.css';
+@import './base/contenedor.css';
+@import './base/encabezados-y-tarjetas.css';
+@import './base/animacion.css';
+@import './base/aparicion.css';
+@import './base/cursor-pixel.css';
+@import './base/transicion-entre-paginas.css';
+
+/* ── componentes/ · LAS PIEZAS QUE SE REPITEN ──
+   El nav, la ventana estilo sistema operativo, los botones, el pie y la
+   taskbar. Aparecen en varias páginas, así que van antes que las páginas. */
+@import './componentes/nav.css';
+@import './componentes/ventana.css';
+@import './componentes/botones.css';
+@import './componentes/pie.css';
+@import './componentes/taskbar.css';
+
+/* ── paginas/ · UNA PÁGINA CADA VEZ ──
+   Los estilos propios de cada página, en el orden en que se recorre el
+   sitio. Los de Inicio van en el orden en que aparecen al bajar. */
+@import './paginas/inicio-entrada.css';
+@import './paginas/inicio-hero.css';
+@import './paginas/inicio-descubrir.css';
+@import './paginas/inicio-pau-exe.css';
+@import './paginas/inicio-texto-anotado.css';
+@import './paginas/inicio-destacados.css';
+@import './paginas/inicio-puente.css';
+@import './paginas/inicio-cierre.css';
+@import './paginas/inicio-secretos.css';
+@import './paginas/inicio-responsive.css';
+@import './paginas/sobre-mi-skills.css';
+@import './paginas/proyectos.css';
+@import './paginas/proyectos-filtros.css';
+@import './paginas/proyectos-archivo.css';
+/* OJO con estos dos: contacto-layout tiene que ir DESPUÉS de
+   contacto-campos. Los dos definen `.contact-intro .about-lead` y layout
+   le pone `margin:0 0 16px`, que tiene que pisar el `margin-top:12px` de
+   campos. Al revés, la intro de Contacto queda 12 px más alta.
+   Lo comprueba npm run cascada. */
+@import './paginas/contacto-campos.css';
+@import './paginas/contacto-layout.css';
+@import './paginas/contacto-formulario.css';
+@import './paginas/materias.css';
+@import './paginas/creativo.css';
+
+/* ── ajustes/ · LO QUE REESCRIBE A TODO LO DE ARRIBA ──
+   Aquí van los archivos cuyo trabajo ES pisar lo anterior. Tienen que ir
+   al final: si suben, se quedan sin efecto.
+     rejilla-comun     ≥1100 · el grid de dos columnas en pantalla grande
+     responsive        ≤1024 · hasta el menú hamburguesa en celular
+     hero-entre-barras el alto del hero, que depende de la taskbar
+     menos-movimiento  prefers-reduced-motion: apaga las animaciones */
+@import './ajustes/rejilla-comun.css';
+@import './ajustes/responsive.css';
+@import './ajustes/hero-entre-barras.css';
+@import './ajustes/menos-movimiento.css';
+
