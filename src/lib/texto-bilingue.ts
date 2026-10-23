@@ -20,8 +20,24 @@ export interface TextoConIdioma {
   atributos: Record<string, string>;
 }
 
+/* ══════════════════════════════════════════════════════════
+   UN TEXTO QUE NO ESTÁ NO TUMBA LA PÁGINA
+
+   Borrar un texto de src/content/ es una edición normal: es ahí donde
+   vive el contenido y es ahí donde se quita lo que ya no se quiere
+   decir. Antes, hacerlo dejaba `undefined` llegando hasta aquí y la
+   página entera se caía con «Cannot read properties of undefined
+   (reading 'es')» — un error que no dice ni qué texto falta ni dónde.
+
+   Ahora un texto que falta vale cadena vacía, y los componentes que
+   dibujan un bloque entero (Texto, NotaDeCaso) no dibujan nada. Borras
+   el texto y desaparece su párrafo. Lo que NO hace es inventarse nada:
+   si borras un título, verás el hueco donde estaba.
+   ══════════════════════════════════════════════════════════ */
+
 /** El texto en un idioma. Si falta, cae al idioma por defecto. */
-export function enIdioma(valor: TextoBilingue, idioma: Language = defaultLanguage): string {
+export function enIdioma(valor: TextoBilingue | undefined, idioma: Language = defaultLanguage): string {
+  if (valor === undefined) return '';
   if (typeof valor === 'string') return valor;
   return valor[idioma] ?? valor[defaultLanguage];
 }
@@ -31,8 +47,8 @@ export function enIdioma(valor: TextoBilingue, idioma: Language = defaultLanguag
  * no devuelve nada: no tiene sentido ensuciar el HTML con atributos que
  * no van a hacer nada.
  */
-export function atributosDeIdioma(valor: TextoBilingue): Record<string, string> {
-  if (typeof valor === 'string') return {};
+export function atributosDeIdioma(valor: TextoBilingue | undefined): Record<string, string> {
+  if (valor === undefined || typeof valor === 'string') return {};
   const difieren = supportedLanguages.some((l) => valor[l] !== valor[defaultLanguage]);
   if (!difieren) return {};
   return { 'data-i18n-es': valor.es, 'data-i18n-en': valor.en };
@@ -68,7 +84,7 @@ export function textoFijo(texto: string): TextoConIdioma {
  * que el script lo intercambie. Ver data-i18n-html-es en
  * src/scripts/global/language-runtime.ts
  */
-export function htmlConIdioma(valor: TextoBilingue): TextoConIdioma {
+export function htmlConIdioma(valor: TextoBilingue | undefined): TextoConIdioma {
   const atributos = atributosDeIdioma(valor);
   return {
     texto: enIdioma(valor),
@@ -86,7 +102,7 @@ export function htmlConIdioma(valor: TextoBilingue): TextoConIdioma {
  * El texto alternativo de una imagen, en los dos idiomas. Devuelve
  * directamente los atributos que lleva el <img>.
  */
-export function altConIdioma(valor: TextoBilingue): Record<string, string> {
+export function altConIdioma(valor: TextoBilingue | undefined): Record<string, string> {
   const atributos = atributosDeIdioma(valor);
   const alt = { alt: enIdioma(valor) };
   if (!('data-i18n-es' in atributos)) return alt;

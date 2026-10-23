@@ -30,8 +30,9 @@ import type { TextoBilingue } from '../../lib/texto-bilingue';
 import { conEnlaces } from '../../i18n/enlaces';
 
 interface Props {
-  /** el texto: una cadena, o { es, en } */
-  valor: TextoBilingue;
+  /** el texto: una cadena, o { es, en }. Si no llega, no se dibuja
+      nada: borrar el texto en src/content/ borra su párrafo. */
+  valor?: TextoBilingue;
   /** la etiqueta HTML. <p> por defecto */
   como?: string;
   /** true si el texto lleva marcado dentro (<b>, <strong>, un enlace) */
@@ -43,7 +44,7 @@ const { valor, como = 'p', html = false, ...resto } = Astro.props;
 const Etiqueta = como as any;
 const texto = html ? htmlConIdioma(valor) : conIdioma(valor);
 ---
-{html ? (
+{valor === undefined ? null : html ? (
   <Etiqueta {...resto} {...texto.atributos} set:html={conEnlaces(texto.texto)} />
 ) : (
   <Etiqueta {...resto} {...texto.atributos}>{texto.texto}</Etiqueta>

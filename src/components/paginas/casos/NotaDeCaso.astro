@@ -1,11 +1,20 @@
 ---
 /* Una nota al pie de sección: <p class="cs-nota">. Lleva marcado
-   dentro (negritas, a veces un enlace), así que usa htmlConIdioma. */
+   dentro (negritas, a veces un enlace), así que usa htmlConIdioma.
+
+   `clase` es opcional y se añade a las de siempre. La usa la sección
+   03 del caso de Schaman con "discreta", que quita la raya vertical:
+   ahí la nota va debajo de dos ventanas y la raya competía con sus
+   bordes. Sin la prop, la nota se ve igual que siempre en todas las
+   demás secciones de los dos casos. */
 import { htmlConIdioma } from '../../../lib/texto-bilingue';
 import type { TextoBilingue } from '../../../lib/texto-bilingue';
 import { conEnlaces } from '../../../i18n/enlaces';
 
-interface Props { texto: TextoBilingue }
-const nota = htmlConIdioma(Astro.props.texto);
+interface Props { texto?: TextoBilingue; clase?: string }
+const { texto, clase = '' } = Astro.props;
+const nota = htmlConIdioma(texto);
 ---
-<p class="cs-nota cs-rv" {...nota.atributos} set:html={conEnlaces(nota.texto)} />
+{texto !== undefined && (
+  <p class={`cs-nota cs-rv ${clase}`.trim()} {...nota.atributos} set:html={conEnlaces(nota.texto)} />
+)}
