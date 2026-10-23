@@ -54,6 +54,7 @@
 @import './componentes/botones.css';
 @import './componentes/pie.css';
 @import './componentes/taskbar.css';
+@import './componentes/ampliar.css';
 
 /* ── paginas/ · UNA PÁGINA CADA VEZ ──
    Los estilos propios de cada página, en el orden en que se recorre el

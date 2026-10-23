@@ -42,4 +42,6 @@ export const spanishGlobal = {
 
   /* ── páginas de caso ── */
   'cases.railLabel': 'Secciones del caso',
+  'cases.zoomOpen': 'Ampliar la imagen',
+  'cases.zoomClose': 'Cerrar la vista ampliada',
 } as const;

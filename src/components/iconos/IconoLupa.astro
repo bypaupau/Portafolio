@@ -1,0 +1,22 @@
+---
+/* Icono «lupa con más»: marca que una imagen se puede ampliar. Va
+   encima de cada captura ampliable, en su cuadrado blanco.
+
+   Trazo de Lucide (lucide.dev · licencia ISC · v1.61.0, icono
+   `zoom-in`), copiado tal cual: lienzo de 24×24, grosor 2 y extremos
+   redondos.
+
+   NO lleva shape-rendering="crispEdges": eso es de los sprites pixel
+   de esta carpeta, y este es de trazo (ver el README de al lado).
+
+   El color viene de currentColor, así que lo pone el CSS con un token
+   y aquí no hay ni un hexadecimal (§6 de CONVENCIONES). */
+interface Props { class?: string }
+const { class: clase } = Astro.props;
+---
+<svg class={clase} viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="11" cy="11" r="8" />
+  <line x1="21" x2="16.65" y1="21" y2="16.65" />
+  <line x1="11" x2="11" y1="8" y2="14" />
+  <line x1="8" x2="14" y1="11" y2="11" />
+</svg>

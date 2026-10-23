@@ -34,4 +34,6 @@ export const englishGlobal: Record<keyof typeof spanishGlobal, string> = {
 
   /* ── páginas de caso ── */
   'cases.railLabel': 'Case sections',
+  'cases.zoomOpen': 'Enlarge image',
+  'cases.zoomClose': 'Close the enlarged view',
 };

@@ -41,6 +41,7 @@ import { defaultLanguage } from '../i18n/languages';
 import { rutaPublica } from '../lib/rutas';
 import { conIdioma, type TextoBilingue } from '../lib/texto-bilingue';
 import Navegacion from '../components/globales/Navegacion.astro';
+import AmpliarImagenes from '../components/globales/AmpliarImagenes.astro';
 import Pie from '../components/globales/Pie.astro';
 import Taskbar from '../components/globales/Taskbar.astro';
 import '../styles/global/global.css';
@@ -120,6 +121,10 @@ const urlCanonica = new URL(Astro.url.pathname, Astro.site);
 
   <Pie conSecreto={pieConSecreto} />
   <Taskbar claveNombreVentana={claveNombreVentana} nombreDeVentana={nombreDeVentana} />
+  {/* el molde de la lupa y la vista ampliada, vacíos hasta que se usan.
+      Van en TODAS las páginas: así una captura nueva nace ampliable sin
+      tocar su página. */}
+  <AmpliarImagenes />
 
   <script>
     /* El idioma va primero: los demás leen de él.
@@ -129,6 +134,7 @@ const urlCanonica = new URL(Astro.url.pathname, Astro.site);
     import '../scripts/global/mobile-menu';
     import '../scripts/global/resume-by-language';
     import '../scripts/global/scroll-reveal';
+    import '../scripts/global/ampliar-imagenes';
   </script>
 </body>
 </html>

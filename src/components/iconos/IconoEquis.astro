@@ -1,0 +1,18 @@
+---
+/* Icono «equis»: cierra la vista ampliada de una imagen.
+
+   NO sustituye a la ✕ de los controles de ventana (.win-ctrls), que es
+   un carácter y mide 7px: esa adorna, esta se pulsa. Por eso aquí hay
+   un trazo de verdad, a 22px y dentro de un botón de 44, que es lo que
+   se puede tocar con el pulgar.
+
+   Trazo de Lucide (lucide.dev · licencia ISC · v1.61.0, icono `x`),
+   copiado tal cual: 24×24, grosor 2, extremos redondos. Sin
+   crispEdges y sin hexadecimales, como su hermana la lupa. */
+interface Props { class?: string }
+const { class: clase } = Astro.props;
+---
+<svg class={clase} viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <path d="M18 6 6 18" />
+  <path d="m6 6 12 12" />
+</svg>

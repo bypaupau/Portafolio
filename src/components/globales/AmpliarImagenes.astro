@@ -1,0 +1,52 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   AMPLIAR UNA IMAGEN · el molde y la vista
+
+   Las dos piezas de marcado que necesita ampliar-imagenes.ts. Van aquí
+   y no dentro del script por la regla del §3 de CONVENCIONES: un
+   dibujo hecho en código es un archivo, nunca una cadena suelta. Así
+   los dos SVG siguen siendo componentes con sus tokens, y el script no
+   escribe ni una etiqueta HTML.
+
+     <template>   el molde de la lupa. El script lo clona una vez por
+                  imagen ampliable, en vez de repetir el SVG en cada una
+     <dialog>     la vista ampliada, vacía hasta que se abre
+
+   Lo monta BaseLayout en TODAS las páginas, así que una captura nueva
+   —en este caso o en uno que no existe todavía— ya nace ampliable sin
+   tocar nada de esto.
+
+   El <dialog> es el nativo: de ahí salen gratis el cierre con Escape,
+   el foco atrapado dentro y el resto de la página inerte mientras está
+   abierto. El velo oscuro es el fondo del propio diálogo y no su
+   ::backdrop, para no depender de cómo hereda cada navegador los
+   tokens en esa pseudo-clase.
+   ═══════════════════════════════════════════════════════════ */
+import IconoLupa from '../iconos/IconoLupa.astro';
+import IconoEquis from '../iconos/IconoEquis.astro';
+import { translate } from '../../i18n/translate';
+---
+<template id="amp-molde-lupa">
+  <span class="amp-lupa" aria-hidden="true"><IconoLupa /></span>
+</template>
+
+<dialog class="amp-vista" id="amp-vista">
+  <button
+    type="button"
+    class="amp-cerrar"
+    data-amp-cerrar
+    aria-label={translate('cases.zoomClose')}
+    data-i18n-attr="aria-label:cases.zoomClose"
+  ><IconoEquis /></button>
+
+  {/* Un <div> y un <p>, y no <figure>/<figcaption>: la leyenda llega
+      al abrir, así que el documento se enviaría con un figcaption
+      VACÍO. Una de las 167 pruebas lo caza —y hace bien: una leyenda
+      en blanco es un defecto en cualquier otro sitio de la página—.
+      El nombre accesible de la vista no se pierde: lo pone el script
+      en aria-label con el alt de la imagen. */}
+  <div class="amp-marco">
+    <img class="amp-img" alt="" />
+    <p class="amp-pie"></p>
+  </div>
+</dialog>

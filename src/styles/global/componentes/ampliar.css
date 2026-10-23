@@ -1,0 +1,124 @@
+/* ════════ AMPLIAR UNA IMAGEN ════════
+   El botón que envuelve una captura, su lupa, y la vista ampliada.
+   Lo monta ampliar-imagenes.ts; aquí solo está el aspecto.
+
+   NO INVENTA NADA NUEVO: el cuadrado blanco de la lupa y el botón de
+   cerrar son el vocabulario de la ventana retro —borde oscuro de 2 o
+   3px y sombra desplazada—, el mismo de .win-ctrls y de los sellos del
+   caso. Lo único propio es el velo oscuro.
+
+   EL BOTÓN NO DEBE PESAR EN LA MAQUETA: se le quitan borde, fondo y
+   relleno y se le deja `display:block`, así la imagen ocupa
+   exactamente lo que ocupaba antes de envolverla. Las reglas de cada
+   figura (.cs-fig2 img, .cs-shot img…) siguen alcanzándola: todas son
+   selectores de descendencia, no de hijo directo. */
+.amp{
+  display:block; width:100%;
+  margin:0; padding:0; border:0; background:none;
+  font:inherit; color:inherit; text-align:inherit;
+  position:relative; cursor:zoom-in;
+}
+/* el aumento va en `transform`, que no ocupa sitio: nada de alrededor
+   se mueve ni se desborda */
+.amp img{ transition:transform 180ms ease; }
+.amp:hover img,
+.amp:focus-visible img{ transform:scale(1.02); }
+.amp:focus-visible{ outline:3px solid var(--ink); outline-offset:3px; }
+
+/* ── la lupa ────────────────────────────────────────────────── */
+.amp-lupa{
+  position:absolute; right:10px; bottom:10px;
+  width:30px; height:30px; display:grid; place-content:center;
+  background:var(--white); border:2px solid var(--ink);
+  box-shadow:2px 2px 0 var(--ink); color:var(--ink);
+  opacity:0; transform:translateY(4px);
+  transition:opacity 180ms ease, transform 180ms ease;
+  pointer-events:none;              /* el que recibe el clic es el botón */
+}
+.amp-lupa svg{ display:block; width:17px; height:17px; }
+.amp:hover .amp-lupa,
+.amp:focus-visible .amp-lupa{ opacity:1; transform:none; }
+/* donde no hay cursor no hay hover, y la lupa es la única pista de que
+   la imagen se puede tocar: ahí se queda siempre puesta */
+@media (hover:none){
+  .amp-lupa{ opacity:1; transform:none; }
+}
+
+/* ── la vista ampliada ──────────────────────────────────────── */
+/* El velo es el fondo del propio <dialog> y no su ::backdrop: los
+   navegadores no se ponen de acuerdo en si esa pseudo-clase hereda los
+   tokens del documento, y un velo que a veces sale transparente no es
+   un velo. Como el diálogo ocupa la pantalla entera, el resultado es
+   el mismo y además el clic "fuera de la imagen" cae en el diálogo,
+   que es justo lo que hay que escuchar. */
+.amp-vista{
+  width:100vw; max-width:100vw;
+  height:100dvh; max-height:100dvh;
+  margin:0; padding:clamp(14px,3vw,34px);
+  border:0; overflow:hidden;
+  /* EL FONDO NO SE DESPLAZA, Y EL RIEL NO SE CAE. El bloqueo evidente
+     —overflow:hidden en <html>— tiene un efecto secundario feo: deja de
+     haber contenedor de desplazamiento, y con el se cae todo
+     `position:sticky` de la pagina. El riel del caso saltaba a su sitio
+     estatico mientras el modal estaba abierto (medido: de y=80 a
+     y=-2920) y tardaba un par de fotogramas en volver a pegarse al
+     cerrar: se veia desaparecer y reaparecer.
+
+     Esto hace lo mismo sin tocar <html>: el dialogo ocupa la pantalla
+     entera y no deja que la rueda del raton ni el gesto tactil pasen
+     de largo hacia la pagina de detras. */
+  overscroll-behavior:none;
+  background:color-mix(in srgb, var(--ink) 78%, transparent);
+  opacity:0; transition:opacity 160ms ease;
+}
+.amp-vista[open]{ display:grid; place-items:center; }
+.amp-vista.is-abierta{ opacity:1; }
+.amp-vista::backdrop{ background:transparent; }
+
+.amp-marco{
+  margin:0; display:grid; gap:12px; justify-items:center;
+  max-width:100%; max-height:100%; min-height:0;
+}
+/* `--amp-ancho` lo pone el script con el ancho REAL del archivo: la
+   imagen puede crecer hasta la pantalla, pero nunca más allá de su
+   propio tamaño, porque estirarla no enseña ningún detalle nuevo. */
+.amp-img{
+  display:block;
+  max-width:min(100%, var(--amp-ancho, 1600px));
+  max-height:76dvh; width:auto; height:auto;
+  object-fit:contain;
+  /* Aqui no hay marco ni sombra: la vista ampliada existe para mirar
+     la captura. El borde oscuro con su sombra desplazada sirve en la
+     pagina, donde separa la imagen del fondo rosa; sobre el velo
+     oscuro solo le quita sitio y le pone un halo rosado alrededor. */
+  background:var(--white);
+  transform:scale(.985); transition:transform 160ms ease;
+}
+.amp-vista.is-abierta .amp-img{ transform:none; }
+.amp-pie{
+  max-width:min(100%, 68ch); text-align:center;
+  font-family:var(--font-body); font-size:.95rem; line-height:1.5;
+  color:var(--white);
+}
+.amp-pie[hidden]{ display:none; }
+
+/* la X. 44px de lado: lo que se puede tocar con el pulgar sin apuntar */
+.amp-cerrar{
+  position:fixed; top:clamp(10px,2vw,22px); right:clamp(10px,2vw,22px);
+  width:44px; height:44px; padding:0;
+  display:grid; place-content:center;
+  background:var(--white); border:3px solid var(--ink);
+  box-shadow:3px 3px 0 var(--pink-mid); color:var(--ink);
+  cursor:pointer;
+}
+.amp-cerrar svg{ display:block; width:22px; height:22px; }
+.amp-cerrar:hover{ background:var(--pink-light); }
+.amp-cerrar:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 var(--pink-mid); }
+.amp-cerrar:focus-visible{ outline:3px solid var(--white); outline-offset:3px; }
+
+@media (prefers-reduced-motion:reduce){
+  .amp img, .amp-lupa, .amp-vista, .amp-img{ transition:none; }
+  .amp:hover img, .amp:focus-visible img{ transform:none; }
+  .amp-img{ transform:none; }
+  .amp-cerrar:active{ transform:none; }
+}
