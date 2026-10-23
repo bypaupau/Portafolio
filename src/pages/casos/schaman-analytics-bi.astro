@@ -6,8 +6,9 @@
    contenido   src/content/casos/schaman-analytics-bi.ts  ← TODO el texto
    estilo      src/styles/casos/caso.css    (compartida con el otro caso)
    script      src/scripts/casos/riel.ts    (compartido)
-   piezas      src/components/paginas/casos/        (riel, figura, nota, cierre y
-                                             ParAntesDespues, que es de aquí)
+   piezas      src/components/paginas/casos/        (riel, figura, nota, cierre;
+                                             BloqueDeDecisiones, ParAntesDespues
+                                             y los cuatro Icono* son de aquí)
    imágenes    public/images/casos/schaman-analytics-bi/
                (la portada reusa la imagen de Proyectos, en su versión más grande)
    URL previa  /pages/caso/schaman-analytics-bi.html → redirige
@@ -16,8 +17,17 @@
    Comparte el riel, la hoja de estilo y las piezas chicas. NO comparte
    la estructura: este caso trata de rediseñar algo que ya existía, así
    que su pieza central son las comparaciones antes/después, y tiene
-   secciones que el otro no tiene (las cuatro decisiones de diseño, el
+   secciones que el otro no tiene (los dos bloques de decisiones, el
    flujo de datos, las fórmulas de los indicadores).
+
+   ── CADA SECCIÓN HACE UNA COSA ─────────────────────────────
+   La 02 diagnostica y la 03 responde. El diagnóstico no describe el
+   resultado, y la 03 no vuelve a contar el diagnóstico: enseña, al
+   lado de cada decisión, la captura de la vista que cambió.
+
+   Antes esto eran tres secciones (diagnóstico, decisiones, rediseño) y
+   el mismo cambio se explicaba en las tres. La 03 de hoy es la fusión
+   de las dos últimas; por eso el riel tiene seis paradas y no siete.
 
    Por eso cada caso tiene su propio archivo: forzar los dos en una
    plantilla común obligaría a describir con opciones unas rejillas que
@@ -28,14 +38,18 @@
 
    ── CLAVES ─────────────────────────────────────────────────
    Este caso tenía las claves más opacas: sch.dec.4.3, sch.f.rol.2.
-   Ahora son decisiones.lista[3].seEspera y miRol.puntos[1].
+   Ahora son decisiones.lista[3].impacto y miRol.puntos[1].
    ═══════════════════════════════════════════════════════════ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Texto from '../../components/piezas/Texto.astro';
 import RielDeCaso from '../../components/paginas/casos/RielDeCaso.astro';
 import FiguraDeCaso from '../../components/paginas/casos/FiguraDeCaso.astro';
-import ParAntesDespues from '../../components/paginas/casos/ParAntesDespues.astro';
+import BloqueDeDecisiones from '../../components/paginas/casos/BloqueDeDecisiones.astro';
 import NotaDeCaso from '../../components/paginas/casos/NotaDeCaso.astro';
+import IconoPanelLateral from '../../components/paginas/casos/IconoPanelLateral.astro';
+import IconoGraficoCombinado from '../../components/paginas/casos/IconoGraficoCombinado.astro';
+import IconoFiltroDeLista from '../../components/paginas/casos/IconoFiltroDeLista.astro';
+import IconoLibroRevisado from '../../components/paginas/casos/IconoLibroRevisado.astro';
 import CierreDeCaso from '../../components/paginas/casos/CierreDeCaso.astro';
 import { conIdioma, altConIdioma, htmlConIdioma } from '../../lib/texto-bilingue';
 import { rutaPublica, rutaPagina } from '../../lib/rutas';
@@ -49,26 +63,63 @@ const img = (archivo: string) => rutaPublica('images/casos/schaman-analytics-bi/
 /* un atajo, porque esta página pide mucho texto suelto */
 const t = conIdioma;
 
-/* los dos pares antes/después, con sus capturas */
-const comparaciones = [
+/* LOS DOS BLOQUES DE LA SECCIÓN 03 · lo que no es texto del proyecto.
+   El contenido pone los nombres, las necesidades, las decisiones y los
+   pies; aquí van los pasteles, las capturas y el icono de cada
+   decisión.
+
+   CADA DECISIÓN ES UNA VENTANA y lleva tres pasteles: el de su barra,
+   el de su cuerpo y el del cuadradito del icono. Las dos columnas se
+   reparten siempre igual en los dos bloques —izquierda amarilla sobre
+   rosa, derecha lila sobre celeste— porque son la misma estructura
+   repetida y cambiar el color de un bloque a otro haría pensar que no.
+
+   NINGÚN TONO SE REPITE DENTRO DE SU PROPIA VENTANA: el cuadrado del
+   icono va sobre la barra, así que nunca lleva el color de la barra, y
+   el sello ANTES/DESPUÉS va sobre el cuerpo, así que tampoco lleva el
+   suyo. Por eso el icono de la 02 es durazno y no lila: su barra ya lo
+   es.
+
+   LAS CAPTURAS VAN EN ORDEN: la primera es el ANTES de esa vista y la
+   segunda el DESPUÉS, y el bloque se las da a su primera y su segunda
+   decisión en ese mismo orden. */
+const COLUMNA_IZQUIERDA = { barra: 'yellow', cuerpo: 'var(--pink-light)' };
+const COLUMNA_DERECHA   = { barra: 'lav',    cuerpo: 'var(--sky)' };
+
+const bloques = [
   {
-    id: 'g4a', color: 'var(--pink-light)',
-    antes: { imagen: img('01-panel-anterior.webp'), ancho: 1600, alto: 818 },
-    despues: { imagen: img('02-panel-redisenado.webp'), ancho: 1600, alto: 818 },
+    id: 'b1', desdeLaDecision: 1,
+    piezas: [
+      { icono: IconoPanelLateral,     tono: 'var(--sky)',   ...COLUMNA_IZQUIERDA },
+      { icono: IconoGraficoCombinado, tono: 'var(--peach)', ...COLUMNA_DERECHA },
+    ],
+    capturas: [
+      { imagen: img('01-panel-anterior.webp'), ancho: 1600, alto: 818 },
+      { imagen: img('02-panel-redisenado.webp'), ancho: 1600, alto: 818 },
+    ],
   },
   {
-    id: 'g4b', color: 'var(--sky)',
-    antes: { imagen: img('03-fallos-anterior.webp'), ancho: 1600, alto: 818 },
-    despues: { imagen: img('04-fallos-redisenado.webp'), ancho: 1600, alto: 818 },
+    id: 'b2', desdeLaDecision: 3,
+    piezas: [
+      { icono: IconoFiltroDeLista,  tono: 'var(--mint)',   ...COLUMNA_IZQUIERDA },
+      { icono: IconoLibroRevisado,  tono: 'var(--yellow)', ...COLUMNA_DERECHA },
+    ],
+    capturas: [
+      { imagen: img('03-fallos-anterior.webp'), ancho: 1600, alto: 818 },
+      { imagen: img('04-fallos-redisenado.webp'), ancho: 1600, alto: 818 },
+    ],
   },
 ] as const;
 
-/* los dos diagramas de la sección 05. El pie va en la columna de al
-   lado y no debajo: mismo texto, mucho menos alto. */
+/* el diagrama de la sección 04. El pie va en la columna de al lado y
+   no debajo: mismo texto, mucho menos alto.
+
+   Eran dos, y el primero —el de la arquitectura— se retiró junto con
+   la lista de pasos: los dos dibujaban el mismo recorrido. `g-rev`
+   venía de alternar los lados cuando eran dos; ahora que es uno, el
+   modelo se queda a la izquierda y su texto a la derecha. */
 const diagramas = [
-  { id: 'g5a', lado: 'g-side', color: 'var(--mint)',
-    imagen: img('arquitectura-flujo.svg?v=2'), ancho: 1400, alto: 490 },
-  { id: 'g5b', lado: 'g-rev', color: 'var(--peach)',
+  { id: 'g4a', lado: 'g-rev', color: 'var(--peach)',
     imagen: img('07-modelo-estrella.webp'), ancho: 1600, alto: 1457 },
 ] as const;
 
@@ -179,72 +230,58 @@ const portadaDelCaso = imagenMasGrande('images/proyectos/schaman-analytics');
             const o = htmlConIdioma(observacion);
             return <li {...o.atributos} set:html={o.texto} />;
           })}</ul>
-          <NotaDeCaso texto={contenido.analisis.nota} />
         </section>
 
-        {/* ══ 03 · DECISIONES DE DISEÑO ══
-            La necesidad va en el primer nivel; decisión, expectativa y
-            validación cuelgan de ella en vez de encadenarse con flechas. */}
+        {/* ══ 03 · DE LA NECESIDAD A LA INTERFAZ ══
+            Esto era DOS secciones: las decisiones y, más abajo, el
+            rediseño con sus comparaciones. Había que leer una decisión
+            arriba y bajar a buscar la captura que la enseña, y en el
+            camino el mismo cambio se contaba hasta tres veces (en la
+            decisión, en el pie de la captura y en una tarjeta de
+            resumen).
+
+            Ahora son dos bloques, uno por VISTA, y dentro de cada uno
+            las dos decisiones que la cambiaron, en dos columnas del
+            mismo ancho. Cada decisión es una ventana y lleva SU
+            captura dentro, debajo de su texto: la de la izquierda el
+            antes de esa vista, la de la derecha el después.
+
+            Leídas de izquierda a derecha las dos ventanas siguen
+            siendo la comparación de siempre; leídas de arriba abajo,
+            cada una es una decisión con su pantalla. Se arma en
+            BloqueDeDecisiones.astro. */}
         <section class="cs-sec" id="cs-3" style="--cs:var(--mint)" aria-labelledby="h-cs-3">
           <header class="cs-head cs-rv">
             <Texto class="cs-num" valor={contenido.decisiones.numero} />
             <Texto como="h2" class="cs-h" id="h-cs-3" valor={contenido.decisiones.titulo} />
           </header>
           <Texto class="cs-text cs-rv" valor={contenido.decisiones.parrafo} />
-          <ul class="cs-dec cs-rv">{contenido.decisiones.lista.map((decision) => (
-            <li>
-              <p class="cs-dec-n"><Texto como="b" valor={contenido.decisiones.etiquetas.necesidad} /> <Texto como="span" valor={decision.necesidad} /></p>
-              <ul>
-                <li><Texto como="b" valor={contenido.decisiones.etiquetas.decision} /> <Texto como="span" valor={decision.decision} /></li>
-                <li><Texto como="b" valor={contenido.decisiones.etiquetas.seEspera} /> <Texto como="span" valor={decision.seEspera} /></li>
-                <li><Texto como="b" valor={contenido.decisiones.etiquetas.validacion} /> <Texto como="span" valor={decision.validacion} /></li>
-              </ul>
-            </li>
-          ))}</ul>
-          <NotaDeCaso texto={contenido.decisiones.nota} />
-        </section>
 
-        {/* ══ 04 · EL REDISEÑO ══ */}
-        <section class="cs-sec" id="cs-4" style="--cs:var(--lav)" aria-labelledby="h-cs-4">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.redisenio.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-4" valor={contenido.redisenio.titulo} />
-          </header>
-          {contenido.redisenio.parrafos.map((parrafo) => <Texto class="cs-text cs-rv" valor={parrafo} />)}
-
-          {/* cada par antes/después en su panel pastel */}
-          <div class="cs-groups cs-rv">{comparaciones.map((par, i) => (
-            <ParAntesDespues
-              id={par.id}
-              color={par.color}
-              etiquetaAntes={contenido.redisenio.etiquetaAntes}
-              etiquetaDespues={contenido.redisenio.etiquetaDespues}
-              texto={contenido.redisenio.comparaciones[i]!}
-              antes={par.antes}
-              despues={par.despues}
+          <div class="cs-groups cs-rv">{contenido.decisiones.bloques.map((bloque, i) => (
+            <BloqueDeDecisiones
+              id={bloques[i]!.id}
+              titulo={bloque.titulo}
+              etiquetas={contenido.decisiones.etiquetas}
+              decisiones={bloque.decisiones}
+              piezas={bloques[i]!.piezas}
+              desdeLaDecision={bloques[i]!.desdeLaDecision}
+              capturas={[
+                { ...bloques[i]!.capturas[0], pie: bloque.antes.pie, alt: bloque.antes.alt },
+                { ...bloques[i]!.capturas[1], pie: bloque.despues.pie, alt: bloque.despues.alt },
+              ]}
             />
           ))}</div>
 
-          <Texto como="h3" class="cs-sub-h cs-rv" valor={contenido.redisenio.cambios.titulo} />
-          {/* las cinco decisiones, en tarjetas pastel: el mismo tríptico
-              de Grow With Phoenix, con la rejilla adaptada porque aquí
-              no son tres sino cinco */}
-          <div class="cs-tri auto cs-rv">{contenido.redisenio.cambios.lista.map((cambio) => (
-            <div class="cs-tri-c"><Texto como="h3" valor={cambio.nombre} /><Texto valor={cambio.texto} /></div>
-          ))}</div>
-          <NotaDeCaso texto={contenido.redisenio.nota} />
+          <NotaDeCaso texto={contenido.decisiones.nota} clase="discreta" />
         </section>
 
-        {/* ══ 05 · CONTEXTO TÉCNICO ══ */}
-        <section class="cs-sec" id="cs-5" style="--cs:var(--sky)" aria-labelledby="h-cs-5">
+        {/* ══ 04 · CONTEXTO TÉCNICO ══ */}
+        <section class="cs-sec" id="cs-4" style="--cs:var(--sky)" aria-labelledby="h-cs-4">
           <header class="cs-head cs-rv">
             <Texto class="cs-num" valor={contenido.contextoTecnico.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-5" valor={contenido.contextoTecnico.titulo} />
+            <Texto como="h2" class="cs-h" id="h-cs-4" valor={contenido.contextoTecnico.titulo} />
           </header>
           <Texto class="cs-text cs-rv" valor={contenido.contextoTecnico.parrafo} />
-          <ol class="cs-flow cs-rv">{contenido.contextoTecnico.flujo.map((paso) => (
-            <li><Texto como="b" valor={paso.nombre} /><Texto como="span" valor={paso.texto} /></li>
-          ))}</ol>
 
           <div class="cs-groups cs-rv">{diagramas.map((diagrama, i) => {
             const texto = contenido.contextoTecnico.diagramas[i]!;
@@ -265,11 +302,11 @@ const portadaDelCaso = imagenMasGrande('images/proyectos/schaman-analytics');
           <NotaDeCaso texto={contenido.contextoTecnico.nota} />
         </section>
 
-        {/* ══ 06 · MÉTRICAS Y LÍMITES ══ */}
-        <section class="cs-sec" id="cs-6" style="--cs:var(--mint)" aria-labelledby="h-cs-6">
+        {/* ══ 05 · MÉTRICAS Y LÍMITES ══ */}
+        <section class="cs-sec" id="cs-5" style="--cs:var(--mint)" aria-labelledby="h-cs-5">
           <header class="cs-head cs-rv">
             <Texto class="cs-num" valor={contenido.metricas.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-6" valor={contenido.metricas.titulo} />
+            <Texto como="h2" class="cs-h" id="h-cs-5" valor={contenido.metricas.titulo} />
           </header>
           <Texto class="cs-text cs-rv" valor={contenido.metricas.parrafo} />
           <ul class="cs-mets cs-rv">{contenido.metricas.lista.map((metrica) => (
@@ -278,11 +315,11 @@ const portadaDelCaso = imagenMasGrande('images/proyectos/schaman-analytics');
           {contenido.metricas.notas.map((nota) => <NotaDeCaso texto={nota} />)}
         </section>
 
-        {/* ══ 07 · LAS PANTALLAS ══ */}
-        <section class="cs-sec" id="cs-7" style="--cs:var(--yellow)" aria-labelledby="h-cs-7">
+        {/* ══ 06 · LAS PANTALLAS ══ */}
+        <section class="cs-sec" id="cs-6" style="--cs:var(--yellow)" aria-labelledby="h-cs-6">
           <header class="cs-head cs-rv">
             <Texto class="cs-num" valor={contenido.pantallas.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-7" valor={contenido.pantallas.titulo} />
+            <Texto como="h2" class="cs-h" id="h-cs-6" valor={contenido.pantallas.titulo} />
           </header>
           <Texto class="cs-text cs-rv" valor={contenido.pantallas.parrafo} />
 

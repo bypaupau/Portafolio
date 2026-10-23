@@ -6,7 +6,8 @@
    cadena (si es igual en los dos idiomas) o { es, en }.
 
    Este caso tenía las claves más difíciles de todo el sitio. Lo que
-   era sch.dec.4.3 ahora es decisiones.lista[3].seEspera, y sch.f.rol.2
+   era sch.dec.4.3 ahora es decisiones.bloques[1].decisiones[1].decision,
+   y sch.f.rol.2
    es miRol.puntos[1]. Es el ejemplo exacto que pediste resolver.
    ═══════════════════════════════════════════════════════════ */
 import type { TextoBilingue } from '../../lib/texto-bilingue';
@@ -194,10 +195,6 @@ export const schamanAnalyticsBi = {
         en: 'Decisions',
       },
       {
-        es: 'El rediseño',
-        en: 'The redesign',
-      },
-      {
         es: 'Datos y modelo',
         en: 'Data and model',
       },
@@ -257,181 +254,139 @@ export const schamanAnalyticsBi = {
       en: 'What the interface needed to address',
     },
     parrafo: {
-      es: 'Para entender qué debía mejorar, el diseño se concentró en las vistas analíticas del proyecto; especialmente en los gráficos. A pesar de no haberse realizado ninguna investigación de usuarios, leí sobre cómo elaborar correctamente dashboards de finanzas, lo cual fue la mayor guía durante este proceso. ',
-      en: 'I reviewed captures of the earlier and redesigned versions to understand what the dashboard should help people read. This analysis is based on the interface and the project’s analytical tasks; we did not conduct interviews or usability tests.',
+      es: 'El diagnóstico salió de revisar las interfaces del proyecto y las tareas analíticas que tenían que resolver, sobre todo las vistas de gráficos. No hubo investigación con personas usuarias: la guía fue leer sobre cómo se construyen los dashboards financieros.',
+      en: 'The diagnosis came from reviewing the project’s interfaces and the analytical tasks they had to support, especially the chart views. There was no research with users: my guide was reading about how financial dashboards are built.',
     },
     observaciones: [
       {
-        es: '<b>Información en una sola vista:</b> el panel anterior reunía resumen, gráficos y sesiones; el rediseño separa el resumen de la exploración de registros.',
-        en: '<b>Information in one view:</b> the earlier dashboard combined summary, charts and sessions; the redesign separates the overview from record exploration.',
+        es: '<b>Información concentrada en una sola vista:</b> el panel anterior reunía en la misma pantalla el resumen, los gráficos y la tabla de sesiones.',
+        en: '<b>Information concentrated in a single view:</b> the earlier dashboard put the summary, the charts and the session table on the same screen.',
       },
       {
-        es: '<b>Dos preguntas distintas:</b> el resumen permite ver el periodo; el análisis de fallos requiere comparar problemas, categorías, prioridades y dispositivos.',
-        en: '<b>Two different questions:</b> the overview shows the period at a glance; failure analysis requires comparing problems, categories, priorities and devices.',
+        es: '<b>Dos necesidades distintas:</b> consultar el estado del periodo es una lectura rápida; investigar fallos pide comparar problemas, categorías, prioridades y dispositivos.',
+        en: '<b>Two different needs:</b> checking the state of the period is a quick read; investigating failures means comparing problems, categories, priorities and devices.',
       },
       {
-        es: '<b>Indicadores que se pueden confundir:</b> resolver al primer contacto y resolver una sesión miden cosas diferentes; sus etiquetas deben explicarlo.',
-        en: '<b>Metrics that can be confused:</b> resolving on first contact and resolving a session measure different things; their labels should make that clear.',
+        es: '<b>Indicadores que se pueden confundir:</b> resolver al primer contacto y resolver una sesión miden cosas distintas; con etiquetas poco explícitas se leen como la misma cifra.',
+        en: '<b>Metrics that can be confused:</b> resolving on first contact and resolving a session measure different things; with labels that are not explicit they read as the same figure.',
       },
       {
-        es: '<b>Filtros compartidos:</b> periodo y canal guían distintas vistas, así que conviene mantenerlos en una posición coherente.',
-        en: '<b>Shared filters:</b> period and channel guide multiple views, so their position should stay consistent.',
+        es: '<b>Filtros compartidos entre vistas:</b> el periodo y el canal condicionan varias vistas a la vez, así que su sitio en la pantalla no se puede decidir vista por vista.',
+        en: '<b>Filters shared across views:</b> period and channel condition several views at once, so where they sit cannot be decided view by view.',
       },
     ],
-    nota: {
-      es: '<b>Alcance:</b> son observaciones de capturas y tareas del proyecto, no hallazgos de investigación con personas usuarias.',
-      en: '<b>Scope:</b> these are observations from screenshots and project tasks, not findings from research with users.',
-    },
   },
 
-  /* 03 · las cuatro decisiones de diseño. Las cuatro etiquetas
-     (Necesidad / Decisión / Se espera / Validación pendiente) se
-     repiten en cada una, así que van una sola vez. */
+  /* 03 · de la necesidad a la interfaz.
+
+     ESTA SECCIÓN ERA DOS. Había una de decisiones (cuatro tarjetas con
+     necesidad, cambio, impacto y un sello "por validar") y otra de
+     rediseño (los dos pares antes/después, más cinco tarjetas de
+     resumen). Entre las tres cosas, cada cambio se explicaba hasta
+     tres veces y había que subir y bajar para conectar una decisión
+     con la captura que la enseña.
+
+     Ahora es UNA, con dos bloques, y el criterio para agrupar es la
+     VISTA en la que se ve el cambio:
+
+       bloques[0]  el panel general   → navegación y jerarquía
+       bloques[1]  análisis de fallos → sesiones y métricas
+
+     Cada bloque lleva sus dos decisiones, y cada decisión enseña una
+     de las dos capturas de esa vista: la primera el antes, la segunda
+     el después. Por eso los pies y los alt viven aquí dentro y ya no
+     en una sección aparte.
+
+     `antes` y `despues` siguen llamándose así porque es lo que son:
+     los dos estados de la vista. Qué decisión enseña cuál lo decide la
+     página, no este archivo.
+
+     CADA DECISIÓN son dos campos y nada más: de dónde salió
+     (necesidad) y qué cambió (decision). Había un tercer texto por
+     bloque, `proposito`, que decía para qué servían las dos juntas;
+     se retiró porque repetía las decisiones con otras palabras y era
+     lo único que obligaba a un bloque de cita dentro de la ventana.
+
+     NO SE AFIRMA NINGÚN RESULTADO. No hay cifras de mejora porque no
+     se han medido; la nota del final dice qué son las capturas y qué
+     no se puede concluir de ellas.
+
+     El icono y el tono pastel de cada decisión NO están aquí: son
+     interfaz, no texto del proyecto, y los pone la página.
+
+     Este caso tenía las claves más opacas del sitio. Lo que era
+     sch.dec.4.3 es hoy decisiones.bloques[1].decisiones[1].decision. */
   decisiones: {
     numero: {
-      es: '03 / decisiones de diseño',
-      en: '03 / design decisions',
+      es: '03 / de la necesidad a la interfaz',
+      en: '03 / from need to interface',
     },
     titulo: {
       es: 'De la necesidad a la interfaz',
       en: 'From need to interface',
     },
     parrafo: {
-      es: 'Organicé el rediseño alrededor de cuatro decisiones. El beneficio descrito es esperado; queda por validar con personas que usarían el panel.',
-      en: 'I organised the redesign around four decisions. The benefits described are expected; they still need validation with people who would use the dashboard.',
+      es: 'Organicé el rediseño alrededor de cuatro decisiones, agrupadas por la vista en la que se ven. Cada bloque lleva al lado las capturas de antes y después de esa misma vista, para no tener que ir a buscarlas.',
+      en: 'I organised the redesign around four decisions, grouped by the view where each one shows. Every block carries the before and after captures of that same view, so there is nothing to go looking for.',
     },
     etiquetas: {
+      bloque: {
+        es: 'Bloque',
+        en: 'Block',
+      },
       necesidad: {
-        es: 'Necesidad:',
-        en: 'Need:',
+        es: 'Necesidad',
+        en: 'Need',
       },
       decision: {
-        es: 'Decisión:',
-        en: 'Decision:',
+        es: 'Decisión',
+        en: 'Decision',
       },
-      seEspera: {
-        es: 'Se espera:',
-        en: 'Expected:',
+      antes: {
+        es: 'Antes',
+        en: 'Before',
       },
-      validacion: {
-        es: 'Validación pendiente:',
-        en: 'To validate:',
+      despues: {
+        es: 'Después',
+        en: 'After',
       },
     },
-    lista: [
-      {
-        necesidad: {
-          es: 'orientarse rápido',
-          en: 'find your way quickly',
-        },
-        decision: {
-          es: 'navegación lateral y vistas separadas',
-          en: 'side navigation and separate views',
-        },
-        seEspera: {
-          es: 'encontrar cada tarea con menos búsqueda',
-          en: 'find each task with less searching',
-        },
-        validacion: {
-          es: 'pedir a una persona localizar una vista',
-          en: 'ask someone to locate a view',
-        },
-      },
-      {
-        necesidad: {
-          es: 'entender el estado del periodo',
-          en: 'understand the period',
-        },
-        decision: {
-          es: 'score y KPI al inicio, filtros comunes arriba',
-          en: 'score and KPIs first, shared filters above',
-        },
-        seEspera: {
-          es: 'leer primero los indicadores clave',
-          en: 'read key indicators first',
-        },
-        validacion: {
-          es: 'comprobar comprensión y uso de filtros',
-          en: 'check comprehension and filter use',
-        },
-      },
-      {
-        necesidad: {
-          es: 'investigar sesiones fallidas',
-          en: 'investigate failed sessions',
-        },
-        decision: {
-          es: 'vista dedicada con problemas, categorías, prioridades y dispositivos',
-          en: 'dedicated view for problems, categories, priorities and devices',
-        },
-        seEspera: {
-          es: 'pasar del resumen al detalle con contexto',
-          en: 'move from summary to detail with context',
-        },
-        validacion: {
-          es: 'tarea de localizar problema/dispositivo',
-          en: 'task to find a problem/device',
-        },
-      },
-      {
-        necesidad: {
-          es: 'interpretar medidas correctamente',
-          en: 'interpret measures correctly',
-        },
-        decision: {
-          es: 'etiquetas, colores y página de metodología',
-          en: 'clearer labels, colours and methodology page',
-        },
-        seEspera: {
-          es: 'distinguir FCR de tasa de resolución',
-          en: 'distinguish FCR from resolution rate',
-        },
-        validacion: {
-          es: 'pedir que expliquen cada cifra',
-          en: 'ask someone to explain each figure',
-        },
-      },
-    ],
-    nota: {
-      es: 'Las comparaciones visuales muestran decisiones implementadas; los beneficios y la facilidad de uso todavía no se han comprobado con pruebas.',
-      en: 'The visual comparisons show implemented decisions; benefits and ease of use have not yet been checked through testing.',
-    },
-  },
-
-  /* 04 · el rediseño, con los dos pares antes/después */
-  redisenio: {
-    numero: {
-      es: '04 / el rediseño',
-      en: '04 / the redesign',
-    },
-    titulo: {
-      es: 'Rediseñé la forma de leer el panel',
-      en: 'I redesigned how the dashboard reads',
-    },
-    parrafos: [
-      {
-        es: 'Partí de la aplicación de escritorio existente y reorganicé su presentación para priorizar el análisis: filtros juntos, score y KPI en el resumen, fallos y sesiones en vistas propias, y una página para explicar el modelo y sus indicadores.',
-        en: 'I started from the existing desktop app and reorganised its presentation around analysis: filters together, score and KPIs in the summary, failures and sessions in dedicated views, and a page explaining the model and indicators.',
-      },
-      {
-        es: 'Las comparaciones muestran la evolución visual de dos vistas. Son capturas de estados y períodos distintos: ayudan a revisar estructura y legibilidad, no a atribuir cambios en las cifras al rediseño.',
-        en: 'The comparisons show the visual evolution of two views. They capture different states and periods, so they help review structure and legibility, not attribute changes in figures to the redesign.',
-      },
-    ],
-    etiquetaAntes: {
-      es: 'Antes',
-      en: 'Before',
-    },
-    etiquetaDespues: {
-      es: 'Después',
-      en: 'After',
-    },
-    comparaciones: [
+    bloques: [
       {
         titulo: {
           es: 'Panel general',
           en: 'Overview panel',
         },
+        decisiones: [
+          {
+            titulo: {
+              es: 'Navegación y estructura',
+              en: 'Navigation and structure',
+            },
+            necesidad: {
+              es: 'Encontrar una vista sin tener que buscarla entre varias secciones.',
+              en: 'Find a view without having to hunt for it across several sections.',
+            },
+            decision: {
+              es: 'Organizar las secciones en una navegación lateral y separar las vistas por tarea.',
+              en: 'Organise the sections in a side navigation and separate the views by task.',
+            },
+          },
+          {
+            titulo: {
+              es: 'Jerarquía de información',
+              en: 'Information hierarchy',
+            },
+            necesidad: {
+              es: 'Entender rápido el estado del periodo.',
+              en: 'Understand the state of the period quickly.',
+            },
+            decision: {
+              es: 'Colocar el score y los KPI al inicio, con los filtros comunes en una posición coherente.',
+              en: 'Put the score and the KPIs first, with the shared filters in a consistent position.',
+            },
+          },
+        ],
         antes: {
           pie: {
             es: 'Versión previa: navegación compacta y paleta azul; resumen y contenido comparten una sola vista.',
@@ -458,6 +413,36 @@ export const schamanAnalyticsBi = {
           es: 'Análisis de fallos',
           en: 'Failure analysis',
         },
+        decisiones: [
+          {
+            titulo: {
+              es: 'Exploración de sesiones',
+              en: 'Exploring sessions',
+            },
+            necesidad: {
+              es: 'Investigar sesiones fallidas y entender el contexto de los problemas.',
+              en: 'Investigate failed sessions and understand the context of the problems.',
+            },
+            decision: {
+              es: 'Crear una vista dedicada con problemas, categorías, prioridades y dispositivos.',
+              en: 'Create a dedicated view with problems, categories, priorities and devices.',
+            },
+          },
+          {
+            titulo: {
+              es: 'Interpretación de métricas',
+              en: 'Reading the metrics',
+            },
+            necesidad: {
+              es: 'Interpretar correctamente las medidas del panel.',
+              en: 'Read the dashboard’s measures correctly.',
+            },
+            decision: {
+              es: 'Revisar etiquetas, colores y explicaciones metodológicas.',
+              en: 'Revise labels, colours and methodological explanations.',
+            },
+          },
+        ],
         antes: {
           pie: {
             es: 'Vista previa de análisis de fallos, con áreas amplias para gráficos y paleta azul.',
@@ -480,75 +465,24 @@ export const schamanAnalyticsBi = {
         },
       },
     ],
-    cambios: {
-      titulo: {
-        es: 'Lo que cambia entre una y otra',
-        en: 'What changes between the two',
-      },
-      lista: [
-        {
-          nombre: {
-            es: 'Jerarquía',
-            en: 'Hierarchy',
-          },
-          texto: {
-            es: 'Score e indicadores antes de los gráficos de detalle.',
-            en: 'Score and indicators before detailed charts.',
-          },
-        },
-        {
-          nombre: {
-            es: 'Navegación',
-            en: 'Navigation',
-          },
-          texto: {
-            es: 'Menú lateral con panel, fallos, sesiones y datos y metodología.',
-            en: 'Side menu for overview, failures, sessions, and data and methodology.',
-          },
-        },
-        {
-          nombre: {
-            es: 'Filtros',
-            en: 'Filters',
-          },
-          texto: {
-            es: 'Controles alineados y compartidos entre vistas de análisis.',
-            en: 'Aligned controls shared across analysis views.',
-          },
-        },
-        {
-          nombre: {
-            es: 'Sesiones',
-            en: 'Sessions',
-          },
-          texto: {
-            es: 'Tabla en una vista independiente, sin alargar el resumen.',
-            en: 'A dedicated table view keeps records out of the overview.',
-          },
-        },
-        {
-          nombre: {
-            es: 'Lectura',
-            en: 'Reading',
-          },
-          texto: {
-            es: 'Etiquetas, colores y explicaciones revisados para diferenciar canales e interpretar KPI.',
-            en: 'Labels, colours and explanations revised to distinguish channels and interpret KPIs.',
-          },
-        },
-      ],
-    },
     nota: {
-      es: 'Las capturas corresponden a versiones y períodos de datos distintos. La comparación documenta decisiones de interfaz; no mide una mejora de negocio.',
-      en: 'Screenshots show different versions and data periods. The comparison documents interface decisions; it does not measure business improvement.',
+      es: 'Las comparaciones muestran la evolución visual de dos vistas. Son capturas de estados y períodos distintos: ayudan a revisar estructura y legibilidad, no a atribuir cambios en las cifras al rediseño.',
+      en: 'The comparisons show the visual evolution of two views. They capture different states and periods, so they help review structure and legibility, not attribute changes in figures to the redesign.',
     },
   },
 
-  /* 05 · contexto técnico: el flujo y los dos diagramas */
+  /* 04 · contexto técnico: el modelo dimensional.
+
+     Aquí había dos cosas más que contaban el mismo recorrido de los
+     datos: una lista de cinco pasos (OLTP → ETL → almacén → funciones
+     → dashboard) y un diagrama de arquitectura con ese mismo
+     recorrido dibujado. Se retiraron las dos; queda el modelo
+     dimensional, que es lo único que esta sección enseña y no se
+     cuenta en ningún otro sitio del caso. */
   contextoTecnico: {
     numero: {
-      es: '05 / contexto técnico',
-      en: '05 / technical context',
+      es: '04 / contexto técnico',
+      en: '04 / technical context',
     },
     titulo: {
       es: 'Cómo llega la información al panel',
@@ -558,67 +492,7 @@ export const schamanAnalyticsBi = {
       es: 'La interfaz consume un flujo de datos preparado por el equipo para explorar sesiones de atención. Este contexto explica de dónde vienen las vistas; el foco del caso sigue siendo cómo las organicé para su lectura.',
       en: 'The interface consumes a data flow the team prepared to explore support sessions. This context explains where the views come from; the case focuses on how I organised them for reading.',
     },
-    flujo: [
-      {
-        nombre: {
-          es: 'Base OLTP',
-          en: 'OLTP database',
-        },
-        texto: {
-          es: 'El registro operativo de las sesiones, normalizado.',
-          en: 'The normalised operational record of the sessions.',
-        },
-      },
-      {
-        nombre: 'ETL · Pentaho PDI',
-        texto: {
-          es: 'Extracción, limpieza y carga hacia el Data Warehouse.',
-          en: 'Extraction, cleaning and loading into the Data Warehouse.',
-        },
-      },
-      {
-        nombre: {
-          es: 'Data Warehouse en estrella',
-          en: 'Star-schema Data Warehouse',
-        },
-        texto: {
-          es: 'Un hecho de sesiones rodeado de sus dimensiones.',
-          en: 'A session fact table surrounded by its dimensions.',
-        },
-      },
-      {
-        nombre: {
-          es: 'Funciones SQL / RPC',
-          en: 'SQL / RPC functions',
-        },
-        texto: {
-          es: 'En Supabase: cada indicador y cada gráfico se pide con una llamada.',
-          en: 'In Supabase: every indicator and chart is requested with one call.',
-        },
-      },
-      {
-        nombre: 'Dashboard',
-        texto: {
-          es: 'React, Vite y Recharts: la aplicación que lo consume y lo pone en pantalla.',
-          en: 'React, Vite and Recharts: the app that consumes it and puts it on screen.',
-        },
-      },
-    ],
     diagramas: [
-      {
-        titulo: {
-          es: 'Flujo de datos',
-          en: 'Data flow',
-        },
-        parrafo: {
-          es: 'OLTP → ETL con Pentaho PDI → almacén dimensional en Supabase/PostgreSQL → funciones SQL/RPC → interfaz en React y Recharts.',
-          en: 'OLTP → ETL with Pentaho PDI → dimensional warehouse in Supabase/PostgreSQL → SQL/RPC functions → React and Recharts interface.',
-        },
-        alt: {
-          es: 'Flujo de datos desde la base OLTP y Pentaho PDI hasta Supabase, las funciones SQL/RPC y el dashboard.',
-          en: 'Data flow from the OLTP database and Pentaho PDI to Supabase, SQL/RPC functions and the dashboard.',
-        },
-      },
       {
         titulo: {
           es: 'Modelo dimensional',
@@ -640,11 +514,11 @@ export const schamanAnalyticsBi = {
     },
   },
 
-  /* 06 · qué significa cada indicador */
+  /* 05 · qué significa cada indicador */
   metricas: {
     numero: {
-      es: '06 / métricas',
-      en: '06 / metrics',
+      es: '05 / métricas',
+      en: '05 / metrics',
     },
     titulo: {
       es: 'Qué significa cada indicador',
@@ -722,12 +596,12 @@ export const schamanAnalyticsBi = {
     ],
   },
 
-  /* 07 · la galería de pantallas. Salta el 5 a propósito: ese hueco
+  /* 06 · la galería de pantallas. Salta el 5 a propósito: ese hueco
      era el diagrama del modelo, que ahora vive en Contexto técnico. */
   pantallas: {
     numero: {
-      es: '07 / las pantallas',
-      en: '07 / the screens',
+      es: '06 / las pantallas',
+      en: '06 / the screens',
     },
     titulo: {
       es: 'La interfaz en detalle',
