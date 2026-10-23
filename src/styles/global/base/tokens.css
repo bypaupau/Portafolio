@@ -26,6 +26,20 @@
   --text-muted: #B8909E;
   --pink-ink:   #B23E68;   /* rosa para TEXTO: el --pink no da contraste suficiente (≈5.3:1) */
 
+  /* ── etiquetas con significado ─────────────────────────────────
+     Cada color dice QUÉ es la etiqueta inclinada de una tarjeta:
+       premio       un reconocimiento (1er lugar, mención…)
+       diseño       diseño y UX/UI
+       tecnología   desarrollo, datos, videojuegos
+     Se usan con las clases .s-premio · .s-diseno · .s-tecnologia.
+     El texto es siempre --ink: el contraste pasa de 14:1 en los tres. */
+  --etiqueta-premio:     #F8DCE7;
+  --etiqueta-diseno:     #DDF1E2;
+  --etiqueta-tecnologia: #D9EDFA;
+  --etiqueta-giro:       -4deg;           /* la inclinación, igual en todas */
+  --etiqueta-borde:      2px;
+  --etiqueta-sombra:     2px 2px 0 var(--ink);
+
   /* ── colores que solo viven dentro de los dibujos ──────────────
      No son del sistema de la interfaz: son los acentos de los SVG.
      Están aquí para que ningún dibujo lleve un color escrito a mano. */

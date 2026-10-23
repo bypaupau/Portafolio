@@ -12,11 +12,6 @@
    ═══════════════════════════════════════════════════════════ */
 import type { TextoBilingue } from '../../lib/texto-bilingue';
 
-export interface ParAntesDespues {
-  titulo: TextoBilingue;
-  antes: { pie: TextoBilingue; alt: TextoBilingue };
-  despues: { pie: TextoBilingue; alt: TextoBilingue };
-}
 
 export const schamanAnalyticsBi = {
 

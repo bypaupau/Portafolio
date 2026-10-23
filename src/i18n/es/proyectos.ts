@@ -39,5 +39,9 @@ export const spanishProyectos = {
   'pages.projects.viewRepo': 'ver repo →',
   'pages.projects.soon': 'pronto ✦',
 
+  /* ── los botones de las tarjetas destacadas ── */
+  'pages.projects.goToCase': 'ir al caso',
+  'pages.projects.viewRepository': 'ver repositorio',
+
   'pages.projects.badge.inProgress': 'en progreso',
 } as const;

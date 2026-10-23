@@ -23,7 +23,9 @@ export type ColorDeBarra = 'sky' | 'lav' | 'mint' | 'peach' | 'yellow' | '';
 export type SelloDibujo = 'libro' | 'trofeo' | 'medalla' | 'gato';
 
 /** El color del sticker. Son clases de css/styles.css: no se renombran. */
-export type SelloColor = 's-pink' | 's-sky' | 's-gold' | 's-lav' | 's-mint';
+export type SelloColor =
+  | 's-premio' | 's-diseno' | 's-tecnologia'                // con significado (tokens.css)
+  | 's-pink' | 's-sky' | 's-gold' | 's-lav' | 's-mint';     // antiguas, solo Creativo
 
 export interface Proyecto {
   nombre: TextoBilingue;

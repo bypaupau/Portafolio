@@ -10,7 +10,7 @@
                src/scripts/inicio/palabra-que-cambia.ts
                src/scripts/inicio/pista-de-scroll.ts
                src/scripts/inicio/easter-eggs.ts
-   dibujos     src/components/paginas/inicio/         (la compu, el sobre, la carpeta)
+   dibujos     src/components/paginas/inicio/         (la compu, el sobre)
                src/components/dibujos/        (los que comparte con Sobre mí)
    tarjetas    src/components/paginas/inicio/TarjetaDestacada.astro
    imágenes    public/images/proyectos/       ← SE REUSAN, no se duplican:
@@ -45,7 +45,7 @@ import { imagen } from '../lib/imagenes';
 import CompuPauExe from '../components/paginas/inicio/CompuPauExe.astro';
 import TarjetaDestacada from '../components/paginas/inicio/TarjetaDestacada.astro';
 import Sobre from '../components/paginas/inicio/Sobre.astro';
-import Carpeta from '../components/paginas/inicio/Carpeta.astro';
+import IconoCarpeta from '../components/iconos/IconoCarpeta.astro';
 import Corazon from '../components/dibujos/Corazon.astro';
 import Destello from '../components/dibujos/Destello.astro';
 import SignoMas from '../components/dibujos/SignoMas.astro';
@@ -192,7 +192,7 @@ const verbos = [
     <div class="pcards">
       <TarjetaDestacada
         enlace={rutaPagina('casos/grow-with-phoenix')}
-        sticker={{ dibujo: 'trofeo', color: 's-gold', clave: 'pages.home.featured.phoenix.award' }}
+        sticker={{ dibujo: 'trofeo', color: 's-premio', clave: 'pages.home.featured.phoenix.award' }}
         ventana={{ texto: 'grow_with_phoenix', color: 'peach' }}
         imagen={{ src: imagen('images/proyectos/phoenix-grow', 1120).src, claveAlt: 'pages.home.featured.phoenix.imageAlt' }}
         claveAsoma="pages.home.featured.phoenix.peek"
@@ -201,20 +201,20 @@ const verbos = [
         meta="SpaceHACK · 2025"
       />
       <TarjetaDestacada
-        enlace="https://github.com/bypaupau/WIDS-DATATHON-2026-ARTEMIS4"
+        enlace={rutaPagina('casos/schaman-analytics-bi')}
         fuera
-        sticker={{ dibujo: 'medalla', color: 's-pink', clave: 'pages.home.featured.wildfire.award' }}
-        ventana={{ texto: 'rutas_de_incendio', clave: 'pages.home.featured.wildfire.windowTitle', color: 'sky' }}
-        imagen={{ src: imagen('images/proyectos/rutasincendio', 1120).src, claveAlt: 'pages.home.featured.wildfire.imageAlt' }}
+        sticker={{ dibujo: 'libro', color: 's-diseno', clave: 'pages.home.featured.schaman.award' }}
+        ventana={{ texto: 'analitica_bi', color: 'sky' }}
+        imagen={{ src: imagen('images/proyectos/schaman-analytics', 1120).src, claveAlt: 'pages.home.featured.wildfire.imageAlt' }}
         claveAsoma="pages.home.featured.wildfire.peek"
         chips={['pages.home.featured.chip.data', 'pages.home.featured.chip.modeling']}
-        titulo={{ texto: 'Rutas de incendio', clave: 'pages.home.featured.wildfire.name' }}
-        meta="WiDS Datathon · 2026"
+        titulo={{ texto: 'Schaman Analytics - Plataforma BI', }}
+        meta="Proyecto Estudiantil · 2026"
       />
       <TarjetaDestacada
         enlace="https://github.com/bypaupau/JuegoGrupal-ProyectoIIParcial"
         fuera
-        sticker={{ dibujo: 'gato', color: 's-lav', clave: 'pages.home.featured.catventures.award' }}
+        sticker={{ dibujo: 'gato', color: 's-tecnologia', clave: 'pages.home.featured.catventures.award' }}
         ventana={{ texto: 'catventures', color: 'mint' }}
         imagen={{ src: imagen('images/proyectos/catventures', 1120).src, claveAlt: 'pages.home.featured.catventures.imageAlt' }}
         claveAsoma="pages.home.featured.catventures.peek"
@@ -223,7 +223,7 @@ const verbos = [
         meta="Unity 2D · 2026"
       />
     </div>
-    <p class="feat-all"><a class="link" href={rutaPagina('proyectos')}><Carpeta /> <span data-i18n="pages.home.featured.seeAll">{translate('pages.home.featured.seeAll')}</span></a></p>
+    <p class="feat-all"><a class="link" href={rutaPagina('proyectos')}><IconoCarpeta /> <span data-i18n="pages.home.featured.seeAll">{translate('pages.home.featured.seeAll')}</span></a></p>
   </section>
 
   {/* ═══════════ CIERRE · volver a la persona ═══════════ */}

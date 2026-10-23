@@ -32,5 +32,8 @@ export const englishProyectos: Record<keyof typeof spanishProyectos, string> = {
   'pages.projects.viewRepo': 'see repo →',
   'pages.projects.soon': 'soon ✦',
 
+  'pages.projects.goToCase': 'go to case study',
+  'pages.projects.viewRepository': 'view repository',
+
   'pages.projects.badge.inProgress': 'in progress',
 };

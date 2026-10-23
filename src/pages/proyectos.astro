@@ -22,7 +22,7 @@
    lo que ya existe en vez de volver a construirlo.
    ═══════════════════════════════════════════════════════════ */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import TarjetaDeTrabajo from '../components/piezas/TarjetaDeTrabajo.astro';
+import TarjetaDeTrabajo, { type AccionDeTarjeta } from '../components/piezas/TarjetaDeTrabajo.astro';
 import FilaDeArchivo from '../components/piezas/FilaDeProyectos.astro';
 import { translate } from '../i18n/translate';
 import { supportedLanguages, defaultLanguage, type Language } from '../i18n/languages';
@@ -63,6 +63,22 @@ function enlaceDe(proyecto: Proyecto): { href?: string; externo: boolean } {
   if (proyecto.caso) return { href: rutaPagina(`casos/${proyecto.caso}`), externo: false };
   const externo = proyecto.enlace || proyecto.repositorio;
   return externo && externo !== '#' ? { href: externo, externo: true } : { externo: true };
+}
+
+/** El botón de una tarjeta destacada: UNO solo. El caso gana al repo
+    (mismo orden que enlaceDe); sin ninguno de los dos, no hay botón. */
+function botonDe(proyecto: Proyecto): AccionDeTarjeta | undefined {
+  if (proyecto.caso) return {
+    tipo: 'caso',
+    enlace: rutaPagina(`casos/${proyecto.caso}`),
+    texto: textoDeClave('pages.projects.goToCase', translate('pages.projects.goToCase')),
+  };
+  if (proyecto.repositorio) return {
+    tipo: 'repositorio',
+    enlace: proyecto.repositorio,
+    texto: textoDeClave('pages.projects.viewRepository', translate('pages.projects.viewRepository')),
+  };
+  return undefined;
 }
 
 /* ── textos compuestos: mezclan traducción y datos, así que se arman en
@@ -130,59 +146,27 @@ const comoChip = (texto: string) => texto.toLowerCase();
     </div>
 
     <!-- pestañas por disciplina + contador -->
-    <div
-      class="chipbar fx-c hx"
-      style="--d:270ms"
-      role="group"
-      aria-label={translate('pages.projects.filters.ariaLabel')}
-      data-i18n-attr="aria-label:pages.projects.filters.ariaLabel"
-      data-total={totalProyectos}
-    >
-      <div class="fx-c-tabs" id="chips-d">
-        <button type="button" class="chip is-on" data-val="" aria-pressed="true"
-                data-i18n="pages.projects.filters.all" data-i18n-minuscula
-        >{comoChip(translate('pages.projects.filters.all'))}</button>
-        {disciplinas.map((disciplina) => (
-          <button type="button" class="chip" data-val={disciplina} aria-pressed="false"
-                  data-i18n={claveDeDisciplina[disciplina]} data-i18n-minuscula
-                  data-zero={cuantosEn(disciplina) === 0 ? '' : undefined}
-          >{comoChip(translate(claveDeDisciplina[disciplina]))}</button>
-        ))}
-      </div>
-      <div class="fx-c-sub"><span class="fx-count" id="fx-count" aria-hidden="true"></span></div>
-    </div>
 
     <section class="proj-sec" id="sec-feat" aria-labelledby="h-feat">
       <h2 class="sec-label proj-h rv" id="h-feat" data-i18n="pages.projects.featuredHeading">
         {translate('pages.projects.featuredHeading')}
       </h2>
       <div class="pcards" id="feat-grid">
-        {destacados.map((proyecto) => {
-          const { href, externo } = enlaceDe(proyecto);
-          return (
-            <TarjetaDeTrabajo
-              archivo={conIdioma(proyecto.archivo ?? proyecto.nombre)}
-              color={proyecto.color ?? ''}
-              imagen={proyecto.imagen ? imagen(proyecto.imagen, 1120).src : undefined}
-              titulo={conIdioma(proyecto.nombreCorto ?? proyecto.nombre)}
-              meta={conIdioma(proyecto.meta ?? proyecto.periodo)}
-              descripcion={conIdioma(proyecto.descripcion)}
-              etiquetas={proyecto.habilidades.slice(0, 4).map((h) => conIdioma(h))}
-              sticker={proyecto.logro
-                ? { texto: conIdioma(proyecto.logro), dibujo: proyecto.sello, color: proyecto.selloColor }
-                : undefined}
-              enlace={href}
-              externo={externo}
-              llamada={href
-                ? textoDeClave(
-                    proyecto.caso ? 'pages.projects.readCase' : 'pages.projects.viewProject',
-                    translate(proyecto.caso ? 'pages.projects.readCase' : 'pages.projects.viewProject'))
-                : undefined}
-              flecha={proyecto.caso ? '→' : '↗'}
-              datos={{ 'data-disciplinas': proyecto.disciplinas.join('|') }}
-            />
-          );
-        })}
+        {destacados.map((proyecto) => (
+          <TarjetaDeTrabajo
+            archivo={conIdioma(proyecto.archivo ?? proyecto.nombre)}
+            color={proyecto.color ?? ''}
+            imagen={proyecto.imagen ? imagen(proyecto.imagen, 1120).src : undefined}
+            titulo={conIdioma(proyecto.nombreCorto ?? proyecto.nombre)}
+            meta={conIdioma(proyecto.meta ?? proyecto.periodo)}
+            descripcion={conIdioma(proyecto.descripcion)}
+            sticker={proyecto.logro
+              ? { texto: conIdioma(proyecto.logro), dibujo: proyecto.sello, color: proyecto.selloColor }
+              : undefined}
+            accion={botonDe(proyecto)}
+            datos={{ 'data-disciplinas': proyecto.disciplinas.join('|') }}
+          />
+        ))}
       </div>
     </section>
 
