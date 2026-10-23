@@ -1,38 +1,142 @@
-/* DECISIONES · una necesidad y lo que colgó de ella
+/* DECISIONES · cada decisión, su ventana y su captura
 
    Parte de caso.css. Se carga desde ahí, que es quien
    manda el ORDEN: aquí eran las líneas 312–343.
-   Las reglas están sin tocar. */
+
+   ESTAS REGLAS SÍ SE REESCRIBIERON (las demás partes conservan el CSS
+   original tal cual). Lo que había era `.cs-dec`, una lista anidada de
+   necesidades con tres viñetas colgando de cada una. `npm run cambios`
+   lo marca; el original sigue en originales/sitio-anterior/caso.css. */
 /* ── fin de la nota · abajo empieza el CSS tal cual ── */
-/* ════════ DECISIONES · una necesidad y lo que colgó de ella ════
-   Eran cuatro etiquetas encadenadas con flechas: en el boceto cabían
-   en un renglón, en pantalla ocupaban tres, y ahí la flecha deja de
-   leerse como "y entonces" y pasa a ser ruido. La misma secuencia en
-   vertical: la necesidad manda y debajo cuelga lo que salió de ella.
+/* ════════ DE LA NECESIDAD A LA INTERFAZ ════════
+   Una VISTA del panel por bloque: su nombre, y debajo las dos
+   decisiones que la cambiaron, en dos columnas del mismo ancho.
 
-   La viñeta maciza es el primer nivel y la hueca el segundo: el
-   mismo cuadrado de 7px, que es el vocabulario de viñetas del resto
-   del caso, sin inventar un símbolo nuevo para el sub-nivel. */
-.cs-dec{ list-style:none; display:grid; gap:var(--sp-4); }
-.cs-dec > li{ position:relative; padding-left:18px; min-width:0; }
-.cs-dec > li::before{
-  content:""; position:absolute; left:0; top:var(--cs-bul);
-  width:7px; height:7px; background:var(--pink);
-}
-.cs-dec-n{ font-size:var(--cs-body); line-height:var(--cs-lh-card); color:var(--ink); }
-.cs-dec-n b{ font-weight:600; }
+   CADA DECISIÓN LLEVA SU CAPTURA DENTRO, debajo de su texto. Antes las
+   cuatro capturas iban juntas en una columna aparte: se veían grandes,
+   pero ninguna estaba al lado de la decisión que explica.
 
-.cs-dec ul{
-  list-style:none; display:grid; gap:var(--sp-2);
-  margin-top:var(--sp-2); padding-left:14px;
-}
-.cs-dec ul li{
-  position:relative; padding-left:18px;
-  font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--text-soft);
-}
-.cs-dec ul li::before{
-  content:""; position:absolute; left:0; top:var(--cs-bul);
-  width:7px; height:7px; background:transparent; border:2px solid var(--pink);
-}
-.cs-dec ul b{ color:var(--ink); font-weight:600; }
+   EL MARCO NO ES NUEVO: cada decisión es `.win`, la ventana retro de
+   styles/global/componentes/ventana.css — la misma de «Hablemos» en
+   Contacto y de las tarjetas de Creativo. Borde oscuro de 3px, sombra
+   desplazada y controles vienen de ahí.
 
+   Y VAN SIN ANIDAR: el nombre de la vista es un título normal encima
+   de las dos ventanas, no una tercera que las envuelva. */
+
+/* ── la vista y sus dos columnas ───────────────────────────────── */
+.cs-vista > * + *{ margin-top:var(--sp-3); }
+
+/* LAS TRES FILAS Y EL SUBGRID. La rejilla no reparte solo columnas:
+   declara las tres filas de una decisión —barra, texto, captura— y
+   cada ventana las hereda con `subgrid`. Eso es lo que pone las dos
+   capturas a la misma altura aunque un texto ocupe un renglón más que
+   el de al lado.
+
+   Sin esto cada ventana medía sus filas por su cuenta y las capturas
+   se desfasaban hasta 52px: la de la derecha arrancaba más arriba
+   porque su decisión estaba escrita más corta. Alinearlas a mano
+   habría sido fijarle una altura al texto, que es lo que se rompe en
+   cuanto cambia una palabra.
+
+   El cuerpo de la ventana ocupa las dos últimas filas y también las
+   hereda. Su relleno desplaza las dos columnas por igual, así que la
+   alineación se mantiene. */
+/*   EL HUECO VA SOLO ENTRE COLUMNAS. Un `gap` a secas separa también
+   las FILAS, y las filas de esta rejilla son las de dentro de cada
+   ventana: entre la barra de título y el cuerpo aparecía una franja
+   de 30px con el blanco de `.win` asomando. El subgrid hereda el hueco
+   de su rejilla madre, así que el arreglo es no declararlo: columnas
+   separadas, filas pegadas. El aire entre el texto y la captura lo
+   pone el cuerpo con su propio `gap`. */
+.cs-decs{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:auto auto auto;
+  column-gap:clamp(18px,2.4vw,30px);
+  row-gap:0;
+  align-items:start;
+}
+.cs-dec{ grid-row:span 3; display:grid; grid-template-rows:subgrid; row-gap:0; }
+.cs-dec .win-body{ grid-row:span 2; }
+
+/* ── la ventana de una decisión ────────────────────────────────── */
+.cs-dec{ min-width:0; }
+/* `.win-body` ya trae su relleno; aquí se le pone el pastel y el
+   ritmo vertical entre el texto y la captura */
+.cs-dec .win-body{
+  background:var(--tono,var(--pink-light));
+  display:grid; grid-template-rows:subgrid; gap:var(--sp-4);
+}
+
+/* ── la barra: icono, número, nombre y controles ───────────────── */
+.cs-dec .win-bar{ gap:var(--sp-1); }
+/* el cuadrado del icono vive en la barra, igual que los controles de
+   al lado: mismo borde, mismo tamaño de caja. Su pastel es el de la
+   decisión y nunca el de su barra, o se perdería dentro de ella. */
+.cs-dec-ico{
+  width:30px; height:30px; flex:none;
+  display:grid; place-content:center;
+  background:var(--d-tono,var(--sky));
+  border:2px solid var(--ink);
+  color:var(--ink);                       /* los SVG van con currentColor */
+}
+.cs-dec-ico svg{ display:block; width:18px; height:18px; }
+/* `.win-title` es VT323 y de una sola línea con puntos suspensivos:
+   sirve para un nombre de archivo, no para «Interpretación de
+   métricas» en una columna estrecha. Aquí va en la pixelada de los
+   títulos del sitio y puede partir en dos renglones. */
+.cs-dec .win-title{
+  display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;
+  margin:0; font-family:var(--font-pixel); font-weight:700;
+  font-size:1.02rem; line-height:1.2; letter-spacing:0;
+  white-space:normal; overflow:visible; text-overflow:clip;
+}
+.cs-dec-n{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1;
+  font-weight:400; color:var(--pink-ink); flex:none;
+}
+.cs-dec-t{ min-width:0; }
+
+/* ── los dos campos ───────────────────────────────────────────── */
+/* NECESIDAD y DECISIÓN se separan con espacio y nada más: ni caja, ni
+   filete, ni viñeta. Pegados, el texto de la primera y el rótulo de la
+   segunda se leían como un solo párrafo con una palabra en mayúsculas
+   en medio. */
+.cs-dec-campos{ display:grid; gap:var(--sp-3); align-content:start; }
+/* la cota solo muerde cuando las columnas se apilan: ahí el texto
+   ocupaba el ancho entero de la ventana y llegaba a 91 caracteres por
+   línea. En dos columnas no llega a tocarla. */
+.cs-dec-campos{ max-width:46ch; }
+.cs-dec-campos dt{
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1;
+  letter-spacing:1.2px; text-transform:uppercase;
+  color:var(--pink-ink); margin-bottom:var(--sp-0);
+}
+.cs-dec-campos dd{
+  font-size:var(--cs-small); line-height:var(--cs-lh-card); color:var(--ink);
+}
+
+/* ── la captura de la decisión ────────────────────────────────── */
+/* `.cs-fig2` ya pone el borde y el pie. Dos cambios: la sombra sale de
+   --cs (el acento de la sección) y dentro de un cuerpo pastel daba un
+   marco distinto en cada columna, así que va del color del borde; y el
+   pie hereda --text-soft, pensado para el fondo rosa pálido de la
+   página, así que sobre el pastel va en --ink, como el resto. */
+.cs-dec-fig{ margin:0; }
+.cs-dec-fig img{ width:100%; box-shadow:4px 4px 0 var(--ink); }
+.cs-dec-fig figcaption{ color:var(--ink); }
+
+/* ── LA NOTA DEL FINAL, SIN RAYA ───────────────────────────────
+   `.cs-nota` lleva un filete vertical que funciona en las demás
+   secciones, donde separa la nota de un párrafo corrido. Debajo de
+   cuatro ventanas con borde de 3px es una línea más compitiendo con
+   ellas, y la aclaración no es una cita: es una advertencia de
+   lectura. Se queda el texto y se va el adorno.
+
+   Variante y no cambio de `.cs-nota`: la usan todas las secciones de
+   los dos casos. */
+.cs-nota.discreta{
+  border-left:0; padding-left:0;
+  font-size:var(--cs-small); color:var(--text-soft);
+}

@@ -30,3 +30,28 @@
    renglones y la fuente pixel los pegaba uno encima de otro.
    Va acotado a esta página para no tocar los casos anteriores. */
 body[data-page="caso-schaman"] .cs-kicker{ line-height:1.8; }
+
+/* ── LAS DOS DECISIONES SE APILAN ─────────────────────────
+   Dos columnas mientras la captura de cada una siga siendo mirable.
+   A 760px cada columna baja de 340px de ancho y la captura con ella;
+   apiladas a ese mismo ancho pasan a ocupar la fila entera. La
+   captura es lo que hay que poder ver, así que gana ella.
+
+   Cada decisión se lleva SU captura al apilarse: eso es lo que no
+   hacía el reparto anterior, donde el texto quedaba arriba y las
+   cuatro imágenes abajo. */
+@media (max-width:760px){
+  /* una sola columna: se desarma el subgrid (ya no hay nada que
+     alinear con nada) y vuelve el hueco entre ventanas, que en dos
+     columnas está en cero para que no se cuele una franja blanca
+     entre la barra y el cuerpo. */
+  .cs-decs{ grid-template-columns:minmax(0,1fr); grid-template-rows:none; row-gap:var(--sp-4); }
+  .cs-dec{ grid-row:auto; display:block; }
+  .cs-dec .win-body{ grid-row:auto; grid-template-rows:none; }
+}
+/* en celular el cuadrado del icono baja con el título, que ya va a dos
+   renglones */
+@media (max-width:560px){
+  .cs-dec-ico{ width:26px; height:26px; }
+  .cs-dec-ico svg{ width:16px; height:16px; }
+}
