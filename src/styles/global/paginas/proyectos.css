@@ -38,6 +38,37 @@
 .pcard-full .pcard-desc{ font-size:.92rem; line-height:1.55; color:var(--text-soft); margin-top:6px; }
 .pcard-full .pcard-tools{ display:flex; flex-wrap:wrap; margin-top:4px; }
 .pcard-full .pcard-tools .pill{ margin:6px 6px 0 0; }
+/* las herramientas son información de apoyo: sin relleno de color y con el
+   borde suave, para que el título siga mandando */
+.arow-tools .pill{ background:var(--white); border-color:var(--pink-mid); color:var(--text-soft); }
+
+/* el botón de una tarjeta (ir al caso · ver repositorio).
+   La info crece hasta el fondo de la tarjeta y, dentro, la descripción
+   se estira: el botón queda al final y a la misma altura en toda la fila
+   aunque una descripción sea más larga que otra. Ocupa todo el ancho,
+   con icono + texto centrados.
+   Es una acción SECUNDARIA: rosa suave, borde y sombra más finos que un
+   .btn normal, y el contraste llega solo al pasar el mouse. Va con
+   .btn.pcard-boton para ganarle a .btn sin depender del orden. */
+.pcard-full .pcard-info{ flex:1; }
+.pcard-full .pcard-info:has(.pcard-boton) .pcard-desc{ flex-grow:1; }
+.btn.pcard-boton{
+  width:100%; box-sizing:border-box; justify-content:center;
+  margin-top:16px; font-size:.95rem; padding:5px 14px; gap:10px;
+  background:var(--pink-light); color:var(--ink);
+  border-width:2px; box-shadow:3px 3px 0 var(--ink);
+}
+@media (hover:hover){
+  .btn.pcard-boton:hover{ background:var(--pink-mid); transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); }
+}
+/* en pantallas táctiles, responsive.css le devuelve a .btn:hover su sombra
+   gruesa; aquí se queda la fina */
+@media (hover:none){
+  .btn.pcard-boton:hover{ box-shadow:3px 3px 0 var(--ink); }
+}
+.btn.pcard-boton:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
+.pcard-boton .sprite{ flex:none; image-rendering:pixelated; }
+.pcard-win-enlace{ display:block; color:inherit; text-decoration:none; }
 
 /* archivo: una ventana tipo explorador, una fila por proyecto */
 .arch{ list-style:none; margin:0; padding:0; background:#fff; }

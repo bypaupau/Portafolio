@@ -10,15 +10,29 @@
    Si hay `enlace` es un <a>; si no, un <div> que no se puede pulsar.
    Esa condición ya estaba en el sitio anterior.
 
+   Con `accion` (Proyectos) la tarjeta lleva UN BOTÓN abajo y por eso
+   es un <div>: un enlace no puede tener otros enlaces dentro. La ventana
+   sigue llevando al mismo destino que el botón, como atajo con el mouse; para el
+   teclado y el lector de pantalla está fuera (tabindex -1), porque es
+   el mismo destino que el botón.
+
    Los textos bilingües llegan ya resueltos al español, con los atributos
    data-i18n-es/en que permiten cambiar de idioma sin recargar.
    Ver src/lib/texto-bilingue.ts
    ═══════════════════════════════════════════════════════════ */
 import Sello from './Sello.astro';
+import IconoDocumento from '../iconos/IconoDocumento.astro';
+import IconoCarpeta from '../iconos/IconoCarpeta.astro';
 
 export interface TextoConIdioma {
   texto: string;
   atributos: Record<string, string>;
+}
+/** un botón de la tarjeta: el icono sale del tipo */
+export interface AccionDeTarjeta {
+  tipo: 'caso' | 'repositorio';
+  enlace: string;
+  texto: TextoConIdioma;
 }
 interface Props {
   /** título de la barra de la ventana */
@@ -29,7 +43,9 @@ interface Props {
   titulo: TextoConIdioma;
   meta: TextoConIdioma;
   descripcion: TextoConIdioma;
-  etiquetas: TextoConIdioma[];
+  etiquetas?: TextoConIdioma[];
+  /** el botón de abajo; si hay, reemplaza a `enlace` y `llamada` */
+  accion?: AccionDeTarjeta;
   sticker?: { texto: TextoConIdioma; dibujo?: 'libro' | 'trofeo' | 'medalla' | 'gato'; color?: string };
   enlace?: string;
   /** false para los enlaces internos, que no abren pestaña nueva */
@@ -41,34 +57,57 @@ interface Props {
   datos?: Record<string, string>;
 }
 const {
-  archivo, color = '', imagen, titulo, meta, descripcion, etiquetas,
-  sticker, enlace, externo = true, llamada, flecha = '↗', datos = {},
+  archivo, color = '', imagen, titulo, meta, descripcion, etiquetas = [],
+  sticker, enlace, externo = true, llamada, flecha = '↗', datos = {}, accion,
 } = Astro.props;
 
-const Etiqueta = enlace ? 'a' : 'div';
-const atributos = enlace
-  ? { href: enlace, ...(externo ? { target: '_blank', rel: 'noopener' } : {}) }
-  : {};
+/* un enlace que sale del sitio abre pestaña nueva */
+const destino = (href: string, sale: boolean) =>
+  ({ href, ...(sale ? { target: '_blank', rel: 'noopener' } : {}) });
+const sale = accion?.tipo === 'repositorio';
+
+const Etiqueta = enlace && !accion ? 'a' : 'div';
+const atributos = enlace && !accion ? destino(enlace, externo) : {};
 ---
 <Etiqueta class="pcard pcard-full rv" {...atributos} {...datos}>
   {sticker && (
     <Sello dibujo={sticker.dibujo} color={sticker.color} texto={sticker.texto.texto} atributosDeTexto={sticker.texto.atributos} />
   )}
 
-  <span class="win pcard-win">
-    <span class={`win-bar ${color}`}>
-      <span class="win-title" {...archivo.atributos}>{archivo.texto}</span>
-      <span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+  {accion ? (
+    <a class="pcard-win-enlace" {...destino(accion.enlace, sale)} tabindex="-1" aria-hidden="true">
+      <span class="win pcard-win">
+        <span class={`win-bar ${color}`}>
+          <span class="win-title" {...archivo.atributos}>{archivo.texto}</span>
+          <span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span>
+        </span>
+        <span class="pcard-media">{imagen && <img src={imagen} alt="" loading="lazy" decoding="async" />}</span>
+      </span>
+    </a>
+  ) : (
+    <span class="win pcard-win">
+      <span class={`win-bar ${color}`}>
+        <span class="win-title" {...archivo.atributos}>{archivo.texto}</span>
+        <span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+      </span>
+      <span class="pcard-media">{imagen && <img src={imagen} alt="" loading="lazy" decoding="async" />}</span>
     </span>
-    <span class="pcard-media">{imagen && <img src={imagen} alt="" loading="lazy" decoding="async" />}</span>
-  </span>
+  )}
 
   <span class="pcard-info">
     <span class="pcard-title" {...titulo.atributos}>{titulo.texto}</span>
     <span class="pcard-meta" {...meta.atributos}>{meta.texto}</span>
     <span class="pcard-desc" {...descripcion.atributos}>{descripcion.texto}</span>
-    <span class="pcard-tools">{etiquetas.map((e) => <span class="pill" {...e.atributos}>{e.texto}</span>)}</span>
-    {enlace && llamada && (
+    {etiquetas.length > 0 && (
+      <span class="pcard-tools">{etiquetas.map((e) => <span class="pill" {...e.atributos}>{e.texto}</span>)}</span>
+    )}
+    {accion && (
+      <a class="btn pcard-boton" {...destino(accion.enlace, sale)}>
+        {accion.tipo === 'caso' ? <IconoDocumento /> : <IconoCarpeta ancho="24" />}
+        <span {...accion.texto.atributos}>{accion.texto.texto}</span>
+      </a>
+    )}
+    {!accion && enlace && llamada && (
       <span class="pcard-cta"><span {...llamada.atributos}>{llamada.texto}</span>{' '}<span class="pcard-arr" aria-hidden="true">{flecha}</span></span>
     )}
   </span>
