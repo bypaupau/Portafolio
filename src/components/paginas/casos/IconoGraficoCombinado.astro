@@ -1,0 +1,21 @@
+---
+/* Icono «gráfico combinado»: barras que crecen bajo una línea. Es el de
+   la decisión 02, la jerarquía de información.
+
+   Trazo de Lucide (lucide.dev · licencia ISC · v1.61.0, icono
+   `chart-no-axes-combined`), copiado tal cual. Mismas medidas que sus
+   cuatro hermanos: 24×24, grosor 2, extremos redondos.
+
+   Sin crispEdges y sin hexadecimales, por lo mismo que el resto: el
+   color lo pone el CSS a través de currentColor. */
+interface Props { class?: string }
+const { class: clase } = Astro.props;
+---
+<svg class={clase} viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 16v5" />
+  <path d="M16 14.639V21" />
+  <path d="M20 10.656V21" />
+  <path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15" />
+  <path d="M4 18.463V21" />
+  <path d="M8 14.656V21" />
+</svg>

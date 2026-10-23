@@ -1,0 +1,39 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA CAPTURA DE UNA DECISIÓN · <figure class="cs-fig2">
+
+   Una captura con su rótulo de estado ("Antes" / "Después") y su pie.
+   Va DENTRO de la ventana de su decisión, debajo del texto: cada
+   decisión enseña la pantalla que le toca, y las cuatro juntas forman
+   las dos comparaciones del caso leyendo de izquierda a derecha.
+
+   Sustituye a ParAntesDespues.astro, que armaba las dos capturas
+   juntas en una columna aparte. Ese reparto dejaba las imágenes lejos
+   del texto que las explica.
+
+   Reusa `.cs-fig2` (la figura con borde y pie del caso) y `.cs-ab-k`
+   (el rótulo con el pastel de cada estado). Lo único propio es la
+   clase del estado.
+   ═══════════════════════════════════════════════════════════ */
+import { conIdioma, altConIdioma } from '../../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  /** 'k-a' para el antes (durazno), 'k-b' para el después (menta) */
+  estado: string;
+  etiqueta: TextoBilingue;
+  imagen: string;
+  ancho: number;
+  alto: number;
+  pie: TextoBilingue;
+  alt: TextoBilingue;
+}
+const { estado, etiqueta, imagen, ancho, alto, pie, alt } = Astro.props;
+const marca = conIdioma(etiqueta);
+const leyenda = conIdioma(pie);
+---
+<figure class="cs-fig2 cs-dec-fig">
+  <span class={`cs-ab-k ${estado}`} {...marca.atributos}>{marca.texto}</span>
+  <img src={imagen} width={ancho} height={alto} loading="lazy" decoding="async" {...altConIdioma(alt)} />
+  <figcaption {...leyenda.atributos}>{leyenda.texto}</figcaption>
+</figure>

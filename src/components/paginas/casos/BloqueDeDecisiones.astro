@@ -1,0 +1,121 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   UN BLOQUE DE «DE LA NECESIDAD A LA INTERFAZ»
+
+   Un bloque = una VISTA del panel: su nombre, y debajo las dos
+   decisiones que la cambiaron, una al lado de la otra.
+
+   ── CADA DECISIÓN ES UNA VENTANA, Y LLEVA SU CAPTURA DENTRO ─
+   El orden dentro de cada ventana es siempre el mismo:
+
+     barra    icono · número · nombre de la decisión · controles
+     cuerpo   NECESIDAD · DECISIÓN · la captura · su pie
+
+   Antes las cuatro capturas vivían en una columna aparte, a la derecha
+   de todo el texto. Se veían grandes, pero ninguna estaba al lado de
+   la decisión que explica: había que emparejarlas a ojo.
+
+   ── LA VENTANA NO ES NUEVA ─────────────────────────────────
+   `.win`, `.win-bar`, `.win-title` y `.win-ctrls` salen de
+   styles/global/componentes/ventana.css: son las mismas de las
+   ventanas de «Hablemos» en Contacto y de las tarjetas de Creativo.
+   Y van SIN anidar: el nombre de la vista es un título normal encima
+   de las dos, no una tercera ventana que las envuelva.
+
+   ── QUÉ CAPTURA LLEVA CADA UNA ─────────────────────────────
+   La primera decisión del bloque lleva el ANTES de esa vista y la
+   segunda el DESPUÉS, en ese orden. Leídas de izquierda a derecha, las
+   dos ventanas siguen siendo la comparación de siempre; leídas de
+   arriba abajo, cada una es una decisión con su pantalla.
+   ═══════════════════════════════════════════════════════════ */
+import CapturaDeDecision from './CapturaDeDecision.astro';
+import Texto from '../../piezas/Texto.astro';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Decision {
+  titulo: TextoBilingue;
+  necesidad: TextoBilingue;
+  decision: TextoBilingue;
+}
+interface Captura {
+  imagen: string;
+  ancho: number;
+  alto: number;
+  pie: TextoBilingue;
+  alt: TextoBilingue;
+}
+interface Props {
+  /** para el aria-labelledby del bloque y el id de su título */
+  id: string;
+  /** el nombre de la vista: «Panel general», «Análisis de fallos» */
+  titulo: TextoBilingue;
+  etiquetas: {
+    necesidad: TextoBilingue;
+    decision: TextoBilingue;
+    antes: TextoBilingue;
+    despues: TextoBilingue;
+  };
+  decisiones: readonly Decision[];
+  /** por decisión: su icono, el pastel de su cuadrado, el de su barra
+      y el de su cuerpo */
+  piezas: readonly { icono: any; tono: string; barra: string; cuerpo: string }[];
+  /** el número de la PRIMERA decisión del bloque: así la numeración
+      sigue corrida entre bloques (01 02 · 03 04) y no se reinicia */
+  desdeLaDecision: number;
+  /** las dos capturas de la vista, en orden: antes y después */
+  capturas: readonly [Captura, Captura];
+}
+const { id, titulo, etiquetas, decisiones, piezas, desdeLaDecision, capturas } = Astro.props;
+
+/* el estado que le toca a cada columna: el antes a la izquierda */
+const estados = [
+  { clase: 'k-a', etiqueta: etiquetas.antes },
+  { clase: 'k-b', etiqueta: etiquetas.despues },
+];
+---
+<section class="cs-vista" aria-labelledby={`h-${id}`}>
+
+  <Texto como="h3" class="cs-sub-h cs-vista-h" id={`h-${id}`} valor={titulo} />
+
+  <div class="cs-decs">{decisiones.map((decision, i) => {
+    const Icono = piezas[i]!.icono;
+    const n = String(desdeLaDecision + i).padStart(2, '0');
+    return (
+      <article class="win cs-dec" style={`--tono:${piezas[i]!.cuerpo}`}>
+
+        <div class={`win-bar ${piezas[i]!.barra}`}>
+          <span class="cs-dec-ico" style={`--d-tono:${piezas[i]!.tono}`} aria-hidden="true"><Icono /></span>
+          {/* el espacio va explícito: Astro descarta el salto de línea
+              entre dos elementos y el número quedaba pegado al nombre */}
+          <h4 class="win-title"><span class="cs-dec-n">{n}</span>{' '}<Texto como="span" class="cs-dec-t" valor={decision.titulo} /></h4>
+          {/* decorativos, como en las ventanas de Contacto y Creativo */}
+          <span class="win-ctrls" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
+        </div>
+
+        <div class="win-body">
+          <dl class="cs-dec-campos">
+            <div>
+              <Texto como="dt" valor={etiquetas.necesidad} />
+              <Texto como="dd" valor={decision.necesidad} />
+            </div>
+            <div>
+              <Texto como="dt" valor={etiquetas.decision} />
+              <Texto como="dd" valor={decision.decision} />
+            </div>
+          </dl>
+
+          <CapturaDeDecision
+            estado={estados[i]!.clase}
+            etiqueta={estados[i]!.etiqueta}
+            imagen={capturas[i]!.imagen}
+            ancho={capturas[i]!.ancho}
+            alto={capturas[i]!.alto}
+            pie={capturas[i]!.pie}
+            alt={capturas[i]!.alt}
+          />
+        </div>
+
+      </article>
+    );
+  })}</div>
+</section>
