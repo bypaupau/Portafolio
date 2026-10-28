@@ -12,6 +12,11 @@
 projects/*/*.pdf
 projects/*/img/*.png
 
+# …salvo los vídeos de origen: las grabaciones .mov pesan 72 MB y ningún
+# script las lee. Lo que se publica son los .mp4 de public/video/, que se
+# sacan de ellas con ffmpeg (los comandos están en originales/LEEME.md).
+originales/video/
+
 # ── Astro (migración 2026-10) ──
 node_modules/
 dist/
