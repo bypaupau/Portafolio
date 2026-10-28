@@ -63,6 +63,15 @@ function entrada(base: string): Entrada {
   );
 }
 
+/**
+ * ¿Está ya en el manifiesto? Para lo que puede faltar a propósito, como
+ * la portada de un caso recién creado con `npm run nuevo-caso`, que
+ * todavía no tiene imagen. Para todo lo demás, imagen() y que falle.
+ */
+export function hayImagen(base: string): boolean {
+  return base in catalogo;
+}
+
 const lista = (v: Version): ImagenLista => ({ src: rutaPublica(v.ruta), ancho: v.ancho, alto: v.alto });
 
 /**

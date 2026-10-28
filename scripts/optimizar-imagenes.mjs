@@ -17,7 +17,8 @@
 
    Todas SIN PÉRDIDA. WebP sin pérdida es exacto bit a bit: no hay
    artefactos ni calidad que perder. Lo único que se descarta son píxeles
-   que la pantalla nunca iba a dibujar.
+   que la pantalla nunca iba a dibujar. La excepción: si el original ya
+   es un .webp y ya cabe, se copia tal cual (ver aWebpSinPerdida).
 
    El ancho va en el nombre a propósito. `-mini` no sirve: en este
    repositorio ya significaba otra cosa (eran conversiones a WebP del
@@ -70,6 +71,16 @@ const PUBLICO = path.join(raiz, 'public');
 const ORIGINALES = path.join(raiz, 'originales');
 const MANIFIESTO = path.join(raiz, 'src/content/imagenes.json');
 
+/* images/casos/<caso> y sus subcarpetas, tal como estén en originales/ */
+function carpetasDeCasos() {
+  const base = path.join(ORIGINALES, 'images/casos');
+  if (!fs.existsSync(base)) return [];
+  return fs.readdirSync(base, { recursive: true, withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => path.relative(ORIGINALES, path.join(d.parentPath ?? d.path, d.name)).split(path.sep).join('/'))
+    .sort();
+}
+
 /* ── qué optimizar, y por qué esos anchos ────────────────────────
    Cada ancho es EL DOBLE del tamaño más grande al que se ve la imagen en
    ese sitio, porque una pantalla retina dibuja el doble de píxeles. */
@@ -89,13 +100,39 @@ const QUE_OPTIMIZAR = [
     ],
     grande: null,
   },
+  /* LOS CASOS DE ESTUDIO: todos con el mismo layout, la misma columna
+     de contenido (852 px) y el mismo ancho, el doble. No se listan a
+     mano: cada carpeta de originales/images/casos/ (y sus subcarpetas,
+     porque el script no entra en ellas solo) es un grupo. Un caso nuevo
+     no obliga a tocar este archivo. */
+  ...carpetasDeCasos().map((carpeta) => ({
+    carpeta,
+    anchos: [
+      { px: 1704, para: 'la columna de contenido de un caso (852px); lo que mide menos no se redimensiona' },
+    ],
+    grande: null,   /* el zoom usa la misma que se ve: ninguna figura de caso lleva data-ampliada */
+  })),
 ];
 
 const EXTENSIONES = ['.png', '.jpg', '.jpeg'];
 const esOriginal = (f) => EXTENSIONES.includes(path.extname(f).toLowerCase());
+/* En originales/ también vale un .webp: casi todas las capturas de Schaman
+   solo existen así, porque se exportaron ya en WebP y no se guardó el PNG.
+   En public/ no: ahí un .webp es lo GENERADO, y tomarlo por original lo
+   regeneraría encima de sí mismo. */
+const esWebp = (f) => path.extname(f).toLowerCase() === '.webp';
+const esOriginalGuardado = (f) => esOriginal(f) || esWebp(f);
 const kb = (n) => `${Math.round(n / 1024)} KB`;
 
 async function aWebpSinPerdida(entrada, salida, anchoMaximo, anchoOriginal) {
+  /* Un .webp que ya cabe se COPIA, byte a byte. Recodificarlo sin pérdida
+     no le devuelve lo que perdió al exportarse con pérdida: solo lo engorda.
+     Es la regla 2 en su caso extremo: si no hay nada que cambiar, no se toca. */
+  if (esWebp(entrada) && anchoOriginal <= anchoMaximo) {
+    fs.copyFileSync(entrada, salida);
+    const meta = await sharp(salida).metadata();
+    return { ancho: meta.width, alto: meta.height, bytes: fs.statSync(salida).size };
+  }
   let img = sharp(entrada);
   if (anchoOriginal > anchoMaximo) img = img.resize({ width: anchoMaximo, withoutEnlargement: true });
   await img.webp({ lossless: true, effort: 6 }).toFile(salida);
@@ -111,11 +148,11 @@ for (const grupo of QUE_OPTIMIZAR) {
   const enOriginales = path.join(ORIGINALES, grupo.carpeta);
   const enPublico = path.join(PUBLICO, grupo.carpeta);
   /* la primera vez los originales todavía están en public/; después, en originales/ */
-  const desde = fs.existsSync(enOriginales) && fs.readdirSync(enOriginales).some(esOriginal)
+  const desde = fs.existsSync(enOriginales) && fs.readdirSync(enOriginales).some(esOriginalGuardado)
     ? enOriginales : enPublico;
   if (!fs.existsSync(desde)) { console.log(`  (no existe ${grupo.carpeta}, se salta)`); continue; }
 
-  const archivos = fs.readdirSync(desde).filter(esOriginal).sort();
+  const archivos = fs.readdirSync(desde).filter(desde === enOriginales ? esOriginalGuardado : esOriginal).sort();
   if (!archivos.length) { console.log(`  (sin originales en ${grupo.carpeta})`); continue; }
 
   console.log(`\n── ${grupo.carpeta}`);
@@ -159,7 +196,9 @@ for (const grupo of QUE_OPTIMIZAR) {
       totalGrande += hecho.bytes;
       trozos.push(`grande ${hecho.ancho}px ${kb(hecho.bytes)}`);
     } else {
-      trozos.push(meta.width <= anchoMayorGenerado ? 'ya cabía: solo cambió de formato' : 'sin grande: el original no da más detalle');
+      trozos.push(meta.width > anchoMayorGenerado ? 'sin grande: el original no da más detalle'
+        : esWebp(archivo) ? 'ya cabía y ya era WebP: copiado tal cual'
+        : 'ya cabía: solo cambió de formato');
     }
 
     manifiesto[`${grupo.carpeta}/${nombre}`] = entrada;
