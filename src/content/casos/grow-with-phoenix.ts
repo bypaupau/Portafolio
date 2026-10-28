@@ -140,8 +140,8 @@ export const growWithPhoenix = {
     pregunta: {
       rotulo: { es: 'La pregunta que orientó el proyecto', en: 'The question that guided the project' },
       texto: {
-        es: '¿Cómo podríamos ayudar a las personas de Phoenix a descubrir qué cultivar en casa, acompañar el crecimiento de sus plantas y aprovechar la cosecha para preparar alimentos?',
-        en: 'How might we help people in Phoenix discover what to grow at home, support their plants as they grow, and use the harvest to prepare food?',
+        es: '¿Cómo podríamos ayudar a las comunidades de Phoenix a afrontar la inseguridad alimentaria agravada por las condiciones climáticas y ambientales, facilitando el acceso a alimentos y el cultivo de plantas adaptadas a su entorno?',
+        en: 'How might we help communities in Phoenix address food insecurity—exacerbated by climatic and environmental conditions—by facilitating access to food and the cultivation of plants adapted to their environment?',
       },
     },
   },
