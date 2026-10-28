@@ -8,23 +8,21 @@
       qué ojos y qué boca se ven. Sin segundo argumento, se queda hasta
       que alguien la cambie.
 
-   2. EL CICLO DE DORMIR. pau.exe no solo reacciona: tiene un ritmo.
-        · nadie la toca en 25 s → cierra los ojos y se queda QUIETA
-        · cualquier gesto dentro de la ventana → despierta
-      Dormitar va hacia la quietud, no hacia el movimiento. Con "menos
-      movimiento" NO dormita: unos ojos cerrados para siempre en una
-      página sin animación se leerían como un error de dibujo.
-
-   El parpadeo es lo único que se mueve solo en todo el sitio.
+   2. EL PARPADEO. Cada 4 segundos, siempre, sin pararse nunca. Antes
+      parpadeaba a destiempo y se dormía a los 25 s sin que nadie la
+      tocara; Pau prefirió (2026-10-28) que no se duerma y que el
+      ritmo sea fijo, el mismo que la mascota de los casos.
+      Si en ese momento tiene otra cara puesta (sonríe, se sorprende),
+      ese parpadeo se salta: no le cierra los ojos a una expresión.
+      Con «menos movimiento» no parpadea.
    ═══════════════════════════════════════════════════════════ */
-import { compu, menosMovimiento, enPantalla, alAzar } from './elementos';
+import { compu, menosMovimiento } from './elementos';
 
-/** Cuánto aguanta sin que nadie la toque. Es el único número a tocar. */
-const ESPERA_ANTES_DE_DORMIR = 25000;
+/** Cada cuánto parpadea, y cuánto dura el parpadeo. */
+const CADA = 4000;
+const DURA = 130;
 
 let expresion: number | undefined;
-let siesta: number | undefined;
-let dormida = false;
 
 export function carita(cara: string, cuanto?: number): void {
   if (!compu) return;
@@ -35,56 +33,10 @@ export function carita(cara: string, cuanto?: number): void {
   }
 }
 
-export const estaDormida = (): boolean => dormida;
-
-function dormir(): void {
-  if (dormida || !compu) return;
-  dormida = true;
-  window.clearTimeout(expresion);
-  compu.classList.add('is-asleep');
-  compu.setAttribute('data-face', 'blink');   /* ojos cerrados, sin reloj */
-}
-
-/**
- * La despierta y reinicia la cuenta.
- * Devuelve `true` solo si venía dormida, para que quien llame decida
- * si además la saluda. (Antes el saludo vivía aquí dentro, y eso
- * obligaba a que la carita conociera el diálogo.)
- */
-export function despertar(): boolean {
-  window.clearTimeout(siesta);
-  const seDespierta = dormida;
-  if (dormida) {
-    dormida = false;
-    compu?.classList.remove('is-asleep');
-    carita('happy', 900);
-  }
-  if (!menosMovimiento) siesta = window.setTimeout(dormir, ESPERA_ANTES_DE_DORMIR);
-  return seDespierta;
-}
-
-/** Arranca el ciclo: parpadeo ocasional y la primera cuenta para dormir. */
+/** Arranca el parpadeo: cada 4 s, para siempre. */
 export function empezarElCiclo(): void {
   if (menosMovimiento || !compu) return;
-
-  siesta = window.setTimeout(dormir, ESPERA_ANTES_DE_DORMIR);
-
-  let parpadeos = 0;
-  const programar = (): void => {
-    window.setTimeout(() => {
-      if (enPantalla() && !dormida && !compu.getAttribute('data-face')) {
-        parpadeos++;
-        /* cada siete parpadeos, en vez de parpadear, sonríe o guiña */
-        if (parpadeos % 7 === 0) {
-          carita(Math.random() < 0.5 ? 'happy' : 'wink', 1400);
-        } else {
-          carita('blink', 130);
-          /* y a veces es un parpadeo doble */
-          if (Math.random() < 0.2) window.setTimeout(() => carita('blink', 120), 260);
-        }
-      }
-      programar();
-    }, alAzar(3200, 6500));
-  };
-  programar();
+  window.setInterval(() => {
+    if (!compu.getAttribute('data-face')) carita('blink', DURA);
+  }, CADA);
 }

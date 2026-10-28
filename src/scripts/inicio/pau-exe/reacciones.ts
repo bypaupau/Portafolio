@@ -14,10 +14,9 @@
                            con los repos, guiña a LinkedIn
      el título             pau.exe ↔ pausita.exe al pasar el mouse
      cambio de idioma      lo celebra, sin moverse
-     entrar con el cursor  si estaba dormida, despierta y saluda
    ═══════════════════════════════════════════════════════════ */
 import { ventana, compu, menosMovimiento, punteroFino, enPantalla } from './elementos';
-import { carita, despertar, estaDormida, empezarElCiclo } from './carita';
+import { carita, empezarElCiclo } from './carita';
 import { escribir, decir, bienvenida, cancelarVuelta, volverALaBienvenida, estaEscribiendo } from './dialogo';
 import { gesto, destello, hundir, chispita, limpiarAlTerminar } from './gestos';
 import { dice, mensajesDeEstado } from './textos';
@@ -40,19 +39,10 @@ export function encenderPauExe(): void {
   if (!menosMovimiento) {
     ([['corriendo', 16000], ['sigueAhi', 48000]] as const).forEach(([clave, cuando]) => {
       window.setTimeout(() => {
-        if (enPantalla() && !estaDormida() && !estaEscribiendo()) decir(dice(clave), 2200);
+        if (enPantalla() && !estaEscribiendo()) decir(dice(clave), 2200);
       }, cuando);
     });
   }
-
-  /* ── despierta con cualquier gesto dentro de la ventana ── */
-  const atender = (saluda: boolean) => () => {
-    if (despertar() && saluda) decir(dice('despierta'), 1200);
-  };
-  ventana.addEventListener('pointerenter', atender(true));
-  ventana.addEventListener('pointermove', atender(false));
-  ventana.addEventListener('pointerdown', atender(false));
-  ventana.addEventListener('focusin', atender(false));
 
   /* ── la compu ── */
   compu.addEventListener('pointerdown', hundir);
@@ -87,7 +77,6 @@ export function encenderPauExe(): void {
       : boton.classList.contains('gh') ? 'github' : 'linkedin';
 
     const entrar = (): void => {
-      despertar();
       cancelarVuelta();
       escribir(dice(PISTA_DE[cual]), 22);
       carita(CARA_DE[cual]);
@@ -118,7 +107,6 @@ export function encenderPauExe(): void {
 
   /* ── cambio de idioma desde la taskbar ── */
   document.addEventListener('langchange', () => {
-    despertar();
     cancelarVuelta();
     carita('happy', 1200);
     decir(dice('cambioDeIdioma'), 1400);

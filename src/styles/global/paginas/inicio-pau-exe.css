@@ -66,9 +66,6 @@
 .mon[data-scr="in"]    .scr{ fill:var(--scr-in); }
 /* golpe de luz de un cuadro (el ✕ y el clic en un botón social) */
 .mon[data-scr="flash"] .scr{ fill:#FFFFFF; transition:none; }
-/* dormitando: la pantalla baja un punto, así se lee incluso en una
-   captura quieta que está en reposo y no apagada */
-.mon.is-asleep .scr{ fill:#E3EDF4; }
 
 /* EL CLIC TIENE PESO: el sprite se hunde 2 px, el mismo gesto que ya
    hacen .btn y .social al :active. Antes la compu cambiaba de cara

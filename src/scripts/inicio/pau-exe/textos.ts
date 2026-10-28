@@ -14,7 +14,6 @@ import type { TranslationKey } from '../../../i18n/keys';
 
 const CLAVES = {
   bienvenida: 'pages.home.exe.welcome',
-  despierta: 'pages.home.exe.wakeUp',
   corriendo: 'pages.home.exe.running',
   sigueAhi: 'pages.home.exe.stillHere',
   cambioDeIdioma: 'pages.home.exe.languageChanged',

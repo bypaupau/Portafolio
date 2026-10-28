@@ -43,8 +43,7 @@ export function encenderLosOjos(): void {
 
     let nuevoX = 0;
     let nuevoY = 0;
-    /* dormitando no mira a nadie */
-    if (!lejos && !compu.classList.contains('is-asleep')) {
+    if (!lejos) {
       if (Math.abs(dx) > caja.width * 0.16) nuevoX = dx < 0 ? -1 : 1;
       if (dy < -caja.height * 0.18) nuevoY = -1;
     }
