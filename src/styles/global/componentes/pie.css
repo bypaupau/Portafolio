@@ -7,7 +7,7 @@
 /* ════════ footer ════════ */
 .foot{
   position:relative; z-index:2; text-align:center; margin-top:48px;
-  font-family:var(--font-term); font-size:1.15rem; color:var(--text-muted);
+  font-family:var(--font-term); font-size:calc(1.15rem * var(--font-term-scale)); color:var(--text-muted);
   padding:18px 0 36px;
 }
 .foot .hp{ color:var(--pink); }

@@ -32,7 +32,7 @@
 .stop-txt{ font-size:.92rem; line-height:1.55; color:var(--text-soft); }
 .stop-meta{
   display:block; margin-top:6px;
-  font-family:var(--font-term); font-size:1.08rem; color:var(--pink-ink);
+  font-family:var(--font-term); font-size:calc(1.08rem * var(--font-term-scale)); color:var(--pink-ink);
 }
 /* la parada actual es la única destacada */
 .stop-now .stop-ico{ --ico-sh:var(--pink); }
@@ -40,7 +40,7 @@
 .stop-note{
   position:absolute; top:8px; right:calc(50% + 42px);
   white-space:nowrap;
-  font-family:var(--font-term); font-size:1.05rem; line-height:1; color:#fff;
+  font-family:var(--font-term); font-size:calc(1.05rem * var(--font-term-scale)); line-height:1; color:#fff;
   background:var(--pink-ink); border:2px solid var(--ink);
   padding:3px 7px 2px;
 }

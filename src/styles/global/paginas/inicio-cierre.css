@@ -18,7 +18,7 @@
 .outro-ico .sprite{ image-rendering:pixelated; }
 .outro-q{ font-family:var(--font-pixel); font-weight:600; font-size:1.12rem; line-height:1.3; color:var(--ink); margin-bottom:6px; }
 .outro-q .st-dot{ display:inline-block; vertical-align:middle; margin:-3px 4px 0 0; }
-.outro-sub{ font-family:var(--font-term); font-size:1.15rem; color:var(--text-soft); margin-bottom:6px; }
+.outro-sub{ font-family:var(--font-term); font-size:calc(1.15rem * var(--font-term-scale)); color:var(--text-soft); margin-bottom:6px; }
 .outro-col .btn{ margin-top:10px; }
 
 /* ── CADA VERBO SE MUEVE COMO LO QUE DICE ─────────────────────

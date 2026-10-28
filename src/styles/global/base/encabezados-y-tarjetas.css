@@ -21,7 +21,7 @@
 .grid-3{ grid-template-columns:repeat(3,1fr); }
 .cards .win-body h3{ font-family:var(--font-pixel); font-weight:600; font-size:1.25rem; color:var(--ink); margin-bottom:6px; }
 .cards .win-body p{ font-size:.92rem; color:var(--text-soft); }
-.meta{ font-family:var(--font-term); font-size:1.05rem; color:var(--pink); margin-bottom:4px; }
-.pill{ display:inline-block; font-family:var(--font-term); font-size:1rem; line-height:1; padding:5px 9px; margin:4px 5px 0 0; background:var(--pink-light); border:2px solid var(--ink); color:var(--ink); }
+.meta{ font-family:var(--font-term); font-size:calc(1.05rem * var(--font-term-scale)); color:var(--pink); margin-bottom:4px; }
+.pill{ display:inline-block; font-family:var(--font-term); font-size:calc(1rem * var(--font-term-scale)); line-height:1; padding:5px 9px; margin:4px 5px 0 0; background:var(--pink-light); border:2px solid var(--ink); color:var(--ink); }
 .link{ font-family:var(--font-pixel); font-weight:600; font-size:1rem; color:var(--pink); text-decoration:none; border-bottom:2px solid var(--pink-mid); }
 .link:hover{ color:var(--ink); border-color:var(--ink); }

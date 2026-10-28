@@ -31,7 +31,7 @@ body[data-page="creative"] .wrap{ --w:var(--w-wide); }   /* es una galería: pid
   border:3px dashed var(--pink); background:var(--pink-pale);
 }
 .cr-soon-t{ font-family:var(--font-pixel); font-weight:700; font-size:1.15rem; color:var(--pink-ink); }
-.cr-soon-x{ font-family:var(--font-term); font-size:1.15rem; line-height:1.35; color:var(--text-soft); max-width:22ch; }
+.cr-soon-x{ font-family:var(--font-term); font-size:calc(1.15rem * var(--font-term-scale)); line-height:1.35; color:var(--text-soft); max-width:22ch; }
 
 /* ── CREATIVO RESPONDE CON SU PROPIO COLOR ────────────────────
    Esta página reusaba .pcard tal cual y no tenía nada suyo. Sin añadir

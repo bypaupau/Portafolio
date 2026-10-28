@@ -22,7 +22,7 @@
   background:#fff; border:2px solid var(--ink);
 }
 .tool-verb{ font-family:var(--font-pixel); font-weight:700; font-size:1.35rem; line-height:1; color:var(--ink); }
-.tool-what{ font-family:var(--font-term); font-size:1.12rem; line-height:1.1; color:var(--text-soft); margin-top:4px; }
+.tool-what{ font-family:var(--font-term); font-size:calc(1.12rem * var(--font-term-scale)); line-height:1.1; color:var(--text-soft); margin-top:4px; }
 
 /* teclas: mismo lenguaje que los botones biselados, a escala chica */
 .keys{ list-style:none; display:flex; flex-wrap:wrap; gap:10px 8px; padding:18px 16px 20px; }

@@ -42,7 +42,7 @@
 }
 .polaroid figcaption{
   display:flex; align-items:center; justify-content:center; gap:8px;
-  font-family:var(--font-term); font-size:1.55rem; line-height:1; color:var(--ink);
+  font-family:var(--font-term); font-size:calc(1.55rem * var(--font-term-scale)); line-height:1; color:var(--ink);
   padding:11px 0 13px;
 }
 .polaroid figcaption .px{ width:14px; flex:none; }   /* 7 col × 2px */
@@ -90,7 +90,7 @@
 /* ── intro ── */
 .ab-intro{ min-width:0; }
 .ab-path{
-  font-family:var(--font-term); font-size:1.2rem; color:var(--text-soft);
+  font-family:var(--font-term); font-size:calc(1.2rem * var(--font-term-scale)); color:var(--text-soft);
   margin-bottom:6px;
 }
 .ab-hello{
@@ -148,7 +148,7 @@
 .ab-status{
   display:inline-flex; align-items:center; gap:10px;
   margin-top:26px;
-  font-family:var(--font-term); font-size:1.25rem; line-height:1.1; color:var(--ink);
+  font-family:var(--font-term); font-size:calc(1.25rem * var(--font-term-scale)); line-height:1.1; color:var(--ink);
   background:#fff; border:2px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
   padding:7px 14px 6px;
 }

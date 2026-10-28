@@ -82,7 +82,7 @@
   color:var(--ink);                       /* los SVG van con currentColor */
 }
 .cs-dec-ico svg{ display:block; width:18px; height:18px; }
-/* `.win-title` es VT323 y de una sola línea con puntos suspensivos:
+/* `.win-title` usa Pixelify Sans y es de una sola línea con puntos suspensivos:
    sirve para un nombre de archivo, no para «Interpretación de
    métricas» en una columna estrecha. Aquí va en la pixelada de los
    títulos del sitio y puede partir en dos renglones. */

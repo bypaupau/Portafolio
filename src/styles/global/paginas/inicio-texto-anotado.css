@@ -42,7 +42,7 @@ main{ overflow-x:clip; }       /* red de seguridad: nada crea scroll horizontal 
 /* identidad secundaria: "✦ y también developer / diseñadora / …" */
 .hero-also{
   display:flex; align-items:center; gap:8px; margin-bottom:16px;
-  font-family:var(--font-term); font-size:1.2rem; line-height:1.1; color:var(--text-soft);
+  font-family:var(--font-term); font-size:calc(1.2rem * var(--font-term-scale)); line-height:1.1; color:var(--text-soft);
 }
 .also-ico{ line-height:0; }
 .also-ico .px{ width:14px; height:auto; display:block; image-rendering:pixelated; }

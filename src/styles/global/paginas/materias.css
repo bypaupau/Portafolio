@@ -18,5 +18,5 @@
   font-size:.9rem; font-weight:600; color:var(--text-soft); text-decoration:none; transition:.12s;
 }
 .proj-item:hover{ background:var(--pink-light); color:var(--ink); transform:translateX(3px); }
-.badge{ margin-left:auto; font-family:var(--font-term); font-size:.92rem; padding:2px 8px; border:2px solid var(--ink); flex-shrink:0; }
+.badge{ margin-left:auto; font-family:var(--font-term); font-size:calc(.92rem * var(--font-term-scale)); padding:2px 8px; border:2px solid var(--ink); flex-shrink:0; }
 .bd-done{ background:var(--mint); color:#2f7d4a; } .bd-wip{ background:var(--yellow); color:#9a6a13; } .bd-soon{ background:var(--pink-light); color:var(--pink); }

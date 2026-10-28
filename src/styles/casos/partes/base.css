@@ -78,7 +78,7 @@
   --cs-h3: clamp(1.32rem, 2.2vw, 1.62rem);  /* subtítulo dentro de una sección */
   --cs-h4: 1.22rem;                         /* titulo de tarjeta */
   --cs-h5: 1.06rem;                         /* rótulo de figura o de paso */
-  --cs-term: 1.06rem;                       /* VT323 · etiquetas de datos */
+  --cs-term: calc(1.06rem * var(--font-term-scale)); /* etiquetas de datos */
   --cs-tiny: 0.55rem;                       /* Press Start 2P · antetítulos */
 
   /* interlineado: uno para leer, otro para texto dentro de cajas */

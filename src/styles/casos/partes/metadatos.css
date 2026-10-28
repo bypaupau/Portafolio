@@ -37,7 +37,7 @@
 }
 .cs-star li b{ font-weight:600; }
 /* el identificador de una colección de datos, dentro de una lista */
-.cs-src-id{ font-family:var(--font-term); font-size:1.02em; color:var(--text-soft); }
+.cs-src-id{ font-family:var(--font-term); font-size:calc(1.02em * var(--font-term-scale)); color:var(--text-soft); }
 
 /* ficha compacta: sin cajas, solo rótulo + valor y una línea entre filas */
 .cs-rows{

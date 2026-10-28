@@ -15,7 +15,7 @@
 /* formulario Formspree */
 .contact-form{ display:flex; flex-direction:column; gap:14px; }
 .contact-form label{
-  font-family:var(--font-term); font-size:1.2rem; color:var(--text-soft);
+  font-family:var(--font-term); font-size:calc(1.2rem * var(--font-term-scale)); color:var(--text-soft);
   display:flex; flex-direction:column; gap:5px;
 }
 .contact-form input, .contact-form textarea{

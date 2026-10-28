@@ -27,7 +27,7 @@
 .verb-plus svg{ width:20px; height:20px; image-rendering:pixelated; }
 .disc-mint{ background:var(--mint); }
 .mini-bar.mint{ background:var(--mint); }
-.bridge-end{ margin-top:30px; font-family:var(--font-term); font-size:1.3rem; color:var(--pink-ink); }
+.bridge-end{ margin-top:30px; font-family:var(--font-term); font-size:calc(1.3rem * var(--font-term-scale)); color:var(--pink-ink); }
 
 /* el link "ver los 10 proyectos" lleva la carpeta de la portada anterior */
 .feat-all .link{ display:inline-flex; align-items:center; gap:8px; }

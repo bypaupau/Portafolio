@@ -21,7 +21,7 @@
 /* pestaña abierta: se "conecta" con los proyectos de abajo */
 .fx-c-tabs .chip.is-on{ color:var(--ink); background:#fff; border:3px solid var(--ink); border-bottom:3px solid #fff; padding:8px 15px 9px; box-shadow:3px -3px 0 var(--pink-mid); }
 .fx-c-sub{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 18px; padding:10px 2px 0; }
-.fx-count{ font-family:var(--font-term); font-size:1.15rem; color:var(--text-soft); }
+.fx-count{ font-family:var(--font-term); font-size:calc(1.15rem * var(--font-term-scale)); color:var(--text-soft); }
 .fx-count b{ color:var(--ink); font-weight:400; }
 .fx-c .chip[data-zero]{ opacity:.4; }
 .fx-c .chip:focus-visible{ outline:3px dashed var(--pink); outline-offset:3px; }
@@ -86,7 +86,7 @@
 .arow-name{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; font-family:var(--font-pixel); font-weight:700; font-size:1.12rem; line-height:1.2; color:var(--ink); }
 .arow-name .badge{ margin-left:0; }
 .arow-desc{ font-size:.9rem; line-height:1.5; color:var(--text-soft); }
-.arow-meta{ font-family:var(--font-term); font-size:1.08rem; color:var(--pink-ink); }
+.arow-meta{ font-family:var(--font-term); font-size:calc(1.08rem * var(--font-term-scale)); color:var(--pink-ink); }
 .arow-tools .pill{ margin:4px 5px 0 0; }
 .arow-go{ font-family:var(--font-pixel); font-weight:600; font-size:.95rem; color:var(--pink-ink); white-space:nowrap; }
 a.arow:hover{ background:var(--pink-pale); }

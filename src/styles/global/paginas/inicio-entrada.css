@@ -17,7 +17,7 @@
 .hero-status{
   display:flex; align-items:center; gap:8px; flex-wrap:wrap;
   margin-top:20px;
-  font-family:var(--font-term); font-size:1.12rem; line-height:1.1; color:var(--text-soft);
+  font-family:var(--font-term); font-size:calc(1.12rem * var(--font-term-scale)); line-height:1.1; color:var(--text-soft);
 }
 .st-key{
   display:inline-flex; align-items:center; gap:7px;

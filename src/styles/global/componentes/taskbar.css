@@ -19,6 +19,9 @@
 
 /* el contenido nunca queda escondido debajo de la barra */
 body{ padding-bottom:calc(var(--task-h) + env(safe-area-inset-bottom, 0px)); }
+/* las páginas sin barra (las de caso, ver BaseLayout sinTaskbar): no
+   hay nada que esquivar, y quien mide con --task-h mide cero */
+body.sin-taskbar{ --task-h:0px; }
 
 .taskbar{
   position:fixed; left:0; right:0; bottom:0; z-index:100;
@@ -34,7 +37,7 @@ body{ padding-bottom:calc(var(--task-h) + env(safe-area-inset-bottom, 0px)); }
 .tb-app{
   display:inline-flex; align-items:center; gap:8px; min-width:0; max-width:46%;
   height:32px; padding:0 12px 0 9px;
-  font-family:var(--font-term); font-size:1.15rem; line-height:1; color:var(--ink);
+  font-family:var(--font-term); font-size:calc(1.15rem * var(--font-term-scale)); line-height:1; color:var(--ink);
   background:var(--pink-light); border:2px solid var(--ink);
   box-shadow:inset 2px 2px 0 rgba(44,26,36,.14);   /* "presionado": es la ventana activa */
   border-radius:0; cursor:pointer;
@@ -52,7 +55,7 @@ body{ padding-bottom:calc(var(--task-h) + env(safe-area-inset-bottom, 0px)); }
 .tb-btn{
   display:inline-flex; align-items:center; gap:7px;
   height:32px; padding:0 10px 0 8px;
-  font-family:var(--font-term); font-size:1.2rem; line-height:1; letter-spacing:.5px; color:var(--ink);
+  font-family:var(--font-term); font-size:calc(1.2rem * var(--font-term-scale)); line-height:1; letter-spacing:.5px; color:var(--ink);
   background:#fff; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
   border-radius:0; cursor:pointer;
   transition:transform .12s cubic-bezier(.3,.7,.4,1), box-shadow .12s cubic-bezier(.3,.7,.4,1), background-color .12s ease;
@@ -104,7 +107,7 @@ body{ padding-bottom:calc(var(--task-h) + env(safe-area-inset-bottom, 0px)); }
 .tb-check{ width:14px; image-rendering:pixelated; visibility:hidden; color:var(--pink); }
 .tb-opt.is-on .tb-check{ visibility:visible; color:var(--ink); }
 .tb-opt-name{ flex:1; }
-.tb-opt-code{ font-family:var(--font-term); font-size:1.05rem; font-weight:400; color:var(--text-muted); }
+.tb-opt-code{ font-family:var(--font-term); font-size:calc(1.05rem * var(--font-term-scale)); font-weight:400; color:var(--text-muted); }
 .tb-opt.is-on .tb-opt-code{ color:var(--ink); }
 
 /* foco de teclado: el mismo trazo punteado rosa del resto del sitio */

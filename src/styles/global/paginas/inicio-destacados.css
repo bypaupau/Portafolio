@@ -34,7 +34,7 @@
 .pcard-sticker{
   position:absolute; z-index:2; top:30px; left:-10px; rotate:var(--etiqueta-giro);
   display:inline-flex; align-items:center; gap:7px; max-width:calc(100% - 8px);
-  font-family:var(--font-term); font-size:1.1rem; line-height:1; color:var(--ink); white-space:nowrap;
+  font-family:var(--font-term); font-size:calc(1.1rem * var(--font-term-scale)); line-height:1; color:var(--ink); white-space:nowrap;
   border:var(--etiqueta-borde) solid var(--ink); box-shadow:var(--etiqueta-sombra); padding:4px 10px 4px 6px;
 }
 .pcard-sticker .px{ width:calc(var(--gw) * 2px); max-width:none; height:auto; flex:none; display:block; image-rendering:pixelated; }
@@ -54,11 +54,11 @@
 }
 .pcard-peek-txt{ font-size:.9rem; line-height:1.45; color:var(--ink); }
 .pcard-chips{ display:flex; flex-wrap:wrap; gap:5px; }
-.pcard-chip{ font-family:var(--font-term); font-size:1rem; line-height:1; padding:3px 8px; background:var(--pink-light); border:2px solid var(--ink); color:var(--ink); }
+.pcard-chip{ font-family:var(--font-term); font-size:calc(1rem * var(--font-term-scale)); line-height:1; padding:3px 8px; background:var(--pink-light); border:2px solid var(--ink); color:var(--ink); }
 
 .pcard-info{ display:flex; flex-direction:column; gap:2px; padding:0 2px; }
 .pcard-title{ font-family:var(--font-pixel); font-weight:700; font-size:1.35rem; line-height:1.15; color:var(--ink); }
-.pcard-meta{ font-family:var(--font-term); font-size:1.12rem; color:var(--text-soft); }
+.pcard-meta{ font-family:var(--font-term); font-size:calc(1.12rem * var(--font-term-scale)); color:var(--text-soft); }
 .pcard-cta{ margin-top:6px; font-family:var(--font-pixel); font-weight:600; font-size:.98rem; color:var(--pink-ink); }
 .pcard-arr{ display:inline-block; }
 

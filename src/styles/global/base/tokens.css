@@ -25,6 +25,11 @@
   --text-soft:  #7A5566;
   --text-muted: #B8909E;
   --pink-ink:   #B23E68;   /* rosa para TEXTO: el --pink no da contraste suficiente (≈5.3:1) */
+  /* el fondo del <mark> en las frases clave de un caso. Uno nuevo y no
+     uno de los de arriba: --pink-light no se distingue del papel blanco
+     y --pink-mid compite con los sellos de Antes/Después. --ink encima
+     da 13,9:1. */
+  --resalte:    #FBDDE8;
 
   /* ── etiquetas con significado ─────────────────────────────────
      Cada color dice QUÉ es la etiqueta inclinada de una tarjeta:
@@ -61,9 +66,12 @@
   --trazo-circulo:   2.4;
   --trazo-bocadillo: 4px;   /* el borde del bocadillo de Sobre mí, colita incluida */
 
-  --font-pixel:  "Pixelify Sans", system-ui, sans-serif;   /* títulos pixel legibles */
+  --font-pixel:  "Pixelify Sans", system-ui, sans-serif;   /* títulos y etiquetas pixel legibles */
   --font-tiny:   "Press Start 2P", monospace;               /* etiquetas mini */
-  --font-term:   "VT323", monospace;                        /* barras de ventana */
+  --font-term:   var(--font-pixel);                          /* etiquetas, barras y metadatos */
+  /* VT323 tenía una caja mucho más baja. Este factor conserva la escala
+     óptica de sus antiguas etiquetas al usar Pixelify Sans. */
+  --font-term-scale: .78;
   --font-body:   "Outfit", system-ui, sans-serif;
 
   --win-shadow: 5px 5px 0 var(--pink-mid);
@@ -77,6 +85,19 @@
   --w-content: 1080px;   /* texto, formularios y composiciones de dos columnas */
   --w-wide:    1200px;   /* galerías y cuadrículas: las imágenes y las tarjetas necesitan espacio */
   --w-canvas:  1280px;   /* lienzo: composiciones cuyos márgenes llevan decoración */
+
+  /* ── la rejilla de una página de caso, a 1280 px ──
+     barra 300 · aire 48 · contenido 852 · margen 80 = 1280.
+     El contenido es UNA medida para todo: texto, títulos y evidencia
+     terminan en la misma vertical, y llega siempre al margen derecho. */
+  --caso-barra:     300px;  /* la columna del índice */
+  --caso-aire:      48px;   /* entre la barra y el contenido */
+  --caso-contenido: 852px;  /* texto, títulos y evidencia, todo aquí */
+  --caso-contenido-max: 1240px;  /* en pantallas anchas crece hasta aquí: siempre llega al margen */
+  /* el fondo de la barra; lo pinta también el <body>, para que siga
+     junto al pie cuando la página se acaba */
+  --caso-barra-fondo: color-mix(in srgb, var(--pink-pale) 55%, var(--white));
+  --caso-margen:    80px;   /* margen derecho */
 }
 @media (min-width:1600px){
   /* en pantallas grandes solo crecen las galerías y el lienzo; el contenido se queda
