@@ -8,13 +8,25 @@
    son contenido, no formato. Si necesitas partir la línea, usa {' '}
    explícito en lugar de un salto de línea. */
 import { translate } from '../../i18n/translate';
+import { conIdioma, type TextoBilingue } from '../../lib/texto-bilingue';
 
 interface Props {
   /* En Inicio, el <3 guarda un globito al pasar el mouse o con el
      teclado. Es el mismo pie; solo esa página pide el secreto. */
   conSecreto?: boolean;
+  /* En las páginas sin la barra de abajo, el nombre de la ventana (que
+     vivía en ella) pasa al pie, delante del «hecho con <3». */
+  ventana?: TextoBilingue;
 }
-const { conSecreto = false } = Astro.props;
+const { conSecreto = false, ventana } = Astro.props;
+const nombre = ventana ? conIdioma(ventana) : null;
 const claseDelCorazon = conSecreto ? 'hp egg-coffee' : 'hp';
 ---
+{nombre ? (
+  <div class="foot">
+    <span class="foot-ventana" {...nombre.atributos}>{nombre.texto}</span>
+    <p><span data-i18n="footer.madeWith">{translate('footer.madeWith')}</span> <span class="hp">&lt;3</span> <span data-i18n="footer.credit">{translate('footer.credit')}</span></p>
+  </div>
+) : (
 <p class="foot"><span data-i18n="footer.madeWith">{translate('footer.madeWith')}</span> <span class={claseDelCorazon} tabindex={conSecreto ? 0 : undefined} data-tip={conSecreto ? '♡ made with curiosity + too much coffee' : undefined}>&lt;3</span> <span data-i18n="footer.credit">{translate('footer.credit')}</span></p>
+)}

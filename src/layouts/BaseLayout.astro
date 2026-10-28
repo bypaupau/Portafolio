@@ -56,11 +56,14 @@ interface Props {
   pieConSecreto?: boolean;
   tituloDelCaso?: { titulo: TextoBilingue; descripcion: TextoBilingue };
   paginaDeDatos?: string;
+  /** true en las páginas sin la barra de abajo (las de caso): la página
+      pone ella misma el selector de idioma, con data-anfitrion-idioma */
+  sinTaskbar?: boolean;
 }
 const {
   paginaActual, claveTitulo, claveDescripcion, claveNombreVentana,
   claseBody, pieConSecreto = false, tituloDelCaso,
-  paginaDeDatos, nombreDeVentana,
+  paginaDeDatos, nombreDeVentana, sinTaskbar = false,
 } = Astro.props;
 
 const delCaso = tituloDelCaso
@@ -99,7 +102,7 @@ const urlCanonica = new URL(Astro.url.pathname, Astro.site);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Outfit:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Outfit:wght@300;400;500;600;700&display=swap"
   />
 
   <!-- La animación de entrada solo se arma si hay JavaScript y nadie pidió
@@ -112,15 +115,15 @@ const urlCanonica = new URL(Astro.url.pathname, Astro.site);
   </script>
 </head>
 
-<body class={claseBody} data-page={paginaDeDatos ?? paginaActual} {...datosDeIdioma}>
+<body class:list={[claseBody, sinTaskbar && 'sin-taskbar']} data-page={paginaDeDatos ?? paginaActual} {...datosDeIdioma}>
   <Navegacion paginaActual={paginaActual} />
 
   <main>
     <slot />
   </main>
 
-  <Pie conSecreto={pieConSecreto} />
-  <Taskbar claveNombreVentana={claveNombreVentana} nombreDeVentana={nombreDeVentana} />
+  <Pie conSecreto={pieConSecreto} ventana={sinTaskbar ? nombreDeVentana : undefined} />
+  {!sinTaskbar && <Taskbar claveNombreVentana={claveNombreVentana} nombreDeVentana={nombreDeVentana} />}
   {/* el molde de la lupa y la vista ampliada, vacíos hasta que se usan.
       Van en TODAS las páginas: así una captura nueva nace ampliable sin
       tocar su página. */}

@@ -11,21 +11,25 @@
 import { supportedLanguages, isSupportedLanguage, type Language } from '../../i18n/languages';
 import { cambiarIdioma, idiomaDelSitio, textoDe } from './language-runtime';
 
-const barra = document.querySelector<HTMLElement>('.taskbar');
+/* La barra de abajo, o —en las páginas que no la llevan, como las de
+   caso— el sitio que hospeda el selector de idioma, marcado con
+   data-anfitrion-idioma. Ahí no hay reloj ni nombre de ventana: esas
+   dos partes son opcionales. */
+const barra = document.querySelector<HTMLElement>('.taskbar, [data-anfitrion-idioma]');
 if (barra) {
   const botonIdioma = barra.querySelector<HTMLButtonElement>('#tb-lang')!;
   const ventanita = barra.querySelector<HTMLElement>('#tb-lang-menu')!;
   const opciones = Array.from(barra.querySelectorAll<HTMLButtonElement>('.tb-opt'));
   const codigo = barra.querySelector<HTMLElement>('.tb-code')!;
-  const reloj = barra.querySelector<HTMLTimeElement>('.tb-clock')!;
+  const reloj = barra.querySelector<HTMLTimeElement>('.tb-clock');
   const anuncio = barra.querySelector<HTMLElement>('#tb-live')!;
-  const botonArriba = barra.querySelector<HTMLButtonElement>('.tb-app')!;
+  const botonArriba = barra.querySelector<HTMLButtonElement>('.tb-app');
   const botonCerrar = barra.querySelector<HTMLButtonElement>('.tb-x')!;
 
   const prefiereMenosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ── volver arriba ───────────────────────────────────────── */
-  botonArriba.addEventListener('click', () => {
+  botonArriba?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: prefiereMenosMovimiento ? 'auto' : 'smooth' });
   });
 
@@ -33,6 +37,7 @@ if (barra) {
   let temporizador: number | undefined;
 
   function actualizarReloj(): void {
+    if (!reloj) return;
     const ahora = new Date();
     const idioma = idiomaDelSitio();
     const configuracionRegional = idioma === 'en' ? 'en-US' : 'es-EC';
