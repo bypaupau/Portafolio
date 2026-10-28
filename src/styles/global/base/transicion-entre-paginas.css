@@ -23,7 +23,9 @@
    y la entrada .hx cubre la sensación. */
 @view-transition{ navigation:auto; }
 
-nav{ view-transition-name:px-nav; }
+/* por clase: si fuera `nav`, el índice de un caso llevaría el mismo
+   nombre y dos elementos con un nombre repetido cancelan la transición */
+.barra-superior{ view-transition-name:px-nav; }
 .taskbar{ view-transition-name:px-task; }
 
 @keyframes vt-out{ to{ opacity:0; } }

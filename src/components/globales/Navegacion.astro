@@ -9,6 +9,11 @@
    Las clases (.nav-logo, .nav-toggle, .nav-burger, .nav-tabs, .active)
    son las MISMAS del sitio anterior, a propósito: así css/styles.css
    sigue aplicando sin tocar una sola regla.
+
+   `barra-superior` es lo que estiliza nav.css. Antes apuntaba al
+   ELEMENTO `nav`, y alcanzaba a cualquier otro <nav> de la página: el
+   índice de un caso heredaba posición fija, alto de 54 px y fondo
+   blanco, y además compartía el view-transition-name de esta barra.
    ═══════════════════════════════════════════════════════════ */
 import { translate } from '../../i18n/translate';
 import { rutaPagina } from '../../lib/rutas';
@@ -20,7 +25,7 @@ interface Props {
 }
 const { paginaActual } = Astro.props;
 ---
-<nav>
+<nav class="barra-superior">
   <a href={rutaPagina('')} class="nav-logo">pau<span>.</span>proyectos</a>
 
   <button

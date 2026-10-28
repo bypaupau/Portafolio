@@ -4,8 +4,10 @@
    quien manda el ORDEN: aquí eran las líneas 91–141.
    Las reglas están sin tocar. */
 /* ── fin de la nota · abajo empieza el CSS tal cual ── */
-/* ════════ NAV (barra superior estilo ventana) ════════ */
-nav{
+/* ════════ NAV (barra superior estilo ventana) ════════
+   Por CLASE y no por elemento: con `nav{…}` cualquier otro <nav> de
+   la página (el índice de un caso) se volvía una segunda barra fija. */
+.barra-superior{
   position:fixed; top:0; left:0; right:0; z-index:100;
   display:flex; align-items:center; gap:10px;
   height:var(--nav-h); padding:0 clamp(12px,3vw,22px);
