@@ -262,9 +262,9 @@ for (const pagina of paginas) {
      no la ve: `comparar` corre con reducedMotion, y con eso pau.exe no
      escribe, no parpadea y no se duerme. Esto sí.
 
-     Incluye el ciclo de dormir, que tarda 25 s de verdad. Es el único
-     bloque lento de la suite y está a propósito: es la diferencia entre
-     "la carita se mueve" y "la carita tiene un ritmo". */
+     Incluye el parpadeo, que se mide durante 10 s de verdad. Es el
+     bloque más lento de la suite y está a propósito: es la diferencia
+     entre "la carita se mueve" y "la carita tiene un ritmo". */
   if (pagina.id === 'inicio') {
     const ctx = await navegador.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'no-preference' });
     const p = await ctx.newPage();
@@ -369,17 +369,20 @@ for (const pagina of paginas) {
     comprobar(marca('↑↑↓↓←→←→BA desbloquea el logro'),
       (await renglon()).includes('achievement'), await renglon());
 
-    /* el ciclo de dormir: 25 s sin que nadie la toque */
+    /* el parpadeo: cada 4 s, sin pararse. Se cuentan los parpadeos en
+       10 s sin tocarla: tienen que salir 2 o 3, y ninguno se duerme */
     await p.mouse.move(5, 5);
-    await p.waitForTimeout(27000);
-    comprobar(marca('se duerme si la dejan sola 25 s'),
-      (await p.evaluate(() => document.querySelector('.mon')?.classList.contains('is-asleep'))) === true);
-    comprobar(marca('dormida, los ojos no siguen al cursor'), (await mirada()) === '', await mirada() || '(quietos)');
-
-    await p.hover('.hero-card');
-    await p.waitForTimeout(700);
-    comprobar(marca('despierta y saluda cuando vuelves'),
-      (await p.evaluate(() => document.querySelector('.mon')?.classList.contains('is-asleep'))) === false);
+    await p.waitForTimeout(1500);   /* que se acaben las caras de los gestos de arriba */
+    const parpadeos = await p.evaluate(() => new Promise((ok) => {
+      const mon = document.querySelector('.mon');
+      let n = 0;
+      const obs = new MutationObserver(() => { if (mon?.getAttribute('data-face') === 'blink') n++; });
+      if (mon) obs.observe(mon, { attributes: true, attributeFilter: ['data-face'] });
+      setTimeout(() => { obs.disconnect(); ok(n); }, 10000);
+    }));
+    comprobar(marca('parpadea cada 4 s y no se duerme'),
+      parpadeos >= 2 && parpadeos <= 3 && !(await p.evaluate(() => document.querySelector('.mon')?.classList.contains('is-asleep'))),
+      `${parpadeos} parpadeos en 10 s`);
     await ctx.close();
   }
 
@@ -407,7 +410,225 @@ for (const pagina of paginas) {
         prueba genérica de "se lee sin JavaScript" pide 150 caracteres;
         para un caso de estudio eso es poquísimo, así que aquí se exige
         texto de verdad y que estén los títulos de las secciones. */
-  if (pagina.id.startsWith('caso-')) {
+  /* ── 4e bis · LA BARRA DEL CASO (el layout nuevo) ───────────────
+     Las páginas que ya tienen la barra (.caso-barra) se prueban aquí;
+     las que siguen con el riel viejo (Phoenix, hasta la etapa 6), en el
+     bloque de abajo. Lo que se comprueba es lo que el encargo pide:
+     que la parada activa cambie al bajar, que el sub-índice se abra en
+     la sección que toca, que el diagnóstico no mueva la captura y que
+     el desplegable de móvil abra y cierre. */
+  const conBarra = pagina.id.startsWith('caso-') && await (async () => {
+    const ctx = await navegador.newContext({ viewport: { width: 1440, height: 900 } });
+    const p = await ctx.newPage();
+    await p.goto(url, { waitUntil: 'load' });
+    const hay = (await p.locator('.caso-barra').count()) > 0;
+    await ctx.close();
+    return hay;
+  })();
+
+  if (conBarra) {
+    const ctx = await navegador.newContext({ viewport: { width: 1440, height: 900 } });
+    const p = await ctx.newPage();
+    await p.goto(url, { waitUntil: 'load' });
+    await p.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+    await p.waitForTimeout(600);
+    const irA = async (selector) => {
+      await p.evaluate((s) => document.querySelector(s)?.scrollIntoView({ block: 'start' }), selector);
+      await p.waitForTimeout(450);
+    };
+    const estado = () => p.evaluate(() => [...document.querySelectorAll('.caso-paradas > .caso-parada')]
+      .map((li) => (li.classList.contains('es-aqui') ? 'aqui' : li.classList.contains('es-leida') ? 'leida' : '-')));
+
+    /* el título se escribe letra a letra SIN cambiar de alto, y acaba
+       entero, sin cursor y con su nombre para lectores de pantalla.
+       Se mide en una página recién abierta: la de arriba ya terminó. */
+    {
+      const q = await ctx.newPage();
+      await q.goto(url, { waitUntil: 'domcontentloaded' });
+      await q.waitForTimeout(700);
+      const durante = await q.evaluate(() => ({ alto: document.querySelector('[data-escribir]')?.offsetHeight ?? 0, cursor: !!document.querySelector('.caso-cursor') }));
+      await q.waitForTimeout(2600);
+      const despues = await q.evaluate(() => {
+        const h = document.querySelector('[data-escribir]');
+        return { alto: h?.offsetHeight ?? 0, cursor: !!document.querySelector('.caso-cursor'), texto: h?.innerText.trim(), nombre: h?.getAttribute('aria-label') };
+      });
+      comprobar(marca('el título se escribe sin mover la página'),
+        durante.cursor && durante.alto === despues.alto && !despues.cursor && despues.texto === despues.nombre,
+        `alto ${durante.alto} → ${despues.alto} px · «${despues.texto}»`);
+      await q.close();
+    }
+
+    /* el saludo de la mascota: sale al abrir, en su bocadillo, y se
+       cierra con su botón (solo, se va a los 7 s; no se espera aquí) */
+    {
+      const q = await ctx.newPage();
+      await q.goto(url, { waitUntil: 'load' });
+      await q.waitForTimeout(700);
+      const visible = await q.evaluate(() => { const b = document.querySelector('.caso-saludo'); return !!b && !b.hidden && getComputedStyle(b).opacity === '1'; });
+      await q.click('.caso-saludo-cerrar'); await q.waitForTimeout(400);
+      const cerrado = await q.evaluate(() => document.querySelector('.caso-saludo')?.hidden === true);
+      comprobar(marca('la mascota saluda al abrir y el bocadillo se cierra'), visible && cerrado, `visible: ${visible} · cerrado: ${cerrado}`);
+      await q.close();
+    }
+
+    const paradas = await p.locator('.caso-paradas > .caso-parada').count();
+    const secciones = await p.locator('.caso-seccion').count();
+    comprobar(marca('la barra tiene una parada por sección, más la portada'),
+      paradas === secciones + 1, `${paradas} paradas · ${secciones} secciones`);
+    comprobar(marca('arranca marcando la portada'), (await estado())[0] === 'aqui');
+
+    /* Lo que se recorre sale del PROPIO índice de la página, no de
+       números escritos aquí: así vale para cualquier caso, tenga las
+       secciones que tenga. */
+    const destinos = await p.evaluate(() => [...document.querySelectorAll('.caso-paradas > .caso-parada')].map((li) => ({
+      id: li.querySelector(':scope > a')?.getAttribute('href') ?? '',
+      subs: [...li.querySelectorAll('.caso-subparada a')].map((a) => a.getAttribute('href')),
+    })));
+
+    /* bajar a la cuarta parada: está aquí y las tres anteriores, leídas */
+    await irA(destinos[3].id);
+    const en3 = await estado();
+    comprobar(marca('la parada activa cambia al bajar, y las anteriores quedan leídas'),
+      en3[3] === 'aqui' && en3.slice(0, 3).every((e) => e === 'leida') && en3.slice(4).every((e) => e === '-'),
+      en3.join(' '));
+
+    /* los vídeos, como GIFs: el que está a la vista va en marcha y en
+       bucle; los que no se ven, en pausa. Solo si el caso tiene vídeos. */
+    if (await p.locator('.caso-figura video').count()) {
+      await p.evaluate(() => document.querySelector('.caso-figura video')?.scrollIntoView({ block: 'center' }));
+      await p.waitForTimeout(900);
+      const videos = await p.evaluate(() => [...document.querySelectorAll('.caso-figura video')].map((v) => {
+        const caja = v.getBoundingClientRect();
+        return { visto: caja.top < innerHeight && caja.bottom > 0, enMarcha: !v.paused, bucle: v.loop };
+      }));
+      const bienPuestos = videos.every((v) => v.bucle && (v.visto ? v.enMarcha : !v.enMarcha));
+      comprobar(marca('los vídeos se reproducen solos al llegar a ellos, y en bucle'),
+        videos.some((v) => v.enMarcha) && bienPuestos,
+        `${videos.filter((v) => v.enMarcha).length} en marcha de ${videos.length} · ${videos.filter((v) => v.visto).length} a la vista`);
+    }
+
+    /* el sub-índice: abierto solo en la parada que lo tiene y está aquí.
+       Se baja a su SEGUNDO sub-bloque, y después a la parada siguiente. */
+    const conSub = destinos.findIndex((d) => d.subs.length >= 2);
+    comprobar(marca('el caso tiene sub-índice'), conSub >= 0, conSub >= 0 ? `en la parada ${conSub}` : 'ninguna parada lo tiene');
+    if (conSub >= 0) {
+      await irA(destinos[conSub].subs[1]);
+      const sub = await p.evaluate((cual) => {
+        const parada = document.querySelectorAll('.caso-paradas > .caso-parada')[cual];
+        const lista = parada?.querySelector('.caso-subindice');
+        const marcada = [...(parada?.querySelectorAll('.caso-subparada') ?? [])].findIndex((s) => s.classList.contains('es-aqui'));
+        return { visible: lista ? getComputedStyle(lista).display !== 'none' : false, marcada };
+      }, conSub);
+      comprobar(marca('el sub-índice se abre en la sección que toca'),
+        sub.visible && sub.marcada === 1, `visible: ${sub.visible} · sub-bloque marcado: ${sub.marcada + 1}`);
+      await irA(destinos[conSub + 1].id);
+      comprobar(marca('y se cierra al salir de ella'),
+        (await p.evaluate((cual) => {
+          const lista = document.querySelectorAll('.caso-paradas > .caso-parada')[cual]?.querySelector('.caso-subindice');
+          return lista ? getComputedStyle(lista).display === 'none' : false;
+        }, conSub)) === true);
+    }
+
+    /* los bloques fijos: al pasar de la penúltima llamada a la última
+       cambia la activa (y su captura) pero la columna NO se mueve. Se
+       mide desde el borde de abajo del nav: cuando el nav se aparta, la
+       columna sube con él a propósito (nav-al-leer.ts), y eso no es que
+       se mueva la captura. */
+    const fijos = await p.evaluate(async () => {
+      const salida = [];
+      /* uno detrás de otro y no a la vez: cada uno mueve el scroll */
+      for (const bloque of document.querySelectorAll('.caso-diagnostico')) {
+        const img = bloque.querySelector('img');
+        const llamadas = [...bloque.querySelectorAll('.caso-llamada')];
+        /* 900 ms: más que la aparición del bloque (520 ms + hasta 0,3 s de
+           retardo). Con 350 la primera medida caía a mitad de ella. */
+        const espera = () => new Promise((r) => setTimeout(r, 900));
+        const llevar = (l, altura) => window.scrollBy(0, l.getBoundingClientRect().top - innerHeight * altura);
+        /* las dos últimas llamadas, haya las que haya: la penúltima al
+           10 % (la captura ya está fija) y la última al 20 % */
+        const a = llamadas.length - 2, b = llamadas.length - 1;
+        llevar(llamadas[a], 0.1); await espera();
+        const arriba1 = Math.round(img.getBoundingClientRect().top - Math.max(0, document.querySelector('.barra-superior').getBoundingClientRect().bottom));
+        const activa1 = llamadas.findIndex((l) => l.classList.contains('es-activa'));
+        llevar(llamadas[b], 0.2); await espera();
+        const arriba2 = Math.round(img.getBoundingClientRect().top - Math.max(0, document.querySelector('.barra-superior').getBoundingClientRect().bottom));
+        const activa2 = llamadas.findIndex((l) => l.classList.contains('es-activa'));
+        /* lo que se enciende con la llamada: la marca (02) o la pantalla (06) */
+        const encendida = [...bloque.querySelectorAll('.caso-marca, .caso-pantalla')].findIndex((m) => m.classList.contains('es-activa'));
+        salida.push({ vivo: bloque.classList.contains('esta-vivo'), arriba1, arriba2, activa1, activa2, encendida, a, b });
+      }
+      return salida;
+    });
+    /* ±1 px: el redondeo de la posición fija */
+    const bien = (f) => f.vivo && Math.abs(f.arriba1 - f.arriba2) <= 1 && f.activa1 === f.a && f.activa2 === f.b && f.encendida === f.b;
+    comprobar(marca('los bloques fijos no mueven la captura mientras cambian las llamadas'),
+      fijos.length >= 1 && fijos.every(bien),
+      fijos.map((f) => `y=${f.arriba1}→${f.arriba2} · llamada ${f.activa1 + 1}→${f.activa2 + 1} · encendida ${f.encendida + 1}`).join(' | ') || 'no hay bloques fijos');
+
+    /* el nav: no se aparta mientras se lee la portada; pasada ella, se
+       esconde al bajar y vuelve al subir. La barra del caso sube con él
+       (no deja el hueco de 54 px). */
+    {
+      const q = await ctx.newPage();
+      await q.goto(url, { waitUntil: 'load' });
+      await q.addStyleTag({ content: 'html{scroll-behavior:auto !important}' });
+      await q.waitForTimeout(400);
+      const medir = () => q.evaluate(() => ({
+        nav: Math.round(document.querySelector('.barra-superior').getBoundingClientRect().bottom),
+        indice: Math.round(document.querySelector('.caso-indice').getBoundingClientRect().top),
+        /* donde el índice tiene que quedar con el nav a la vista: --nav-h */
+        altoNav: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10),
+      }));
+      await q.mouse.wheel(0, 300); await q.waitForTimeout(700);
+      const enPortada = await medir();
+      await q.evaluate(() => document.querySelector('.caso-seccion')?.scrollIntoView({ block: 'start' }));
+      await q.mouse.wheel(0, 400); await q.waitForTimeout(700);
+      const bajando = await medir();
+      await q.mouse.wheel(0, -300); await q.waitForTimeout(700);
+      const subiendo = await medir();
+      comprobar(marca('el nav se queda en la portada'), enPortada.nav > 0, `bajando por la portada: nav ${enPortada.nav}`);
+      comprobar(marca('pasada la portada, el nav se esconde al bajar y vuelve al subir'),
+        bajando.nav <= 0 && bajando.indice === 0 && subiendo.nav > 0 && subiendo.indice === subiendo.altoNav,
+        `bajando: nav ${bajando.nav} · índice ${bajando.indice} | subiendo: nav ${subiendo.nav} · índice ${subiendo.indice}`);
+      await q.close();
+    }
+
+    await p.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await p.waitForTimeout(500);
+    const alFondo = await estado();
+    comprobar(marca('al llegar al fondo, la barra marca la última parada'),
+      alFondo[alFondo.length - 1] === 'aqui', `parada ${alFondo.indexOf('aqui') + 1} de ${alFondo.length}`);
+    comprobar(marca('y la marca para lectores de pantalla'),
+      (await p.evaluate(() => Boolean(document.querySelector('.caso-parada.es-aqui > a[aria-current="true"]')))) === true);
+    comprobar(marca('la barra toma el color de la sección'),
+      (await p.evaluate(() => document.querySelector('.caso-barra')?.style.getPropertyValue('--cs').trim().length > 0)) === true,
+      await p.evaluate(() => document.querySelector('.caso-barra')?.style.getPropertyValue('--cs') ?? '(sin color)'));
+    await ctx.close();
+
+    /* en móvil: la franja y su desplegable */
+    const ctxMovil = await navegador.newContext({ viewport: { width: 390, height: 844 } });
+    const m = await ctxMovil.newPage();
+    await m.goto(url, { waitUntil: 'load' });
+    await m.waitForTimeout(500);
+    const cuerpoVisible = () => m.evaluate(() => getComputedStyle(document.querySelector('.caso-indice-cuerpo')).display !== 'none');
+    const franjaVisible = await m.evaluate(() => getComputedStyle(document.querySelector('.caso-franja')).display !== 'none');
+    const cerradaAlEmpezar = !(await cuerpoVisible());
+    await m.click('.caso-franja-boton');
+    const abierta = (await cuerpoVisible()) && (await m.getAttribute('.caso-franja-boton', 'aria-expanded')) === 'true';
+    await m.keyboard.press('Escape');
+    const cerradaConEscape = !(await cuerpoVisible()) && (await m.getAttribute('.caso-franja-boton', 'aria-expanded')) === 'false';
+    const lado = await m.evaluate(() => {
+      const b = document.querySelector('.caso-franja-boton').getBoundingClientRect();
+      return `${Math.round(b.width)}×${Math.round(b.height)}`;
+    });
+    comprobar(marca('en móvil, el desplegable de la barra abre y cierra'),
+      franjaVisible && cerradaAlEmpezar && abierta && cerradaConEscape,
+      `franja: ${franjaVisible} · cerrada: ${cerradaAlEmpezar} · abre: ${abierta} · Escape cierra: ${cerradaConEscape}`);
+    comprobar(marca('su botón mide al menos 44×44'), lado === '44×44', lado);
+    await ctxMovil.close();
+  }
+
+  if (pagina.id.startsWith('caso-') && !conBarra) {
     const ctx = await navegador.newContext({ viewport: { width: 1440, height: 900 } });
     const p = await ctx.newPage();
     await p.goto(url, { waitUntil: 'load' });
@@ -455,7 +676,8 @@ for (const pagina of paginas) {
        así vale igual para uno de 7 secciones y para uno de 2. Lo que se
        comprueba es que el HTML viene LLENO, no vacío como antes. */
     const texto = ((await p.textContent('main')) || '').trim();
-    const titulos = await p.locator('.cs-h').allTextContents();
+    /* .cs-h en el layout viejo, .caso-h2 en el de la barra */
+    const titulos = await p.locator('.cs-h, .caso-h2').allTextContents();
     const minimo = Math.max(300, titulos.length * 150);
     comprobar(marca('el caso COMPLETO se lee sin JavaScript'),
       texto.length > minimo, `${texto.length} caracteres (mínimo ${minimo})`);
@@ -463,7 +685,7 @@ for (const pagina of paginas) {
     comprobar(marca('todos los títulos de sección tienen texto sin JavaScript'),
       conTexto === titulos.length && titulos.length >= 1, `${conTexto}/${titulos.length}`);
     const vacios = await p.evaluate(() =>
-      [...document.querySelectorAll('[data-i18n-es], p.cs-text, figcaption')]
+      [...document.querySelectorAll('[data-i18n-es], p.cs-text, p.caso-texto, figcaption')]
         .filter((e) => !(e.textContent || '').trim()).length);
     comprobar(marca('ningún texto queda vacío sin JavaScript'), vacios === 0, vacios + ' vacíos');
     await ctx.close();
