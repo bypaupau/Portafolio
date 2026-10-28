@@ -32,3 +32,6 @@ _borrar/
 
 # LOS DOCS SON SOLO PARA MI
 /docs
+
+# configuración personal del editor
+.vscode/
