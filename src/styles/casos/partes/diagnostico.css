@@ -1,0 +1,110 @@
+/* DIAGNÓSTICO FIJO · la columna quieta y las tres llamadas
+   componente: PantallasFijas.astro (02 y 06)
+   script:     src/scripts/casos/diagnostico.ts
+
+   Parte de caso.css. Sin la clase .esta-vivo (que solo pone el script,
+   en escritorio y sin «menos movimiento») no hay nada fijo ni
+   apagado: captura arriba y las tres llamadas debajo, legibles. */
+
+.caso-diagnostico{ display:grid; gap:24px; margin:34px 0 48px; }
+
+.caso-llamadas{ list-style:none; display:grid; gap:18px; }
+.caso-llamada{
+  padding:2px 0 2px 16px;
+  border-left:3px solid var(--caso-acento,var(--pink-light));
+}
+.caso-llamada-num{
+  display:block; margin-bottom:6px;
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); letter-spacing:2.2px; color:var(--pink-ink);
+}
+.caso-llamada p{ margin:0; font-size:18px; line-height:1.55; font-weight:600; color:var(--ink); }
+
+/* ── VIVO: la captura se queda, las llamadas avanzan ─────────── */
+.caso-diagnostico.esta-vivo{
+  grid-template-columns:minmax(0,1.62fr) minmax(0,1fr); gap:34px; align-items:start;
+}
+.caso-diagnostico.esta-vivo .caso-diagnostico-fijo{
+  position:sticky; top:calc(var(--nav-ocupa, var(--nav-h)) + 28px);
+}
+/* cada llamada ocupa su tramo de scroll: la imagen tiene tiempo de
+   quedarse quieta mientras se pasa de una a otra */
+/* El colchón de abajo es lo que deja que la captura siga fija cuando
+   se activa la última llamada: la columna de llamadas tiene que durar
+   más que la captura. La captura más alta llega al tope de alto
+   (100svh − nav − 96 px), y con la última llamada a la altura de
+   lectura eso pide un colchón de ~66vh; con menos, la página entera
+   del 02 se soltaba antes de tiempo. */
+.caso-diagnostico.esta-vivo .caso-llamadas{ gap:0; padding-block:4vh 68vh; }
+.caso-diagnostico.esta-vivo .caso-llamada{
+  min-height:26vh;
+  border-left-color:var(--pink-light);
+  transition:opacity var(--mo-fast,180ms) ease, border-color var(--mo-fast,180ms) ease;
+}
+.caso-diagnostico.esta-vivo .caso-llamada:not(.es-activa){ opacity:.42; }
+.caso-diagnostico.esta-vivo .caso-llamada.es-activa{ border-left-color:var(--caso-acento,var(--pink)); }
+/* la última no necesita tramo propio, pero sí el alto suficiente para
+   cruzar la línea de activación (28-30 %): una llamada de una línea,
+   como las del 06, la saltaba y se quedaba encendida la anterior */
+.caso-diagnostico.esta-vivo .caso-llamada:last-child{ min-height:14vh; }
+
+/* ══ LAS PANTALLAS FIJAS · capturas por llamada ══════════════════
+   componente: PantallasFijas.astro. Mismo mecanismo; lo que cambia es
+   que la columna fija apila las pantallas en el mismo sitio y se ve la
+   de la llamada activa. Una «pantalla» es una o varias capturas en
+   fila (un par de teléfonos), cada una en su figura con su pie. */
+.caso-llamada-pie{ font-weight:400; color:var(--text-soft); }
+/* el texto largo de una llamada: título y párrafos (las de Phoenix) */
+.caso-llamada .caso-llamada-titulo{
+  margin:0 0 8px; font-family:var(--font-body); font-weight:700;
+  font-size:20px; line-height:1.3; color:var(--ink);
+}
+.caso-llamada .caso-llamada-texto{
+  margin:0 0 10px; font-size:16px; font-weight:400; line-height:1.65; color:var(--text-soft);
+}
+.caso-llamada .caso-llamada-texto strong{ color:var(--ink); }
+
+.caso-pantalla{ display:flex; justify-content:center; align-items:flex-end; gap:20px; }
+.caso-pantalla .caso-figura{ flex:0 1 auto; min-width:0; }
+.caso-pantalla .caso-figura-marco{ width:fit-content; max-width:100%; margin-inline:auto; }
+.caso-pantalla figcaption{ text-align:center; font-size:15px; }
+/* capturas que ya traen su marco (teléfonos con fondo transparente) */
+.caso-diagnostico.sin-marco .caso-figura-marco{ border:0; background:none; }
+
+/* VIVO: todas en la misma celda; solo la activa se ve, y solo ella
+   se puede pulsar o enfocar (la lupa del zoom va dentro) */
+.caso-diagnostico.es-pantallas.esta-vivo .caso-pantallas-lienzo{ display:grid; }
+.caso-diagnostico.es-pantallas.esta-vivo .caso-pantalla{
+  grid-area:1 / 1; align-self:center;
+  opacity:0; visibility:hidden;
+  transition:opacity var(--mo-fast,180ms) ease, visibility 0s linear var(--mo-fast,180ms);
+}
+.caso-diagnostico.es-pantallas.esta-vivo .caso-pantalla.es-activa{
+  opacity:1; visibility:visible;
+  transition:opacity var(--mo-fast,180ms) ease, visibility 0s;
+}
+/* que ninguna pase del alto de la pantalla: una página entera de
+   3024×4090 a ancho completo mediría casi dos pantallas, y una columna
+   fija más alta que la ventana deja de verse entera. Si llevan pie, se
+   le deja sitio. */
+.caso-diagnostico.es-pantallas.esta-vivo .caso-pantalla img{
+  width:auto; max-width:100%;
+  max-height:calc(100svh - var(--nav-h) - 96px);
+}
+.caso-diagnostico.es-pantallas.esta-vivo .caso-pantalla:has(figcaption) img{
+  max-height:calc(100svh - var(--nav-h) - 140px);
+}
+
+/* QUIETO (móvil, «menos movimiento», sin JavaScript): una columna,
+   cada pantalla seguida de su texto. Las envolturas se disuelven
+   (display:contents) para que pantallas y textos sean hermanos de una
+   misma rejilla y se puedan intercalar con `order`. */
+.caso-diagnostico.es-pantallas:not(.esta-vivo){ grid-template-columns:minmax(0,1fr); gap:12px; }
+.caso-diagnostico.es-pantallas:not(.esta-vivo) :is(.caso-diagnostico-fijo, .caso-pantallas-lienzo, .caso-llamadas){
+  display:contents;
+}
+.caso-diagnostico.es-pantallas:not(.esta-vivo) .caso-pantalla{ order:calc(var(--i) * 2); }
+.caso-diagnostico.es-pantallas:not(.esta-vivo) .caso-pantalla img{ width:auto; max-width:100%; max-height:72vh; }
+.caso-diagnostico.es-pantallas:not(.esta-vivo) .caso-llamada{
+  order:calc(var(--i) * 2 + 1); border-left:0; padding:0; margin-bottom:26px;
+}
+.caso-diagnostico.es-pantallas:not(.esta-vivo) .caso-llamada > p:not(.caso-llamada-texto){ font-size:16px; font-weight:400; }

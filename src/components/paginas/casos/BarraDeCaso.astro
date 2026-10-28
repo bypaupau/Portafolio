@@ -1,0 +1,145 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA BARRA DEL CASO · <aside class="caso-barra">
+
+   Una columna propia, no un margen: fondo propio y un filete a la
+   derecha de arriba abajo. Dentro, en este orden:
+
+     1  ← PROYECTOS
+     2  ÍNDICE DEL CASO
+     3  la lista minimalista: número y nombre por sección, y el
+        sub-índice de las que tienen sub-bloques
+     4  un filete, la mascota, ↑ VOLVER ARRIBA y el idioma (la página
+        de caso no lleva la barra de abajo). Al abrir la página la
+        mascota da unos saltitos y dice el saludo en un bocadillo.
+
+   La parada en la que estás (.es-aqui, la pone
+   src/scripts/casos/barra.ts) lleva fila rosa, nombre en 700 y el
+   cuadrito de su color. Las anteriores se marcan .es-leida, sin
+   estilo propio: la lista es minimalista a propósito.
+
+   EN MÓVIL la columna no cabe y se pliega en una franja bajo el nav
+   con la parada actual y un botón que despliega las ocho.
+
+   MEJORA PROGRESIVA: sin JavaScript es una lista de anclas que
+   funciona, con la portada marcada. El script solo la hace reaccionar.
+
+   Sustituye a RielDeCaso.astro, que se queda mientras Grow With
+   Phoenix lo use (se retira en la etapa 6).
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import Mascota from './Mascota.astro';
+import SelectorDeIdioma from '../../globales/SelectorDeIdioma.astro';
+import { conIdioma } from '../../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+import { translate } from '../../../i18n/translate';
+
+interface Parada {
+  /** el ancla de su sección, sin # */
+  id: string;
+  nombre: TextoBilingue;
+  papel: TextoBilingue;
+  /** el color de su sección: el del filete y el del sub-índice */
+  acento: string;
+  /** los sub-bloques, si los tiene: cuelgan de la parada abierta */
+  sub?: readonly { id: string; nombre: TextoBilingue }[];
+}
+interface Props {
+  paradas: readonly Parada[];
+  /** a dónde lleva ← PROYECTOS */
+  volver: string;
+  /** lo que dice la mascota al abrir la página, en su bocadillo */
+  saludo?: TextoBilingue;
+}
+const { paradas, volver, saludo } = Astro.props;
+const dosCifras = (n: number) => String(n).padStart(2, '0');
+const primera = paradas[0]!;
+const nombrePrimera = conIdioma(primera.nombre);
+const papelPrimera = conIdioma(primera.papel);
+---
+<aside class="caso-barra">
+  <div class="caso-indice">
+
+    {/* ── la franja de móvil: la parada actual, siempre a la vista ── */}
+    <div class="caso-franja">
+      <span class="caso-franja-punto" aria-hidden="true"></span>
+      <span class="caso-franja-texto">
+        <span class="caso-franja-arriba">
+          <span class="caso-parada-num" data-franja="num">00</span>{' '}
+          <b data-franja="nombre" {...nombrePrimera.atributos}>{nombrePrimera.texto}</b>
+        </span>
+        <span class="caso-franja-abajo">
+          <span data-franja="papel" {...papelPrimera.atributos}>{papelPrimera.texto}</span>
+          {' · '}<span data-franja="n">1</span>{' '}
+          <span data-i18n="cases.bar.of">{translate('cases.bar.of')}</span>{' '}{paradas.length}
+        </span>
+      </span>
+      <button class="caso-franja-boton" type="button" aria-expanded="false" aria-controls="caso-indice-cuerpo"
+        aria-label={translate('cases.bar.title')} data-i18n-attr="aria-label:cases.bar.title">
+        <svg viewBox="0 0 10 6" width="14" height="9" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+          <path fill="var(--ink)" d="M0 0h2v1H0zM1 1h2v1H1zM2 2h2v1H2zM3 3h4v1H3zM4 4h2v1H4zM6 2h2v1H6zM7 1h2v1H7zM8 0h2v1H8z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="caso-indice-cuerpo" id="caso-indice-cuerpo">
+      <a class="caso-volver" href={volver} data-i18n="cases.bar.back">{translate('cases.bar.back')}</a>
+
+      <nav class="caso-indice-lista" aria-labelledby="caso-indice-titulo">
+        <p class="caso-rotulo" id="caso-indice-titulo" data-i18n="cases.bar.title">{translate('cases.bar.title')}</p>
+        <ol class="caso-paradas">
+          {paradas.map((parada, i) => (
+            <li class:list={['caso-parada', i === 0 && 'es-aqui']} style={`--caso-acento:${parada.acento}`}>
+              <a href={`#${parada.id}`} aria-current={i === 0 ? 'true' : undefined}>
+                <span class="caso-parada-num">{dosCifras(i)}</span>
+                <Texto como="span" class="caso-parada-nombre" valor={parada.nombre} />
+                {/* no se ve en la lista; lo copia la franja de móvil */}
+                <Texto como="span" class="caso-parada-papel" valor={parada.papel} />
+              </a>
+              {parada.sub && (
+                <ol class="caso-subindice">
+                  {parada.sub.map((sub, j) => (
+                    <li class="caso-subparada">
+                      <a href={`#${sub.id}`}>
+                        <span class="caso-parada-num">{dosCifras(j + 1)}</span>{' '}
+                        <Texto como="span" valor={sub.nombre} />
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      {/* el pie: la mascota, volver arriba y el idioma. El selector vive
+          aquí porque la página no lleva la barra de abajo; taskbar.ts lo
+          encuentra por data-anfitrion-idioma */}
+      <div class="caso-barra-pie" data-anfitrion-idioma>
+        <Mascota tamano={30} />
+        <a class="caso-arriba" href={`#${primera.id}`} data-i18n="cases.bar.top">{translate('cases.bar.top')}</a>
+        <SelectorDeIdioma />
+        <p class="sr-only" aria-live="polite" id="tb-live"></p>
+      </div>
+    </div>
+
+    {/* EL BOCADILLO DE LA MASCOTA. Sale de ella al abrir la página
+        (mientras da unos saltitos) y se va solo a los 7 segundos, o al
+        cerrarlo. Va fuera del cuerpo del índice para que en móvil, con
+        el índice plegado, se vea bajo la franja. Nace oculto: sin
+        JavaScript no aparece, porque nadie lo cerraría. */}
+    {saludo && (
+      <div class="caso-saludo" role="status" hidden>
+        <span class="caso-saludo-marco" aria-hidden="true"></span>
+        <Texto como="p" valor={saludo} />
+        <button class="caso-saludo-cerrar" type="button"
+          aria-label={translate('navigation.closeLabel')} data-i18n-attr="aria-label:navigation.closeLabel">
+          <svg viewBox="0 0 5 5" width="10" height="10" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+            <path fill="var(--ink)" d="M0 0h1v1H0zM1 1h1v1H1zM2 2h1v1H2zM3 3h1v1H3zM4 4h1v1H4zM4 0h1v1H4zM3 1h1v1H3zM1 3h1v1H1zM0 4h1v1H0z"/>
+          </svg>
+        </button>
+      </div>
+    )}
+  </div>
+</aside>

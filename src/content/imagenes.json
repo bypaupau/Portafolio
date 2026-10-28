@@ -161,7 +161,7 @@
   },
   "images/proyectos/schaman-analytics": {
     "original": "images/proyectos/schaman-analytics.png",
-    "anchoOriginal": 1800,
+    "anchoOriginal": 2472,
     "anchos": {
       "416": {
         "ruta": "images/proyectos/schaman-analytics-416.webp",
@@ -176,8 +176,8 @@
     },
     "grande": {
       "ruta": "images/proyectos/schaman-analytics.webp",
-      "ancho": 1800,
-      "alto": 1050
+      "ancho": 2000,
+      "alto": 1167
     }
   },
   "images/proyectos/trackinglibros": {
@@ -221,6 +221,882 @@
         "ruta": "images/contacto/cv-preview-es-935.webp",
         "ancho": 935,
         "alto": 1210
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/00-mockup": {
+    "original": "images/casos/grow-with-phoenix/00-mockup.webp",
+    "anchoOriginal": 1592,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/00-mockup-1592.webp",
+        "ancho": 1592,
+        "alto": 892
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/detalle-evapotranspiracion": {
+    "original": "images/casos/grow-with-phoenix/investigacion/detalle-evapotranspiracion.webp",
+    "anchoOriginal": 214,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/detalle-evapotranspiracion-214.webp",
+        "ancho": 214,
+        "alto": 194
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/detalle-vegetacion": {
+    "original": "images/casos/grow-with-phoenix/investigacion/detalle-vegetacion.webp",
+    "anchoOriginal": 443,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/detalle-vegetacion-443.webp",
+        "ancho": 443,
+        "alto": 326
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/mapa-analisis-agricola": {
+    "original": "images/casos/grow-with-phoenix/investigacion/mapa-analisis-agricola.webp",
+    "anchoOriginal": 1100,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/mapa-analisis-agricola-1100.webp",
+        "ancho": 1100,
+        "alto": 619
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/mapa-bajos-ingresos": {
+    "original": "images/casos/grow-with-phoenix/investigacion/mapa-bajos-ingresos.webp",
+    "anchoOriginal": 1100,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/mapa-bajos-ingresos-1100.webp",
+        "ancho": 1100,
+        "alto": 618
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/mapa-desiertos": {
+    "original": "images/casos/grow-with-phoenix/investigacion/mapa-desiertos.webp",
+    "anchoOriginal": 1100,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/mapa-desiertos-1100.webp",
+        "ancho": 1100,
+        "alto": 618
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/precipitacion-anual": {
+    "original": "images/casos/grow-with-phoenix/investigacion/precipitacion-anual.webp",
+    "anchoOriginal": 753,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/precipitacion-anual-753.webp",
+        "ancho": 753,
+        "alto": 442
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/precipitacion-categorias": {
+    "original": "images/casos/grow-with-phoenix/investigacion/precipitacion-categorias.webp",
+    "anchoOriginal": 638,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/precipitacion-categorias-638.webp",
+        "ancho": 638,
+        "alto": 433
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/precipitacion-mensual": {
+    "original": "images/casos/grow-with-phoenix/investigacion/precipitacion-mensual.webp",
+    "anchoOriginal": 846,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/precipitacion-mensual-846.webp",
+        "ancho": 846,
+        "alto": 487
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/temperatura-estaciones": {
+    "original": "images/casos/grow-with-phoenix/investigacion/temperatura-estaciones.webp",
+    "anchoOriginal": 841,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/temperatura-estaciones-841.webp",
+        "ancho": 841,
+        "alto": 423
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/investigacion/temperatura-mensual": {
+    "original": "images/casos/grow-with-phoenix/investigacion/temperatura-mensual.webp",
+    "anchoOriginal": 842,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/investigacion/temperatura-mensual-842.webp",
+        "ancho": 842,
+        "alto": 419
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-carga": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-carga.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-carga-720.webp",
+        "ancho": 720,
+        "alto": 1436
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-ensalada": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-ensalada.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-ensalada-720.webp",
+        "ancho": 720,
+        "alto": 1409
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-escaneo": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-escaneo.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-escaneo-720.webp",
+        "ancho": 720,
+        "alto": 1400
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-estadistica": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-estadistica.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-estadistica-720.webp",
+        "ancho": 720,
+        "alto": 1409
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-inicio": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-inicio.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-inicio-720.webp",
+        "ancho": 720,
+        "alto": 1436
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-leaderboard": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-leaderboard.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-leaderboard-720.webp",
+        "ancho": 720,
+        "alto": 1384
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-menuescanear": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-menuescanear.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-menuescanear-720.webp",
+        "ancho": 720,
+        "alto": 1436
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-notificacion": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-notificacion.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-notificacion-720.webp",
+        "ancho": 720,
+        "alto": 1438
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-perfil": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-perfil.webp",
+    "anchoOriginal": 720,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-perfil-720.webp",
+        "ancho": 720,
+        "alto": 1412
+      }
+    },
+    "grande": null
+  },
+  "images/casos/grow-with-phoenix/pantallas/pagina-widget": {
+    "original": "images/casos/grow-with-phoenix/pantallas/pagina-widget.webp",
+    "anchoOriginal": 688,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/grow-with-phoenix/pantallas/pagina-widget-688.webp",
+        "ancho": 688,
+        "alto": 1440
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/07-modelo-estrella": {
+    "original": "images/casos/schaman-analytics-bi/07-modelo-estrella.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/07-modelo-estrella-1600.webp",
+        "ancho": 1600,
+        "alto": 1457
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/11-sesiones-en-el-panel": {
+    "original": "images/casos/schaman-analytics-bi/11-sesiones-en-el-panel.webp",
+    "anchoOriginal": 1120,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/11-sesiones-en-el-panel-1120.webp",
+        "ancho": 1120,
+        "alto": 665
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/12-mapa": {
+    "original": "images/casos/schaman-analytics-bi/12-mapa.webp",
+    "anchoOriginal": 1120,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/12-mapa-1120.webp",
+        "ancho": 1120,
+        "alto": 665
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/13-busqueda-por-cliente": {
+    "original": "images/casos/schaman-analytics-bi/13-busqueda-por-cliente.webp",
+    "anchoOriginal": 1120,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/13-busqueda-por-cliente-1120.webp",
+        "ancho": 1120,
+        "alto": 665
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/14-paginacion": {
+    "original": "images/casos/schaman-analytics-bi/14-paginacion.webp",
+    "anchoOriginal": 1120,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/14-paginacion-1120.webp",
+        "ancho": 1120,
+        "alto": 54
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/15-orden-por-columna": {
+    "original": "images/casos/schaman-analytics-bi/15-orden-por-columna.webp",
+    "anchoOriginal": 1120,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/15-orden-por-columna-1120.webp",
+        "ancho": 1120,
+        "alto": 665
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/16-canal-antes": {
+    "original": "images/casos/schaman-analytics-bi/16-canal-antes.webp",
+    "anchoOriginal": 356,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/16-canal-antes-356.webp",
+        "ancho": 356,
+        "alto": 708
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/17-canal-despues": {
+    "original": "images/casos/schaman-analytics-bi/17-canal-despues.webp",
+    "anchoOriginal": 370,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/17-canal-despues-370.webp",
+        "ancho": 370,
+        "alto": 846
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/18-estado-antes": {
+    "original": "images/casos/schaman-analytics-bi/18-estado-antes.webp",
+    "anchoOriginal": 400,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/18-estado-antes-400.webp",
+        "ancho": 400,
+        "alto": 708
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/19-estado-despues": {
+    "original": "images/casos/schaman-analytics-bi/19-estado-despues.webp",
+    "anchoOriginal": 352,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/19-estado-despues-352.webp",
+        "ancho": 352,
+        "alto": 846
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/20-resultados-antes": {
+    "original": "images/casos/schaman-analytics-bi/20-resultados-antes.webp",
+    "anchoOriginal": 792,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/20-resultados-antes-792.webp",
+        "ancho": 792,
+        "alto": 708
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/21-resultados-despues": {
+    "original": "images/casos/schaman-analytics-bi/21-resultados-despues.webp",
+    "anchoOriginal": 672,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/21-resultados-despues-672.webp",
+        "ancho": 672,
+        "alto": 846
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/22-kpis-antes": {
+    "original": "images/casos/schaman-analytics-bi/22-kpis-antes.webp",
+    "anchoOriginal": 1120,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/22-kpis-antes-1120.webp",
+        "ancho": 1120,
+        "alto": 160
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/23-kpis-despues": {
+    "original": "images/casos/schaman-analytics-bi/23-kpis-despues.webp",
+    "anchoOriginal": 1120,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/23-kpis-despues-1120.webp",
+        "ancho": 1120,
+        "alto": 238
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/24-tooltip-indicador": {
+    "original": "images/casos/schaman-analytics-bi/24-tooltip-indicador.webp",
+    "anchoOriginal": 768,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/24-tooltip-indicador-768.webp",
+        "ancho": 768,
+        "alto": 636
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/25-tooltip-columna": {
+    "original": "images/casos/schaman-analytics-bi/25-tooltip-columna.webp",
+    "anchoOriginal": 768,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/25-tooltip-columna-768.webp",
+        "ancho": 768,
+        "alto": 600
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/26-filtro-antes": {
+    "original": "images/casos/schaman-analytics-bi/26-filtro-antes.webp",
+    "anchoOriginal": 1120,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/26-filtro-antes-1120.webp",
+        "ancho": 1120,
+        "alto": 68
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/27-filtro-despues": {
+    "original": "images/casos/schaman-analytics-bi/27-filtro-despues.webp",
+    "anchoOriginal": 712,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/27-filtro-despues-712.webp",
+        "ancho": 712,
+        "alto": 1204
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/28-score-despues": {
+    "original": "images/casos/schaman-analytics-bi/28-score-despues.png",
+    "anchoOriginal": 2373,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/28-score-despues-1704.webp",
+        "ancho": 1704,
+        "alto": 311
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/barra-paginacion": {
+    "original": "images/casos/schaman-analytics-bi/barra-paginacion.png",
+    "anchoOriginal": 2758,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/barra-paginacion-1704.webp",
+        "ancho": 1704,
+        "alto": 96
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/canales": {
+    "original": "images/casos/schaman-analytics-bi/canales.png",
+    "anchoOriginal": 370,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/canales-370.webp",
+        "ancho": 370,
+        "alto": 700
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/comparacion-panel-antes": {
+    "original": "images/casos/schaman-analytics-bi/comparacion-panel-antes.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/comparacion-panel-antes-1600.webp",
+        "ancho": 1600,
+        "alto": 1000
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/comparacion-panel-despues": {
+    "original": "images/casos/schaman-analytics-bi/comparacion-panel-despues.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/comparacion-panel-despues-1600.webp",
+        "ancho": 1600,
+        "alto": 1000
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/fallos-antes": {
+    "original": "images/casos/schaman-analytics-bi/fallos-antes.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/fallos-antes-1600.webp",
+        "ancho": 1600,
+        "alto": 820
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/fallos-despues": {
+    "original": "images/casos/schaman-analytics-bi/fallos-despues.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/fallos-despues-1600.webp",
+        "ancho": 1600,
+        "alto": 819
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/fallos-mapa": {
+    "original": "images/casos/schaman-analytics-bi/fallos-mapa.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/fallos-mapa-1600.webp",
+        "ancho": 1600,
+        "alto": 1000
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/galeria-metodologia": {
+    "original": "images/casos/schaman-analytics-bi/galeria-metodologia.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/galeria-metodologia-1600.webp",
+        "ancho": 1600,
+        "alto": 1000
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/galeria-tendencias": {
+    "original": "images/casos/schaman-analytics-bi/galeria-tendencias.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/galeria-tendencias-1600.webp",
+        "ancho": 1600,
+        "alto": 1000
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/jerarquia-sesiones-despues": {
+    "original": "images/casos/schaman-analytics-bi/jerarquia-sesiones-despues.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/jerarquia-sesiones-despues-1600.webp",
+        "ancho": 1600,
+        "alto": 1000
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/jerarquia-tabla-antes": {
+    "original": "images/casos/schaman-analytics-bi/jerarquia-tabla-antes.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/jerarquia-tabla-antes-1600.webp",
+        "ancho": 1600,
+        "alto": 1000
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/kpis-antes": {
+    "original": "images/casos/schaman-analytics-bi/kpis-antes.png",
+    "anchoOriginal": 2812,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/kpis-antes-1704.webp",
+        "ancho": 1704,
+        "alto": 482
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/lectura-estado-antes": {
+    "original": "images/casos/schaman-analytics-bi/lectura-estado-antes.webp",
+    "anchoOriginal": 400,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/lectura-estado-antes-400.webp",
+        "ancho": 400,
+        "alto": 708
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/lectura-estado-despues": {
+    "original": "images/casos/schaman-analytics-bi/lectura-estado-despues.webp",
+    "anchoOriginal": 352,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/lectura-estado-despues-352.webp",
+        "ancho": 352,
+        "alto": 846
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/lectura-kpis-antes": {
+    "original": "images/casos/schaman-analytics-bi/lectura-kpis-antes.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/lectura-kpis-antes-1600.webp",
+        "ancho": 1600,
+        "alto": 229
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/lectura-kpis-despues": {
+    "original": "images/casos/schaman-analytics-bi/lectura-kpis-despues.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/lectura-kpis-despues-1600.webp",
+        "ancho": 1600,
+        "alto": 340
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/lectura-tooltip": {
+    "original": "images/casos/schaman-analytics-bi/lectura-tooltip.webp",
+    "anchoOriginal": 768,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/lectura-tooltip-768.webp",
+        "ancho": 768,
+        "alto": 636
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/main-menu-2nd": {
+    "original": "images/casos/schaman-analytics-bi/main-menu-2nd.png",
+    "anchoOriginal": 3024,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/main-menu-2nd-1704.webp",
+        "ancho": 1704,
+        "alto": 815
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/main-menu": {
+    "original": "images/casos/schaman-analytics-bi/main-menu.png",
+    "anchoOriginal": 3024,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/main-menu-1704.webp",
+        "ancho": 1704,
+        "alto": 813
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/mapa-tab": {
+    "original": "images/casos/schaman-analytics-bi/mapa-tab.png",
+    "anchoOriginal": 3020,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/mapa-tab-1704.webp",
+        "ancho": 1704,
+        "alto": 813
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/pantalla-completa-inicio-y-sesiones": {
+    "original": "images/casos/schaman-analytics-bi/pantalla-completa-inicio-y-sesiones.png",
+    "anchoOriginal": 3024,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/pantalla-completa-inicio-y-sesiones-1704.webp",
+        "ancho": 1704,
+        "alto": 2305
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/portada-panel-poster": {
+    "original": "images/casos/schaman-analytics-bi/portada-panel-poster.webp",
+    "anchoOriginal": 1280,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/portada-panel-poster-1280.webp",
+        "ancho": 1280,
+        "alto": 800
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/score-global-antiguo": {
+    "original": "images/casos/schaman-analytics-bi/score-global-antiguo.png",
+    "anchoOriginal": 2816,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/score-global-antiguo-1704.webp",
+        "ancho": 1704,
+        "alto": 214
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/score-global-nuevo": {
+    "original": "images/casos/schaman-analytics-bi/score-global-nuevo.png",
+    "anchoOriginal": 2396,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/score-global-nuevo-1704.webp",
+        "ancho": 1704,
+        "alto": 324
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/sesiones-busqueda": {
+    "original": "images/casos/schaman-analytics-bi/sesiones-busqueda.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/sesiones-busqueda-1600.webp",
+        "ancho": 1600,
+        "alto": 1000
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/sesiones-filtro-antes": {
+    "original": "images/casos/schaman-analytics-bi/sesiones-filtro-antes.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/sesiones-filtro-antes-1600.webp",
+        "ancho": 1600,
+        "alto": 97
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/sesiones-filtro-despues": {
+    "original": "images/casos/schaman-analytics-bi/sesiones-filtro-despues.webp",
+    "anchoOriginal": 712,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/sesiones-filtro-despues-712.webp",
+        "ancho": 712,
+        "alto": 1204
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/sesiones-paginacion": {
+    "original": "images/casos/schaman-analytics-bi/sesiones-paginacion.webp",
+    "anchoOriginal": 1600,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/sesiones-paginacion-1600.webp",
+        "ancho": 1600,
+        "alto": 77
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/sesiones-tab": {
+    "original": "images/casos/schaman-analytics-bi/sesiones-tab.png",
+    "anchoOriginal": 3024,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/sesiones-tab-1704.webp",
+        "ancho": 1704,
+        "alto": 816
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/tabla-antes": {
+    "original": "images/casos/schaman-analytics-bi/tabla-antes.png",
+    "anchoOriginal": 2836,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/tabla-antes-1704.webp",
+        "ancho": 1704,
+        "alto": 304
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/tira-kpi-antigua": {
+    "original": "images/casos/schaman-analytics-bi/tira-kpi-antigua.png",
+    "anchoOriginal": 2798,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/tira-kpi-antigua-1704.webp",
+        "ancho": 1704,
+        "alto": 262
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/tira-kpi-nueva": {
+    "original": "images/casos/schaman-analytics-bi/tira-kpi-nueva.png",
+    "anchoOriginal": 2400,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/tira-kpi-nueva-1704.webp",
+        "ancho": 1704,
+        "alto": 423
+      }
+    },
+    "grande": null
+  },
+  "images/casos/schaman-analytics-bi/tooltips": {
+    "original": "images/casos/schaman-analytics-bi/tooltips.png",
+    "anchoOriginal": 732,
+    "anchos": {
+      "1704": {
+        "ruta": "images/casos/schaman-analytics-bi/tooltips-732.webp",
+        "ancho": 732,
+        "alto": 486
       }
     },
     "grande": null

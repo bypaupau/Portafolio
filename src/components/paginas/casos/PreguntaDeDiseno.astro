@@ -1,0 +1,21 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA PREGUNTA · entre dos filetes, a lo ancho entero
+
+   La pregunta de diseño de la que salen las tres decisiones. Es el
+   único texto del caso a 27 px: lo bastante grande para leerse como
+   el eje de la página, no tanto como para competir con un H2.
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  rotulo: TextoBilingue;
+  texto: TextoBilingue;
+}
+const { rotulo, texto } = Astro.props;
+---
+<div class="caso-pregunta cs-rv">
+  <Texto class="caso-pregunta-rotulo" valor={rotulo} />
+  <Texto class="caso-pregunta-texto" valor={texto} />
+</div>

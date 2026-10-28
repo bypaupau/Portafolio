@@ -1,0 +1,308 @@
+/* EDITORIAL · la lectura larga de un caso
+
+   Parte de caso.css, y va la ÚLTIMA del índice: puede pisar a las de
+   arriba y nadie la pisa a ella. Es CSS nuevo, así que `npm run
+   cambios` lo marca como añadido.
+
+   ── EL PROBLEMA QUE RESUELVE ───────────────────────────────
+   El caso se leía como una pila de ventanas: cada sección dentro de un
+   marco con barra de título, borde de 3px y sombra. Con una ventana el
+   marco significa «esto es una app»; con quince no significa nada y
+   solo compite con las capturas, que son la prueba de lo que se
+   cuenta.
+
+   Aquí el marco se reserva para UNA cosa —la demo de portada, que sí
+   es una ventana de aplicación— y lo demás pasa a ser texto con aire y
+   evidencia grande.
+
+   ── TRES NIVELES, Y SE NOTAN ───────────────────────────────
+   1 · firma      la ventana de la demo, el cuadrito del riel, la
+                  retícula rosa del fondo, el pixel en H1 y H2
+   2 · editorial  antetítulo → título → entradilla → cuerpo, en una
+                  columna de ancho estable
+   3 · evidencia  capturas a ancho completo, que es el nivel que más
+                  manda en una página sobre una interfaz
+
+   ── POR QUÉ LA COLUMNA DE TEXTO NO LLEGA AL BORDE ──────────
+   El contenido mide ~1030px. Un párrafo de 1030px son 115 caracteres
+   por línea y el ojo se pierde al volver. El texto se queda en 68ch;
+   las imágenes sí ocupan el ancho entero. Esa diferencia es la que
+   hace que la evidencia se lea como evidencia.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── ancho: este caso es de capturas, así que pide el ancho amplio ── */
+body[data-page="caso-schaman"] .wrap{ --w:var(--w-wide); }
+
+/* ── LA COLUMNA DE LECTURA ─────────────────────────────────────
+   Solo en Schaman: en Phoenix el párrafo comparte el ancho de su
+   título a propósito (ver texto.css) y no se toca. */
+/* ── UNA MEDIDA PARA TODA LA PROSA ─────────────────────────────
+   Había cinco anchos distintos para el mismo papel: 68ch en .cs-text
+   y .cs-cap-p, 72ch en .cs-tools y en los pies, 34ch en .cs-lead… y
+   .cs-nota SIN TOPE, o sea la columna entera.
+
+   Esa última era la que cantaba: una nota llegaba hasta el final de
+   la línea y el párrafo de al lado cortaba antes, así que el borde
+   derecho de la página cambiaba de sitio entre un bloque y el
+   siguiente.
+
+   LA MEDIDA ES LA COLUMNA. `none` no es «sin decidir»: es que el
+   ancho lo pone .cs-main y nadie más, que es como se comportaba ya la
+   nota. Así todos los bloques de prosa terminan en la misma vertical.
+
+   El token se queda —en vez de borrar los `max-width`— porque es el
+   único sitio donde cambiar esto: poner aquí un valor en `ch` vuelve
+   a estrechar toda la prosa de la página a la vez, sin tocar nada
+   más. Y .cs-lead ya no es excepción: también va a la columna. */
+body[data-page="caso-schaman"]{ --cs-medida: none; }
+body[data-page="caso-schaman"] .cs-text,
+body[data-page="caso-schaman"] .cs-lead,
+body[data-page="caso-schaman"] .cs-tools{ max-width:var(--cs-medida); }
+
+/* ── ANTETÍTULOS LEGIBLES ──────────────────────────────────────
+   `--cs-tiny` es 0.55rem y la cara es Press Start 2P: a ese tamaño un
+   pixel font no se lee, se adivina. Pasan a Pixelify Sans, que mantiene
+   el carácter retro y aguanta el tamaño pequeño.
+
+   Press Start 2P se queda donde sí funciona: rótulos de dos palabras
+   dentro de un sello (.cs-ab-k), y ahí también sube de tamaño. */
+.cs-kicker,
+.cs-num{
+  font-family:var(--font-term);
+  font-size:calc(1.04rem * var(--font-term-scale)); letter-spacing:2.2px; line-height:1.1;
+}
+.cs-ab-k{ font-size:0.62rem; letter-spacing:1.1px; }
+
+/* ── EL RIEL, MÁS ESTRECHO Y MÁS CALLADO ───────────────────────
+   Eran 190px de columna + 22px de relleno + una línea de 3px + un
+   punto de 15px con borde de 3px por parada: unos 250px antes de que
+   empezara el contenido, y el adorno pesaba más que los nombres.
+
+   Queda la lista. La parada activa se marca con un cuadradito pixel,
+   que es la firma, y con el color del texto. */
+:root{ --cs-rail:132px; }
+.cs-rail{ padding-left:0; }
+.cs-rail-list{ gap:14px; }
+.cs-rail-list::before,
+.cs-rail-list::after,
+.cs-rail-item::before{ display:none; }
+.cs-rail-item a{
+  font-size:0.93rem; padding:3px 0; border:0;
+  color:var(--text-muted);
+}
+.cs-rail-item a:hover{ color:var(--ink); background:none; }
+.cs-rail-item.is-here a{
+  color:var(--ink); background:none; font-weight:700;
+  position:relative; padding-left:15px;
+}
+/* el cuadradito: 7px sin redondear, con `crispEdges` de espíritu */
+.cs-rail-item.is-here a::before{
+  content:""; position:absolute; left:0; top:0.52em;
+  width:7px; height:7px; background:var(--cs,var(--pink));
+}
+
+/* ── RITMO ENTRE SECCIONES ─────────────────────────────────────
+   Más aire del que había: una sección termina en una captura a ancho
+   completo y la siguiente empieza con un antetítulo pequeño, así que
+   sin distancia las dos se tocan. */
+body[data-page="caso-schaman"] .cs-sec{ margin-bottom:clamp(76px,8vw,128px); }
+body[data-page="caso-schaman"] .cs-head{ margin-bottom:var(--sp-4); }
+
+/* ── UN CAPÍTULO DE DECISIONES ─────────────────────────────────
+   No es una ventana: es un filete, un número y un título. El filete
+   toma el color de la sección, que es lo único que lo ata al resto. */
+.cs-caps{ display:grid; gap:clamp(56px,6vw,92px); }
+.cs-cap{ display:grid; gap:var(--sp-3); }
+.cs-cap-head{
+  display:flex; align-items:baseline; gap:12px;
+  padding-top:var(--sp-3); border-top:3px solid var(--cs,var(--pink-mid));
+}
+.cs-cap-n{
+  font-family:var(--font-term); font-size:calc(1.04rem * var(--font-term-scale)); letter-spacing:1.6px;
+  color:var(--pink-ink); flex:none;
+}
+/* Outfit y no pixel: a 1.15rem la cara pixelada es justo donde deja de
+   leerse de corrido, que es el reproche de siempre */
+.cs-cap-h{
+  margin:0; font-family:var(--font-body); font-weight:700;
+  font-size:clamp(1.14rem,1.7vw,1.3rem); line-height:1.3; color:var(--ink);
+}
+.cs-cap-p{
+  margin:0; max-width:var(--cs-medida);
+  font-size:var(--cs-body); line-height:var(--cs-lh); color:var(--text-soft);
+}
+.cs-cap-p strong{ color:var(--ink); font-weight:600; }
+
+/* ── EVIDENCIA ─────────────────────────────────────────────────
+   Una captura ocupa el ancho del contenido. Sin marco de ventana: un
+   borde fino, la sombra desplazada de la casa y el pie debajo. */
+.cs-ev{ display:grid; gap:var(--sp-5); margin-top:var(--sp-2); }
+/* `min-width:0` lo daba antes la regla de Phoenix; sin él una captura
+   dentro de una rejilla no se deja encoger por debajo de su ancho
+   intrínseco y desborda la columna. */
+.cs-captura{ margin:0; min-width:0; display:grid; gap:var(--sp-2); }
+.cs-captura img{
+  display:block; width:100%; height:auto;
+  border:2px solid var(--ink); box-shadow:5px 5px 0 var(--cs,var(--pink-mid));
+  background:var(--white);
+}
+.cs-captura figcaption{
+  font-size:var(--cs-small); line-height:1.5; color:var(--text-soft); max-width:var(--cs-medida);
+}
+.cs-captura figcaption b{ color:var(--ink); font-weight:600; }
+
+/* el rótulo Antes/Después va encima de su captura, no flotando */
+.cs-captura .cs-ab-k{ justify-self:start; }
+
+
+
+/* ── LA GALERÍA FINAL ──────────────────────────────────────────
+   Pocas y grandes: dos por fila en escritorio. */
+body[data-page="caso-schaman"] .cs-gal{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--sp-5);
+}
+
+/* ── LA DEMO DE PORTADA · LA ÚNICA VENTANA ─────────────────────
+   Aquí el marco sí dice algo: lo que hay dentro es una aplicación. Por
+   eso conserva barra de título y controles, y por eso es la única. */
+.cs-demo{ margin:0; display:grid; gap:var(--sp-2); }
+.cs-demo-win{
+  border:3px solid var(--ink); box-shadow:7px 7px 0 var(--pink-mid);
+  background:var(--white); overflow:hidden;
+}
+.cs-demo-bar{
+  display:flex; align-items:center; gap:10px;
+  padding:7px 12px; border-bottom:3px solid var(--ink); background:var(--sky);
+  font-family:var(--font-term); font-size:var(--cs-term); line-height:1; color:var(--ink);
+}
+.cs-demo-bar .win-ctrls{ margin-left:auto; }
+.cs-demo video,
+.cs-demo img{ display:block; width:100%; height:auto; }
+.cs-demo figcaption{
+  font-size:var(--cs-small); line-height:1.5; color:var(--text-soft); max-width:var(--cs-medida);
+}
+
+/* MENOS MOVIMIENTO: se esconde el vídeo y queda su póster, que es un
+   fotograma real de lo mismo. El texto del pie no cambia porque
+   describe la interacción, no la animación. */
+/* el relevo está oculto mientras el vídeo se reproduce. Va ANTES del
+   @media: misma especificidad, así que si se declarara después ganaría
+   él y con «menos movimiento» no se vería ni el vídeo ni su póster. */
+.cs-demo .cs-demo-poster{ display:none; }
+@media (prefers-reduced-motion:reduce){
+  .cs-demo video{ display:none; }
+  .cs-demo .cs-demo-poster{ display:block; }
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────────
+   El riel se acuesta arriba y el contenido ocupa todo el ancho; es lo
+   que ya hacía responsive.css, aquí solo se ajusta a la nueva medida. */
+@media (max-width:860px){
+  body[data-page="caso-schaman"] .cs-gal{ grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:620px){
+  .cs-cap-head{ gap:9px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LA EVIDENCIA, EN DOS DISPOSICIONES
+
+   Antes todas las capturas iban a ancho completo con el pie debajo.
+   Para un dashboard de 1600x1000 eso son ~560px de alto en pantalla,
+   y apiladas de dos en dos obligan a desplazarse por la comparación
+   en vez de verla. Y para un recorte de 400x708 —una columna de la
+   tabla— el ancho completo lo agranda hasta convertir un detalle en
+   una sección.
+
+   Son dos problemas opuestos, así que son dos disposiciones.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 1 · UNA COMPARACIÓN ES UNA FILA, NO UNA PILA ──────────────
+   El antes y el después van SIEMPRE lado a lado en escritorio. Es la
+   única forma en que se comparan: apilados hay que recordar el de
+   arriba mientras se mira el de abajo, y con un dashboard de veinte
+   elementos eso no se puede hacer.
+
+   Esto sustituye a dos cosas que había y que se estorbaban:
+
+     `.cs-pila`     ponía el antes encima del después
+     `                    dejaba dos tercios de hueco a su izquierda
+
+   Las dos columnas son IGUALES (1fr 1fr) y se alinean por arriba, así
+   que las dos capturas empiezan en la misma línea aunque una sea más
+   alta que la otra. Cada mitad lleva su sello encima y su pie debajo,
+   dentro de la misma figura: así el rótulo nunca se separa de su
+   imagen al apilarse en celular. */
+.cs-comparacion{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(18px,2.2vw,34px);
+  align-items:start;
+}
+/* una captura dentro de una comparación manda por ANCHO: las dos
+   mitades miden lo mismo y cada imagen conserva su proporción */
+.cs-comparacion .cs-captura img{ width:100%; height:auto; }
+
+/* ── 2 · EVIDENCIA CON SU TEXTO ENCIMA ─────────────────────────
+   Para comparaciones que necesitan el ancho entero: una fila de cinco
+   tarjetas de indicadores mide 1600x229, y metida en la columna
+   estrecha de un `.cs-ev-detalle` baja a 245px de ancho, donde las
+   cinco tarjetas ya no se distinguen. El texto va encima y la
+   comparación se queda con los 1012px de la columna. */
+.cs-ev-bloque{ display:grid; gap:var(--sp-3); }
+
+/* UNA COMPARACIÓN DE CONTROLES, NO DE PANTALLAS. Los dos recortes del
+   filtro miden 344px de ancho natural: estirarlos a media columna
+   (494px) los emborrona y no enseñan ni un píxel más. El grupo se
+   queda en 760px, así que cada mitad cae en ~363px y las dos salen a
+   la MISMA escala, que es lo que hace que se puedan comparar. */
+.cs-comparacion.es-controles{ max-width:760px; }
+
+/* ── 2 · DETALLE DE INTERFAZ, EXPLICADO ────────────────────────
+   Al revés: manda el texto y el recorte prueba lo que dice. Para una
+   columna de tabla o una pastilla, media columna sigue siendo más
+   grande de lo que el detalle necesita.
+
+   Las dos columnas se alinean por arriba, que es lo que hace que el
+   texto y su prueba se lean como una sola cosa. */
+.cs-ev-detalle{
+  display:grid;
+  /* la columna de la captura es ajustable: una tira de controles de
+     722px de ancho natural no se lee a 523, y estirarla tampoco la
+     arregla. El bloque que la necesite pide más sitio con `es-ancha`
+     en vez de inventarse un margen. */
+  grid-template-columns:minmax(0,1fr) minmax(0,var(--ev-img,1.15fr));
+  gap:clamp(20px,2.6vw,40px);
+  align-items:start;
+}
+.cs-ev-detalle.es-ancha{ --ev-img:1.7fr; }
+.cs-ev-texto{ display:grid; gap:var(--sp-2); align-content:start; }
+.cs-ev-h{
+  margin:0; font-family:var(--font-body); font-weight:700;
+  font-size:1.02rem; line-height:1.3; color:var(--ink);
+}
+.cs-ev-texto p{
+  margin:0; max-width:var(--cs-medida);
+  font-size:var(--cs-body); line-height:var(--cs-lh); color:var(--text-soft);
+}
+/* dentro de un detalle el pie sobra como párrafo largo: va corto y
+   pegado a su recorte */
+.cs-ev-detalle .cs-captura figcaption{ max-width:none; }
+
+/* UN RECORTE ALTO NO PUEDE MEDIR MÁS QUE LA PANTALLA. El calendario
+   del filtro es 712x1204: a ancho completo son más de 1500px de alto,
+   una pantalla y media de desplazamiento para ver un desplegable. */
+.cs-ev-detalle .cs-captura img{
+  width:auto; max-width:100%; max-height:58vh; justify-self:start;
+}
+
+
+@media (max-width:760px){
+  /* En celular una comparación en dos columnas deja cada captura a
+     ~160px: ahí ya no se compara nada. Se apila, y como el sello y el
+     pie viven DENTRO de su figura, cada imagen sigue diciendo si es el
+     antes o el después. */
+  .cs-comparacion{ grid-template-columns:minmax(0,1fr); gap:var(--sp-5); }
+  /* el texto al lado deja de caber: vuelve debajo, que es de donde salió */
+  .cs-ev-detalle{ grid-template-columns:minmax(0,1fr); }
+}

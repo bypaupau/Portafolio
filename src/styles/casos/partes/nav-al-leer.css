@@ -1,0 +1,35 @@
+/* EL NAV SE APARTA MIENTRAS LEES
+   script: src/scripts/casos/nav-al-leer.ts
+
+   Parte de caso.css, así que solo existe en las páginas de caso. Pasada
+   la portada, al bajar la barra superior sube fuera de la pantalla; al
+   subir, vuelve. En la portada se queda siempre.
+
+   --nav-ocupa es lo que el nav ocupa en pantalla AHORA: su alto, o 0
+   cuando está escondido. Lo que se queda fijo en el caso se coloca con
+   ella y sube a la vez que el nav. --nav-h sigue siendo su alto real y
+   no cambia: lo usan las medidas que no deben saltar (el alto de las
+   capturas fijas, el margen de las anclas). */
+:root{ --nav-ocupa:var(--nav-h); }
+:root.nav-escondido{ --nav-ocupa:0px; }
+
+.barra-superior{
+  transition:transform var(--mo-base,320ms) var(--ease-out,ease);
+}
+.nav-escondido .barra-superior{ transform:translateY(-100%); }
+
+/* lo fijo se mueve con el mismo tiempo y la misma curva que el nav */
+.caso-indice,
+.caso-diagnostico.esta-vivo .caso-diagnostico-fijo{
+  transition:top var(--mo-base,320ms) var(--ease-out,ease), height var(--mo-base,320ms) var(--ease-out,ease);
+}
+@media (max-width:1023px){
+  .caso-barra{ transition:top var(--mo-base,320ms) var(--ease-out,ease); }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .barra-superior,
+  .caso-indice,
+  .caso-barra,
+  .caso-diagnostico.esta-vivo .caso-diagnostico-fijo{ transition:none; }
+}

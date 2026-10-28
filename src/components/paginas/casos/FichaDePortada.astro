@@ -1,0 +1,28 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA FICHA DE PORTADA · cuatro rótulos en fila
+
+   Proyecto · Contexto · Mi rol · Tecnologías, cada uno con el subrayado
+   a mano de la casa (el mismo trazo de Sobre mí, TrazoSubrayado). Es
+   una lista de definiciones: el rótulo nombra, el valor dice.
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import TrazoSubrayado from '../../dibujos/TrazoSubrayado.astro';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  campos: readonly { rotulo: TextoBilingue; valor: TextoBilingue }[];
+}
+const { campos } = Astro.props;
+---
+<dl class="caso-ficha">
+  {campos.map((campo) => (
+    <div class="caso-ficha-campo">
+      <dt>
+        <Texto como="span" valor={campo.rotulo} />
+        <span class="caso-ficha-trazo"><TrazoSubrayado /></span>
+      </dt>
+      <Texto como="dd" valor={campo.valor} />
+    </div>
+  ))}
+</dl>

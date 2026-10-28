@@ -1,0 +1,130 @@
+/* MEDIOS · capturas, vídeos y la ventana de portada
+   componentes: MedioDeCaso.astro · VentanaDeCaso.astro
+   script:      src/scripts/casos/videos.ts
+
+   Parte de caso.css. Sin marco de ventana salvo en la portada: un
+   borde de tinta de 2 px y el pie debajo. Esquinas rectas. */
+
+.caso-figura{ margin:0; min-width:0; display:grid; gap:10px; justify-items:center; }
+.caso-figura.es-completo{ justify-items:stretch; }
+/* el estrecho crece con la columna: ~2/3 de ella, nunca más de 760 px */
+.caso-figura.es-estrecho{ width:min(100%, max(600px, 66%), 760px); margin-inline:auto; }
+/* a su tamaño natural: nunca más grande de lo que sus píxeles dan */
+.caso-figura.es-natural .caso-figura-marco{ width:min(100%, var(--ancho-natural)); }
+
+.caso-figura-marco{
+  position:relative; width:100%;
+  display:grid; gap:0;
+  border:2px solid var(--ink); background:var(--white);
+}
+.caso-figura-marco img,
+.caso-figura-marco video{ display:block; width:100%; height:auto; }
+/* dos capturas apiladas en una misma pieza: un filete fino entre ellas */
+.caso-figura-marco img + img{ border-top:2px solid var(--pink-light); }
+
+.caso-figura figcaption{
+  justify-self:stretch;
+  font-size:16px; line-height:1.55; color:var(--text-soft);
+}
+.caso-figura figcaption b{ color:var(--ink); font-weight:600; }
+.caso-figura.es-estrecho figcaption,
+.caso-figura.es-natural figcaption{ text-align:center; }
+
+/* ── EL RÓTULO DE LA ESQUINA · ANTES, DESPUÉS, ORDENAR… ──────────
+   Pertenece a la pieza, arriba a la izquierda: así no se separa de
+   ella al apilarse. Va MONTADO sobre el borde superior y no dentro: en
+   una tira de 160 px de alto, dentro tapaba el título de la primera
+   tarjeta. El de antes es blanco; el de después toma el acento de su
+   sección. */
+.caso-figura:has(.caso-sello){ padding-top:14px; }
+.caso-sello{
+  position:absolute; left:12px; top:0; z-index:2; transform:translateY(-55%);
+  padding:3px 10px 2px;
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); line-height:1.1;
+  letter-spacing:2.2px; text-transform:uppercase; color:var(--ink);
+  background:var(--white); border:2px solid var(--ink);
+}
+.caso-sello.es-despues{ background:var(--caso-acento,var(--pink-light)); }
+
+/* ── LOS VÍDEOS ────────────────────────────────────────────────
+   El botón de 60 px (el mínimo táctil es 44) en el centro del póster.
+   Lo enseña videos.ts; sin JavaScript quedan los controles nativos. */
+.caso-video-boton{
+  position:absolute; left:50%; top:50%; z-index:2;
+  width:60px; height:60px; margin:-30px 0 0 -30px;
+  display:grid; place-items:center;
+  background:var(--white); border:2px solid var(--ink); border-radius:0;
+  cursor:pointer;
+  transition:background-color var(--mo-fast,180ms) ease;
+}
+.caso-video-boton[hidden]{ display:none; }
+.caso-video-boton:hover{ background:var(--pink-light); }
+.caso-video-boton:focus-visible{ outline:3px dashed var(--pink); outline-offset:3px; }
+.caso-video-boton svg{ margin-left:4px; }
+/* el vídeo en bucle se pausa con un clic: que el cursor lo diga, y
+   que el teclado vea dónde está */
+.caso-figura.es-video video[tabindex]{ cursor:pointer; }
+.caso-figura.es-video video:focus-visible{ outline:3px dashed var(--pink); outline-offset:3px; }
+
+.caso-duracion{
+  justify-self:start; margin:0;
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); line-height:1; letter-spacing:2.2px; color:var(--ink);
+}
+.caso-figura.es-estrecho .caso-duracion,
+.caso-figura.es-natural .caso-duracion{ justify-self:center; }
+
+/* ── LA VENTANA DE PORTADA · la única ─────────────────────────── */
+.caso-ventana{ margin:0; display:grid; gap:10px; }
+/* ── LA PORTADA EN DOS COLUMNAS · ventana | ficha ───────────────
+   En escritorio, la ventana a la izquierda y la ficha a la derecha,
+   empezando las dos a la misma altura.
+
+   La ventana entra ENTERA en la primera pantalla. Lo que ocupa lo de
+   encima (nav, antetítulo, título y una frase que puede ir en una
+   línea o en dos) lo mide src/scripts/casos/portada.ts y lo deja en
+   --sobre-la-ventana, sumando 38 de barra y bordes y 16 de respiro.
+   Sin JavaScript vale 324 px: lo de un caso con la frase en una línea.
+   Su columna mide lo que deja que su alto quepa en el resto, con la
+   proporción real de la captura (--proporcion, desde la página), y
+   nunca tanto que la ficha baje de 250 px.
+
+   La ficha NUNCA es más alta que la ventana: `contain:size` hace que
+   su alto lo ponga la fila (la de la ventana) y no su contenido, y
+   sus cuatro rótulos se reparten ese alto. El pie de la ventana va en
+   una segunda fila, para que no cuente en ese alto.
+
+   Desde 1200 px: por debajo, a la ventana le quedan ~400 px y la ficha
+   ya no cabe a su lado (a 1100 se salía 38 px), así que van apiladas,
+   la ficha en fila debajo como en móvil. */
+/* el aire entre el pie de la ventana y lo que sigue */
+.caso-portada-fila{ margin-bottom:34px; }
+
+@media (min-width:1200px){
+  .caso-portada-fila{
+    display:grid;
+    grid-template-columns:min(calc(100% - 282px), calc((100svh - var(--sobre-la-ventana, 324px)) * var(--proporcion))) minmax(0,1fr);
+    column-gap:32px; row-gap:10px;
+  }
+  .caso-portada-fila .caso-ventana{ display:contents; }
+  .caso-portada-fila .caso-ventana-marco{ grid-column:1; grid-row:1; }
+  .caso-portada-fila .caso-ventana figcaption{ grid-column:1; grid-row:2; }
+  .caso-portada-fila .caso-ficha{
+    grid-column:2; grid-row:1;
+    contain:size;
+    display:flex; flex-direction:column; justify-content:space-between; gap:8px;
+    margin:0; padding:0; border:0;
+  }
+  .caso-portada-fila .caso-ficha dt{ font-size:14px; margin-bottom:6px; }
+  .caso-portada-fila .caso-ficha-trazo{ height:7px; }
+  .caso-portada-fila .caso-ficha dd{ font-size:14px; line-height:1.45; }
+}
+
+.caso-ventana-marco{ border:2px solid var(--ink); background:var(--white); }
+.caso-ventana-barra{
+  display:flex; align-items:center; gap:10px;
+  padding:7px 12px; border-bottom:2px solid var(--ink); background:var(--sky);
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); line-height:1; color:var(--ink);
+}
+.caso-ventana-cuadro{ width:12px; height:12px; border:2px solid var(--ink); background:var(--white); flex:none; }
+.caso-ventana img{ display:block; width:100%; height:auto; }
+.caso-ventana figcaption{ font-size:16px; line-height:1.55; color:var(--text-soft); }

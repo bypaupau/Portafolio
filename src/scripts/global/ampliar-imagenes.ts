@@ -9,7 +9,10 @@
    Toda imagen dentro de una FIGURA de contenido:
 
        figure.cs-fig2     las capturas y los diagramas de un caso
-       figure.cs-shot     las pantallas de un grupo
+       figure.cs-shot     las pantallas de un grupo (Phoenix)
+       figure.cs-captura  las capturas de Schaman (layout viejo)
+       figure.caso-figura las capturas del layout nuevo de los casos
+       figure.caso-ventana la ventana de portada del layout nuevo
        figure.cs-hero-fig la portada del caso
 
    El criterio no es una clase nueva que haya que acordarse de poner,
@@ -36,7 +39,7 @@
    ═══════════════════════════════════════════════════════════ */
 import { textoDe } from './language-runtime';
 
-const FIGURAS_DE_CONTENIDO = 'figure.cs-fig2, figure.cs-shot, figure.cs-hero-fig';
+const FIGURAS_DE_CONTENIDO = 'figure.cs-fig2, figure.cs-shot, figure.cs-captura, figure.caso-figura, figure.caso-ventana, figure.cs-hero-fig';
 /* lo que dura la aparición y el cierre. Es el mismo número que el CSS;
    si cambia allí, cambia aquí. */
 const TRANSICION = 160;

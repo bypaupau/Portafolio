@@ -1,0 +1,29 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   UN SUB-BLOQUE · número, rótulo, párrafo y medio
+
+   Las secciones 04 y 05 tienen tres cada una. El título va en Outfit y
+   no en pixel: seis títulos pixelados seguidos dejan de leerse. Su id
+   es el ancla del sub-índice de la barra.
+
+   La sección NO aparece entera de golpe: aparecen su número, su título
+   y cada bloque de dentro por su cuenta (cada uno lleva .cs-rv).
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  id: string;
+  /** su posición, desde 1 */
+  numero: number;
+  total: number;
+  titulo: TextoBilingue;
+}
+const { id, numero, total, titulo } = Astro.props;
+const dosCifras = (n: number) => String(n).padStart(2, '0');
+---
+<section class="caso-subbloque" id={id} aria-labelledby={`h-${id}`}>
+  <p class="caso-antetitulo cs-rv">{dosCifras(numero)} / {dosCifras(total)}</p>
+  <Texto como="h3" class="caso-h3 cs-rv" id={`h-${id}`} valor={titulo} />
+  <slot />
+</section>

@@ -1,0 +1,31 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA TIRA DE TRES · un bloque denso, partido en tres columnas
+
+   A 852 px una línea de cuerpo ronda los 100 caracteres; tres ideas
+   hermanas puestas una tras otra se leerían como un párrafo largo. En
+   tres columnas cortas se comparan de un vistazo.
+
+     filete    cada columna con un filete de tinta encima
+               (la necesidad · por qué importa · qué hice)
+     acento    el filete en el color de la sección (las prioridades)
+     caja      entre dos filetes, con separadores (el resultado)
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  elementos: readonly { rotulo: TextoBilingue; titulo?: TextoBilingue; texto: TextoBilingue }[];
+  variante?: 'filete' | 'acento' | 'caja';
+}
+const { elementos, variante = 'filete' } = Astro.props;
+---
+<ul class:list={['caso-tira', 'cs-rv', `es-${variante}`]}>
+  {elementos.map((elemento) => (
+    <li>
+      <Texto class="caso-tira-rotulo" valor={elemento.rotulo} />
+      {elemento.titulo && <Texto class="caso-tira-titulo" valor={elemento.titulo} />}
+      <Texto class="caso-tira-texto" valor={elemento.texto} />
+    </li>
+  ))}
+</ul>

@@ -1,0 +1,22 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   EL ENCABEZADO DE UNA SECCIÓN · filete, antetítulo y H2
+
+   El filete de 3 px toma el acento de la sección (--caso-acento), que
+   es el mismo color del cuadrito de su parada en la barra.
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  /** el id del H2: la sección lo usa en aria-labelledby */
+  id: string;
+  antetitulo: TextoBilingue;
+  titulo: TextoBilingue;
+}
+const { id, antetitulo, titulo } = Astro.props;
+---
+<header class="caso-encabezado cs-rv">
+  <Texto class="caso-antetitulo" valor={antetitulo} />
+  <Texto como="h2" class="caso-h2" id={id} valor={titulo} />
+</header>

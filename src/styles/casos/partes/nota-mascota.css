@@ -1,0 +1,33 @@
+/* NOTA CON LA MASCOTA · la voz de Pau, aparte
+   componente: NotaConMascota.astro
+   Parte de caso.css. */
+
+.caso-nota{
+  display:grid; grid-template-columns:auto minmax(0,1fr); gap:16px; align-items:start;
+  margin:28px 0;
+}
+.caso-nota .caso-mascota{ margin-top:4px; }
+.caso-nota-caja{ border:2px solid var(--ink); background:var(--white); padding:12px 18px; }
+.caso-nota-texto{ margin:0; }
+
+/* bocadillo: una frase corta en Pixelify Sans, del ancho que pida. */
+.caso-nota.es-bocadillo .caso-nota-caja{ justify-self:start; }
+.caso-nota.es-bocadillo .caso-nota-texto{
+  font-family:var(--font-term); font-size:calc(22px * var(--font-term-scale)); line-height:1.3; letter-spacing:.4px; color:var(--ink);
+}
+
+/* aviso: recuadro amarillo, rótulo a la izquierda y texto a la derecha */
+.caso-nota.es-aviso .caso-nota-caja{
+  display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,2.4fr); gap:24px; align-items:center;
+  background:var(--yellow); padding:22px 24px;
+}
+.caso-nota-rotulo{
+  margin:0;
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); line-height:1.35;
+  letter-spacing:2.2px; text-transform:uppercase; color:var(--ink);
+}
+.caso-nota.es-aviso .caso-nota-texto{ font-size:16px; line-height:1.6; color:var(--ink); }
+
+@media (max-width:600px){
+  .caso-nota.es-aviso .caso-nota-caja{ grid-template-columns:minmax(0,1fr); gap:10px; }
+}

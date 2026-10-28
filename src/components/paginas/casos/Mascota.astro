@@ -1,0 +1,42 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA MASCOTA · la pantallita que sonríe
+
+   Es public/favicon.svg, en línea: los mismos doce rects, con los
+   colores pasados a tokens (#2c1a24 → --ink, #f4b8cc → --pink-mid,
+   #fff → --white, #d6eefb → --sky). La usan la barra del caso, la nota
+   de «El origen» y el aviso del final.
+
+   Parpadea cada 4 segundos, siempre (partes/mascota.css): los ojos
+   abiertos y los cerrados son dos grupos y el CSS alterna cuál se ve.
+
+   Es de una sola página mientras Grow With Phoenix no pase al layout
+   nuevo; entonces se muda a dibujos/ (CONVENCIONES §3).
+   ═══════════════════════════════════════════════════════════ */
+interface Props {
+  /** el lado en píxeles; es cuadrada */
+  tamano?: number;
+}
+const { tamano = 32 } = Astro.props;
+---
+<svg class="caso-mascota" viewBox="0 0 32 32" width={tamano} height={tamano} shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+  <rect fill="var(--ink)" x="2" y="4" width="28" height="20"/>
+  <rect fill="var(--white)" x="4" y="6" width="24" height="16"/>
+  <rect fill="var(--sky)" x="6" y="8" width="20" height="12"/>
+  <g class="mascota-ojos">
+    <rect fill="var(--ink)" x="10" y="12" width="2" height="2"/>
+    <rect fill="var(--ink)" x="20" y="12" width="2" height="2"/>
+  </g>
+  {/* cerrados: una raya de un píxel; se ven solo al parpadear */}
+  <g class="mascota-ojos-cerrados">
+    <rect fill="var(--ink)" x="10" y="13" width="2" height="1"/>
+    <rect fill="var(--ink)" x="20" y="13" width="2" height="1"/>
+  </g>
+  <rect fill="var(--pink-mid)" x="8" y="14" width="2" height="2"/>
+  <rect fill="var(--pink-mid)" x="22" y="14" width="2" height="2"/>
+  <rect fill="var(--ink)" x="10" y="16" width="2" height="2"/>
+  <rect fill="var(--ink)" x="12" y="18" width="8" height="2"/>
+  <rect fill="var(--ink)" x="20" y="16" width="2" height="2"/>
+  <rect fill="var(--ink)" x="14" y="24" width="4" height="2"/>
+  <rect fill="var(--ink)" x="8" y="26" width="16" height="2"/>
+</svg>

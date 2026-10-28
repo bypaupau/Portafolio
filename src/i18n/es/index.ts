@@ -6,6 +6,7 @@ import { spanishCreativo } from './creativo';
 import { spanishProyectos } from './proyectos';
 import { spanishSobreMi } from './sobre-mi';
 import { spanishInicio } from './inicio';
+import { spanishCasos } from './casos';
 
 export const spanishInterface = {
   ...spanishGlobal,
@@ -14,4 +15,5 @@ export const spanishInterface = {
   ...spanishProyectos,
   ...spanishSobreMi,
   ...spanishInicio,
+  ...spanishCasos,
 } as const;

@@ -4,138 +4,131 @@
 
    ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
    contenido   src/content/casos/schaman-analytics-bi.ts  ← TODO el texto
-   estilo      src/styles/casos/caso.css    (compartida con el otro caso)
-   script      src/scripts/casos/riel.ts    (compartido)
-   piezas      src/components/paginas/casos/        (riel, figura, nota, cierre;
-                                             BloqueDeDecisiones, CapturaDeDecision
-                                             y los cuatro Icono* son de aquí)
-   imágenes    public/images/casos/schaman-analytics-bi/
-               (la portada reusa la imagen de Proyectos, en su versión más grande)
+   interfaz    src/i18n/{es,en}/casos.ts                  ← la barra
+   estilo      src/styles/casos/caso.css   (compartida con el otro caso)
+               └ partes/lectura.css, barra.css y las de cada bloque
+   scripts     src/scripts/casos/barra.ts · diagnostico.ts · videos.ts
+               · escritura.ts
+   piezas      src/components/paginas/casos/
+   imágenes    originales/images/casos/schaman-analytics-bi/ → manifiesto
+   vídeo       public/video/casos/schaman-analytics-bi/
    URL previa  /pages/caso/schaman-analytics-bi.html → redirige
 
-   ── EN QUÉ SE PARECE Y EN QUÉ NO AL OTRO CASO ──────────────
-   Comparte el riel, la hoja de estilo y las piezas chicas. NO comparte
-   la estructura: este caso trata de rediseñar algo que ya existía, así
-   que su pieza central son las comparaciones antes/después, y tiene
-   secciones que el otro no tiene (los dos bloques de decisiones, el
-   flujo de datos, las fórmulas de los indicadores).
+   ── EL LAYOUT ──────────────────────────────────────────────
+   Una barra propia a la izquierda (el índice del caso en línea de
+   tiempo) y el contenido en UNA medida de 852 px: texto, títulos y
+   evidencia terminan en la misma vertical. Ocho secciones, 00–07, y
+   cada una con su acento (--caso-acento), que pinta el filete de su
+   encabezado y el sub-índice de su parada:
 
-   ── CADA SECCIÓN HACE UNA COSA ─────────────────────────────
-   La 02 diagnostica y la 03 responde. El diagnóstico no describe el
-   resultado, y la 03 no vuelve a contar el diagnóstico: enseña, al
-   lado de cada decisión, la captura de la vista que cambió.
+     00 portada      --pink        04 exploración  --lav
+     01 origen       --sky         05 datos        --pink-mid
+     02 reto         --peach       06 resultado    --yellow
+     03 vistas       --mint        07 aprendizaje  --yellow
 
-   Antes esto eran tres secciones (diagnóstico, decisiones, rediseño) y
-   el mismo cambio se explicaba en las tres. La 03 de hoy es la fusión
-   de las dos últimas; por eso el riel tiene seis paradas y no siete.
+   Queda UNA ventana en toda la página, la de la portada, porque lo de
+   dentro sí es una ventana de aplicación.
 
-   Por eso cada caso tiene su propio archivo: forzar los dos en una
-   plantilla común obligaría a describir con opciones unas rejillas que
-   no se parecen, y sería más difícil de leer que esto.
+   EL MOVIMIENTO: el título se escribe letra a letra (escritura.ts), cada
+   bloque aparece al bajar (.cs-rv) y los vídeos se reproducen solos y en
+   bucle al llegar a ellos, como GIFs (videos.ts). Con «menos
+   movimiento» no pasa nada de eso: todo está quieto y visible.
 
-   data-page va como "caso-schaman" porque hay una regla de CSS que
-   depende de eso (css/caso.css, última línea).
+   SIN LA BARRA DE ABAJO (sinTaskbar): la página es la versión
+   minimalista del caso. El selector de idioma vive en el pie de la
+   barra del caso.
 
-   ── CLAVES ─────────────────────────────────────────────────
-   Este caso tenía las claves más opacas: sch.dec.4.3, sch.f.rol.2.
-   Ahora son decisiones.lista[3].impacto y miRol.puntos[1].
+   La 02 termina con tres prioridades y la 03, la 04 y la 05 son esas
+   tres, en el mismo orden. Si se toca el orden de una, se toca el de
+   la otra.
+
+   ── LAS IMÁGENES ───────────────────────────────────────────
+   Pasan por el manifiesto, como pide CONVENCIONES §4: los originales
+   están en originales/images/casos/schaman-analytics-bi/, npm run
+   imagenes genera lo publicado y captura() pide cada una por su
+   nombre, sin extensión. Las medidas salen del manifiesto, así que no
+   se escriben aquí.
+
+   TODAS las capturas y grabaciones son de la aplicación ejecutándose:
+   las de «antes» de la rama main y las de «después» de rediseno-pau,
+   contra el mismo almacén.
+
+   data-page va como "caso-schaman" porque hay reglas viejas de CSS que
+   dependen de eso (partes/editorial.css y responsive-bloques-nuevos);
+   se retiran con el riel en la etapa 6.
    ═══════════════════════════════════════════════════════════ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Texto from '../../components/piezas/Texto.astro';
-import RielDeCaso from '../../components/paginas/casos/RielDeCaso.astro';
-import FiguraDeCaso from '../../components/paginas/casos/FiguraDeCaso.astro';
-import BloqueDeDecisiones from '../../components/paginas/casos/BloqueDeDecisiones.astro';
-import NotaDeCaso from '../../components/paginas/casos/NotaDeCaso.astro';
-import IconoPanelLateral from '../../components/paginas/casos/IconoPanelLateral.astro';
-import IconoGraficoCombinado from '../../components/paginas/casos/IconoGraficoCombinado.astro';
-import IconoFiltroDeLista from '../../components/paginas/casos/IconoFiltroDeLista.astro';
-import IconoLibroRevisado from '../../components/paginas/casos/IconoLibroRevisado.astro';
+import BarraDeCaso from '../../components/paginas/casos/BarraDeCaso.astro';
+import EncabezadoDeSeccion from '../../components/paginas/casos/EncabezadoDeSeccion.astro';
+import FichaDePortada from '../../components/paginas/casos/FichaDePortada.astro';
+import VentanaDeCaso from '../../components/paginas/casos/VentanaDeCaso.astro';
+import NotaConMascota from '../../components/paginas/casos/NotaConMascota.astro';
+import PreguntaDeDiseno from '../../components/paginas/casos/PreguntaDeDiseno.astro';
+import MedioDeCaso from '../../components/paginas/casos/MedioDeCaso.astro';
+import ParejaDeCaso from '../../components/paginas/casos/ParejaDeCaso.astro';
+import SubBloqueDeCaso from '../../components/paginas/casos/SubBloqueDeCaso.astro';
+import TiraDeTres from '../../components/paginas/casos/TiraDeTres.astro';
+import PantallasFijas from '../../components/paginas/casos/PantallasFijas.astro';
 import CierreDeCaso from '../../components/paginas/casos/CierreDeCaso.astro';
-import { conIdioma, altConIdioma, htmlConIdioma } from '../../lib/texto-bilingue';
 import { rutaPublica, rutaPagina } from '../../lib/rutas';
-import { imagen, imagenMasGrande } from '../../lib/imagenes';
+import { imagen } from '../../lib/imagenes';
 import { schamanAnalyticsBi as contenido } from '../../content/casos/schaman-analytics-bi';
 import '../../styles/casos/caso.css';
 
 const REPOSITORIO = 'https://github.com/bypaupau/Schaman-Analytics-BI/tree/rediseno-pau';
-const img = (archivo: string) => rutaPublica('images/casos/schaman-analytics-bi/' + archivo);
+const PROYECTOS = rutaPagina('proyectos');
 
-/* un atajo, porque esta página pide mucho texto suelto */
-const t = conIdioma;
+/* Cada captura, con el ancho y el alto REALES de su archivo, que salen
+   del manifiesto. 1704 es el doble de la columna de contenido (852 px);
+   las que miden menos se quedan como están, nunca se agrandan. */
+const captura = (nombre: string) => {
+  const { src, ancho, alto } = imagen('images/casos/schaman-analytics-bi/' + nombre, 1704);
+  return { imagen: src, ancho, alto };
+};
 
-/* LOS DOS BLOQUES DE LA SECCIÓN 03 · lo que no es texto del proyecto.
-   El contenido pone los nombres, las necesidades, las decisiones y los
-   pies; aquí van los pasteles, las capturas y el icono de cada
-   decisión.
+/* Los vídeos no pasan por el manifiesto: cada .mp4 sale de su .mov de
+   originales/video/ con ffmpeg y lleva su póster al lado (ver
+   originales/LEEME.md). Las cinco grabaciones miden 1280×610; la
+   duración, redondeada al segundo, es la que dice ffprobe. */
+const video = (nombre: string, duracion: string) => ({
+  video: rutaPublica(`video/casos/schaman-analytics-bi/${nombre}.mp4`),
+  poster: rutaPublica(`video/casos/schaman-analytics-bi/${nombre}-poster.webp`),
+  ancho: 1280, alto: 610, duracion,
+});
 
-   CADA DECISIÓN ES UNA VENTANA y lleva tres pasteles: el de su barra,
-   el de su cuerpo y el del cuadradito del icono. Las dos columnas se
-   reparten siempre igual en los dos bloques —izquierda amarilla sobre
-   rosa, derecha lila sobre celeste— porque son la misma estructura
-   repetida y cambiar el color de un bloque a otro haría pensar que no.
+const ACENTO = {
+  portada: 'var(--pink)', origen: 'var(--sky)', reto: 'var(--peach)', vistas: 'var(--mint)',
+  exploracion: 'var(--lav)', datos: 'var(--pink-mid)', resultado: 'var(--yellow)', aprendizaje: 'var(--yellow)',
+} as const;
 
-   NINGÚN TONO SE REPITE DENTRO DE SU PROPIA VENTANA: el cuadrado del
-   icono va sobre la barra, así que nunca lleva el color de la barra, y
-   el sello ANTES/DESPUÉS va sobre el cuerpo, así que tampoco lleva el
-   suyo. Por eso el icono de la 02 es durazno y no lila: su barra ya lo
-   es.
+const { indice, etiquetas: ETIQ, portada, origen, reto, vistas, exploracion, datos, resultado, aprendizaje } = contenido;
 
-   LAS CAPTURAS VAN EN ORDEN: la primera es el ANTES de esa vista y la
-   segunda el DESPUÉS, y el bloque se las da a su primera y su segunda
-   decisión en ese mismo orden. */
-const COLUMNA_IZQUIERDA = { barra: 'yellow', cuerpo: 'var(--pink-light)' };
-const COLUMNA_DERECHA   = { barra: 'lav',    cuerpo: 'var(--sky)' };
+/* LAS PARADAS DE LA BARRA: una por sección, en el orden de la página.
+   La 04 y la 05 llevan su sub-índice, que apunta a sus sub-bloques. */
+const PARADAS = [
+  { id: 'caso-00', acento: ACENTO.portada },
+  { id: 'caso-01', acento: ACENTO.origen },
+  { id: 'caso-02', acento: ACENTO.reto },
+  { id: 'caso-03', acento: ACENTO.vistas },
+  { id: 'caso-04', acento: ACENTO.exploracion, sub: [
+    { id: 'caso-04-1', nombre: exploracion.buscar.corto },
+    { id: 'caso-04-2', nombre: exploracion.periodo.corto },
+    { id: 'caso-04-3', nombre: exploracion.mapa.corto },
+  ] },
+  { id: 'caso-05', acento: ACENTO.datos, sub: [
+    { id: 'caso-05-1', nombre: datos.color.corto },
+    { id: 'caso-05-2', nombre: datos.jerarquia.corto },
+    { id: 'caso-05-3', nombre: datos.tooltips.corto },
+  ] },
+  { id: 'caso-06', acento: ACENTO.resultado },
+  { id: 'caso-07', acento: ACENTO.aprendizaje },
+].map((parada, i) => ({ ...parada, ...indice[i]! }));
 
-const bloques = [
-  {
-    id: 'b1', desdeLaDecision: 1,
-    piezas: [
-      { icono: IconoPanelLateral,     tono: 'var(--sky)',   ...COLUMNA_IZQUIERDA },
-      { icono: IconoGraficoCombinado, tono: 'var(--peach)', ...COLUMNA_DERECHA },
-    ],
-    capturas: [
-      { imagen: img('01-panel-anterior.webp'), ancho: 1600, alto: 818 },
-      { imagen: img('02-panel-redisenado.webp'), ancho: 1600, alto: 818 },
-    ],
-  },
-  {
-    id: 'b2', desdeLaDecision: 3,
-    piezas: [
-      { icono: IconoFiltroDeLista,  tono: 'var(--mint)',   ...COLUMNA_IZQUIERDA },
-      { icono: IconoLibroRevisado,  tono: 'var(--yellow)', ...COLUMNA_DERECHA },
-    ],
-    capturas: [
-      { imagen: img('03-fallos-anterior.webp'), ancho: 1600, alto: 818 },
-      { imagen: img('04-fallos-redisenado.webp'), ancho: 1600, alto: 818 },
-    ],
-  },
-] as const;
-
-/* el diagrama de la sección 04. El pie va en la columna de al lado y
-   no debajo: mismo texto, mucho menos alto.
-
-   Eran dos, y el primero —el de la arquitectura— se retiró junto con
-   la lista de pasos: los dos dibujaban el mismo recorrido. `g-rev`
-   venía de alternar los lados cuando eran dos; ahora que es uno, el
-   modelo se queda a la izquierda y su texto a la derecha. */
-const diagramas = [
-  { id: 'g4a', lado: 'g-rev', color: 'var(--peach)',
-    imagen: img('07-modelo-estrella.webp'), ancho: 1600, alto: 1457 },
-] as const;
-
-/* las seis capturas de la galería final */
-const galeria = [
-  { imagen: img('00-portada-dashboard.webp'), ancho: 1600, alto: 818 },
-  { imagen: img('09-tendencias-y-canales.webp'), ancho: 1600, alto: 818 },
-  { imagen: img('04-fallos-redisenado.webp'), ancho: 1600, alto: 818 },
-  { imagen: img('10-prioridades-y-dispositivos.webp'), ancho: 1600, alto: 818 },
-  { imagen: img('05-sesiones.webp'), ancho: 1600, alto: 818 },
-  { imagen: img('06-metodologia.webp'), ancho: 1600, alto: 818 },
-] as const;
-/* la portada ocupa el ancho del contenedor, así que pide la versión más
-   grande que exista de la imagen que Proyectos ya usa como miniatura */
-const portadaDelCaso = imagenMasGrande('images/proyectos/schaman-analytics');
-
+/* LA PORTADA, EN DOS COLUMNAS: la ventana a la izquierda y la ficha a
+   la derecha, empezando a la misma altura. Su proporción la necesita la
+   rejilla para que la ventana entre entera en la pantalla (lectura.css). */
+const VENTANA = captura('main-menu');
 ---
 
 <BaseLayout
@@ -146,202 +139,171 @@ const portadaDelCaso = imagenMasGrande('images/proyectos/schaman-analytics');
   nombreDeVentana={contenido.documento.nombreDeVentana}
   claseBody="cs-body"
   tituloDelCaso={contenido.documento}
+  sinTaskbar
 >
-  <div class="wrap">
-    <div class="cs-grid">
+  <div class="caso-pagina">
 
-      <RielDeCaso portada={contenido.riel.portada} paradas={contenido.riel.paradas} />
+    <BarraDeCaso paradas={PARADAS} volver={PROYECTOS} saludo={portada.saludo} />
 
-      <div class="cs-main">
+    <div class="caso-contenido">
 
-        {/* ══ PORTADA ══ */}
-        <header class="cs-hero" id="cs-portada" style="--cs:var(--pink-mid)">
-          <div class="cs-hero-top">
-            <div>
-              <Texto class="cs-kicker hx" style="--d:100ms" valor={contenido.portada.antetitulo} />
-              <h1 class="cs-title hx" style="--d:170ms">Schaman Analytics BI</h1>
-              <Texto class="cs-sub hx" style="--d:240ms" valor={contenido.portada.subtitulo} />
-              <Texto class="cs-text hx" style="--d:300ms" valor={contenido.portada.introduccion} />
-              <p class="hx cs-wip-row" style="--d:360ms">
-                <span class="cs-wip"><i aria-hidden="true"></i><Texto como="span" valor={contenido.portada.avisoEnCurso} /></span>
-              </p>
-            </div>
-            <figure class="cs-hero-fig hx" style="--d:420ms">
-              {/* La portada del caso es la MISMA imagen que la miniatura del
-                  proyecto en Proyectos, así que se referencia esa en vez de
-                  guardar una copia. Por eso no usa img(): no está en la
-                  carpeta de este caso. */}
-              <img src={portadaDelCaso.src} width={portadaDelCaso.ancho} height={portadaDelCaso.alto} loading="eager" decoding="async" {...altConIdioma(contenido.portada.imagen.alt)} />
-              <Texto como="figcaption" valor={contenido.portada.imagen.pie} />
-            </figure>
+      {/* ══ 00 · PORTADA ══ */}
+      <header class="caso-portada" id="caso-00" style={`--caso-acento:${ACENTO.portada}`}>
+        <Texto class="caso-antetitulo hx" style="--d:100ms" valor={portada.antetitulo} />
+        <h1 class="caso-h1 hx" style="--d:170ms" data-escribir>Schaman Analytics BI</h1>
+        <Texto class="caso-subtitulo hx" style="--d:240ms" valor={portada.subtitulo} />
+        {/* la ventana entra ENTERA en la primera pantalla, con la ficha
+            al lado (nunca más alta que ella). El saludo no va aquí: lo dice
+            la mascota de la barra, en su bocadillo */}
+        <div class="caso-portada-fila hx" style={`--d:300ms;--proporcion:${VENTANA.ancho} / ${VENTANA.alto}`}>
+          <VentanaDeCaso nombre={portada.ventana.nombre} {...VENTANA} alt={portada.ventana.alt} pie={portada.ventana.pie} />
+          <FichaDePortada campos={portada.ficha} />
+        </div>
+        {portada.parrafos.map((parrafo) => <Texto html class="caso-texto cs-rv" valor={parrafo} />)}
+      </header>
+
+      {/* ══ 01 · EL ORIGEN ══ */}
+      <section class="caso-seccion" id="caso-01" style={`--caso-acento:${ACENTO.origen}`} aria-labelledby="h-caso-01">
+        <EncabezadoDeSeccion id="h-caso-01" antetitulo={origen.antetitulo} titulo={origen.titulo} />
+        <NotaConMascota texto={origen.nota} />
+        {origen.parrafos.map((parrafo) => <Texto html class="caso-texto cs-rv" valor={parrafo} />)}
+        <TiraDeTres elementos={origen.datos} />
+        <div class="caso-bloque cs-rv">
+          <MedioDeCaso medida="estrecho" imagenes={[{ ...captura('comparacion-panel-antes'), alt: origen.figura.alt }]}
+            titulo={origen.figura.titulo} pie={origen.figura.pie} />
+        </div>
+      </section>
+
+      {/* ══ 02 · EL RETO DE DISEÑO ══ */}
+      <section class="caso-seccion" id="caso-02" style={`--caso-acento:${ACENTO.reto}`} aria-labelledby="h-caso-02">
+        <EncabezadoDeSeccion id="h-caso-02" antetitulo={reto.antetitulo} titulo={reto.titulo} />
+        <Texto html class="caso-texto cs-rv" valor={reto.parrafo} />
+        {/* fijo: la columna de la captura se queda quieta y cada llamada
+            trae su captura de la versión original */}
+        <PantallasFijas pantallas={(['pantalla-completa-inicio-y-sesiones', 'tabla-antes', 'kpis-antes'] as const).map((nombre, i) => {
+          const { pie, alt } = reto.diagnostico[i]!;
+          return { imagenes: [{ ...captura(nombre), alt }], pie };
+        })} />
+        <PreguntaDeDiseno rotulo={reto.pregunta.rotulo} texto={reto.pregunta.texto} />
+        <Texto class="caso-texto cs-rv" valor={reto.puente} />
+        <TiraDeTres variante="acento" elementos={reto.prioridades.map((texto, i) => ({ rotulo: String(i + 1).padStart(2, '0'), texto }))} />
+      </section>
+
+      {/* ══ 03 · ORGANIZAR LAS VISTAS · primera decisión ══ */}
+      <section class="caso-seccion" id="caso-03" style={`--caso-acento:${ACENTO.vistas}`} aria-labelledby="h-caso-03">
+        <EncabezadoDeSeccion id="h-caso-03" antetitulo={vistas.antetitulo} titulo={vistas.titulo} />
+        {vistas.parrafos.map((parrafo) => <Texto html class="caso-texto cs-rv" valor={parrafo} />)}
+        <Texto como="blockquote" class="caso-cita cs-rv" valor={vistas.cita} />
+        <ParejaDeCaso>
+          <MedioDeCaso rotulo={ETIQ.antes} tono="antes" video={{ ...video('sesiones-antes', '00:08'), alt: vistas.antes.alt }} pie={vistas.antes.pie} />
+          <MedioDeCaso rotulo={ETIQ.despues} video={{ ...video('sesiones-en-otra-pestana', '00:05'), alt: vistas.despues.alt }} pie={vistas.despues.pie} />
+        </ParejaDeCaso>
+        <Texto html class="caso-texto cs-rv" valor={vistas.cierre} />
+      </section>
+
+      {/* ══ 04 · FACILITAR LA EXPLORACIÓN · segunda decisión ══ */}
+      <section class="caso-seccion" id="caso-04" style={`--caso-acento:${ACENTO.exploracion}`} aria-labelledby="h-caso-04">
+        <EncabezadoDeSeccion id="h-caso-04" antetitulo={exploracion.antetitulo} titulo={exploracion.titulo} />
+
+        <SubBloqueDeCaso id="caso-04-1" numero={1} total={3} titulo={exploracion.buscar.titulo}>
+          <Texto html class="caso-texto cs-rv" valor={exploracion.buscar.parrafo} />
+          <ParejaDeCaso>
+            <MedioDeCaso rotulo={exploracion.buscar.orden.rotulo} video={{ ...video('orden-por-columna', '00:32'), alt: exploracion.buscar.orden.alt }} pie={exploracion.buscar.orden.pie} />
+            <MedioDeCaso rotulo={exploracion.buscar.paginacion.rotulo} video={{ ...video('paginacion', '00:22'), alt: exploracion.buscar.paginacion.alt }} pie={exploracion.buscar.paginacion.pie} />
+          </ParejaDeCaso>
+          <TiraDeTres elementos={exploracion.buscar.tira} />
+        </SubBloqueDeCaso>
+
+        <SubBloqueDeCaso id="caso-04-2" numero={2} total={3} titulo={exploracion.periodo.titulo}>
+          <Texto html class="caso-texto cs-rv" valor={exploracion.periodo.parrafo} />
+          <div class="caso-bloque cs-rv">
+            <MedioDeCaso rotulo={ETIQ.antes} tono="antes" imagenes={[{ ...captura('26-filtro-antes'), alt: exploracion.periodo.antes.alt }]} pie={exploracion.periodo.antes.pie} />
           </div>
+          <div class="caso-bloque cs-rv">
+            <MedioDeCaso rotulo={ETIQ.despues} video={{ ...video('filtro-de-fecha', '00:18'), alt: exploracion.periodo.despues.alt }} pie={exploracion.periodo.despues.pie} />
+          </div>
+        </SubBloqueDeCaso>
 
-          {/* el terreno del proyecto, en cuatro etiquetas */}
-          <p class="cs-srcs cs-rv">
-            <Texto como="span" class="cs-srcs-k" valor={contenido.terreno.etiqueta} />{contenido.terreno.campos.map((campo) => <Texto como="span" class="cs-src" valor={campo} />)}
-          </p>
+        <SubBloqueDeCaso id="caso-04-3" numero={3} total={3} titulo={exploracion.mapa.titulo}>
+          <Texto html class="caso-texto cs-rv" valor={exploracion.mapa.parrafo} />
+          <div class="caso-bloque cs-rv">
+            <MedioDeCaso medida="estrecho" rotulo={exploracion.mapa.rotulo} imagenes={[{ ...captura('12-mapa'), alt: exploracion.mapa.alt }]} pie={exploracion.mapa.pie} />
+          </div>
+        </SubBloqueDeCaso>
+      </section>
 
-          {/* dos protagonistas: lo que hice y con qué */}
-          <dl class="cs-stars cs-rv">
-            <div class="cs-star st-rol">
-              <Texto como="dt" valor={contenido.miRol.etiqueta} />
-              <dd><ul>{contenido.miRol.puntos.map((punto) => <Texto como="li" valor={punto} />)}</ul></dd>
-            </div>
-            <div class="cs-star st-win">
-              <Texto como="dt" valor={contenido.herramientas.etiqueta} />
-              <dd><ul>{contenido.herramientas.puntos.map((punto) => {
-                const p = htmlConIdioma(punto);
-                return <li {...p.atributos} set:html={p.texto} />;
-              })}</ul></dd>
-            </div>
-          </dl>
+      {/* ══ 05 · CLARIFICAR LOS DATOS · tercera decisión ══ */}
+      <section class="caso-seccion" id="caso-05" style={`--caso-acento:${ACENTO.datos}`} aria-labelledby="h-caso-05">
+        <EncabezadoDeSeccion id="h-caso-05" antetitulo={datos.antetitulo} titulo={datos.titulo} />
+        <Texto html class="caso-texto cs-rv" valor={datos.entradilla} />
 
-          {/* ficha compacta: equipo, estado y datos */}
-          <dl class="cs-rows cs-rv">
-            <div class="cs-row r-equipo">
-              <Texto como="dt" valor={contenido.ficha.equipo.etiqueta} />
-              <dd><ul class="cs-team-list">{contenido.ficha.equipo.integrantes.map((integrante) => <Texto como="li" valor={integrante} />)}</ul></dd>
-            </div>
-            <div class="cs-row"><Texto como="dt" valor={contenido.ficha.estado.etiqueta} /><Texto como="dd" valor={contenido.ficha.estado.valor} /></div>
-            <div class="cs-row"><Texto como="dt" valor={contenido.ficha.datos.etiqueta} /><Texto como="dd" valor={contenido.ficha.datos.valor} /></div>
-          </dl>
-        </header>
+        <SubBloqueDeCaso id="caso-05-1" numero={1} total={3} titulo={datos.color.titulo}>
+          <Texto html class="caso-texto cs-rv" valor={datos.color.parrafo} />
+          {/* dos recortes de una columna de la tabla: a su tamaño natural,
+              con la explicación en la tercera columna */}
+          <ParejaDeCaso conLado>
+            <MedioDeCaso medida="natural" rotulo={ETIQ.antes} tono="antes" imagenes={[{ ...captura('16-canal-antes'), alt: datos.color.antes.alt }]} pie={datos.color.antes.pie} />
+            <MedioDeCaso medida="natural" rotulo={ETIQ.despues} imagenes={[{ ...captura('17-canal-despues'), alt: datos.color.despues.alt }]} pie={datos.color.despues.pie} />
+            <Fragment slot="lado">
+              <Texto valor={datos.color.lado} />
+              <ul>{datos.color.lista.map((punto) => <Texto como="li" valor={punto} />)}</ul>
+            </Fragment>
+          </ParejaDeCaso>
+          <Texto class="caso-texto caso-centrado cs-rv" valor={datos.color.cierre} />
+        </SubBloqueDeCaso>
 
-        {/* ══ 01 · EL RETO ══ */}
-        <section class="cs-sec" id="cs-1" style="--cs:var(--peach)" aria-labelledby="h-cs-1">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.reto.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-1" valor={contenido.reto.titulo} />
-          </header>
-          {contenido.reto.parrafos.map((parrafo) => <Texto class="cs-text cs-rv" valor={parrafo} />)}
-          <NotaDeCaso texto={contenido.reto.contexto} />
-          <Texto class="cs-lead cs-rv" valor={contenido.reto.pregunta} />
-          <NotaDeCaso texto={contenido.reto.nota} />
-        </section>
+        <SubBloqueDeCaso id="caso-05-2" numero={2} total={3} titulo={datos.jerarquia.titulo}>
+          <Texto html class="caso-texto cs-rv" valor={datos.jerarquia.parrafo} />
+          {/* el antes y el después, cada uno con el score arriba y la tira
+              de cinco tarjetas debajo, como en la aplicación. Son tiras
+              muy anchas (≈2800×400): a media columna las tarjetas no se
+              distinguen, así que van una encima de otra a lo ancho entero */}
+          <div class="caso-bloque cs-rv">
+            <MedioDeCaso rotulo={ETIQ.antes} tono="antes"
+              imagenes={[{ ...captura('score-global-antiguo'), alt: datos.jerarquia.antes.altScore }, { ...captura('tira-kpi-antigua'), alt: datos.jerarquia.antes.alt }]}
+              pie={datos.jerarquia.antes.pie} />
+          </div>
+          <div class="caso-bloque cs-rv">
+            <MedioDeCaso rotulo={ETIQ.despues}
+              imagenes={[{ ...captura('score-global-nuevo'), alt: datos.jerarquia.despues.altScore }, { ...captura('tira-kpi-nueva'), alt: datos.jerarquia.despues.alt }]}
+              pie={datos.jerarquia.despues.pie} />
+          </div>
+        </SubBloqueDeCaso>
 
-        {/* ══ 02 · ANÁLISIS DE LA INTERFAZ ══ */}
-        <section class="cs-sec" id="cs-2" style="--cs:var(--sky)" aria-labelledby="h-cs-2">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.analisis.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-2" valor={contenido.analisis.titulo} />
-          </header>
-          <Texto class="cs-text cs-rv" valor={contenido.analisis.parrafo} />
-          <ul class="cs-tools cs-rv">{contenido.analisis.observaciones.map((observacion) => {
-            const o = htmlConIdioma(observacion);
-            return <li {...o.atributos} set:html={o.texto} />;
-          })}</ul>
-        </section>
+        <SubBloqueDeCaso id="caso-05-3" numero={3} total={3} titulo={datos.tooltips.titulo}>
+          <Texto html class="caso-texto cs-rv" valor={datos.tooltips.parrafo} />
+          <ParejaDeCaso>
+            <MedioDeCaso medida="natural" rotulo={datos.tooltips.indicador.rotulo} imagenes={[{ ...captura('24-tooltip-indicador'), alt: datos.tooltips.indicador.alt }]} pie={datos.tooltips.indicador.pie} />
+            <MedioDeCaso medida="natural" rotulo={datos.tooltips.columna.rotulo} imagenes={[{ ...captura('25-tooltip-columna'), alt: datos.tooltips.columna.alt }]} pie={datos.tooltips.columna.pie} />
+          </ParejaDeCaso>
+        </SubBloqueDeCaso>
+      </section>
 
-        {/* ══ 03 · DE LA NECESIDAD A LA INTERFAZ ══
-            Esto era DOS secciones: las decisiones y, más abajo, el
-            rediseño con sus comparaciones. Había que leer una decisión
-            arriba y bajar a buscar la captura que la enseña, y en el
-            camino el mismo cambio se contaba hasta tres veces (en la
-            decisión, en el pie de la captura y en una tarjeta de
-            resumen).
+      {/* ══ 06 · EL RESULTADO ══ */}
+      <section class="caso-seccion" id="caso-06" style={`--caso-acento:${ACENTO.resultado}`} aria-labelledby="h-caso-06">
+        <EncabezadoDeSeccion id="h-caso-06" antetitulo={resultado.antetitulo} titulo={resultado.titulo} />
+        <Texto html class="caso-texto cs-rv" valor={resultado.parrafo} />
+        {/* fija, como el diagnóstico de la 02: la pantalla se queda
+            quieta y cambia según la llamada que se lee */}
+        <PantallasFijas pantallas={(['main-menu', 'sesiones-tab', 'mapa-tab'] as const).map((nombre, i) => {
+          const { titulo, pie, alt } = resultado.pantallas[i]!;
+          return { imagenes: [{ ...captura(nombre), alt }], titulo, pie };
+        })} />
+        <TiraDeTres variante="caja" elementos={resultado.resumen} />
+      </section>
 
-            Ahora son dos bloques, uno por VISTA, y dentro de cada uno
-            las dos decisiones que la cambiaron, en dos columnas del
-            mismo ancho. Cada decisión es una ventana y lleva SU
-            captura dentro, debajo de su texto: la de la izquierda el
-            antes de esa vista, la de la derecha el después.
+      {/* ══ 07 · LO QUE APRENDÍ ══ */}
+      <section class="caso-seccion" id="caso-07" style={`--caso-acento:${ACENTO.aprendizaje}`} aria-labelledby="h-caso-07">
+        <EncabezadoDeSeccion id="h-caso-07" antetitulo={aprendizaje.antetitulo} titulo={aprendizaje.titulo} />
+        <Texto html class="caso-texto cs-rv" valor={aprendizaje.parrafo} />
+        <NotaConMascota variante="aviso" rotulo={aprendizaje.aviso.rotulo} texto={aprendizaje.aviso.texto} />
+      </section>
 
-            Leídas de izquierda a derecha las dos ventanas siguen
-            siendo la comparación de siempre; leídas de arriba abajo,
-            cada una es una decisión con su pantalla. Se arma en
-            BloqueDeDecisiones.astro. */}
-        <section class="cs-sec" id="cs-3" style="--cs:var(--mint)" aria-labelledby="h-cs-3">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.decisiones.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-3" valor={contenido.decisiones.titulo} />
-          </header>
-          <Texto class="cs-text cs-rv" valor={contenido.decisiones.parrafo} />
-
-          <div class="cs-groups cs-rv">{contenido.decisiones.bloques.map((bloque, i) => (
-            <BloqueDeDecisiones
-              id={bloques[i]!.id}
-              titulo={bloque.titulo}
-              etiquetas={contenido.decisiones.etiquetas}
-              decisiones={bloque.decisiones}
-              piezas={bloques[i]!.piezas}
-              desdeLaDecision={bloques[i]!.desdeLaDecision}
-              capturas={[
-                { ...bloques[i]!.capturas[0], pie: bloque.antes.pie, alt: bloque.antes.alt },
-                { ...bloques[i]!.capturas[1], pie: bloque.despues.pie, alt: bloque.despues.alt },
-              ]}
-            />
-          ))}</div>
-
-          <NotaDeCaso texto={contenido.decisiones.nota} clase="discreta" />
-        </section>
-
-        {/* ══ 04 · CONTEXTO TÉCNICO ══ */}
-        <section class="cs-sec" id="cs-4" style="--cs:var(--sky)" aria-labelledby="h-cs-4">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.contextoTecnico.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-4" valor={contenido.contextoTecnico.titulo} />
-          </header>
-          <Texto class="cs-text cs-rv" valor={contenido.contextoTecnico.parrafo} />
-
-          <div class="cs-groups cs-rv">{diagramas.map((diagrama, i) => {
-            const texto = contenido.contextoTecnico.diagramas[i]!;
-            const titulo = t(texto.titulo);
-            const parrafo = t(texto.parrafo);
-            return (
-              <section class={`cs-g ${diagrama.lado} g-wide`} style={`--g:${diagrama.color}`} aria-labelledby={`h-${diagrama.id}`}>
-                <div class="cs-g-txt">
-                  <h3 class="cs-g-h" id={`h-${diagrama.id}`} {...titulo.atributos}>{titulo.texto}</h3>
-                  <p class="cs-g-p" {...parrafo.atributos}>{parrafo.texto}</p>
-                </div>
-                <figure class="cs-fig2">
-                  <img src={diagrama.imagen} width={diagrama.ancho} height={diagrama.alto} loading="lazy" decoding="async" {...altConIdioma(texto.alt)} />
-                </figure>
-              </section>
-            );
-          })}</div>
-          <NotaDeCaso texto={contenido.contextoTecnico.nota} />
-        </section>
-
-        {/* ══ 05 · MÉTRICAS Y LÍMITES ══ */}
-        <section class="cs-sec" id="cs-5" style="--cs:var(--mint)" aria-labelledby="h-cs-5">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.metricas.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-5" valor={contenido.metricas.titulo} />
-          </header>
-          <Texto class="cs-text cs-rv" valor={contenido.metricas.parrafo} />
-          <ul class="cs-mets cs-rv">{contenido.metricas.lista.map((metrica) => (
-            <li><Texto como="b" valor={metrica.nombre} /><Texto como="span" valor={metrica.texto} /></li>
-          ))}</ul>
-          {contenido.metricas.notas.map((nota) => <NotaDeCaso texto={nota} />)}
-        </section>
-
-        {/* ══ 06 · LAS PANTALLAS ══ */}
-        <section class="cs-sec" id="cs-6" style="--cs:var(--yellow)" aria-labelledby="h-cs-6">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.pantallas.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-6" valor={contenido.pantallas.titulo} />
-          </header>
-          <Texto class="cs-text cs-rv" valor={contenido.pantallas.parrafo} />
-
-          {/* capturas de la interfaz rediseñada; el modelo ya salió en
-              Contexto técnico */}
-          <div class="cs-gal cs-rv">{galeria.map((captura, i) => (
-            <FiguraDeCaso
-              imagen={captura.imagen}
-              ancho={captura.ancho}
-              alto={captura.alto}
-              texto={contenido.pantallas.galeria[i]!}
-            />
-          ))}</div>
-          <NotaDeCaso texto={contenido.pantallas.nota} />
-        </section>
-
+      {/* el cierre de siempre: volver, el repositorio en botón pixel y
+          los otros proyectos */}
+      <div class="cs-rv">
         <CierreDeCaso
-          texto={{
-            volver: contenido.cierre.volver,
-            verProyecto: contenido.cierre.verRepositorio,
-            otrosProyectos: contenido.cierre.otrosProyectos,
-          }}
+          texto={{ volver: contenido.cierre.volver, verProyecto: contenido.cierre.verRepositorio, otrosProyectos: contenido.cierre.otrosProyectos }}
           enlaceDelProyecto={REPOSITORIO}
           claseDelBoton="btn btn-yellow"
           iconoDelBoton={rutaPublica('images/logos/github-icon.png')}
@@ -352,12 +314,17 @@ const portadaDelCaso = imagenMasGrande('images/proyectos/schaman-analytics');
               interno: true },
           ]}
         />
-
       </div>
+
     </div>
   </div>
 
   <script>
-    import '../../scripts/casos/riel';
+    import '../../scripts/casos/barra';
+    import '../../scripts/casos/nav-al-leer';
+    import '../../scripts/casos/escritura';
+    import '../../scripts/casos/portada';
+    import '../../scripts/casos/diagnostico';
+    import '../../scripts/casos/videos';
   </script>
 </BaseLayout>

@@ -1,0 +1,36 @@
+/* LA PAREJA · dos piezas 50/50
+   componente: ParejaDeCaso.astro
+   Parte de caso.css.
+
+   Las dos columnas son iguales y se alinean por arriba. Con texto al
+   lado (.con-lado) las piezas son recortes estrechos: van a su tamaño
+   natural y el texto se queda con la tercera columna. */
+
+.caso-pareja{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:24px; align-items:start;
+  margin:34px 0;
+}
+/* columnas FIJAS y no `auto`: con auto se medían por el pie más largo
+   y el texto del lado acababa a una palabra por línea */
+.caso-pareja.con-lado{ grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.35fr); gap:28px; }
+.caso-pareja-lado{ align-self:center; }
+.caso-pareja-lado p{ margin:0 0 14px; font-size:16px; line-height:1.6; color:var(--text-soft); }
+.caso-pareja-lado ul{ list-style:none; display:grid; gap:10px; }
+.caso-pareja-lado li{
+  position:relative; padding-left:17px;
+  font-size:16px; line-height:1.55; color:var(--text-soft);
+}
+/* la viñeta: un cuadrado de 7 px, sin redondear */
+.caso-pareja-lado li::before{
+  content:""; position:absolute; left:0; top:.58em;
+  width:7px; height:7px; background:var(--pink);
+}
+
+@media (max-width:760px){
+  .caso-pareja.con-lado{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .caso-pareja.con-lado .caso-pareja-lado{ grid-column:1 / -1; }
+}
+@media (max-width:600px){
+  .caso-pareja{ grid-template-columns:minmax(0,1fr); gap:30px; }
+}

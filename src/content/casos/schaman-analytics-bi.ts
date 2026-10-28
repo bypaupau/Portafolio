@@ -5,712 +5,424 @@
    Esto NO es interfaz: es el texto del proyecto. Cada texto es una
    cadena (si es igual en los dos idiomas) o { es, en }.
 
-   Este caso tenía las claves más difíciles de todo el sitio. Lo que
-   era sch.dec.4.3 ahora es decisiones.bloques[1].decisiones[1].decision,
-   y sch.f.rol.2
-   es miRol.puntos[1]. Es el ejemplo exacto que pediste resolver.
+   ── EL ORDEN DE LA HISTORIA · OCHO SECCIONES ───────────────
+   00 portada      qué es, el panel rediseñado y la ficha
+   01 origen       de dónde salió y por qué lo retomé
+   02 reto         el diagnóstico y la pregunta de diseño
+   03 vistas       primera decisión: separar el panel de las sesiones
+   04 exploracion  segunda decisión: buscar, el periodo y el mapa
+   05 datos        tercera decisión: color, jerarquía y tooltips
+   06 resultado    lo implementado, en tres pantallas
+   07 aprendizaje  lo que aprendí y lo que el caso no demuestra
+
+   La 02 termina con tres prioridades y la 03, la 04 y la 05 son esas
+   tres, en el mismo orden. Si se toca el orden de una, se toca el de
+   la otra.
+
+   ── EL RESALTE ─────────────────────────────────────────────
+   Los textos con <mark> se dibujan con <Texto html>. Uno por párrafo y
+   dos por sección como mucho: si todo está resaltado, nada lo está.
+
+   ── LOS NOMBRES DE ARCHIVO NO ESTÁN AQUÍ ───────────────────
+   Las capturas, los vídeos y sus medidas los pone la página: son
+   interfaz. Aquí vive solo su pie y su texto alternativo.
    ═══════════════════════════════════════════════════════════ */
-import type { TextoBilingue } from '../../lib/texto-bilingue';
 
 
 export const schamanAnalyticsBi = {
 
-  /* el <title>, la <meta description> y el nombre que sale en la
-     taskbar. Van aquí y no en los diccionarios: son del proyecto,
-     no de la interfaz, así que agregar un caso no obliga a tocar
-     src/i18n/. */
   documento: {
     nombreDeVentana: 'schaman_analytics_bi.md',
     titulo: 'pau.proyectos · Schaman Analytics BI',
     descripcion: {
-      es: 'Caso académico de rediseño UI/UX para una aplicación analítica omnicanal, con un Data Warehouse y KPI de demostración como contexto.',
-      en: 'Academic UI/UX redesign of an omnichannel analytics app, with a Data Warehouse and demonstration KPIs as context.',
+      es: 'Rediseño UI/UX de una aplicación analítica omnicanal: retomé el dashboard de un proyecto universitario y trabajé la organización de sus vistas, la exploración de sesiones y el significado de sus datos.',
+      en: 'UI/UX redesign of an omnichannel analytics app: I reopened the dashboard from a university project and reworked how its views are organised, how sessions are explored and what its data communicates.',
     },
   },
 
-  /* la portada del caso */
+  /* ══ EL ÍNDICE · una parada por sección ══
+     El nombre dice la acción; el papel dice qué es. Sin el papel, la 03
+     y la 04 se confunden; sin el nombre, no se sabe a dónde se va. */
+  indice: [
+    { nombre: { es: 'Portada', en: 'Cover' }, papel: { es: 'Presentación', en: 'Introduction' } },
+    { nombre: { es: 'El origen', en: 'The origin' }, papel: { es: 'Contexto del proyecto', en: 'Project context' } },
+    { nombre: { es: 'El reto de diseño', en: 'The design challenge' }, papel: { es: 'Diagnóstico', en: 'Diagnosis' } },
+    { nombre: { es: 'Organizar las vistas', en: 'Organising the views' }, papel: { es: 'Primera decisión', en: 'First decision' } },
+    { nombre: { es: 'Facilitar la exploración', en: 'Easing exploration' }, papel: { es: 'Segunda decisión', en: 'Second decision' } },
+    { nombre: { es: 'Clarificar los datos', en: 'Clarifying the data' }, papel: { es: 'Tercera decisión', en: 'Third decision' } },
+    { nombre: { es: 'El resultado', en: 'The result' }, papel: { es: 'La solución implementada', en: 'The implemented solution' } },
+    { nombre: { es: 'Lo que aprendí', en: 'What I learned' }, papel: { es: 'Reflexión', en: 'Reflection' } },
+  ],
+
+  /* el rótulo que llevan las piezas comparadas */
+  etiquetas: {
+    antes: { es: 'Antes', en: 'Before' },
+    despues: { es: 'Después', en: 'After' },
+    video: { es: 'Vídeo', en: 'Video' },
+  },
+
+  /* ══ 00 · PORTADA ══ */
   portada: {
-    antetitulo: {
-      es: 'Proyecto académico · Rediseño UI/UX · 2026',
-      en: 'University project · UI/UX redesign · 2026',
-    },
+    antetitulo: { es: 'Rediseño UI/UX independiente · 2026', en: 'Independent UI/UX redesign · 2026' },
     subtitulo: {
-      es: 'Repensar cómo se exploran los datos de atención omnicanal.',
-      en: 'Rethinking how people explore omnichannel support data.',
-    },
-    introduccion: {
-      es: 'Schaman es una empresa real que publica soluciones de autoatención digital y atención omnicanal. En este proyecto académico, mi trabajo fue diseñar la interfaz del dashboard para explorar un modelo de datos, análisis y KPIs de demostración.',
-      en: 'Schaman is a real company that publishes digital self-service and omnichannel support solutions. In this academic project, my contribution was redesigning the dashboard interface the team built to explore a data model and demonstration KPIs.',
-    },
-    avisoEnCurso: {
-      es: 'Caso académico - datos de demostración',
-      en: 'Academic case study · demonstration data',
-    },
-    imagen: {
-      pie: {
-        es: 'Vista general rediseñada. Los valores visibles son de demostración.',
-        en: 'Redesigned overview. Values shown are for demonstration and do not represent actual Schaman results.',
-      },
-      alt: {
-        es: 'Panel general rediseñado con score, filtros y tarjetas KPI.',
-        en: 'Redesigned overview with score, filters and KPI cards.',
-      },
-    },
-  },
-
-  /* "// el terreno": las cuatro etiquetas del proyecto */
-  terreno: {
-    etiqueta: {
-      es: '// el terreno',
-      en: '// the ground',
-    },
-    campos: [
-      {
-        es: 'Diseño UI/UX',
-        en: 'UI/UX design',
-      },
-      'Figma',
-      {
-        es: 'Ingeniería de datos',
-        en: 'Data engineering',
-      },
-      'Business Intelligence',
-    ],
-  },
-
-  /* lo que hizo y con qué */
-  miRol: {
-    etiqueta: {
-      es: 'Mi rol',
-      en: 'My role',
-    },
-    puntos: [
-      {
-        es: 'Diseñé la interfaz de la aplicación',
-        en: 'I designed and implemented the consumer app interface: overview, failure analysis, session table, and Data and methodology page.',
-      },
-      {
-        es: 'Apliqué mis conocimientos de UI/UX para replantear la jerarquía visual, navegación, filtros y la lectura de las métricas.',
-        en: 'I applied my UI/UX knowledge to rethink visual hierarchy, navigation, filters and how people read the metrics.',
-      },
-    ],
-  },
-  herramientas: {
-    etiqueta: {
-      es: 'Herramientas',
-      en: 'Tools',
-    },
-    puntos: [
-      {
-        es: 'Figma',
-        en: 'Figma — design exploration and decisions for the interface redesign.',
-      },
-      {
-        es: 'React, Vite y Recharts',
-        en: 'React, Vite and Recharts — application structure and KPI visualisation.',
-      },
-      {
-        es: 'Supabase / PostgreSQL',
-        en: 'Supabase / PostgreSQL— the team’s Data Warehouse and analytical queries.',
-      },
-      {
-        es: 'Pentaho PDI',
-        en: '<b>Pentaho PDI</b> — the ETL tool used by Daniel.',
-      },
-    ],
-  },
-
-  /* la ficha: equipo, estado y datos */
-  ficha: {
-    equipo: {
-      etiqueta: {
-        es: 'Equipo',
-        en: 'Team',
-      },
-      integrantes: [
-        {
-          es: 'Paula Martillo Quintana - diseño e implementación de la interfaz.',
-          en: 'Paula Alejandra Martillo Quintana — interface design and implementation.',
-        },
-        {
-          es: 'Daniel Vaca Velastegui - proceso ETL con Pentaho PDI.',
-          en: 'Daniel Andrés Vaca Velastegui — ETL process with Pentaho PDI.',
-        },
-        {
-          es: 'Leonor Molina Zapata - funciones SQL/RPC.',
-          en: 'Leonor Molina Zapata — SQL/RPC functions.',
-        },
-        {
-          es: 'Raúl Garay Vinueza - proceso ETL con Penaho PDI.',
-          en: 'Raúl Alejandro Garay Vinueza — listed as a team member in the final presentation; his specific role is not documented.',
-        },
-      ],
-    },
-    estado: {
-      etiqueta: {
-        es: 'Estado',
-        en: 'Status',
-      },
-      valor: {
-        es: 'Proyecto académico de dos parciales. La interfaz fue rediseñada; el almacén y las consultas se presentan con datos de demostración.',
-        en: 'Two-part academic project. The interface was redesigned; the warehouse and queries are shown with demonstration data.',
-      },
-    },
-    datos: {
-      etiqueta: {
-        es: 'Datos',
-        en: 'Data',
-      },
-      valor: {
-        es: 'La presentación describe una carga histórica ficticia desde CSV. Las cifras visibles son de demostración, no datos operativos de Schaman.',
-        en: 'The presentation describes a fictional historical CSV load. Figures shown are for demonstration, not Schaman operational data.',
-      },
-    },
-  },
-
-  /* el riel lateral. Este caso NO lleva enlace externo en el riel:
-     el sitio anterior lo tenía comentado, esperando que el proyecto
-     tuviera repositorio público. Ya lo tiene, y está en el cierre. */
-  riel: {
-    portada: {
-      es: 'Portada',
-      en: 'Cover',
-    },
-    paradas: [
-      {
-        es: 'El reto',
-        en: 'The challenge',
-      },
-      {
-        es: 'Análisis UX',
-        en: 'UX analysis',
-      },
-      {
-        es: 'Decisiones',
-        en: 'Decisions',
-      },
-      {
-        es: 'Datos y modelo',
-        en: 'Data and model',
-      },
-      {
-        es: 'Métricas',
-        en: 'Metrics',
-      },
-      {
-        es: 'Las pantallas',
-        en: 'The screens',
-      },
-    ],
-  },
-
-  /* 01 · el reto */
-  reto: {
-    numero: {
-      es: '01 / el reto',
-      en: '01 / the challenge',
-    },
-    titulo: {
-      es: 'De los datos de atención a una experiencia de análisis',
-      en: 'From support data to an analytics experience',
+      es: 'De mostrar datos a facilitar su exploración',
+      en: 'From showing data to making it explorable',
     },
     parrafos: [
       {
-        es: 'Schaman publica soluciones de autoatención digital y atención omnicanal. Ese contexto público inspiró el escenario académico; no tuvimos acceso a sistemas internos ni trabajamos para la empresa.',
-        en: 'Schaman publishes digital self-service and omnichannel support solutions. This public context inspired the academic scenario; we had no access to internal systems and did not work for the company.',
+        es: 'Rediseñé la interfaz de una aplicación analítica desarrollada como parte de un proyecto universitario, con el objetivo de <mark>mejorar cómo se organizan, consultan e interpretan los datos de atención al cliente</mark>.',
+        en: 'I redesigned the interface of an analytics application built as part of a university project, with the aim of <mark>improving how customer service data is organised, queried and interpreted</mark>.',
       },
       {
-        es: 'El proyecto se desarrolló en dos parciales: primero se estudió el caso asignado y se planteó el modelo de datos; después, el equipo construyó un almacén dimensional, un ETL y un dashboard de demostración. Mi caso se centra en esa última capa: cómo hacer que la información analítica sea más fácil de recorrer e interpretar.',
-        en: 'The project was developed across two course assignments: first, the team studied the assigned case and proposed a data model; then it built a dimensional warehouse, an ETL and a demonstration dashboard. My case focuses on that final layer: making analytical information easier to navigate and interpret.',
+        es: 'Al volver sobre la primera versión, identifiqué oportunidades de mejora en la jerarquía visual, la navegación y la forma de explorar los registros. Mi trabajo consistió en replantear esas decisiones y llevarlas a una interfaz funcional.',
+        en: 'Going back over the first version, I found room to improve its visual hierarchy, its navigation and the way records were explored. My work was to rethink those decisions and carry them through to a working interface.',
       },
     ],
-    contexto: {
-      es: '<b>Contexto de referencia:</b> <a href="https://www.schaman.com/es/use-case-digital-absorption" target="_blank" rel="noopener noreferrer">caso público de absorción digital de Schaman ↗</a>.',
-      en: '<b>Reference context:</b> <a href="https://www.schaman.com/es/use-case-digital-absorption" target="_blank" rel="noopener noreferrer">Schaman’s public digital absorption use case ↗</a>.',
+    /* el saludo: lo dice la mascota de la barra, en un bocadillo que se
+       va solo a los 7 segundos */
+    saludo: {
+      es: 'Entraste en modo minimalista para leer mejor el caso.',
+      en: 'You’re in minimalist mode, to read the case more easily.',
     },
-    pregunta: {
-      es: '¿Cómo organizar un dashboard para pasar de una vista general de atención a investigar problemas recurrentes y resolución por canal, sin confundir indicadores ni perder los filtros?',
-      en: 'How might a dashboard help someone move from an overview of support activity to investigating recurring problems and resolution by channel, without confusing metrics or losing filter context?',
+    /* LA FICHA: cuatro rótulos en fila */
+    ficha: [
+      { rotulo: { es: 'Proyecto', en: 'Project' }, valor: { es: 'Rediseño UI/UX independiente · 2026', en: 'Independent UI/UX redesign · 2026' } },
+      { rotulo: { es: 'Contexto', en: 'Context' }, valor: { es: 'Proyecto universitario', en: 'University project' } },
+      { rotulo: { es: 'Mi rol', en: 'My role' }, valor: { es: 'Evaluación de la interfaz, diseño UI/UX e implementación del frontend', en: 'Interface evaluation, UI/UX design and front-end implementation' } },
+      { rotulo: { es: 'Tecnologías', en: 'Technologies' }, valor: 'React · Supabase' },
+    ],
+    /* LA ÚNICA VENTANA DE LA PÁGINA: lo de dentro sí es una aplicación */
+    ventana: {
+      nombre: 'schaman · panel general',
+      pie: {
+        es: 'El panel general rediseñado reúne la navegación, el score global y los cinco indicadores en una misma lectura. Los valores visibles son datos de demostración.',
+        en: 'The redesigned overview brings navigation, the overall score and the five indicators into one reading flow. The values shown are demonstration data.',
+      },
+      alt: {
+        es: 'Panel general rediseñado de Schaman, con menú lateral con nombres, el score global sobre fondo azul y cinco tarjetas de indicadores.',
+        en: 'Schaman’s redesigned overview, with a labelled side menu, the overall score on a blue background and five indicator cards.',
+      },
+    },
+  },
+
+  /* ══ 01 · EL ORIGEN ══ */
+  origen: {
+    antetitulo: { es: '01 / El origen', en: '01 / The origin' },
+    titulo: {
+      es: 'Una aplicación construida para analizar la atención al cliente',
+      en: 'An application built to analyse customer service',
     },
     nota: {
-      es: 'Este es un <b>proyecto académico</b>, no un encargo de Schaman. El equipo construyó un escenario de telco y datos ficticios/de demostración; no son registros de clientes ni resultados de negocio de la empresa.',
-      en: 'This is an <b>academic project</b>, not a commission from Schaman. The team created a telco scenario and fictional/demo data; these are not customer records or business results from the company.',
+      es: 'No fue un encargo. Fue volver sobre algo que ya habíamos entregado.',
+      en: 'It wasn’t a commission. It was going back to something we had already handed in.',
+    },
+    parrafos: [
+      {
+        es: 'Todo comenzó con una asignación universitaria. A mi equipo le correspondió trabajar con Schaman, una <mark>empresa orientada a la automatización de la atención al cliente mediante canales digitales.</mark> El ejercicio consistía en construir un almacén de datos a partir del modelo de negocio asignado y desarrollar una aplicación que permitiera consultar la información, generar reportes y visualizar indicadores relevantes.',
+        en: 'It all began with a university assignment. My team was given Schaman, a company focused on automating customer service through digital channels. The exercise was to build a data warehouse from the assigned business model and develop an application to query the information, generate reports and view the relevant indicators.',
+      },
+      {
+        es: 'La primera versión cumplía el propósito académico de presentar esos datos. Sin embargo, después de trabajar en ella, decidí volver a examinar su interfaz desde otra perspectiva: <mark>no solo qué información mostraba, sino cómo estaba organizada</mark> y qué tan clara resultaba su exploración.',
+        en: 'The first version met the academic goal of presenting that data. After working on it, though, I decided to look at its interface again from another angle: <mark>not just what information it showed, but how it was organised</mark> and how clear it was to explore.',
+      },
+      {
+        es: 'No se trataba de un encargo de Schaman. Era una iniciativa personal para retomar un proyecto existente, cuestionar algunas de sus decisiones de diseño y explorar cómo podía mejorar su experiencia de uso.',
+        en: 'It was not a commission from Schaman. It was a personal initiative to pick up an existing project, question some of its design decisions and explore how its experience could improve.',
+      },
+    ],
+    datos: [
+      { rotulo: { es: 'Origen', en: 'Origin' }, texto: { es: 'Asignación universitaria, en equipo', en: 'University assignment, as a team' } },
+      { rotulo: { es: 'El rediseño', en: 'The redesign' }, texto: { es: 'Iniciativa propia, posterior a la entrega', en: 'My own initiative, after the hand-in' } },
+      { rotulo: { es: 'Qué ya existía', en: 'What already existed' }, texto: { es: 'Almacén de datos y aplicación de consulta funcionando', en: 'A working data warehouse and query application' } },
+    ],
+    figura: {
+      titulo: { es: 'El punto de partida.', en: 'The starting point.' },
+      pie: { es: 'El panel general de la primera versión: filtros por año y mes, cinco indicadores con colores independientes y gráficos de resumen.', en: 'The first version’s overview: year and month filters, five independently coloured indicators and summary charts.' },
+      alt: {
+        es: 'Panel general de la versión anterior, con cinco tarjetas de colores distintos y filtros de año y mes.',
+        en: 'Overview of the earlier version, with five differently coloured cards and year and month filters.',
+      },
     },
   },
 
-  /* 02 · análisis de la interfaz */
-  analisis: {
-    numero: {
-      es: '02 / análisis UX',
-      en: '02 / UX analysis',
-    },
+  /* ══ 02 · EL RETO DE DISEÑO ══ */
+  reto: {
+    antetitulo: { es: '02 / El reto de diseño', en: '02 / The design challenge' },
     titulo: {
-      es: 'Lo que la interfaz pedía resolver',
-      en: 'What the interface needed to address',
+      es: 'La información estaba ahí. La oportunidad estaba en cómo explorarla.',
+      en: 'The information was there. The opportunity was in how to explore it.',
     },
     parrafo: {
-      es: 'El diagnóstico salió de revisar las interfaces del proyecto y las tareas analíticas que tenían que resolver, sobre todo las vistas de gráficos. No hubo investigación con personas usuarias: la guía fue leer sobre cómo se construyen los dashboards financieros.',
-      en: 'The diagnosis came from reviewing the project’s interfaces and the analytical tasks they had to support, especially the chart views. There was no research with users: my guide was reading about how financial dashboards are built.',
+      es: 'El dashboard y la tabla de sesiones compartían una misma página. Las herramientas para localizar registros eran limitadas, y algunos elementos visuales no comunicaban con suficiente claridad el significado de los datos. <mark>No eran problemas que exigieran cambiar el propósito de la aplicación</mark>: el reto estaba en organizar mejor lo que ya existía.',
+      en: 'The dashboard and the session table shared a single page. The tools for finding records were limited, and some visual elements did not communicate the meaning of the data clearly enough. <mark>None of this called for changing the application’s purpose</mark>: the challenge was to better organise what already existed.',
     },
-    observaciones: [
+    /* EL DIAGNÓSTICO FIJO: la columna de la captura se queda quieta y
+       avanzan las tres llamadas; cada una trae su propia captura de la
+       versión original. */
+    diagnostico: [
       {
-        es: '<b>Información concentrada en una sola vista:</b> el panel anterior reunía en la misma pantalla el resumen, los gráficos y la tabla de sesiones.',
-        en: '<b>Information concentrated in a single view:</b> the earlier dashboard put the summary, the charts and the session table on the same screen.',
+        pie: { es: 'Indicadores, gráficos y tabla de sesiones convivían en un mismo recorrido; para llegar a un registro había que atravesar el dashboard.', en: 'Indicators, charts and the sessions table shared one journey; reaching a record meant going through the dashboard.' },
+        alt: { es: 'La página de inicio original entera: los indicadores y gráficos arriba y la tabla de sesiones al final, en un solo desplazamiento.', en: 'The whole original home page: indicators and charts on top and the session table at the end, in a single scroll.' },
       },
       {
-        es: '<b>Dos necesidades distintas:</b> consultar el estado del periodo es una lectura rápida; investigar fallos pide comparar problemas, categorías, prioridades y dispositivos.',
-        en: '<b>Two different needs:</b> checking the state of the period is a quick read; investigating failures means comparing problems, categories, priorities and devices.',
+        pie: { es: 'La tabla mostraba los registros, pero no ofrecía búsqueda, ordenamiento ni paginación para llegar a uno concreto.', en: 'The table showed the records, but offered no search, sorting or pagination to reach a specific one.' },
+        alt: { es: 'La tabla de sesiones original: filas sin buscador, sin orden por columna y sin paginación.', en: 'The original session table: rows with no search, no column sorting and no pagination.' },
       },
       {
-        es: '<b>Indicadores que se pueden confundir:</b> resolver al primer contacto y resolver una sesión miden cosas distintas; con etiquetas poco explícitas se leen como la misma cifra.',
-        en: '<b>Metrics that can be confused:</b> resolving on first contact and resolving a session measure different things; with labels that are not explicit they read as the same figure.',
+        pie: { es: 'Cada indicador usaba un color distinto, pero los títulos pequeños y la variedad cromática no construían una jerarquía clara.', en: 'Each indicator used a different colour, but small labels and colour variety did not create a clear hierarchy.' },
+        alt: { es: 'Las tarjetas de indicadores originales, cada una con un color de borde distinto y títulos pequeños.', en: 'The original indicator cards, each with a different border colour and small titles.' },
       },
-      {
-        es: '<b>Filtros compartidos entre vistas:</b> el periodo y el canal condicionan varias vistas a la vez, así que su sitio en la pantalla no se puede decidir vista por vista.',
-        en: '<b>Filters shared across views:</b> period and channel condition several views at once, so where they sit cannot be decided view by view.',
+    ],
+    pregunta: {
+      rotulo: { es: 'La pregunta de diseño', en: 'The design question' },
+      texto: {
+        es: '¿Cómo podría hacer que la información analítica fuera más fácil de explorar e interpretar mediante una mejor organización de las vistas, herramientas de consulta más flexibles y una jerarquía visual más clara?',
+        en: 'How could I make the analytical information easier to explore and interpret through better-organised views, more flexible query tools and a clearer visual hierarchy?',
       },
+    },
+    puente: {
+      es: 'A partir de esa pregunta, organicé el rediseño en tres prioridades — y son, en el mismo orden, las tres decisiones que vienen después:',
+      en: 'From that question I organised the redesign around three priorities — and they are, in the same order, the three decisions that follow:',
+    },
+    prioridades: [
+      { es: 'Dar a cada tarea de análisis un espacio más definido.', en: 'Give each analysis task a more defined space.' },
+      { es: 'Facilitar la búsqueda, la navegación y la exploración de los registros.', en: 'Make it easier to search, navigate and explore the records.' },
+      { es: 'Hacer más claro el significado de los indicadores y los elementos visuales.', en: 'Make the meaning of the indicators and visual elements clearer.' },
     ],
   },
 
-  /* 03 · de la necesidad a la interfaz.
-
-     ESTA SECCIÓN ERA DOS. Había una de decisiones (cuatro tarjetas con
-     necesidad, cambio, impacto y un sello "por validar") y otra de
-     rediseño (los dos pares antes/después, más cinco tarjetas de
-     resumen). Entre las tres cosas, cada cambio se explicaba hasta
-     tres veces y había que subir y bajar para conectar una decisión
-     con la captura que la enseña.
-
-     Ahora es UNA, con dos bloques, y el criterio para agrupar es la
-     VISTA en la que se ve el cambio:
-
-       bloques[0]  el panel general   → navegación y jerarquía
-       bloques[1]  análisis de fallos → sesiones y métricas
-
-     Cada bloque lleva sus dos decisiones, y cada decisión enseña una
-     de las dos capturas de esa vista: la primera el antes, la segunda
-     el después. Por eso los pies y los alt viven aquí dentro y ya no
-     en una sección aparte.
-
-     `antes` y `despues` siguen llamándose así porque es lo que son:
-     los dos estados de la vista. Qué decisión enseña cuál lo decide la
-     página, no este archivo.
-
-     CADA DECISIÓN son dos campos y nada más: de dónde salió
-     (necesidad) y qué cambió (decision). Había un tercer texto por
-     bloque, `proposito`, que decía para qué servían las dos juntas;
-     se retiró porque repetía las decisiones con otras palabras y era
-     lo único que obligaba a un bloque de cita dentro de la ventana.
-
-     NO SE AFIRMA NINGÚN RESULTADO. No hay cifras de mejora porque no
-     se han medido; la nota del final dice qué son las capturas y qué
-     no se puede concluir de ellas.
-
-     El icono y el tono pastel de cada decisión NO están aquí: son
-     interfaz, no texto del proyecto, y los pone la página.
-
-     Este caso tenía las claves más opacas del sitio. Lo que era
-     sch.dec.4.3 es hoy decisiones.bloques[1].decisiones[1].decision. */
-  decisiones: {
-    numero: {
-      es: '03 / de la necesidad a la interfaz',
-      en: '03 / from need to interface',
-    },
+  /* ══ 03 · ORGANIZAR LAS VISTAS · primera decisión ══ */
+  vistas: {
+    antetitulo: { es: '03 / Organizar las vistas · Primera decisión', en: '03 / Organising the views · First decision' },
     titulo: {
-      es: 'De la necesidad a la interfaz',
-      en: 'From need to interface',
+      es: 'Separar la lectura general de la consulta de sesiones',
+      en: 'Separating the overview from looking up sessions',
     },
-    parrafo: {
-      es: 'Organicé el rediseño alrededor de cuatro decisiones, agrupadas por la vista en la que se ven. Cada bloque lleva al lado las capturas de antes y después de esa misma vista, para no tener que ir a buscarlas.',
-      en: 'I organised the redesign around four decisions, grouped by the view where each one shows. Every block carries the before and after captures of that same view, so there is nothing to go looking for.',
+    parrafos: [
+      {
+        es: 'En la versión original, la página Overview reunía los indicadores del dashboard y la tabla de sesiones. <mark>Dos necesidades distintas compartían el mismo espacio</mark>: consultar una visión general de los resultados y examinar registros individuales. Decidí separar ambas vistas.',
+        en: 'In the original version, the Overview page held both the dashboard indicators and the session table. <mark>Two different needs shared the same space</mark>: getting an overview of the results and examining individual records. I decided to separate the two views.',
+      },
+      {
+        es: '<b>El dashboard pasó a concentrarse en los indicadores y las visualizaciones generales, mientras que la página de sesiones quedó dedicada a consultar los registros individuales.</b> Mantuve la barra de filtros en ambas páginas, de modo que el periodo y los sectores seleccionados siguieran formando parte del contexto de consulta.',
+        en: 'The dashboard now focuses on the indicators and overall charts, while the sessions page is dedicated to looking up individual records. I kept the filter bar on both pages, so the selected period and sectors stay part of the query context.',
+      },
+    ],
+    cita: {
+      es: 'La decisión no consistía simplemente en añadir otra página, sino en dar a cada tarea un propósito más definido.',
+      en: 'The decision was not simply to add another page, but to give each task a more defined purpose.',
     },
-    etiquetas: {
-      bloque: {
-        es: 'Bloque',
-        en: 'Block',
+    antes: {
+      pie: { es: 'Para pasar de los indicadores a una sesión, había que recorrer el dashboard y continuar hasta la tabla al final de la misma página.', en: 'To move from the indicators to a session, you had to scroll through the dashboard to the table at the end of the same page.' },
+      alt: { es: 'Grabación de la versión anterior: se baja por el panel general hasta llegar a la tabla de sesiones, al final de la página.', en: 'Recording of the earlier version: scrolling down the overview to reach the session table at the end of the page.' },
+    },
+    despues: {
+      pie: { es: 'El dashboard queda para la lectura general y la tabla pasa a Sesiones, con los mismos filtros disponibles en ambas vistas.', en: 'The dashboard stays for the overview, while the table moves to Sessions with the same filters available in both views.' },
+      alt: { es: 'Del panel general a la página de sesiones, que carga su tabla con los mismos filtros.', en: 'From the overview to the sessions page, which loads its table with the same filters.' },
+    },
+    cierre: {
+      es: 'Las dos grabaciones recorren el mismo camino: mirar los indicadores y llegar a una sesión. En la primera hay que bajar por la misma página; en la segunda, <mark>la sesión vive en su propia pestaña</mark>.',
+      en: 'Both recordings follow the same path: check the indicators and reach a session. In the first you scroll down the same page; in the second, <mark>sessions live in their own tab</mark>.',
+    },
+  },
+
+  /* ══ 04 · FACILITAR LA EXPLORACIÓN · segunda decisión ══
+     Tres sub-bloques; `corto` es su nombre en el sub-índice de la barra. */
+  exploracion: {
+    antetitulo: { es: '04 / Facilitar la exploración · Segunda decisión', en: '04 / Easing exploration · Second decision' },
+    titulo: {
+      es: 'Encontrar una sesión no debería depender de buscarla manualmente',
+      en: 'Finding a session shouldn’t depend on hunting for it by hand',
+    },
+    buscar: {
+      corto: { es: 'Buscar y ordenar', en: 'Search and sort' },
+      titulo: { es: 'Buscar, ordenar y paginar', en: 'Search, sort and paginate' },
+      parrafo: {
+        es: 'En la versión original no existía una herramienta de búsqueda ni era posible ordenar las sesiones según los valores de sus columnas. Incorporé una búsqueda por ID, nombre o apellido del cliente y fecha —contemplando los formatos <code>DD-MM-AAAA</code> y <code>DD/MM/AAAA</code>—, ordenamiento por columnas y paginación: <mark>la tabla dejó de depender del desplazamiento continuo</mark>.',
+        en: 'The original version had no search tool, and sessions could not be sorted by their column values. I added search by ID, customer first or last name and date — accepting both <code>DD-MM-YYYY</code> and <code>DD/MM/YYYY</code> —, column sorting and pagination: <mark>the table stopped depending on endless scrolling</mark>.',
       },
-      necesidad: {
-        es: 'Necesidad',
-        en: 'Need',
+      orden: {
+        rotulo: { es: 'Ordenar', en: 'Sort' },
+        pie: { es: 'La tabla se ordena por una columna —o por varias con Mayús + clic— y cada encabezado aclara qué valor organiza.', en: 'The table sorts by one column —or several with Shift + click— and each header clarifies the value being organised.' },
+        alt: { es: 'Grabación de la tabla de sesiones ordenándose por cliente y por ID.', en: 'Recording of the session table being sorted by customer and by ID.' },
       },
-      decision: {
-        es: 'Decisión',
-        en: 'Decision',
+      paginacion: {
+        rotulo: { es: 'Paginar', en: 'Paginate' },
+        pie: { es: 'La paginación limita cada vista a diez filas, mantiene el total a la vista y permite saltar directamente entre páginas.', en: 'Pagination limits each view to ten rows, keeps the total in sight and allows direct jumps between pages.' },
+        alt: { es: 'Grabación del pie de la tabla pasando de una página de sesiones a otra.', en: 'Recording of the table footer moving from one page of sessions to another.' },
+      },
+      tira: [
+        { rotulo: { es: 'La necesidad', en: 'The need' }, titulo: { es: 'Localizar un registro concreto', en: 'Finding one specific record' }, texto: { es: 'A medida que aumentaba la cantidad de sesiones, recorrer la tabla manualmente dejaba de ser práctico.', en: 'As the number of sessions grew, scrolling through the table by hand stopped being practical.' } },
+        { rotulo: { es: 'Por qué importa', en: 'Why it matters' }, titulo: { es: 'Investigar, no solo mirar', en: 'Investigating, not just looking' }, texto: { es: 'Una tabla que solo se desplaza sirve para hojear; para investigar hace falta llegar a una fila concreta.', en: 'A table that only scrolls is good for skimming; investigating means reaching one specific row.' } },
+        { rotulo: { es: 'Qué hice', en: 'What I did' }, titulo: { es: 'Tres formas de llegar', en: 'Three ways in' }, texto: { es: 'Búsqueda por varios campos, orden ascendente y descendente por columna, y paginación con filas ajustables.', en: 'Search across several fields, ascending and descending column sorting, and pagination with adjustable rows.' } },
+      ],
+    },
+    periodo: {
+      corto: { es: 'Periodo', en: 'Period' },
+      titulo: { es: 'Del calendario a un periodo de consulta más preciso', en: 'From month pickers to a more precise query period' },
+      parrafo: {
+        es: 'Los filtros temporales permitían elegir año y mes, pero no delimitar consultas por días concretos o rangos de fechas. Amplié los filtros para permitir ambas opciones: un día suelto, un rango, o el año entero si no se toca. <mark>Al aplicarlo se recalculan el score, los indicadores y la tabla</mark>.',
+        en: 'The date filters let you pick a year and a month, but not narrow a query to specific days or date ranges. I extended them to allow both: a single day, a range, or the whole year if left alone. <mark>Applying it recalculates the score, the indicators and the table</mark>.',
       },
       antes: {
-        es: 'Antes',
-        en: 'Before',
+        pie: { es: 'Con año y mes en desplegables separados, la consulta no podía limitarse a días concretos ni a un intervalo.', en: 'With year and month in separate dropdowns, a query could not be narrowed to specific days or a date range.' },
+        alt: { es: 'Filtros anteriores de año y mes, en dos desplegables.', en: 'Earlier year and month filters, in two dropdowns.' },
       },
       despues: {
-        es: 'Después',
-        en: 'After',
+        pie: { es: 'Un solo calendario permite elegir un día o un rango; al aplicarlo, se actualizan el score, los indicadores y la tabla.', en: 'One calendar lets you select a day or a range; applying it updates the score, the indicators and the table.' },
+        alt: { es: 'Grabación del filtro de periodo: se abre el calendario, se marca un rango y se aplica.', en: 'Recording of the period filter: the calendar opens, a range is marked and applied.' },
       },
     },
-    bloques: [
-      {
-        titulo: {
-          es: 'Panel general',
-          en: 'Overview panel',
-        },
-        decisiones: [
-          {
-            titulo: {
-              es: 'Navegación y estructura',
-              en: 'Navigation and structure',
-            },
-            necesidad: {
-              es: 'Encontrar una vista sin tener que buscarla entre varias secciones.',
-              en: 'Find a view without having to hunt for it across several sections.',
-            },
-            decision: {
-              es: 'Organizar las secciones en una navegación lateral y separar las vistas por tarea.',
-              en: 'Organise the sections in a side navigation and separate the views by task.',
-            },
-          },
-          {
-            titulo: {
-              es: 'Jerarquía de información',
-              en: 'Information hierarchy',
-            },
-            necesidad: {
-              es: 'Entender rápido el estado del periodo.',
-              en: 'Understand the state of the period quickly.',
-            },
-            decision: {
-              es: 'Colocar el score y los KPI al inicio, con los filtros comunes en una posición coherente.',
-              en: 'Put the score and the KPIs first, with the shared filters in a consistent position.',
-            },
-          },
-        ],
-        antes: {
-          pie: {
-            es: 'Versión previa: navegación compacta y paleta azul; resumen y contenido comparten una sola vista.',
-            en: 'Earlier version: compact navigation and blue palette; summary and content share one view.',
-          },
-          alt: {
-            es: 'Versión anterior del panel general de Schaman Analytics BI.',
-            en: 'Earlier Schaman Analytics BI overview.',
-          },
-        },
-        despues: {
-          pie: {
-            es: 'Rediseño: navegación lateral, perfil de analista, filtros comunes y jerarquía más clara para score y KPI.',
-            en: 'Redesign: side navigation, analyst profile, shared filters and clearer score and KPI hierarchy.',
-          },
-          alt: {
-            es: 'Panel general rediseñado con navegación, filtros, perfil de analista y tarjetas KPI.',
-            en: 'Redesigned overview with navigation, filters, analyst profile and KPI cards.',
-          },
-        },
+    mapa: {
+      corto: { es: 'Mapa', en: 'Map' },
+      titulo: { es: 'Una vista nueva para ver dónde ocurren las sesiones', en: 'A new view to see where sessions happen' },
+      parrafo: {
+        es: 'El panel resumía el periodo y la tabla listaba sesiones una por una, pero ninguno de los dos respondía dónde ocurren: la zona era una columna más entre nueve. Añadí una página de mapa en la que cada provincia se tiñe según su volumen, el ranking por ciudad se despliega en zonas y <mark>los filtros de resolución permiten ver si un resultado se concentra en algún territorio</mark>.',
+        en: 'The dashboard summarised the period and the table listed sessions one by one, but neither answered where they happen: the area was just one column out of nine. I added a map page where each province is shaded by volume, the city ranking expands into areas and <mark>the resolution filters show whether an outcome concentrates in any territory</mark>.',
       },
-      {
-        titulo: {
-          es: 'Análisis de fallos',
-          en: 'Failure analysis',
-        },
-        decisiones: [
-          {
-            titulo: {
-              es: 'Exploración de sesiones',
-              en: 'Exploring sessions',
-            },
-            necesidad: {
-              es: 'Investigar sesiones fallidas y entender el contexto de los problemas.',
-              en: 'Investigate failed sessions and understand the context of the problems.',
-            },
-            decision: {
-              es: 'Crear una vista dedicada con problemas, categorías, prioridades y dispositivos.',
-              en: 'Create a dedicated view with problems, categories, priorities and devices.',
-            },
-          },
-          {
-            titulo: {
-              es: 'Interpretación de métricas',
-              en: 'Reading the metrics',
-            },
-            necesidad: {
-              es: 'Interpretar correctamente las medidas del panel.',
-              en: 'Read the dashboard’s measures correctly.',
-            },
-            decision: {
-              es: 'Revisar etiquetas, colores y explicaciones metodológicas.',
-              en: 'Revise labels, colours and methodological explanations.',
-            },
-          },
-        ],
-        antes: {
-          pie: {
-            es: 'Vista previa de análisis de fallos, con áreas amplias para gráficos y paleta azul.',
-            en: 'Earlier failure analysis view, with large chart areas and a blue palette.',
-          },
-          alt: {
-            es: 'Versión anterior de análisis de fallos.',
-            en: 'Earlier failure analysis view.',
-          },
-        },
-        despues: {
-          pie: {
-            es: 'La nueva vista organiza métricas del período, problemas, categorías, prioridades y dispositivos.',
-            en: 'The new view groups period metrics, problems, categories, priorities and devices.',
-          },
-          alt: {
-            es: 'Análisis de fallos rediseñado con tarjetas, gráficos y tabla de prioridades.',
-            en: 'Redesigned failure analysis with cards, charts and a priority table.',
-          },
-        },
-      },
-    ],
-    nota: {
-      es: 'Las comparaciones muestran la evolución visual de dos vistas. Son capturas de estados y períodos distintos: ayudan a revisar estructura y legibilidad, no a atribuir cambios en las cifras al rediseño.',
-      en: 'The comparisons show the visual evolution of two views. They capture different states and periods, so they help review structure and legibility, not attribute changes in figures to the redesign.',
+      rotulo: { es: 'Vista nueva', en: 'New view' },
+      pie: { es: 'La vista geográfica no existía antes: el mapa convierte la zona, antes una columna más, en una forma de explorar la distribución de las sesiones.', en: 'There was no geographic view before: the map turns area, previously just another column, into a way to explore how sessions are distributed.' },
+      alt: { es: 'Página de mapa con España coloreada por provincia y un ranking de ciudades desplegable por zonas.', en: 'Map page with Spain shaded by province and a city ranking that expands into areas.' },
     },
   },
 
-  /* 04 · contexto técnico: el modelo dimensional.
-
-     Aquí había dos cosas más que contaban el mismo recorrido de los
-     datos: una lista de cinco pasos (OLTP → ETL → almacén → funciones
-     → dashboard) y un diagrama de arquitectura con ese mismo
-     recorrido dibujado. Se retiraron las dos; queda el modelo
-     dimensional, que es lo único que esta sección enseña y no se
-     cuenta en ningún otro sitio del caso. */
-  contextoTecnico: {
-    numero: {
-      es: '04 / contexto técnico',
-      en: '04 / technical context',
-    },
+  /* ══ 05 · CLARIFICAR LOS DATOS · tercera decisión ══ */
+  datos: {
+    antetitulo: { es: '05 / Clarificar los datos · Tercera decisión', en: '05 / Clarifying the data · Third decision' },
     titulo: {
-      es: 'Cómo llega la información al panel',
-      en: 'How information reaches the dashboard',
+      es: 'Hacer que los datos comuniquen mejor su significado',
+      en: 'Making the data communicate its meaning better',
+    },
+    entradilla: {
+      es: 'Las dos decisiones anteriores movieron cosas de sitio. Esta no mueve nada: cambia <mark>qué significa lo que ya estaba en pantalla</mark>. El color, los títulos de los indicadores y el contexto disponible sin salir de la vista.',
+      en: 'The two previous decisions moved things around. This one moves nothing: it changes <mark>the meaning of what was already on screen</mark>. Colour, the indicator titles and the context available without leaving the view.',
+    },
+    color: {
+      corto: { es: 'El color', en: 'Colour' },
+      titulo: { es: 'El color debía ayudar a interpretar, no añadir ruido visual', en: 'Colour had to help interpretation, not add visual noise' },
+      parrafo: {
+        es: 'En la tabla original, distintos resultados usaban varios colores cuyo significado no era siempre evidente. Además, <mark>«Abandonado» y «Escalado» compartían el mismo amarillo</mark>, lo que reducía su diferenciación. Replanteé el color para darle una función consistente: verde para los resultados positivos de FCR y resolución por IA, una escala para el NPS, colores distintos a los dos estados que se confundían, y color e icono en cada etiqueta de canal.',
+        en: 'In the original table, different outcomes used several colours whose meaning was not always obvious. On top of that, <mark>“Abandoned” and “Escalated” shared the same yellow</mark>, which made them harder to tell apart. I rethought colour to give it a consistent job: green for positive FCR and AI-resolution outcomes, a scale for NPS, distinct colours for the two statuses that were being confused, and colour plus an icon on every channel label.',
+      },
+      antes: {
+        pie: { es: 'En la primera versión, todos los canales compartían la misma etiqueta gris; había que leer cada fila para diferenciarlos.', en: 'In the first version, every channel shared the same grey label; each row had to be read to tell them apart.' },
+        alt: { es: 'Columna de canal anterior: seis etiquetas grises iguales.', en: 'Earlier channel column: six identical grey labels.' },
+      },
+      despues: {
+        pie: { es: 'En el rediseño, cada canal combina color e icono para que la columna se reconozca de un vistazo.', en: 'In the redesign, every channel combines colour and an icon so the column can be recognised at a glance.' },
+        alt: { es: 'Columna de canal rediseñada: cada canal con su color y su icono.', en: 'Redesigned channel column: each channel with its own colour and icon.' },
+      },
+      lado: {
+        es: 'Cada canal lleva ahora su color y su icono, así que la columna se lee de un vistazo sin tener que leer cada fila.',
+        en: 'Each channel now has its own colour and icon, so the column reads at a glance without reading every row.',
+      },
+      lista: [
+        { es: 'Verde para los resultados positivos de FCR y resolución por IA.', en: 'Green for positive FCR and AI-resolution outcomes.' },
+        { es: 'Una escala para el NPS, que distingue promotores de detractores.', en: 'A scale for NPS that tells promoters from detractors.' },
+        { es: '«Abandonado» y «Escalado» dejaron de compartir el amarillo.', en: '“Abandoned” and “Escalated” no longer share the yellow.' },
+      ],
+      cierre: {
+        es: 'La intención era que el color sirviera como señal informativa, no como preferencia estética.',
+        en: 'The intent was for colour to work as an informative signal, not an aesthetic preference.',
+      },
+    },
+    jerarquia: {
+      corto: { es: 'Jerarquía de KPIs', en: 'KPI hierarchy' },
+      titulo: { es: 'Dar más jerarquía a los indicadores principales', en: 'Giving the main indicators more hierarchy' },
+      parrafo: {
+        es: 'Las tarjetas de KPI usaban distintos colores y títulos pequeños: los indicadores estaban, pero la variedad cromática no establecía jerarquía. Mantuve una paleta más consistente, con títulos más visibles e iconos por indicador, y amplié el espacio del score global usando el color primario para separarlo de sus dimensiones. Tomé como referencia la identidad visual de Schaman, <mark>diferenciando los colores de la interfaz de los que cumplen una función informativa en los datos</mark>.',
+        en: 'The KPI cards used different colours and small titles: the indicators were there, but the colour variety set no hierarchy. I kept a more consistent palette, with more visible titles and an icon per indicator, and gave the overall score more room, using the primary colour to set it apart from its dimensions. I took Schaman’s visual identity as a reference, <mark>separating interface colours from the ones that carry information in the data</mark>.',
+      },
+      antes: {
+        pie: { es: 'La primera versión daba un color a cada KPI, pero los títulos pequeños y la variedad visual no indicaban cuáles debían leerse primero.', en: 'The first version gave each KPI a colour, but small labels and visual variety did not signal which ones should be read first.' },
+        altScore: { es: 'El score global de la versión original: el 295 en naranja junto a sus cinco dimensiones, todo en la misma caja.', en: 'The overall score in the original version: 295 in orange beside its five dimensions, all in the same box.' },
+        alt: { es: 'Fila anterior de cinco tarjetas de indicadores, cada una de un color.', en: 'Earlier row of five indicator cards, each in a different colour.' },
+      },
+      despues: {
+        pie: { es: 'La tira rediseñada usa una paleta consistente y títulos más legibles; el score global gana un espacio propio para diferenciarse de sus dimensiones.', en: 'The redesigned row uses a consistent palette and more legible labels; the overall score gets its own space to stand apart from its dimensions.' },
+        alt: { es: 'Fila rediseñada de tarjetas de indicadores, con icono, título legible y una sola paleta.', en: 'Redesigned row of indicator cards, with an icon, a readable title and a single palette.' },
+        altScore: { es: 'El score global sobre fondo azul, separado de sus cinco dimensiones.', en: 'The overall score on a blue background, set apart from its five dimensions.' },
+      },
+    },
+    tooltips: {
+      corto: { es: 'Tooltips', en: 'Tooltips' },
+      titulo: { es: 'Proporcionar contexto sin sacar al usuario de la vista', en: 'Giving context without taking the user out of the view' },
+      parrafo: {
+        es: 'Algunos indicadores, gráficos y encabezados necesitaban una explicación para interpretarse bien. Incorporé tooltips en las visualizaciones del dashboard, en la sección de fallos y en los encabezados de columna: <mark>las definiciones quedan dentro de la propia interfaz</mark>, sin abandonar la vista que se está consultando.',
+        en: 'Some indicators, charts and headers needed an explanation to be read correctly. I added tooltips to the dashboard charts, the failure section and the column headers: <mark>the definitions live inside the interface itself</mark>, without leaving the view being consulted.',
+      },
+      indicador: {
+        rotulo: { es: 'En un indicador', en: 'On an indicator' },
+        pie: { es: 'El tooltip explica qué mide el indicador, cómo interpretarlo y qué sesiones entran en su cálculo sin sacar a la persona de la vista.', en: 'The tooltip explains what the indicator measures, how to interpret it and which sessions it includes without taking the person out of the view.' },
+        alt: { es: 'Tooltip sobre una tarjeta de indicador, con su definición.', en: 'Tooltip over an indicator card, with its definition.' },
+      },
+      columna: {
+        rotulo: { es: 'En una columna', en: 'On a column' },
+        pie: { es: 'El tooltip del encabezado define el valor de la columna dentro de la propia tabla, justo donde hace falta consultarlo.', en: 'The header tooltip defines the column value inside the table itself, right where it needs to be checked.' },
+        alt: { es: 'Tooltip sobre un encabezado de la tabla de sesiones.', en: 'Tooltip over a session table header.' },
+      },
+    },
+  },
+
+  /* ══ 06 · EL RESULTADO ══ */
+  resultado: {
+    antetitulo: { es: '06 / El resultado', en: '06 / The result' },
+    titulo: {
+      es: 'Una interfaz funcional, construida a partir de decisiones concretas',
+      en: 'A working interface, built from concrete decisions',
     },
     parrafo: {
-      es: 'La interfaz consume un flujo de datos preparado por el equipo para explorar sesiones de atención. Este contexto explica de dónde vienen las vistas; el foco del caso sigue siendo cómo las organicé para su lectura.',
-      en: 'The interface consumes a data flow the team prepared to explore support sessions. This context explains where the views come from; the case focuses on how I organised them for reading.',
+      es: 'Las mejoras se implementaron en el frontend de la aplicación con <b>React y Supabase</b>. El resultado va más allá de una propuesta visual estática: <mark>incluye funcionalidades implementadas que pueden demostrarse en la interfaz</mark>.',
+      en: 'The improvements were implemented in the application’s front end with <b>React and Supabase</b>. The result goes beyond a static visual proposal: <mark>it includes working features that can be shown in the interface</mark>.',
     },
-    diagramas: [
+    pantallas: [
       {
-        titulo: {
-          es: 'Modelo dimensional',
-          en: 'Dimensional model',
-        },
-        parrafo: {
-          es: 'El objetivo es una fila por sesión omnicanal. La tabla de hechos enlaza ocho dimensiones: fecha, cliente, canal, geografía, problema, contrato, dispositivo y usuario.',
-          en: 'The objective is one row per omnichannel session. The fact table links to eight dimensions: date, customer, channel, geography, problem, contract, device and user.',
-        },
-        alt: {
-          es: 'Modelo estrella: HECHO_SESION_OMNICANAL y sus ocho dimensiones relacionadas.',
-          en: 'Star schema: HECHO_SESION_OMNICANAL and its eight related dimensions.',
-        },
+        titulo: { es: 'Panel general', en: 'Overview' },
+        pie: { es: 'Una lectura general con score global, cinco indicadores y filtros compartidos.', en: 'An overview with the overall score, five indicators and shared filters.' },
+        alt: { es: 'Panel general rediseñado.', en: 'Redesigned overview.' },
+      },
+      {
+        titulo: { es: 'Sesiones', en: 'Sessions' },
+        pie: { es: 'Una vista para localizar y revisar registros con búsqueda, orden por columna y paginación.', en: 'A view for finding and reviewing records through search, column sorting and pagination.' },
+        alt: { es: 'Página de sesiones con buscador y tabla paginada.', en: 'Sessions page with search box and paginated table.' },
+      },
+      {
+        titulo: { es: 'Mapa', en: 'Map' },
+        pie: { es: 'Una lectura territorial de las sesiones por región y zona, acompañada de un ranking para comparar concentraciones.', en: 'A territorial reading of sessions by region and area, paired with a ranking to compare concentrations.' },
+        alt: { es: 'Página de mapa con España coloreada por provincia.', en: 'Map page with Spain shaded by province.' },
       },
     ],
-    nota: {
-      es: 'La arquitectura resume los materiales del proyecto. El diagrama reproduce el modelo dimensional documentado; no implica que todo el flujo esté desplegado en producción.',
-      en: 'The architecture summarises project materials. The diagram reproduces the documented dimensional model; it does not imply the full flow runs in production.',
-    },
+    resumen: [
+      { rotulo: { es: 'Organizar', en: 'Organise' }, texto: { es: 'Separé el dashboard de la vista de sesiones para distinguir la lectura general de la exploración de registros.', en: 'I separated the dashboard from the sessions view to tell the overview apart from exploring records.' } },
+      { rotulo: { es: 'Consultar', en: 'Query' }, texto: { es: 'Búsqueda, ordenamiento, paginación, filtros temporales y una vista geográfica nueva.', en: 'Search, sorting, pagination, date filters and a new geographic view.' } },
+      { rotulo: { es: 'Interpretar', en: 'Interpret' }, texto: { es: 'Revisé la jerarquía de los indicadores, el uso del color y el contexto disponible en la propia interfaz.', en: 'I reworked the indicator hierarchy, the use of colour and the context available in the interface itself.' } },
+    ],
   },
 
-  /* 05 · qué significa cada indicador */
-  metricas: {
-    numero: {
-      es: '05 / métricas',
-      en: '05 / metrics',
-    },
+  /* ══ 07 · LO QUE APRENDÍ ══ */
+  aprendizaje: {
+    antetitulo: { es: '07 / Lo que aprendí', en: '07 / What I learned' },
     titulo: {
-      es: 'Qué significa cada indicador',
-      en: 'What each indicator means',
+      es: 'Diseñar un dashboard también implica decidir cómo se interpreta la información',
+      en: 'Designing a dashboard also means deciding how information gets interpreted',
     },
     parrafo: {
-      es: 'Las fórmulas se aplican a las sesiones que corresponden a los filtros elegidos. En palabras sencillas:',
-      en: 'The formulas apply to sessions included by the selected filters. In plain language:',
+      es: 'Una de las principales lecciones fue que <mark>la claridad de una interfaz no depende únicamente de mostrar la información correcta</mark>. También importa cómo se organiza, qué herramientas se ofrecen para explorarla y cuánto contexto proporciona la propia interfaz para interpretarla.',
+      en: 'One of the main lessons was that <mark>an interface’s clarity does not depend only on showing the right information</mark>. It also matters how it is organised, what tools are offered to explore it and how much context the interface itself provides to interpret it.',
     },
-    lista: [
-      {
-        nombre: 'FCR',
-        texto: {
-          es: 'De las sesiones que tienen este dato informado, qué porcentaje se resolvió en el primer contacto. Un “No” no dice cuántos contactos posteriores hicieron falta.',
-          en: 'Among sessions with this field filled in, the percentage resolved on first contact. “No” does not say how many later contacts were needed.',
-        },
+    aviso: {
+      rotulo: { es: 'Lo que este caso todavía no demuestra', en: 'What this case doesn’t show yet' },
+      texto: {
+        es: 'El trabajo documenta las decisiones tomadas y las funcionalidades implementadas, pero no mide su impacto en el comportamiento de los usuarios. El siguiente paso sería contrastarlas con tareas reales y personas usuarias.',
+        en: 'The work documents the decisions made and the features implemented, but does not measure their impact on user behaviour. The next step would be to test them against real tasks and real users.',
       },
-      {
-        nombre: {
-          es: 'TMO',
-          en: 'AHT',
-        },
-        texto: {
-          es: 'Promedio de duración de las sesiones filtradas, mostrado en segundos y minutos.',
-          en: 'Average duration of filtered sessions, shown in seconds and minutes.',
-        },
-      },
-      {
-        nombre: 'T-NPS',
-        texto: {
-          es: 'Promotores (9–10) menos detractores (0–6), como porcentaje de las calificaciones registradas. Las notas 7–8 son pasivas; el resultado va de −100 a +100.',
-          en: 'Promoters (9–10) minus detractors (0–6), as a percentage of recorded ratings. Scores 7–8 are passives; the result ranges from −100 to +100.',
-        },
-      },
-      {
-        nombre: {
-          es: 'Tasa de éxito',
-          en: 'Success rate',
-        },
-        texto: {
-          es: 'Sesiones con resultado “Resuelto” ÷ total de sesiones filtradas × 100. No equivale a resolución en el primer contacto.',
-          en: 'Sessions with outcome “Resolved” ÷ all filtered sessions × 100. This is not the same as first contact resolution.',
-        },
-      },
-      {
-        nombre: {
-          es: 'Resolución por IA',
-          en: 'AI resolution',
-        },
-        texto: {
-          es: 'Sesiones marcadas como resueltas por IA ÷ total de sesiones filtradas × 100. La marca no demuestra por sí sola que no interviniera una persona.',
-          en: 'Sessions marked as resolved by AI ÷ all filtered sessions × 100. The flag alone does not prove no person was involved.',
-        },
-      },
-      {
-        nombre: {
-          es: 'Score global',
-          en: 'Overall score',
-        },
-        texto: {
-          es: 'Suma cinco porcentajes redondeados: FCR, sesiones resueltas, sesiones de hasta 300 s, promotores sobre el total de sesiones y sesiones resueltas por IA. Máximo: 500 puntos; es una métrica propia del proyecto.',
-          en: 'Sum of five rounded percentages: FCR, resolved sessions, sessions up to 300 s, promoters as a share of all sessions, and sessions resolved by AI. Maximum: 500 points; this is a project-specific metric.',
-        },
-      },
-    ],
-    notas: [
-      {
-        es: '<b>FCR:</b> el campo solo registra si la sesión se resolvió en el primer contacto. No guarda el número de intento ni enlaza contactos sucesivos, así que no permite saber si se resolvió al segundo o tercer contacto.',
-        en: '<b>FCR:</b> the field only records whether the session was resolved on first contact. It stores no attempt number and does not link successive contacts, so it cannot tell whether resolution happened on the second or third contact.',
-      },
-      {
-        es: '<b>Datos de demostración:</b> las cifras ilustran la interfaz y las consultas del proyecto. No son KPI reales de Schaman ni evidencia de impacto empresarial.',
-        en: '<b>Demonstration data:</b> values illustrate the project interface and queries. They are not actual Schaman KPIs or evidence of business impact.',
-      },
-    ],
-  },
-
-  /* 06 · la galería de pantallas. Salta el 5 a propósito: ese hueco
-     era el diagrama del modelo, que ahora vive en Contexto técnico. */
-  pantallas: {
-    numero: {
-      es: '06 / las pantallas',
-      en: '06 / the screens',
-    },
-    titulo: {
-      es: 'La interfaz en detalle',
-      en: 'The interface in detail',
-    },
-    parrafo: {
-      es: 'Estas vistas muestran cómo las decisiones de navegación y jerarquía se concretan en el panel, el análisis de fallos, las sesiones y la metodología.',
-      en: 'These views show how the navigation and hierarchy decisions take shape across the overview, failure analysis, sessions and methodology.',
-    },
-    galeria: [
-      {
-        titulo: {
-          es: 'Resumen general',
-          en: 'Dashboard overview',
-        },
-        pie: {
-          es: 'Score global, cinco KPI y filtros reunidos.',
-          en: 'Global score, five KPIs and filters brought together.',
-        },
-        alt: {
-          es: 'Panel general rediseñado con score, KPI y filtros.',
-          en: 'Redesigned overview with score, KPIs and filters.',
-        },
-      },
-      {
-        titulo: {
-          es: 'Tendencias y canales',
-          en: 'Trends and channels',
-        },
-        pie: {
-          es: 'Gráficos mensuales, distribución por canal y éxito por zona.',
-          en: 'Monthly charts, channel distribution and resolution by area.',
-        },
-        alt: {
-          es: 'Tendencia mensual, distribución de canal y tasa de éxito por zona.',
-          en: 'Monthly trend, channel distribution and resolution rate by area.',
-        },
-      },
-      {
-        titulo: {
-          es: 'Análisis de problemas',
-          en: 'Problem analysis',
-        },
-        pie: {
-          es: 'Fallos frecuentes, categorías y métricas del período.',
-          en: 'Common failures, categories and period metrics.',
-        },
-        alt: {
-          es: 'Análisis de fallos rediseñado con tarjetas resumen y gráficos.',
-          en: 'Redesigned failure analysis with summary cards and charts.',
-        },
-      },
-      {
-        titulo: {
-          es: 'Prioridad y dispositivos',
-          en: 'Priority and devices',
-        },
-        pie: {
-          es: 'Tasa de resolución por prioridad y fallos por modelo de dispositivo.',
-          en: 'Resolution by priority and failures by device model.',
-        },
-        alt: {
-          es: 'Resolución por prioridad y fallos por modelo de dispositivo.',
-          en: 'Resolution by priority and failures by device model.',
-        },
-      },
-      {
-        titulo: {
-          es: 'Registros de sesiones',
-          en: 'Session records',
-        },
-        pie: {
-          es: 'Tabla independiente con canal, zona, duración, primer contacto, IA y NPS.',
-          en: 'Separate table with channel, area, duration, first contact, AI and NPS.',
-        },
-        alt: {
-          es: 'Página de sesiones rediseñada con registros tabulares y filtros.',
-          en: 'Redesigned sessions page with tabular records and filters.',
-        },
-      },
-      {
-        titulo: {
-          es: 'Datos y metodología',
-          en: 'Data and methodology',
-        },
-        pie: {
-          es: 'Definiciones y fórmulas de los KPI, con sus límites de interpretación.',
-          en: 'KPI definitions and formulas, with interpretation limits.',
-        },
-        alt: {
-          es: 'Sección Datos y metodología con definiciones de los KPI.',
-          en: 'Data and methodology section with KPI definitions.',
-        },
-      },
-    ],
-    nota: {
-      es: 'Las capturas muestran el prototipo académico. Los valores visibles son ilustrativos y no permiten inferir resultados reales de Schaman.',
-      en: 'The captures show the academic prototype. Values are illustrative and do not support inferences about Schaman’s real performance.',
     },
   },
 
-  /* el cierre */
+  /* el cierre de siempre: volver, el repositorio y los otros proyectos */
   cierre: {
-    volver: {
-      es: '← volver a proyectos',
-      en: '← back to projects',
-    },
-    verRepositorio: {
-      es: 'ver repositorio',
-      en: 'view repository',
-    },
-    otrosProyectos: {
-      es: '// otros proyectos',
-      en: '// other projects',
-    },
+    volver: { es: '← volver a proyectos', en: '← back to projects' },
+    verRepositorio: { es: 'ver repositorio', en: 'view repository' },
+    otrosProyectos: { es: '// otros proyectos', en: '// other projects' },
   },
 } as const;

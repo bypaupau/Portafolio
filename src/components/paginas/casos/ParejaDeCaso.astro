@@ -1,0 +1,26 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA PAREJA · dos piezas 50/50
+
+   Un antes y un después (o dos vídeos hermanos), cada uno con su
+   rótulo en la esquina y su duración y su pie debajo, dentro de su
+   propia figura: así el rótulo nunca se separa de su pieza cuando la
+   pareja se apila en móvil.
+
+   Las dos columnas se alinean por arriba, así que las dos piezas
+   empiezan en la misma línea aunque una sea más alta.
+
+   Con el slot `lado` la pareja deja sitio a una tercera columna de
+   texto: es lo que hace la 05 con los recortes de una columna de la
+   tabla, que medio ancho dejaría ridículamente estirados.
+   ═══════════════════════════════════════════════════════════ */
+interface Props {
+  /** true si las piezas son recortes estrechos y hay texto al lado */
+  conLado?: boolean;
+}
+const { conLado = false } = Astro.props;
+---
+<div class:list={['caso-pareja', 'cs-rv', conLado && 'con-lado']}>
+  <slot />
+  {conLado && <div class="caso-pareja-lado"><slot name="lado" /></div>}
+</div>

@@ -1,0 +1,212 @@
+/* LECTURA · la rejilla, la escala y las secciones del caso
+
+   Parte de caso.css. Clases nuevas (.caso-*) que solo pone la página
+   de Schaman: Phoenix no las tiene y nada de aquí lo alcanza hasta que
+   se porte al layout nuevo (etapa 6).
+
+   ── LA REJILLA, A 1280 PX ──────────────────────────────────
+     barra 300 │ aire 48 │ contenido 852 │ margen 80
+   La barra es una columna propia pegada a la izquierda. El contenido
+   llega SIEMPRE hasta el margen derecho de 80 px: a 1280 mide 852, y en
+   pantallas más anchas crece con ellas (hasta --caso-contenido-max) en
+   vez de dejar una franja vacía a la derecha. No hay columna estrecha
+   de lectura: el texto, los títulos y la evidencia terminan en la misma
+   vertical. Por eso el cuerpo va a 18 px y lo denso se parte en tres
+   columnas en vez de correr a lo ancho.
+
+   ── CINCO TAMAÑOS, NI UNO MÁS ──────────────────────────────
+     H1      Pixelify Sans 700   56–58 / 1.02
+     H2      Pixelify Sans 700   36 / 1.12
+     H3      Outfit 700          24 / 1.28
+     cuerpo  Outfit 400          18 / 1.78
+     rótulo  Pixelify Sans 400   18 · letter-spacing 2.2px
+   Press Start 2P no entra en el caso. */
+
+/* ── LA PÁGINA: barra + contenido ─────────────────────────────
+   El papel es blanco. La retícula rosa del sitio se apaga aquí, y el
+   fondo del <body> pinta la columna de la barra de arriba abajo: así,
+   cuando la página termina, la barra sigue hasta el final junto al pie
+   y no asoma una franja del fondo rosa por debajo. */
+body:has(.caso-pagina){
+  background:linear-gradient(90deg,
+    var(--caso-barra-fondo) 0 calc(var(--caso-barra) - 2px),
+    var(--pink-light) 0 var(--caso-barra),
+    var(--white) 0);
+}
+body:has(.caso-pagina)::before{ display:none; }
+.caso-pagina{
+  position:relative; z-index:1;
+  display:grid; grid-template-columns:var(--caso-barra) minmax(0,1fr);
+  background:var(--white);
+}
+.caso-contenido{
+  min-width:0;
+  width:100%;
+  max-width:calc(var(--caso-aire) + var(--caso-contenido-max) + var(--caso-margen));
+  padding:56px var(--caso-margen) 120px var(--caso-aire);
+}
+/* entre 1024 y 1280 lo que encoge es el aire antes que la columna */
+@media (max-width:1279px){
+  .caso-contenido{ padding-left:clamp(28px,3.75vw,48px); padding-right:clamp(24px,6.25vw,80px); }
+}
+
+/* las anclas no quedan tapadas por el nav (ni por la franja en móvil) */
+.caso-seccion,
+.caso-portada,
+.caso-subbloque{ scroll-margin-top:calc(var(--nav-h) + 24px); }
+
+/* ── LAS SECCIONES ─────────────────────────────────────────────
+   Cada una declara --caso-acento; ese color pinta el filete de 3 px de
+   su encabezado y el cuadrito de su parada en la barra. */
+.caso-seccion{
+  margin-top:clamp(80px,8vw,112px);
+  padding-top:22px;
+  border-top:3px solid var(--caso-acento,var(--pink-light));
+}
+.caso-encabezado{ margin-bottom:26px; }
+
+/* ── LA ESCALA ─────────────────────────────────────────────── */
+.caso-antetitulo{
+  margin:0 0 10px;
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); line-height:1.1;
+  letter-spacing:2.2px; text-transform:uppercase; color:var(--pink-ink);
+}
+.caso-h1{
+  margin:0 0 18px;
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:clamp(40px,4.5vw,58px); line-height:1.02; color:var(--ink);
+}
+.caso-h2{
+  margin:0;
+  font-family:var(--font-pixel); font-weight:700;
+  font-size:clamp(28px,2.8vw,36px); line-height:1.12; color:var(--ink);
+}
+.caso-h3{
+  margin:0 0 14px;
+  font-family:var(--font-body); font-weight:700;
+  font-size:clamp(20px,1.9vw,24px); line-height:1.28; color:var(--ink);
+}
+/* LA MÁQUINA DE ESCRIBIR del título (src/scripts/casos/escritura.ts).
+   Lo que falta por escribir ocupa su sitio, invisible: el título no
+   cambia de alto mientras se escribe. El cursor no ocupa ancho (su
+   margen negativo lo compensa), así que ninguna letra salta. */
+.caso-por-escribir{ visibility:hidden; }
+.caso-cursor{
+  display:inline-block; width:.42em; height:.86em; margin-right:-.42em;
+  vertical-align:-.06em; background:var(--pink);
+  animation:caso-parpadeo .8s steps(1) infinite;
+}
+@keyframes caso-parpadeo{ 50%{ opacity:0; } }
+
+/* el subtítulo de la portada es un H3 de tamaño */
+.caso-subtitulo{
+  margin:0 0 22px;
+  font-family:var(--font-body); font-weight:700;
+  font-size:clamp(20px,1.9vw,24px); line-height:1.28; color:var(--ink);
+}
+.caso-texto{
+  margin:0 0 18px;
+  font-family:var(--font-body); font-weight:400;
+  font-size:18px; line-height:1.78; color:var(--text-soft);
+}
+.caso-texto b,
+.caso-texto strong{ color:var(--ink); font-weight:600; }
+.caso-texto code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.9em; font-weight:600;
+  color:var(--ink);
+}
+
+/* ── EL RESALTE ────────────────────────────────────────────────
+   Fondo y peso a la vez: si fuera solo color, quien no distingue bien
+   el rosa se quedaría sin la señal. <mark> y no <span>, porque ya
+   significa «destacado» para un lector de pantalla. Y clone, sin el
+   cual el fondo se corta mal cuando la frase pasa de línea.
+   Uno por párrafo; dos por sección como mucho. */
+.caso-pagina mark{
+  background:var(--resalte);
+  color:var(--ink);
+  font-weight:600;
+  padding:2px 4px;
+  -webkit-box-decoration-break:clone;
+  box-decoration-break:clone;
+}
+
+/* ── LA CITA · la idea que resume una decisión ───────────────── */
+.caso-cita{
+  margin:28px 0;
+  padding:2px 0 2px 18px;
+  border-left:3px solid var(--caso-acento,var(--pink-light));
+  font-family:var(--font-body); font-weight:600;
+  font-size:18px; line-height:1.6; color:var(--ink);
+}
+
+/* ── LA APARICIÓN AL BAJAR ─────────────────────────────────────
+   El mismo gesto que el resto del portafolio (aparicion.css): sube
+   30 px mientras aparece. El motor es el de siempre (.cs-rv, que
+   registra barra.ts); aquí solo se iguala la distancia, que en el
+   layout viejo era de 16 px y casi no se notaba. Cada bloque aparece
+   por su cuenta, una vez, y se queda quieto. */
+.cs-motion .caso-pagina .cs-rv:not(.is-in){ transform:translateY(30px); }
+
+/* ── UN APARTE · la aclaración corta junto a una evidencia ──────
+   «Exploración espacial de 2025», «no son funcionalidades validadas»:
+   matiza lo de arriba, así que va más chica y con un filete fino. */
+.caso-aparte{
+  margin:18px 0 30px; padding:2px 0 2px 14px;
+  border-left:2px solid var(--pink-light);
+  font-size:15px; line-height:1.6; color:var(--text-soft);
+}
+.caso-aparte b{ color:var(--ink); font-weight:600; }
+
+/* ── LAS FUENTES · una lista en dos columnas ───────────────────
+   El nombre de la colección y, debajo, su identificador tal cual se
+   escribe en Google Earth Engine, en monoespaciada. */
+.caso-fuentes{
+  list-style:none; margin:24px 0;
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 28px;
+}
+.caso-fuentes li{ padding-top:10px; border-top:1px solid var(--pink-light); font-size:16px; line-height:1.4; color:var(--ink); }
+.caso-fuentes code{
+  display:block; margin-top:4px; overflow-wrap:anywhere;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; color:var(--text-soft);
+}
+@media (max-width:600px){ .caso-fuentes{ grid-template-columns:minmax(0,1fr); } }
+
+/* ── EL AIRE ENTRE BLOQUES ─────────────────────────────────────
+   Un pie está pegado a SU medio y lejos del siguiente bloque. */
+.caso-bloque{ margin:34px 0; }
+.caso-centrado{ text-align:center; }
+
+/* ── EL CIERRE · el de siempre (CierreDeCaso, salidas.css) ───────
+   Volver, ver repositorio y los otros proyectos, con los botones pixel
+   del sitio. Aquí solo se separa de la última sección. */
+.caso-pagina .cs-out{ margin-top:clamp(64px,7vw,96px); }
+
+/* ── EL PIE · sobre papel blanco, en la columna del contenido ─────
+   Sin la barra de abajo, el nombre de la ventana pasa aquí, a la
+   izquierda, y el «hecho con <3» a la derecha. */
+body:has(.caso-pagina) .foot{
+  margin:0 0 0 var(--caso-barra);
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px 24px;
+  padding:16px var(--caso-margen) 20px var(--caso-aire);
+  text-align:left; font-size:1.05rem; color:var(--text-soft);
+  background:var(--white); border-top:2px solid var(--ink);
+}
+
+/* ══ MÓVIL ═════════════════════════════════════════════════════
+   La barra se pliega en su franja (barra.css) y el contenido ocupa
+   todo el ancho, con 16 px de margen a cada lado. */
+@media (max-width:1023px){
+  .caso-pagina{ grid-template-columns:minmax(0,1fr); }
+  body:has(.caso-pagina){ background:var(--white); }
+  body:has(.caso-pagina) .foot{ margin-left:0; padding-inline:24px; }
+  .caso-contenido{ max-width:none; padding:36px 24px 96px; }
+  .caso-seccion,
+  .caso-portada,
+  .caso-subbloque{ scroll-margin-top:calc(var(--nav-h) + 96px); }
+}
+@media (max-width:600px){
+  .caso-contenido{ padding-inline:16px; }
+  body:has(.caso-pagina) .foot{ padding-inline:16px; }
+  .caso-texto{ font-size:17px; line-height:1.72; }
+}

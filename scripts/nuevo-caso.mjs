@@ -3,7 +3,14 @@
 
      npm run nuevo-caso -- mi-proyecto
 
-   Deja tres cosas listas y te dice las DOS líneas que faltan por tocar.
+   Lo crea con el layout de todos los casos (el de Schaman y Grow With
+   Phoenix desde 2026-10): la barra con el índice, la portada con su
+   ventana y su ficha, y secciones con su acento. Deja tres cosas listas
+   y te dice las DOS líneas que faltan por tocar.
+
+   Las imágenes van en originales/images/casos/<caso>/, NO en public/:
+   npm run imagenes las encuentra solo, sin tocar nada más.
+
    No sobreescribe nada: si el caso ya existe, se detiene.
    ═══════════════════════════════════════════════════════════ */
 import fs from 'node:fs';
@@ -19,7 +26,7 @@ if (!/^[a-z][a-z0-9-]*$/.test(slug)) {
 const raiz = process.cwd();
 const rutaContenido = path.join(raiz, 'src/content/casos', `${slug}.ts`);
 const rutaPagina = path.join(raiz, 'src/pages/casos', `${slug}.astro`);
-const rutaImagenes = path.join(raiz, 'public/images/casos', slug);
+const rutaImagenes = path.join(raiz, 'originales/images/casos', slug);
 
 for (const r of [rutaContenido, rutaPagina]) {
   if (fs.existsSync(r)) {
@@ -39,74 +46,70 @@ fs.writeFileSync(rutaContenido, `/* ══════════════�
    Esto NO es interfaz: es el texto del proyecto. Cada texto es una
    cadena (si dice lo mismo en los dos idiomas) o { es, en }.
 
-   No hay claves que memorizar: los campos tienen nombre. Agrega los
-   que necesites y bórralos si no los usas; la página de al lado decide
-   qué se dibuja.
+   El índice de la barra tiene una parada por sección, más la portada:
+   si agregas una sección, agrega su parada. Los textos con <mark> (la
+   frase clave, uno por párrafo) se dibujan con <Texto html>.
    ═══════════════════════════════════════════════════════════ */
 
 export const ${enCamello} = {
-  /* el <title>, la <meta description> y el nombre de la taskbar */
+  /* el <title>, la <meta description> y el nombre de la ventana (sale en el pie) */
   documento: {
     titulo: 'pau.proyectos · ${titulo}',
     descripcion: { es: 'TODO: de qué va el proyecto, en una frase.', en: 'TODO: what the project is about, in one sentence.' },
     nombreDeVentana: '${slug.replace(/-/g, '_')}.md',
   },
 
-  /* la portada */
+  /* EL ÍNDICE: el nombre dice la acción; el papel, qué es */
+  indice: [
+    { nombre: { es: 'Portada', en: 'Cover' }, papel: { es: 'Presentación', en: 'Introduction' } },
+    { nombre: { es: 'TODO: primera sección', en: 'TODO: first section' }, papel: { es: 'TODO: qué es', en: 'TODO: what it is' } },
+    { nombre: { es: 'TODO: segunda sección', en: 'TODO: second section' }, papel: { es: 'TODO: qué es', en: 'TODO: what it is' } },
+  ],
+
+  /* ══ 00 · PORTADA ══ */
   portada: {
     antetitulo: { es: 'TODO: contexto · año', en: 'TODO: context · year' },
     subtitulo: { es: 'TODO: una frase que diga qué resolviste.', en: 'TODO: one line on what you solved.' },
-    introduccion: { es: 'TODO: de dónde salió el proyecto y qué hiciste.', en: 'TODO: where it came from and what you did.' },
-    imagen: {
-      pie: { es: 'TODO: qué se ve en la imagen.', en: 'TODO: what the image shows.' },
-      alt: { es: 'TODO: descripción para quien no ve la imagen.', en: 'TODO: description for people who cannot see it.' },
+    introduccion: { es: 'TODO: de dónde salió el proyecto y <mark>qué hiciste</mark>.', en: 'TODO: where it came from and <mark>what you did</mark>.' },
+    /* el saludo de la mascota de la barra, el mismo en todos los casos */
+    saludo: {
+      es: 'Entraste en modo minimalista para leer mejor el caso.',
+      en: 'You’re in minimalist mode, to read the case more easily.',
     },
-  },
-
-  /* lo que hiciste y con qué */
-  miRol: {
-    etiqueta: { es: 'Mi rol', en: 'My role' },
-    puntos: [
-      { es: 'TODO: lo primero que hiciste.', en: 'TODO: the first thing you did.' },
-    ],
-  },
-  herramientas: {
-    etiqueta: { es: 'Herramientas', en: 'Tools' },
-    /* llevan marcado: <b>Figma</b> — para qué */
-    puntos: [
-      '<b>TODO</b> — para qué la usaste.',
-    ],
-  },
-
-  /* el riel lateral. Una parada por sección, en orden. */
-  riel: {
-    portada: { es: 'Portada', en: 'Cover' },
-    paradas: [
-      { es: 'El reto', en: 'The challenge' },
-      { es: 'Lo que hice', en: 'What I did' },
+    /* la única ventana de la página: originales/images/casos/${slug}/portada.png */
+    ventana: {
+      nombre: '${slug.replace(/-/g, '_')}',
+      pie: { es: 'TODO: qué se ve en la imagen.', en: 'TODO: what the image shows.' },
+      alt: { es: 'TODO: la imagen, descrita para quien no la ve.', en: 'TODO: the image, described for someone who cannot see it.' },
+    },
+    /* la ficha, al lado de la ventana: cuatro rótulos cortos */
+    ficha: [
+      { rotulo: { es: 'Proyecto', en: 'Project' }, valor: { es: 'TODO', en: 'TODO' } },
+      { rotulo: { es: 'Contexto', en: 'Context' }, valor: { es: 'TODO', en: 'TODO' } },
+      { rotulo: { es: 'Mi rol', en: 'My role' }, valor: { es: 'TODO', en: 'TODO' } },
+      { rotulo: { es: 'Herramientas', en: 'Tools' }, valor: { es: 'TODO', en: 'TODO' } },
     ],
   },
 
-  /* una sección por cada parada del riel */
+  /* ══ LAS SECCIONES · 01 en adelante ══ */
   secciones: [
     {
-      numero: { es: '01 / el reto', en: '01 / the challenge' },
-      titulo: { es: 'TODO: el título de la sección.', en: 'TODO: the section title.' },
+      antetitulo: { es: '01 / TODO', en: '01 / TODO' },
+      titulo: { es: 'TODO: el título de la sección', en: 'TODO: section title' },
       parrafos: [
-        { es: 'TODO: el primer párrafo.', en: 'TODO: the first paragraph.' },
+        { es: 'TODO: el primer párrafo.', en: 'TODO: first paragraph.' },
       ],
-      nota: { es: '<b>Alcance:</b> TODO.', en: '<b>Scope:</b> TODO.' },
     },
     {
-      numero: { es: '02 / lo que hice', en: '02 / what I did' },
-      titulo: { es: 'TODO: el título de la sección.', en: 'TODO: the section title.' },
+      antetitulo: { es: '02 / TODO', en: '02 / TODO' },
+      titulo: { es: 'TODO: el título de la sección', en: 'TODO: section title' },
       parrafos: [
-        { es: 'TODO: el primer párrafo.', en: 'TODO: the first paragraph.' },
+        { es: 'TODO: el primer párrafo.', en: 'TODO: first paragraph.' },
       ],
     },
   ],
 
-  /* el cierre */
+  /* el cierre de siempre: volver, el proyecto y los otros proyectos */
   cierre: {
     volver: { es: '← volver a proyectos', en: '← back to projects' },
     verProyecto: { es: 'ver el proyecto ↗', en: 'view the project ↗' },
@@ -119,42 +122,45 @@ fs.writeFileSync(rutaPagina, `---
 /* ═══════════════════════════════════════════════════════════
    CASO · ${titulo.toUpperCase()}  →  /Portafolio/casos/${slug}
 
-   ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
    contenido   src/content/casos/${slug}.ts   ← TODO el texto
-   estilo      src/styles/casos/caso.css      (compartida)
-   script      src/scripts/casos/riel.ts      (compartido)
-   piezas      src/components/paginas/casos/
-   imágenes    public/images/casos/${slug}/
+   estilo      src/styles/casos/caso.css
+   imágenes    originales/images/casos/${slug}/ → npm run imagenes
 
-   Este archivo es TUYO: agrega, quita y reordena secciones como pida
-   el proyecto. Las piezas de src/components/paginas/casos/ están para usarlas,
-   no para obligarte:
-
-     <Texto valor={x} />                      un párrafo
-     <Texto como="h2" class="cs-h" valor={x} /> otra etiqueta
-     <Texto como="li" html valor={x} />        si el texto lleva <b> o enlaces
-     <FiguraDeCaso …>                          una imagen con título y pie
-     <NotaDeCaso texto={x} />                  una nota al pie de sección
-     <GrupoDePantallas …>                      texto + dos capturas
-     <ParAntesDespues …>                       una comparación antes/después
+   El layout de todos los casos: mira src/pages/casos/schaman-analytics-bi.astro
+   para ver los bloques que hay (PantallasFijas, ParejaDeCaso,
+   SubBloqueDeCaso, TiraDeTres, PreguntaDeDiseno, MedioDeCaso…).
    ═══════════════════════════════════════════════════════════ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Texto from '../../components/piezas/Texto.astro';
-import RielDeCaso from '../../components/paginas/casos/RielDeCaso.astro';
-import NotaDeCaso from '../../components/paginas/casos/NotaDeCaso.astro';
+import BarraDeCaso from '../../components/paginas/casos/BarraDeCaso.astro';
+import EncabezadoDeSeccion from '../../components/paginas/casos/EncabezadoDeSeccion.astro';
+import FichaDePortada from '../../components/paginas/casos/FichaDePortada.astro';
+import VentanaDeCaso from '../../components/paginas/casos/VentanaDeCaso.astro';
 import CierreDeCaso from '../../components/paginas/casos/CierreDeCaso.astro';
-import { conIdioma, altConIdioma, htmlConIdioma } from '../../lib/texto-bilingue';
-import { rutaPublica } from '../../lib/rutas';
+import { rutaPagina } from '../../lib/rutas';
+import { imagen, hayImagen } from '../../lib/imagenes';
 import { ${enCamello} as contenido } from '../../content/casos/${slug}';
 import '../../styles/casos/caso.css';
 
-/* TODO: el enlace público del proyecto (repositorio, demo, Drive) */
+/* TODO: el enlace al proyecto (repositorio, prototipo…) */
 const ENLACE = 'https://github.com/bypaupau';
+const PROYECTOS = rutaPagina('proyectos');
 
-const img = (archivo: string) => rutaPublica('images/casos/${slug}/' + archivo);
+/* cada captura, con sus medidas reales sacadas del manifiesto */
+const captura = (nombre: string) => {
+  const { src, ancho, alto } = imagen('images/casos/${slug}/' + nombre, 1704);
+  return { imagen: src, ancho, alto };
+};
 
-/* el color de cada sección, en orden. Los tonos salen de los tokens. */
-const COLORES = ['var(--peach)', 'var(--sky)', 'var(--mint)', 'var(--lav)', 'var(--yellow)'];
+/* el acento de cada sección; el primero es el de la portada */
+const ACENTOS = ['var(--pink)', 'var(--sky)', 'var(--peach)', 'var(--mint)', 'var(--lav)', 'var(--yellow)'];
+
+const { indice, portada, secciones } = contenido;
+const PARADAS = indice.map((parada, i) => ({ ...parada, id: \`caso-\${String(i).padStart(2, '0')}\`, acento: ACENTOS[i % ACENTOS.length]! }));
+
+/* la portada, hasta que pongas originales/images/casos/${slug}/portada.png
+   y corras npm run imagenes */
+const VENTANA = hayImagen('images/casos/${slug}/portada') ? captura('portada') : null;
 ---
 
 <BaseLayout
@@ -165,92 +171,82 @@ const COLORES = ['var(--peach)', 'var(--sky)', 'var(--mint)', 'var(--lav)', 'var
   nombreDeVentana={contenido.documento.nombreDeVentana}
   claseBody="cs-body"
   tituloDelCaso={contenido.documento}
+  sinTaskbar
 >
-  <div class="wrap">
-    <div class="cs-grid">
+  <div class="caso-pagina">
 
-      <RielDeCaso
-        portada={contenido.riel.portada}
-        paradas={contenido.riel.paradas}
-        salida={{ texto: contenido.cierre.verProyecto, enlace: ENLACE }}
-      />
+    <BarraDeCaso paradas={PARADAS} volver={PROYECTOS} saludo={portada.saludo} />
 
-      <div class="cs-main">
+    <div class="caso-contenido">
 
-        {/* ══ PORTADA ══ */}
-        <header class="cs-hero" id="cs-portada" style="--cs:var(--pink-mid)">
-          <div class="cs-hero-top">
-            <div>
-              <Texto class="cs-kicker hx" style="--d:100ms" valor={contenido.portada.antetitulo} />
-              <h1 class="cs-title hx" style="--d:170ms">${titulo}</h1>
-              <Texto class="cs-sub hx" style="--d:240ms" valor={contenido.portada.subtitulo} />
-              <Texto class="cs-text hx" style="--d:300ms" valor={contenido.portada.introduccion} />
-            </div>
-            <figure class="cs-hero-fig hx" style="--d:420ms">
-              {/* TODO: pon la imagen en public/images/casos/${slug}/ */}
-              <img src={img('portada.webp')} width="1600" height="900" loading="eager" decoding="async" {...altConIdioma(contenido.portada.imagen.alt)} />
-              <Texto como="figcaption" valor={contenido.portada.imagen.pie} />
-            </figure>
+      {/* ══ 00 · PORTADA ══ */}
+      <header class="caso-portada" id="caso-00" style={\`--caso-acento:\${ACENTOS[0]}\`}>
+        <Texto class="caso-antetitulo hx" style="--d:100ms" valor={portada.antetitulo} />
+        <h1 class="caso-h1 hx" style="--d:170ms" data-escribir>${titulo}</h1>
+        <Texto class="caso-subtitulo hx" style="--d:240ms" valor={portada.subtitulo} />
+        {VENTANA ? (
+          <div class="caso-portada-fila hx" style={\`--d:300ms;--proporcion:\${VENTANA.ancho} / \${VENTANA.alto}\`}>
+            <VentanaDeCaso nombre={portada.ventana.nombre} {...VENTANA} alt={portada.ventana.alt} pie={portada.ventana.pie} />
+            <FichaDePortada campos={portada.ficha} />
           </div>
+        ) : (
+          <div class="cs-rv"><FichaDePortada campos={portada.ficha} /></div>
+        )}
+        <Texto html class="caso-texto cs-rv" valor={portada.introduccion} />
+      </header>
 
-          {/* lo que hiciste y con qué */}
-          <dl class="cs-stars cs-rv">
-            <div class="cs-star st-rol">
-              <Texto como="dt" valor={contenido.miRol.etiqueta} />
-              <dd><ul>{contenido.miRol.puntos.map((punto) => <Texto como="li" valor={punto} />)}</ul></dd>
-            </div>
-            <div class="cs-star st-win">
-              <Texto como="dt" valor={contenido.herramientas.etiqueta} />
-              <dd><ul>{contenido.herramientas.puntos.map((punto) => <Texto como="li" html valor={punto} />)}</ul></dd>
-            </div>
-          </dl>
-        </header>
-
-        {/* ══ LAS SECCIONES ══
-            Una por cada parada del riel. El id tiene que ser #cs-1, #cs-2…
-            porque es lo que el riel usa como ancla. */}
-        {contenido.secciones.map((seccion, i) => (
-          <section class="cs-sec" id={\`cs-\${i + 1}\`} style={\`--cs:\${COLORES[i % COLORES.length]}\`} aria-labelledby={\`h-cs-\${i + 1}\`}>
-            <header class="cs-head cs-rv">
-              <Texto class="cs-num" valor={seccion.numero} />
-              <Texto como="h2" class="cs-h" id={\`h-cs-\${i + 1}\`} valor={seccion.titulo} />
-            </header>
-            {seccion.parrafos.map((parrafo) => <Texto class="cs-text cs-rv" valor={parrafo} />)}
-            {'nota' in seccion && seccion.nota && <NotaDeCaso texto={seccion.nota} />}
+      {secciones.map((seccion, i) => {
+        const parada = PARADAS[i + 1]!;
+        return (
+          <section class="caso-seccion" id={parada.id} style={\`--caso-acento:\${parada.acento}\`} aria-labelledby={\`h-\${parada.id}\`}>
+            <EncabezadoDeSeccion id={\`h-\${parada.id}\`} antetitulo={seccion.antetitulo} titulo={seccion.titulo} />
+            {seccion.parrafos.map((parrafo) => <Texto html class="caso-texto cs-rv" valor={parrafo} />)}
           </section>
-        ))}
+        );
+      })}
 
+      <div class="cs-rv">
         <CierreDeCaso
           texto={contenido.cierre}
           enlaceDelProyecto={ENLACE}
+          claseDelBoton="btn btn-yellow"
           relacionados={[
-            /* TODO: uno o dos proyectos relacionados.
-               interno: true si es otra página de este sitio. */
+            /* TODO: los otros proyectos que quieras enlazar */
+            { nombre: 'Schaman Analytics BI', meta: 'Rediseño de Interfaz · 2026',
+              enlace: rutaPagina('casos/schaman-analytics-bi'),
+              imagen: imagen('images/proyectos/schaman-analytics', 416).src,
+              interno: true },
           ]}
         />
-
       </div>
+
     </div>
   </div>
 
   <script>
-    import '../../scripts/casos/riel';
+    import '../../scripts/casos/barra';
+    import '../../scripts/casos/nav-al-leer';
+    import '../../scripts/casos/escritura';
+    import '../../scripts/casos/portada';
+    import '../../scripts/casos/diagnostico';
+    import '../../scripts/casos/videos';
   </script>
 </BaseLayout>
 `);
 
 fs.mkdirSync(rutaImagenes, { recursive: true });
 fs.writeFileSync(path.join(rutaImagenes, 'LEEME.txt'),
-  `Las imágenes de este caso van aquí.\n\n` +
-  `Desde la página se usan con:  img('portada.webp')\n` +
-  `que resuelve a /Portafolio/images/casos/${slug}/portada.webp\n\n` +
-  `Nunca escribas la ruta a mano: se rompería al publicar.\n` +
+  `Los originales de este caso van aquí (PNG, JPG o WebP), a tamaño completo.\n\n` +
+  `Después corre:  npm run imagenes\n` +
+  `y la página pide cada una por su nombre, sin extensión:  captura('portada')\n\n` +
+  `La portada se llama portada (portada.png): mientras no esté, la página\n` +
+  `sale sin ventana. Nunca pongas originales en public/.\n` +
   `Cuando pongas la primera imagen, borra este archivo.\n`);
 
 console.log(`\n✓ Caso "${slug}" creado:\n`);
-console.log(`   src/content/casos/${slug}.ts        ← escribe aquí el texto`);
-console.log(`   src/pages/casos/${slug}.astro       ← la estructura`);
-console.log(`   public/images/casos/${slug}/        ← las imágenes\n`);
+console.log(`   src/content/casos/${slug}.ts           ← escribe aquí el texto`);
+console.log(`   src/pages/casos/${slug}.astro          ← la estructura`);
+console.log(`   originales/images/casos/${slug}/       ← los originales; luego npm run imagenes\n`);
 console.log('Faltan DOS líneas que no puedo adivinar:\n');
 console.log(`   1. src/content/proyectos/proyectos.ts`);
 console.log(`      en el proyecto que corresponda, añade:   caso: "${slug}",`);

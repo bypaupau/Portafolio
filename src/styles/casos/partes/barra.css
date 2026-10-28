@@ -1,0 +1,243 @@
+/* BARRA DEL CASO · la columna del índice
+   componente: src/components/paginas/casos/BarraDeCaso.astro
+   script:     src/scripts/casos/barra.ts
+
+   Parte de caso.css. Todo con clases nuevas (.caso-*), que solo pone la
+   página de Schaman: Grow With Phoenix sigue con el riel viejo hasta la
+   etapa 6, y nada de aquí lo alcanza.
+
+   MINIMALISTA: número y nombre por parada, sin espina, sin puntos y
+   sin cajas. Lo único que se marca es dónde estás. Esquinas rectas en
+   todo: el sistema no redondea nada. */
+
+/* ── LA COLUMNA ────────────────────────────────────────────────
+   Llega de arriba abajo con su fondo y su filete; lo que se queda
+   quieto al bajar es lo de dentro (.caso-indice). */
+.caso-barra{
+  background:var(--caso-barra-fondo);
+  border-right:2px solid var(--pink-light);
+  min-width:0;
+}
+.caso-indice{
+  position:sticky; top:var(--nav-ocupa, var(--nav-h));
+  height:calc(100vh - var(--nav-ocupa, var(--nav-h)) - var(--task-h, 0px));
+  display:flex; flex-direction:column;
+  padding:34px 22px 20px 24px;
+}
+.caso-indice-cuerpo{ display:flex; flex-direction:column; flex:1; min-height:0; }
+/* si la pantalla es baja, lo que se desplaza es la LISTA y no la
+   columna entera: el pie (con la ventanita del idioma, que abre hacia
+   arriba) no puede quedar dentro de algo que recorte */
+.caso-indice-lista{ min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+
+/* la franja es solo de móvil */
+.caso-franja{ display:none; }
+
+/* ── 1 · VOLVER · 2 · RÓTULO ─────────────────────────────────── */
+.caso-volver,
+.caso-rotulo,
+.caso-arriba{
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); line-height:1.1;
+  letter-spacing:2.2px; text-transform:uppercase;
+}
+.caso-volver{
+  align-self:start; color:var(--text-soft); text-decoration:none;
+  transition:color var(--mo-fast,180ms) ease;
+}
+.caso-volver:hover{ color:var(--pink-ink); }
+.caso-rotulo{ margin:22px 0 14px; color:var(--pink-ink); }
+
+/* ── 3 · LA LISTA ──────────────────────────────────────────── */
+.caso-paradas{ list-style:none; display:grid; gap:4px; }
+.caso-parada > a{
+  position:relative; display:flex; align-items:baseline; gap:9px;
+  padding:9px 12px 9px 22px;
+  color:var(--text-soft); text-decoration:none;
+  transition:background-color var(--mo-fast,180ms) ease, color var(--mo-fast,180ms) ease;
+}
+.caso-parada > a:hover{ background:var(--pink-light); color:var(--ink); }
+.caso-parada-num{
+  flex:none;
+  font-family:var(--font-term); font-size:calc(17px * var(--font-term-scale)); line-height:1; letter-spacing:1px;
+  color:var(--pink-ink);
+}
+.caso-parada-nombre{ font-family:var(--font-body); font-size:16px; line-height:1.3; }
+/* el papel («Primera decisión») no sale en la lista: lo copia la franja */
+.caso-parada-papel{ display:none; }
+
+/* AQUÍ: fila rosa, nombre en 700 y el cuadrito a la izquierda. El
+   cuadrito va siempre en --pink (como en el PDF): con el color de la
+   sección, el amarillo de la 06 y la 07 no se veía sobre el rosa. */
+.caso-parada.es-aqui > a{ background:var(--pink-light); color:var(--ink); }
+.caso-parada.es-aqui .caso-parada-nombre{ font-weight:700; }
+.caso-parada.es-aqui > a::before{
+  content:""; position:absolute; left:8px; top:50%; margin-top:-3.5px;
+  width:7px; height:7px; background:var(--pink);
+}
+
+/* ── EL SUB-ÍNDICE ─────────────────────────────────────────────
+   Cuelga de la parada abierta y solo de ella. El sub-bloque en el que
+   estás toma el color de su sección. */
+.caso-subindice{ list-style:none; display:none; gap:2px; margin:4px 0 4px 22px; }
+.caso-parada.es-aqui .caso-subindice{ display:grid; }
+.caso-subparada a{
+  display:block; padding:5px 10px;
+  font-size:14px; line-height:1.35; color:var(--text-soft); text-decoration:none;
+  transition:background-color var(--mo-fast,180ms) ease, color var(--mo-fast,180ms) ease;
+}
+.caso-subparada .caso-parada-num{ font-size:15px; }
+.caso-subparada a:hover{ background:var(--pink-light); color:var(--ink); }
+.caso-subparada.es-aqui a{ background:var(--caso-acento,var(--pink-light)); color:var(--ink); font-weight:700; }
+
+/* ── 4 · EL PIE: la mascota, volver arriba y el idioma ────────── */
+.caso-barra-pie{
+  margin-top:auto; padding-top:16px; border-top:2px solid var(--pink-light);
+  display:flex; align-items:center; gap:12px;
+}
+.caso-barra-pie .caso-mascota{ flex:none; }
+/* en una línea: comparte el pie con la mascota y el botón de idioma, y
+   con el espaciado de rótulo (2.2px) no cabía */
+.caso-arriba{
+  white-space:nowrap; letter-spacing:1px;
+  color:var(--text-soft); text-decoration:none; transition:color var(--mo-fast,180ms) ease;
+}
+.caso-arriba:hover{ color:var(--pink-ink); }
+/* el selector de idioma es el de la barra de abajo, tal cual; aquí
+   solo se empuja al final y su ventanita abre hacia la derecha, que
+   es donde hay sitio */
+.caso-barra-pie .tb-lang-wrap{ margin-left:auto; }
+.caso-barra-pie .tb-pop{ right:auto; left:0; }
+
+/* ── LA MASCOTA SALUDA · saltitos y bocadillo ──────────────────
+   Al abrir la página la mascota da tres saltitos y dice el saludo en
+   un bocadillo, que se va solo a los 7 segundos (barra.ts). Es lo
+   único de la barra que se mueve sin que se toque nada, y solo una vez.
+
+   El bocadillo es el de la casa: esquinas rectas, borde de tinta, la
+   voz en Pixelify Sans y una colita en escalera de píxeles que baja hacia la
+   mascota. Va colgado de .caso-indice, que es lo que se queda fijo
+   (sticky ya cuenta como posicionado; en móvil, de .caso-barra). */
+/* los saltitos (@keyframes caso-saltitos) están en mascota.css */
+.caso-con-js .caso-barra-pie .caso-mascota{ animation:caso-saltitos 1.1s ease-in-out .35s 1 both; }
+
+.caso-saludo{
+  position:absolute; z-index:5;
+  left:20px; right:20px; bottom:82px;
+  padding:12px 40px 12px 14px;
+  isolation:isolate;
+  opacity:0; transform:translateY(6px);
+  transition:opacity var(--mo-fast,180ms) ease, transform var(--mo-fast,180ms) ease;
+}
+.caso-saludo.esta-visible{ opacity:1; transform:none; }
+.caso-saludo-marco{
+  position:absolute; inset:0; z-index:1;
+  background:var(--ink);
+  /* Dos siluetas escalonadas, en vez de un borde CSS recortado: así las
+     cuatro esquinas siguen teniendo un trazo completo, de píxel a píxel. */
+  clip-path:polygon(0 8px, 8px 8px, 8px 0, calc(100% - 8px) 0, calc(100% - 8px) 8px,
+    100% 8px, 100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px));
+  filter:drop-shadow(3px 3px 0 var(--pink-mid));
+  pointer-events:none;
+}
+/* El relleno blanco va 2 px hacia dentro y recorta sus esquinas con el
+   MISMO escalón de 8 px que la silueta de tinta. Así queda un trazo de
+   2 px por todo el escalón. Con 6 px (lo que había) el blanco tapaba el
+   tramo horizontal de cada escalón y las esquinas se veían abiertas. */
+.caso-saludo-marco::after{
+  content:""; position:absolute; inset:2px;
+  background:var(--white);
+  clip-path:polygon(0 8px, 8px 8px, 8px 0, calc(100% - 8px) 0, calc(100% - 8px) 8px,
+    100% 8px, 100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px));
+}
+.caso-saludo p{
+  position:relative; z-index:4; margin:0;
+  font-family:var(--font-term); font-size:calc(20px * var(--font-term-scale)); line-height:1.25; letter-spacing:.3px; color:var(--ink);
+}
+/* La cola es una sola silueta escalonada. La pieza oscura dibuja el
+   contorno y la blanca, ligeramente más pequeña, deja el interior del
+   bocadillo abierto hacia su base: ya no parecen dos manchas sueltas. */
+.caso-saludo::before,
+.caso-saludo::after{
+  content:""; position:absolute; pointer-events:none;
+  clip-path:polygon(0 0, 100% 0, 100% 42%, 72% 42%, 72% 62%, 44% 62%, 44% 82%, 22% 82%, 22% 100%, 0 100%);
+}
+/* Las dos capas suben 2 px sobre el borde: la blanca borra el tramo
+   central de la línea y deja la cola unida al recuadro, sin una junta. */
+.caso-saludo::before{
+  left:13px; bottom:-23px; width:26px; height:25px; z-index:2;
+  background:var(--ink);
+}
+.caso-saludo::after{
+  left:15px; bottom:-19px; width:20px; height:21px; z-index:3;
+  background:var(--white);
+}
+.caso-saludo-cerrar{
+  position:absolute; z-index:4; top:4px; right:4px;
+  width:32px; height:32px; display:grid; place-items:center;
+  background:none; border:0; border-radius:0; cursor:pointer;
+}
+.caso-saludo-cerrar:hover{ background:var(--pink-light); }
+.caso-saludo-cerrar:focus-visible{ outline:3px dashed var(--pink); outline-offset:1px; }
+
+@media (prefers-reduced-motion:reduce){
+  .caso-con-js .caso-barra-pie .caso-mascota{ animation:none; }
+  .caso-saludo{ transition:none; transform:none; }
+}
+
+/* ── FOCO DE TECLADO · el anillo rosa punteado de la casa ───────
+   En todos los enlaces de la barra: volver, las ocho paradas, el
+   sub-índice, volver arriba y el botón de móvil. */
+.caso-volver:focus-visible,
+.caso-parada > a:focus-visible,
+.caso-subparada a:focus-visible,
+.caso-arriba:focus-visible,
+.caso-franja-boton:focus-visible{
+  outline:3px dashed var(--pink); outline-offset:2px;
+}
+
+/* ══ MÓVIL · la columna se pliega en una franja ══════════════════
+   La franja va pegada bajo el nav con la parada actual completa —
+   número, nombre, qué es y «1 de 8»— y un botón de 44×44 que despliega
+   las ocho, con el pie (y el idioma) al final. Sin JavaScript no hay
+   franja: la lista se queda abierta arriba del caso. */
+@media (max-width:1023px){
+  .caso-barra{
+    position:sticky; top:var(--nav-ocupa, var(--nav-h)); z-index:40;
+    border-right:0; border-bottom:2px solid var(--pink-light);
+  }
+  .caso-indice{ position:static; height:auto; padding:14px 16px; }
+  /* en móvil la mascota va dentro del índice plegado: el bocadillo sale
+     bajo la franja, con la colita hacia arriba */
+  .caso-saludo{ top:calc(100% + 12px); bottom:auto; left:16px; right:16px; }
+  .caso-saludo::before{ top:-23px; bottom:auto; transform:scaleY(-1); }
+  .caso-saludo::after{ top:-19px; bottom:auto; transform:scaleY(-1); }
+  .caso-indice-lista{ overflow:visible; }
+
+  .caso-con-js .caso-franja{
+    display:grid; grid-template-columns:auto minmax(0,1fr) 44px; align-items:center; gap:12px;
+  }
+  .caso-franja-punto{ width:7px; height:7px; background:var(--pink); }
+  .caso-franja-texto{ display:grid; min-width:0; }
+  .caso-franja-arriba b{ font-weight:700; font-size:17px; color:var(--ink); }
+  .caso-franja-abajo{ font-size:13px; color:var(--text-soft); }
+  .caso-franja-boton{
+    width:44px; height:44px; display:grid; place-items:center;
+    background:var(--white); border:2px solid var(--ink); border-radius:0; cursor:pointer;
+  }
+  .caso-franja-boton[aria-expanded="true"] svg{ transform:rotate(180deg); }
+
+  /* con JavaScript, la lista se despliega bajo la franja */
+  .caso-con-js .caso-indice-cuerpo{
+    display:none;
+    position:absolute; left:0; right:0; top:100%;
+    max-height:calc(100vh - var(--nav-ocupa, var(--nav-h)) - 80px); overflow-y:auto;
+    padding:4px 16px 18px;
+    background:var(--caso-barra-fondo);
+    border-bottom:2px solid var(--ink);
+  }
+  .caso-con-js .caso-barra.esta-abierta .caso-indice-cuerpo{ display:flex; }
+  .caso-con-js .caso-volver{ display:none; }
+  .caso-barra-pie{ margin-top:18px; }
+}

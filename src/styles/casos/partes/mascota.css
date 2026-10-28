@@ -1,0 +1,38 @@
+/* LA MASCOTA · parpadeo y saltitos
+   componente: src/components/paginas/casos/Mascota.astro
+
+   Parte de caso.css. Todo lo que mueve a la mascota vive aquí; quien
+   la usa (la barra, las notas) solo dice CUÁNDO salta.
+
+   ── EL PARPADEO ────────────────────────────────────────────
+   Cada 4 segundos, siempre: el mismo ritmo que la carita de Inicio. El
+   ojo se cierra 140 ms (el 3,5 % del ciclo). Solo CSS: los dos pares de
+   ojos se alternan con `steps`, sin fundido, como un sprite.
+
+   ── LOS SALTITOS ───────────────────────────────────────────
+   Tres saltos cada vez más bajos. Una vez: al abrir la página (la de la
+   barra) o al aparecer su nota al bajar (las del cuerpo).
+
+   Con «menos movimiento», ni parpadea ni salta. */
+
+.caso-mascota .mascota-ojos-cerrados{ opacity:0; }
+.caso-mascota .mascota-ojos{ animation:mascota-ojos 4s steps(1, end) infinite; }
+.caso-mascota .mascota-ojos-cerrados{ animation:mascota-ojos-cerrados 4s steps(1, end) infinite; }
+@keyframes mascota-ojos{ 0%{ opacity:1; } 96.5%{ opacity:0; } 100%{ opacity:1; } }
+@keyframes mascota-ojos-cerrados{ 0%{ opacity:0; } 96.5%{ opacity:1; } 100%{ opacity:0; } }
+
+@keyframes caso-saltitos{
+  0%, 36%, 72%, 100%{ transform:translateY(0); }
+  18%{ transform:translateY(-9px); }
+  54%{ transform:translateY(-6px); }
+  86%{ transform:translateY(-3px); }
+}
+/* la del cuerpo salta cuando su nota termina de aparecer (.is-in la
+   pone el motor de apariciones, que solo existe con movimiento) */
+.cs-motion .caso-nota.is-in .caso-mascota{ animation:caso-saltitos 1.1s ease-in-out .45s 1 both; }
+
+@media (prefers-reduced-motion:reduce){
+  .caso-mascota .mascota-ojos,
+  .caso-mascota .mascota-ojos-cerrados,
+  .cs-motion .caso-nota.is-in .caso-mascota{ animation:none; }
+}

@@ -1,0 +1,33 @@
+/* TIRA DE TRES · necesidad · por qué importa · qué hice
+   componente: TiraDeTres.astro
+   Parte de caso.css. Llena el ancho sin líneas largas. */
+
+.caso-tira{
+  list-style:none;
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px;
+  margin:34px 0;
+}
+.caso-tira li{ padding-top:14px; border-top:2px solid var(--ink); }
+.caso-tira.es-acento li{ border-top:3px solid var(--caso-acento,var(--pink-light)); }
+
+.caso-tira-rotulo{
+  margin:0 0 8px;
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); line-height:1.1;
+  letter-spacing:2.2px; text-transform:uppercase; color:var(--pink-ink);
+}
+.caso-tira-titulo{ margin:0 0 6px; font-weight:700; font-size:18px; line-height:1.4; color:var(--ink); }
+.caso-tira-texto{ margin:0; font-size:16px; line-height:1.6; color:var(--text-soft); }
+/* sin título, el texto es el dato: va en tinta */
+.caso-tira-rotulo + .caso-tira-texto{ font-size:16px; color:var(--ink); }
+
+/* CAJA: entre dos filetes, con separadores finos entre columnas */
+.caso-tira.es-caja{
+  gap:0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink);
+}
+.caso-tira.es-caja li{ border-top:0; padding:20px 22px 24px; }
+.caso-tira.es-caja li + li{ border-left:1px solid var(--pink-light); }
+
+@media (max-width:760px){
+  .caso-tira{ grid-template-columns:minmax(0,1fr); gap:20px; }
+  .caso-tira.es-caja li + li{ border-left:0; border-top:1px solid var(--pink-light); }
+}

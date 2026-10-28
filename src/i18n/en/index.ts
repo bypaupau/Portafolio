@@ -5,6 +5,7 @@ import { englishCreativo } from './creativo';
 import { englishProyectos } from './proyectos';
 import { englishSobreMi } from './sobre-mi';
 import { englishInicio } from './inicio';
+import { englishCasos } from './casos';
 
 export const englishInterface: Record<TranslationKey, string> = {
   ...englishGlobal,
@@ -13,4 +14,5 @@ export const englishInterface: Record<TranslationKey, string> = {
   ...englishProyectos,
   ...englishSobreMi,
   ...englishInicio,
+  ...englishCasos,
 };

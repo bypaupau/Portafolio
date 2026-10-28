@@ -1,0 +1,28 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   UNA NOTA CON LA MASCOTA
+
+   Dos usos, y los dos son la voz de Pau hablando aparte:
+     bocadillo   una frase corta en Pixelify Sans dentro de un recuadro, con la
+                 mascota al lado (la de «El origen»)
+     aviso       un recuadro amarillo con rótulo y texto (lo que el caso
+                 todavía no demuestra)
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import Mascota from './Mascota.astro';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  texto: TextoBilingue;
+  rotulo?: TextoBilingue;
+  variante?: 'bocadillo' | 'aviso';
+}
+const { texto, rotulo, variante = 'bocadillo' } = Astro.props;
+---
+<aside class:list={['caso-nota', 'cs-rv', `es-${variante}`]}>
+  <Mascota tamano={36} />
+  <div class="caso-nota-caja">
+    {rotulo && <Texto como="p" class="caso-nota-rotulo" valor={rotulo} />}
+    <Texto como="p" class="caso-nota-texto" valor={texto} />
+  </div>
+</aside>

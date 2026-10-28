@@ -1,0 +1,18 @@
+/* LA PREGUNTA · entre dos filetes, a 27 px, a lo ancho entero
+   componente: PreguntaDeDiseno.astro
+   Parte de caso.css. */
+
+.caso-pregunta{
+  margin:48px 0 34px; padding:26px 0 30px;
+  border-top:2px solid var(--ink); border-bottom:2px solid var(--ink);
+}
+.caso-pregunta-rotulo{
+  margin:0 0 14px;
+  font-family:var(--font-term); font-size:calc(18px * var(--font-term-scale)); line-height:1.1;
+  letter-spacing:2.2px; text-transform:uppercase; color:var(--pink-ink);
+}
+.caso-pregunta-texto{
+  margin:0;
+  font-family:var(--font-body); font-weight:600;
+  font-size:clamp(21px,2.2vw,27px); line-height:1.38; color:var(--ink);
+}

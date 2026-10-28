@@ -2,7 +2,7 @@
    LAS PÁGINAS DE CASO · ÍNDICE
 
    Este archivo ya no tiene reglas: dice en qué ORDEN se cargan las
-   25 partes de partes/. Antes era un solo archivo de 905
+   38 partes de partes/. Antes era un solo archivo de 905
    líneas, que es donde deja de poder leerse y se empieza a buscar dentro.
 
    El orden importa: en CSS, cuando dos reglas empatan en importancia y
@@ -38,3 +38,21 @@
 @import './partes/galeria.css';                           /* GALERÍA */
 @import './partes/pendientes.css';                        /* PENDIENTES */
 @import './partes/responsive-bloques-nuevos.css';         /* RESPONSIVE DE LOS BLOQUES NUEVOS */
+@import './partes/editorial.css';                         /* EDITORIAL · la lectura larga de un caso */
+
+/* ── EL LAYOUT NUEVO DE LAS PÁGINAS DE CASO ──
+   Solo clases .caso-*, que hoy pone únicamente Schaman: no pisan nada
+   de arriba ni alcanzan a Grow With Phoenix. Van al final para que, el
+   día que convivan con una regla vieja, ganen ellas. */
+@import './partes/lectura.css';                           /* LECTURA · rejilla, escala, secciones y resalte */
+@import './partes/barra.css';                             /* BARRA DEL CASO · el índice en línea de tiempo */
+@import './partes/medios.css';                            /* MEDIOS · capturas, vídeos y la ventana de portada */
+@import './partes/ficha.css';                             /* FICHA DE PORTADA */
+@import './partes/nota-mascota.css';                      /* NOTA CON LA MASCOTA */
+@import './partes/diagnostico.css';                       /* DIAGNÓSTICO FIJO */
+@import './partes/pregunta.css';                          /* LA PREGUNTA */
+@import './partes/pareja.css';                            /* LA PAREJA */
+@import './partes/subbloque.css';                         /* SUB-BLOQUE H3 */
+@import './partes/tira.css';                              /* TIRA DE TRES */
+@import './partes/mascota.css';                           /* LA MASCOTA · parpadeo y saltitos */
+@import './partes/nav-al-leer.css';                       /* EL NAV SE APARTA MIENTRAS LEES */

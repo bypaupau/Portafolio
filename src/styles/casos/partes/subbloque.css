@@ -1,0 +1,11 @@
+/* SUB-BLOQUE H3 · número, rótulo, párrafo y medio
+   componente: SubBloqueDeCaso.astro
+   Parte de caso.css.
+
+   Se repite tres veces en la 04 y tres en la 05. Un filete fino los
+   separa: es lo que dice dónde termina uno sin tener que leer. */
+
+.caso-subbloque{ margin-top:40px; }
+.caso-subbloque + .caso-subbloque{
+  margin-top:56px; padding-top:34px; border-top:2px solid var(--pink-light);
+}

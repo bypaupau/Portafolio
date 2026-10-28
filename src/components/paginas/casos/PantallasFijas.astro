@@ -1,0 +1,80 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LAS PANTALLAS FIJAS · el diagnóstico fijo, con capturas por llamada
+   script: src/scripts/casos/diagnostico.ts
+
+   La columna izquierda se queda quieta mientras avanzan las llamadas, y
+   lo que cambia es la pantalla: están apiladas en el mismo sitio y se
+   ve la de la llamada activa. Lo gobierna un IntersectionObserver, no
+   un cálculo de scroll.
+
+   Cada llamada trae UNA o VARIAS capturas, una al lado de otra, cada
+   una con su pie si lo necesita (un par de teléfonos: «Pantalla de
+   carga» · «Inicio»). Y su texto puede ser de tres formas:
+     pie                 una frase (el 02 de Schaman)
+     titulo + pie        «Título · frase» (el 06 de Schaman, los gráficos)
+     titulo + parrafos   un título y su explicación (las pantallas de Phoenix)
+
+   Las capturas pueden tener formas muy distintas (una página entera
+   alta, una tira ancha, dos teléfonos): en vivo, ninguna pasa del alto
+   de la pantalla y se centran en su sitio. `sinMarco` es para las que
+   ya traen su propio marco (un teléfono con fondo transparente).
+
+   Sin JavaScript, con «menos movimiento» o en móvil no hay nada fijo:
+   cada pantalla con su texto debajo, todas a la vista.
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import { altConIdioma } from '../../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Captura {
+  imagen: string; ancho: number; alto: number; alt: TextoBilingue;
+  /** el pie de ESTA captura, debajo de ella */
+  pie?: TextoBilingue;
+}
+interface Props {
+  pantallas: readonly {
+    imagenes: readonly Captura[];
+    titulo?: TextoBilingue;
+    pie?: TextoBilingue;
+    parrafos?: readonly TextoBilingue[];
+  }[];
+  /** sin borde de tinta: capturas que ya traen su marco */
+  sinMarco?: boolean;
+}
+const { pantallas, sinMarco = false } = Astro.props;
+const dosCifras = (n: number) => String(n).padStart(2, '0');
+---
+<div class:list={['caso-diagnostico', 'es-pantallas', 'cs-rv', sinMarco && 'sin-marco']}>
+  <div class="caso-diagnostico-fijo">
+    <div class="caso-pantallas-lienzo">
+      {pantallas.map((p, i) => (
+        <div class:list={['caso-pantalla', i === 0 && 'es-activa', p.imagenes.length > 1 && 'es-varias']} style={`--i:${i}`}>
+          {p.imagenes.map((c) => (
+            <figure class="caso-figura es-completo">
+              <div class="caso-figura-marco">
+                <img src={c.imagen} width={c.ancho} height={c.alto} loading="lazy" decoding="async" {...altConIdioma(c.alt)} />
+              </div>
+              {c.pie && <Texto como="figcaption" valor={c.pie} />}
+            </figure>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+  <ol class="caso-llamadas">
+    {pantallas.map((p, i) => (
+      <li class:list={['caso-llamada', i === 0 && 'es-activa']} data-llamada={i} style={`--i:${i}`}>
+        <span class="caso-llamada-num">{dosCifras(i + 1)} / {dosCifras(pantallas.length)}</span>
+        {p.parrafos ? (<>
+          {p.titulo && <Texto como="h4" class="caso-llamada-titulo" valor={p.titulo} />}
+          {p.parrafos.map((parrafo) => <Texto html class="caso-llamada-texto" valor={parrafo} />)}
+        </>) : p.titulo ? (
+          <p><Texto como="b" valor={p.titulo} /><span class="caso-llamada-pie">{' · '}<Texto como="span" valor={p.pie} /></span></p>
+        ) : (
+          <Texto valor={p.pie} />
+        )}
+      </li>
+    ))}
+  </ol>
+</div>

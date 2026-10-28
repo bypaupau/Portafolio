@@ -1,0 +1,37 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA VENTANA DE PORTADA · la única de la página
+
+   Aquí el marco sí dice algo: lo de dentro es una aplicación. Por eso
+   conserva barra de título y controles, y por eso es la única. El
+   resto de la evidencia del caso va sin marco de ventana.
+
+   Una captura quieta y no un vídeo en bucle. En la portada va junto a
+   la ficha y entra ENTERA en la primera pantalla (ver
+   .caso-portada-fila en medios.css).
+   ═══════════════════════════════════════════════════════════ */
+import Texto from '../../piezas/Texto.astro';
+import { altConIdioma } from '../../../lib/texto-bilingue';
+import type { TextoBilingue } from '../../../lib/texto-bilingue';
+
+interface Props {
+  /** lo que va en la barra de título */
+  nombre: string;
+  imagen: string;
+  ancho: number;
+  alto: number;
+  alt: TextoBilingue;
+  pie: TextoBilingue;
+}
+const { nombre, imagen, ancho, alto, alt, pie } = Astro.props;
+---
+<figure class="caso-ventana">
+  <div class="caso-ventana-marco">
+    <div class="caso-ventana-barra">
+      <span class="caso-ventana-cuadro" aria-hidden="true"></span>
+      <span>{nombre}</span>
+    </div>
+    <img src={imagen} width={ancho} height={alto} loading="eager" decoding="async" {...altConIdioma(alt)} />
+  </div>
+  <Texto como="figcaption" valor={pie} />
+</figure>
