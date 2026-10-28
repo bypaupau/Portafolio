@@ -4,59 +4,99 @@
 
    ── DÓNDE ESTÁ TODO LO DE ESTA PÁGINA ──────────────────────
    contenido   src/content/casos/grow-with-phoenix.ts   ← TODO el texto
-   estilo      src/styles/casos/caso.css    (compartida con el otro caso)
-   script      src/scripts/casos/riel.ts    (compartido)
-   piezas      src/components/paginas/casos/        (riel, figura, nota, grupo, cierre)
-   imágenes    public/images/casos/grow-with-phoenix/
+   interfaz    src/i18n/{es,en}/casos.ts                ← la barra
+   estilo      src/styles/casos/caso.css   (compartida con el otro caso)
+               └ partes/lectura.css, barra.css y las de cada bloque
+   scripts     src/scripts/casos/barra.ts · diagnostico.ts · escritura.ts
+   piezas      src/components/paginas/casos/
+   imágenes    originales/images/casos/grow-with-phoenix/ → manifiesto
    URL previa  /pages/caso/grow-with-phoenix.html → redirige
 
-   ── LO QUE MÁS CAMBIA RESPECTO AL SITIO ANTERIOR ───────────
-   El HTML anterior salía VACÍO: 150 elementos con data-i18n sin una
-   palabra dentro, y JavaScript los llenaba al cargar. Sin JavaScript no
-   se leía nada. Ahora Astro escribe el español al compilar y deja el
-   inglés en atributos, así que el caso se lee completo sin JavaScript y
-   el cambio de idioma sigue siendo instantáneo.
+   ── EL LAYOUT ──────────────────────────────────────────────
+   El de todos los casos desde 2026-10, el mismo de Schaman: una barra
+   propia a la izquierda (el índice, con su mascota, el idioma y el
+   saludo) y el contenido hasta el margen derecho. Seis secciones,
+   00–05, cada una con su acento (--caso-acento):
 
-   Y las claves opacas se fueron: lo que era phx.f.rol.3 ahora es
-   contenido.miRol.puntos[2]; phx.s2.c.f5.alt es
-   contenido.investigacion.clima.inviernoVerano.alt.
+     00 portada      --pink        03 propuesta    --mint
+     01 problema     --peach       04 pantallas    --lav
+     02 investigación --sky        05 lo que viene --yellow
 
-   ── POR QUÉ ESTE CASO TIENE SU PROPIO ARCHIVO ──────────────
-   Los dos casos comparten el riel, la hoja de estilo y las piezas
-   chicas, pero NO la estructura: este tiene cinco secciones con sus
-   propias rejillas (dos mapas, un panel, pares con proporciones a
-   medida, una ficha de variable al lado de un gráfico). Meterlos en una
-   plantilla común obligaría a describir esas rejillas con opciones, y
-   sería más difícil de leer que esto.
+   LO FIJO. Los gráficos de la investigación y las pantallas del
+   prototipo van en PantallasFijas: la columna de la imagen se queda
+   quieta y cada llamada trae la suya. Las pantallas son pares de
+   teléfonos con su propio marco, así que van sin borde (sinMarco).
+
+   ── LAS IMÁGENES ───────────────────────────────────────────
+   Por el manifiesto, como pide CONVENCIONES §4: los originales están
+   en originales/images/casos/grow-with-phoenix/ (y sus carpetas
+   investigacion/ y pantallas/), npm run imagenes genera lo publicado y
+   captura() pide cada una por su nombre, sin extensión.
    ═══════════════════════════════════════════════════════════ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Texto from '../../components/piezas/Texto.astro';
-import RielDeCaso from '../../components/paginas/casos/RielDeCaso.astro';
-import FiguraDeCaso from '../../components/paginas/casos/FiguraDeCaso.astro';
-import GrupoDePantallas from '../../components/paginas/casos/GrupoDePantallas.astro';
-import NotaDeCaso from '../../components/paginas/casos/NotaDeCaso.astro';
+import BarraDeCaso from '../../components/paginas/casos/BarraDeCaso.astro';
+import EncabezadoDeSeccion from '../../components/paginas/casos/EncabezadoDeSeccion.astro';
+import FichaDePortada from '../../components/paginas/casos/FichaDePortada.astro';
+import VentanaDeCaso from '../../components/paginas/casos/VentanaDeCaso.astro';
+import NotaConMascota from '../../components/paginas/casos/NotaConMascota.astro';
+import PreguntaDeDiseno from '../../components/paginas/casos/PreguntaDeDiseno.astro';
+import SubBloqueDeCaso from '../../components/paginas/casos/SubBloqueDeCaso.astro';
+import TiraDeTres from '../../components/paginas/casos/TiraDeTres.astro';
+import PantallasFijas from '../../components/paginas/casos/PantallasFijas.astro';
 import CierreDeCaso from '../../components/paginas/casos/CierreDeCaso.astro';
-import { conIdioma, altConIdioma, htmlConIdioma } from '../../lib/texto-bilingue';
-import { rutaPublica, rutaPagina } from '../../lib/rutas';
+import { rutaPagina } from '../../lib/rutas';
 import { imagen } from '../../lib/imagenes';
 import { growWithPhoenix as contenido } from '../../content/casos/grow-with-phoenix';
 import '../../styles/casos/caso.css';
 
 const EN_DRIVE =
   'https://drive.google.com/file/d/14QEug3cvbm_SLL2dG_udZX4H6NDujfX7/view?usp=sharing';
+const PROYECTOS = rutaPagina('proyectos');
 
-/* las imágenes y sus medidas. El texto va en el contenido; aquí, el
-   archivo y el tamaño, que es lo que decide cómo se ve la rejilla. */
-const img = (archivo: string) => rutaPublica('images/casos/grow-with-phoenix/' + archivo);
+/* Cada captura, con el ancho y el alto REALES de su archivo, que salen
+   del manifiesto. 1704 es el doble de la columna de contenido; ninguna
+   de estas llega, así que se quedan como están. */
+const captura = (nombre: string) => {
+  const { src, ancho, alto } = imagen('images/casos/grow-with-phoenix/' + nombre, 1704);
+  return { imagen: src, ancho, alto };
+};
 
-const portada = conIdioma(contenido.portada.antetitulo);
-const subtitulo = conIdioma(contenido.portada.subtitulo);
-const introduccion = conIdioma(contenido.portada.introduccion);
-const avisoEnCurso = conIdioma(contenido.portada.avisoEnCurso);
+const ACENTO = {
+  portada: 'var(--pink)', problema: 'var(--peach)', investigacion: 'var(--sky)',
+  propuesta: 'var(--mint)', pantallas: 'var(--lav)', loQueViene: 'var(--yellow)',
+} as const;
+
+const { indice, portada, problema, investigacion, propuesta, pantallas, loQueViene } = contenido;
+const { acceso, ambiente, clima, plantas, fuentes } = investigacion;
+
+/* LAS PARADAS DE LA BARRA: una por sección. La 02 lleva su sub-índice. */
+const PARADAS = [
+  { id: 'caso-00', acento: ACENTO.portada },
+  { id: 'caso-01', acento: ACENTO.problema },
+  { id: 'caso-02', acento: ACENTO.investigacion, sub: [acceso, ambiente, clima, plantas, fuentes].map((bloque, j) => ({ id: `caso-02-${j + 1}`, nombre: bloque.corto })) },
+  { id: 'caso-03', acento: ACENTO.propuesta },
+  { id: 'caso-04', acento: ACENTO.pantallas },
+  { id: 'caso-05', acento: ACENTO.loQueViene },
+].map((parada, i) => ({ ...parada, ...indice[i]! }));
+
+/* LA PORTADA, EN DOS COLUMNAS: la ventana y la ficha a su lado. */
+const VENTANA = captura('00-mockup');
+
+/* Los gráficos de cada sub-bloque de la investigación, en el orden de
+   sus textos en el contenido. Una llamada por gráfico: «Título · pie». */
+const fijos = (archivos: readonly string[], textos: readonly { titulo: unknown; pie: unknown; alt: unknown }[]) =>
+  archivos.map((archivo, i) => {
+    const { titulo, pie, alt } = textos[i] as (typeof acceso.mapas)[number];
+    return { imagenes: [{ ...captura('investigacion/' + archivo), alt }], titulo, pie };
+  });
+const MAPAS_DE_ACCESO = fijos(['mapa-desiertos', 'mapa-bajos-ingresos'], acceso.mapas);
+const MAPAS_DE_AMBIENTE = fijos(['mapa-analisis-agricola', 'detalle-vegetacion', 'detalle-evapotranspiracion'], ambiente.mapas);
+const GRAFICOS_DE_CLIMA = fijos(['precipitacion-anual', 'precipitacion-categorias', 'precipitacion-mensual', 'temperatura-mensual', 'temperatura-estaciones'], clima.graficos);
 
 /* los diez conjuntos de datos que documenta la presentación. No se
    traducen: son nombres de colecciones de Google Earth Engine. */
-const fuentesDeDatos = [
+const FUENTES_DE_DATOS = [
   ['Census · ACS', 'TIGER/2010/Tracts_DP1'],
   ['Cobertura del suelo · NLCD', 'USGS/NLCD_RELEASES/2019_REL/NLCD/2019'],
   ['Población · CIESIN', 'CIESIN/GPWv411/GPW_Population_Count'],
@@ -69,44 +109,21 @@ const fuentesDeDatos = [
   ['Evapotranspiración · MODIS', 'MODIS/006/MOD16A2'],
 ] as const;
 
-/* los cinco grupos de pantallas: lado, color y las dos capturas */
-const gruposDePantallas = [
-  {
-    id: 'gA', lado: 'g-side', color: 'var(--peach)',
-    capturas: [
-      { imagen: img('pantallas/pagina-carga.webp'), ancho: 720, alto: 1436, clase: 'is-side' },
-      { imagen: img('pantallas/pagina-inicio.webp'), ancho: 720, alto: 1436, clase: 'is-lead' },
-    ],
-  },
-  {
-    id: 'gB', lado: 'g-rev', color: 'var(--mint)',
-    capturas: [
-      { imagen: img('pantallas/pagina-estadistica.webp'), ancho: 720, alto: 1409 },
-      { imagen: img('pantallas/pagina-ensalada.webp'), ancho: 720, alto: 1409 },
-    ],
-  },
-  {
-    id: 'gC', lado: 'g-side', color: 'var(--sky)',
-    capturas: [
-      { imagen: img('pantallas/pagina-menuescanear.webp'), ancho: 720, alto: 1436 },
-      { imagen: img('pantallas/pagina-escaneo.webp'), ancho: 720, alto: 1400 },
-    ],
-  },
-  {
-    id: 'gD', lado: 'g-side', color: 'var(--yellow)',
-    capturas: [
-      { imagen: img('pantallas/pagina-leaderboard.webp'), ancho: 720, alto: 1384 },
-      { imagen: img('pantallas/pagina-perfil.webp'), ancho: 720, alto: 1412 },
-    ],
-  },
-  {
-    id: 'gE', lado: 'g-rev', color: 'var(--pink-light)',
-    capturas: [
-      { imagen: img('pantallas/pagina-notificacion.webp'), ancho: 720, alto: 1438 },
-      { imagen: img('pantallas/pagina-widget.webp'), ancho: 688, alto: 1440 },
-    ],
-  },
+/* LAS PANTALLAS: cinco grupos de dos, en el orden de sus textos. Cada
+   llamada trae el par de teléfonos con su pie y, a la derecha, el
+   título y los dos párrafos del grupo. */
+const PARES = [
+  ['pagina-carga', 'pagina-inicio'],
+  ['pagina-estadistica', 'pagina-ensalada'],
+  ['pagina-menuescanear', 'pagina-escaneo'],
+  ['pagina-leaderboard', 'pagina-perfil'],
+  ['pagina-notificacion', 'pagina-widget'],
 ] as const;
+const GRUPOS_DE_PANTALLAS = pantallas.grupos.map((grupo, i) => ({
+  titulo: grupo.titulo,
+  parrafos: grupo.parrafos,
+  imagenes: PARES[i]!.map((archivo, j) => ({ ...captura('pantallas/' + archivo), ...grupo.pantallas[j]! })),
+}));
 ---
 
 <BaseLayout
@@ -117,205 +134,103 @@ const gruposDePantallas = [
   nombreDeVentana={contenido.documento.nombreDeVentana}
   claseBody="cs-body"
   tituloDelCaso={contenido.documento}
+  sinTaskbar
 >
-  <div class="wrap">
-    <div class="cs-grid">
+  <div class="caso-pagina">
 
-      <RielDeCaso
-        portada={contenido.riel.portada}
-        paradas={contenido.riel.paradas}
-        salida={{ texto: contenido.riel.verProyecto, enlace: EN_DRIVE }}
-      />
+    <BarraDeCaso paradas={PARADAS} volver={PROYECTOS} saludo={portada.saludo} />
 
-      <div class="cs-main">
+    <div class="caso-contenido">
 
-        {/* ══ PORTADA ══ */}
-        <header class="cs-hero" id="cs-portada" style="--cs:var(--pink-mid)">
-          <div class="cs-hero-top">
-            <div>
-              <Texto class="cs-kicker hx" style="--d:100ms" valor={contenido.portada.antetitulo} />
-              <h1 class="cs-title hx" style="--d:170ms">Grow With Phoenix</h1>
-              <Texto class="cs-sub hx" style="--d:240ms" valor={contenido.portada.subtitulo} />
-              <Texto class="cs-text hx" style="--d:300ms" valor={contenido.portada.introduccion} />
-              <p class="hx cs-wip-row" style="--d:360ms">
-                <span class="cs-wip"><i aria-hidden="true"></i><Texto como="span" valor={contenido.portada.avisoEnCurso} /></span>
-              </p>
-            </div>
-            <figure class="cs-hero-fig hx" style="--d:420ms">
-              <img
-                src={img('00-mockup.webp')}
-                width="1592" height="892" loading="eager" decoding="async"
-                {...altConIdioma(contenido.portada.imagen.alt)}
-              />
-              <Texto como="figcaption" valor={contenido.portada.imagen.pie} />
-            </figure>
-          </div>
+      {/* ══ 00 · PORTADA ══ */}
+      <header class="caso-portada" id="caso-00" style={`--caso-acento:${ACENTO.portada}`}>
+        <Texto class="caso-antetitulo hx" style="--d:100ms" valor={portada.antetitulo} />
+        <h1 class="caso-h1 hx" style="--d:170ms" data-escribir>Grow With Phoenix</h1>
+        <Texto class="caso-subtitulo hx" style="--d:240ms" valor={portada.subtitulo} />
+        <div class="caso-portada-fila hx" style={`--d:300ms;--proporcion:${VENTANA.ancho} / ${VENTANA.alto}`}>
+          <VentanaDeCaso nombre={portada.ventana.nombre} {...VENTANA} alt={portada.ventana.alt} pie={portada.ventana.pie} />
+          <FichaDePortada campos={portada.ficha} />
+        </div>
+        <Texto html class="caso-texto cs-rv" valor={portada.introduccion} />
+        <TiraDeTres elementos={portada.miRol} />
+        <Texto html class="caso-texto cs-rv" valor={portada.equipo} />
+      </header>
 
-          {/* dos protagonistas: lo que hice y con qué */}
-          <dl class="cs-stars cs-rv">
-            <div class="cs-star st-rol">
-              <Texto como="dt" valor={contenido.miRol.etiqueta} />
-              <dd><ul>{contenido.miRol.puntos.map((punto) => <Texto como="li" valor={punto} />)}</ul></dd>
-            </div>
-            <div class="cs-star st-win">
-              <Texto como="dt" valor={contenido.herramientas.etiqueta} />
-              <dd><ul>{contenido.herramientas.puntos.map((punto) => {
-                const p = htmlConIdioma(punto);
-                return <li {...p.atributos} set:html={p.texto} />;
-              })}</ul></dd>
-            </div>
-          </dl>
+      {/* ══ 01 · EL PROBLEMA ══ */}
+      <section class="caso-seccion" id="caso-01" style={`--caso-acento:${ACENTO.problema}`} aria-labelledby="h-caso-01">
+        <EncabezadoDeSeccion id="h-caso-01" antetitulo={problema.antetitulo} titulo={problema.titulo} />
+        {problema.parrafos.map((parrafo) => <Texto html class="caso-texto cs-rv" valor={parrafo} />)}
+        <PreguntaDeDiseno rotulo={problema.pregunta.rotulo} texto={problema.pregunta.texto} />
+      </section>
 
-          {/* ficha compacta: contexto, premio, equipo y estado */}
-          <dl class="cs-rows cs-rv">{contenido.ficha.map((fila) => {
-            const etiqueta = conIdioma(fila.etiqueta);
-            const valor = conIdioma(fila.valor);
-            return (
-              <div class="cs-row"><dt {...etiqueta.atributos}>{etiqueta.texto}</dt><dd {...valor.atributos}>{valor.texto}</dd></div>
-            );
-          })}</dl>
-        </header>
+      {/* ══ 02 · LA INVESTIGACIÓN · cinco sub-bloques ══ */}
+      <section class="caso-seccion" id="caso-02" style={`--caso-acento:${ACENTO.investigacion}`} aria-labelledby="h-caso-02">
+        <EncabezadoDeSeccion id="h-caso-02" antetitulo={investigacion.antetitulo} titulo={investigacion.titulo} />
+        <Texto html class="caso-texto cs-rv" valor={investigacion.entrada} />
 
-        {/* ══ 01 · EL PROBLEMA ══ */}
-        <section class="cs-sec" id="cs-1" style="--cs:var(--peach)" aria-labelledby="h-cs-1">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.problema.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-1" valor={contenido.problema.titulo} />
-          </header>
-          {contenido.problema.parrafos.map((parrafo) => <Texto class="cs-text cs-rv" valor={parrafo} />)}
-          <Texto class="cs-lead cs-rv" valor={contenido.problema.pregunta} />
-          <NotaDeCaso texto={contenido.problema.nota} />
-        </section>
+        <SubBloqueDeCaso id="caso-02-1" numero={1} total={5} titulo={acceso.titulo}>
+          <Texto class="caso-texto cs-rv" valor={acceso.parrafo} />
+          <PantallasFijas pantallas={MAPAS_DE_ACCESO} />
+          <Texto class="caso-aparte cs-rv" valor={acceso.nota} />
+        </SubBloqueDeCaso>
 
-        {/* ══ 02 · LA INVESTIGACIÓN ══ */}
-        <section class="cs-sec" id="cs-2" style="--cs:var(--sky)" aria-labelledby="h-cs-2">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.investigacion.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-2" valor={contenido.investigacion.titulo} />
-          </header>
-          <Texto class="cs-text cs-rv" valor={contenido.investigacion.entrada} />
+        <SubBloqueDeCaso id="caso-02-2" numero={2} total={5} titulo={ambiente.titulo}>
+          <Texto class="caso-texto cs-rv" valor={ambiente.parrafo} />
+          <PantallasFijas pantallas={MAPAS_DE_AMBIENTE} />
+          {/* la conclusión de los tres mapas */}
+          <Texto como="blockquote" class="caso-cita cs-rv" valor={ambiente.nota} />
+        </SubBloqueDeCaso>
 
-          {/* A · acceso a alimentos */}
-          <Texto como="h3" class="cs-sub-h cs-rv" valor={contenido.investigacion.acceso.titulo} />
-          <Texto class="cs-text cs-rv" valor={contenido.investigacion.acceso.parrafo} />
-          <div class="cs-figs cs-rv">
-            <FiguraDeCaso imagen={img('investigacion/mapa-desiertos.webp')} ancho={1100} alto={618} texto={contenido.investigacion.acceso.mapas[0]} />
-            <FiguraDeCaso imagen={img('investigacion/mapa-bajos-ingresos.webp')} ancho={1100} alto={618} texto={contenido.investigacion.acceso.mapas[1]} />
-          </div>
-          <NotaDeCaso texto={contenido.investigacion.acceso.nota} />
+        <SubBloqueDeCaso id="caso-02-3" numero={3} total={5} titulo={clima.titulo}>
+          <Texto class="caso-texto cs-rv" valor={clima.parrafo} />
+          <PantallasFijas pantallas={GRAFICOS_DE_CLIMA} />
+          {/* la ficha del último gráfico, el de invierno y verano */}
+          <div class="cs-rv"><FichaDePortada campos={clima.fichaDeVariable} /></div>
+          <Texto class="caso-aparte cs-rv" valor={clima.nota} />
+        </SubBloqueDeCaso>
 
-          {/* B · condiciones ambientales */}
-          <Texto como="h3" class="cs-sub-h cs-rv" valor={contenido.investigacion.ambiente.titulo} />
-          <Texto class="cs-text cs-rv" valor={contenido.investigacion.ambiente.parrafo} />
-          <div class="cs-figs uno cs-rv">
-            <FiguraDeCaso imagen={img('investigacion/mapa-analisis-agricola.webp')} ancho={1100} alto={619} texto={contenido.investigacion.ambiente.panel} />
-          </div>
-          <div class="cs-figs par cs-rv">
-            <FiguraDeCaso imagen={img('investigacion/detalle-vegetacion.webp')} ancho={443} alto={326} texto={contenido.investigacion.ambiente.detalles[0]} />
-            <FiguraDeCaso imagen={img('investigacion/detalle-evapotranspiracion.webp')} ancho={214} alto={194} texto={contenido.investigacion.ambiente.detalles[1]} />
-          </div>
-          <NotaDeCaso texto={contenido.investigacion.ambiente.nota} />
+        <SubBloqueDeCaso id="caso-02-4" numero={4} total={5} titulo={plantas.titulo}>
+          <Texto class="caso-texto cs-rv" valor={plantas.parrafo} />
+          <NotaConMascota variante="aviso" rotulo={plantas.aviso.rotulo} texto={plantas.aviso.texto} />
+        </SubBloqueDeCaso>
 
-          {/* C · lluvia y temperatura */}
-          <Texto como="h3" class="cs-sub-h cs-rv" valor={contenido.investigacion.clima.titulo} />
-          <Texto class="cs-text cs-rv" valor={contenido.investigacion.clima.parrafo} />
-
-          {/* Los dos resúmenes anuales de lluvia. --c1/--c2 son las
-              proporciones de cada gráfico: así llenan su columna y llegan
-              al mismo alto sin bandas blancas a los lados. */}
-          <div class="cs-figs par prop cs-rv" style="--c1:1.70fr; --c2:1.47fr">
-            <FiguraDeCaso imagen={img('investigacion/precipitacion-anual.webp')} ancho={753} alto={442} texto={contenido.investigacion.clima.lluviaAnual} />
-            <FiguraDeCaso imagen={img('investigacion/precipitacion-categorias.webp')} ancho={638} alto={433} texto={contenido.investigacion.clima.lluviaPorCategoria} />
-          </div>
-
-          {/* doce meses por año: necesitan todo el ancho para leerse */}
-          <div class="cs-figs uno cs-rv">
-            <FiguraDeCaso imagen={img('investigacion/precipitacion-mensual.webp')} ancho={846} alto={487} texto={contenido.investigacion.clima.lluviaMensual} />
-          </div>
-          <div class="cs-figs uno cs-rv">
-            <FiguraDeCaso imagen={img('investigacion/temperatura-mensual.webp')} ancho={842} alto={419} texto={contenido.investigacion.clima.temperaturaMensual} />
-          </div>
-
-          {/* dos barras ocupan poco: el hueco lateral lo llena la ficha */}
-          <div class="cs-duo cs-rv">
-            <FiguraDeCaso imagen={img('investigacion/temperatura-estaciones.webp')} ancho={841} alto={423} texto={contenido.investigacion.clima.inviernoVerano} />
-            <dl class="cs-ficha">
-              {([
-                ['variable', 'variable'],
-                ['queExploraba', 'queExploraba'],
-                ['lectura', 'lectura'],
-                ['estado', 'estado'],
-              ] as const).map(([campo]) => {
-                const etiqueta = conIdioma(contenido.fichaDeVariable.etiquetas[campo]);
-                const valor = conIdioma(contenido.fichaDeVariable[campo]);
-                return <div><dt {...etiqueta.atributos}>{etiqueta.texto}</dt><dd {...valor.atributos}>{valor.texto}</dd></div>;
-              })}
-            </dl>
-          </div>
-          <NotaDeCaso texto={contenido.investigacion.clima.nota} />
-
-          {/* D · de las condiciones a las plantas */}
-          <Texto como="h3" class="cs-sub-h cs-rv" valor={contenido.investigacion.plantas.titulo} />
-          <Texto class="cs-text cs-rv" valor={contenido.investigacion.plantas.parrafo} />
-          <NotaDeCaso texto={contenido.investigacion.plantas.nota} />
-
-          {/* las fuentes documentadas en la presentación */}
-          <Texto como="h3" class="cs-sub-h cs-rv" valor={contenido.investigacion.fuentes.titulo} />
-          <Texto class="cs-text cs-rv" valor={contenido.investigacion.fuentes.parrafo} />
-          <ul class="cs-tools cs-rv dos">{fuentesDeDatos.map(([nombre, coleccion]) => (
-            <li>{nombre} <span class="cs-src-id">{coleccion}</span></li>
+        <SubBloqueDeCaso id="caso-02-5" numero={5} total={5} titulo={fuentes.titulo}>
+          <Texto class="caso-texto cs-rv" valor={fuentes.parrafo} />
+          <ul class="caso-fuentes cs-rv">{FUENTES_DE_DATOS.map(([nombre, coleccion]) => (
+            <li>{nombre}<code>{coleccion}</code></li>
           ))}</ul>
-        </section>
+        </SubBloqueDeCaso>
+      </section>
 
-        {/* ══ 03 · DEL ENTORNO AL PLATO ══ */}
-        <section class="cs-sec" id="cs-3" style="--cs:var(--mint)" aria-labelledby="h-cs-3">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.propuesta.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-3" valor={contenido.propuesta.titulo} />
-          </header>
-          <Texto class="cs-text cs-rv" valor={contenido.propuesta.parrafo} />
-          <div class="cs-tri cs-rv">{contenido.propuesta.momentos.map((momento) => {
-            const nombre = conIdioma(momento.nombre);
-            const texto = conIdioma(momento.texto);
-            return <div class="cs-tri-c"><h3 {...nombre.atributos}>{nombre.texto}</h3><p {...texto.atributos}>{texto.texto}</p></div>;
-          })}</div>
-          <Texto como="h3" class="cs-sub-h cs-rv" valor={contenido.propuesta.gamificacion.titulo} />
-          <Texto class="cs-text cs-rv" valor={contenido.propuesta.gamificacion.parrafo} />
-          <NotaDeCaso texto={contenido.propuesta.nota} />
-        </section>
+      {/* ══ 03 · DEL ENTORNO AL PLATO ══ */}
+      <section class="caso-seccion" id="caso-03" style={`--caso-acento:${ACENTO.propuesta}`} aria-labelledby="h-caso-03">
+        <EncabezadoDeSeccion id="h-caso-03" antetitulo={propuesta.antetitulo} titulo={propuesta.titulo} />
+        <Texto html class="caso-texto cs-rv" valor={propuesta.parrafo} />
+        <TiraDeTres variante="acento" elementos={propuesta.momentos} />
+        <Texto como="h3" class="caso-h3 cs-rv" valor={propuesta.gamificacion.titulo} />
+        <Texto class="caso-texto cs-rv" valor={propuesta.gamificacion.parrafo} />
+        <Texto class="caso-aparte cs-rv" valor={propuesta.nota} />
+      </section>
 
-        {/* ══ 04 · LAS PANTALLAS ══ */}
-        <section class="cs-sec" id="cs-4" style="--cs:var(--lav)" aria-labelledby="h-cs-4">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.pantallas.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-4" valor={contenido.pantallas.titulo} />
-          </header>
-          <Texto class="cs-text cs-rv" valor={contenido.pantallas.parrafos[0]} />
-          <Texto class="cs-text cs-rv" html valor={contenido.pantallas.parrafos[1]} />
+      {/* ══ 04 · LAS PANTALLAS · fijas, de dos en dos ══ */}
+      <section class="caso-seccion" id="caso-04" style={`--caso-acento:${ACENTO.pantallas}`} aria-labelledby="h-caso-04">
+        <EncabezadoDeSeccion id="h-caso-04" antetitulo={pantallas.antetitulo} titulo={pantallas.titulo} />
+        {pantallas.parrafos.map((parrafo) => <Texto html class="caso-texto cs-rv" valor={parrafo} />)}
+        <PantallasFijas sinMarco pantallas={GRUPOS_DE_PANTALLAS} />
+      </section>
 
-          <div class="cs-groups">{gruposDePantallas.map((grupo, i) => (
-            <GrupoDePantallas
-              id={grupo.id}
-              lado={grupo.lado}
-              color={grupo.color}
-              texto={contenido.pantallas.grupos[i]!}
-              capturas={grupo.capturas}
-            />
-          ))}</div>
-        </section>
+      {/* ══ 05 · LO QUE VIENE ══ */}
+      <section class="caso-seccion" id="caso-05" style={`--caso-acento:${ACENTO.loQueViene}`} aria-labelledby="h-caso-05">
+        <EncabezadoDeSeccion id="h-caso-05" antetitulo={loQueViene.antetitulo} titulo={loQueViene.titulo} />
+        {loQueViene.parrafos.map((parrafo) => <Texto html class="caso-texto cs-rv" valor={parrafo} />)}
+      </section>
 
-        {/* ══ 05 · LO QUE VIENE ══ */}
-        <section class="cs-sec" id="cs-5" style="--cs:var(--lav)" aria-labelledby="h-cs-5">
-          <header class="cs-head cs-rv">
-            <Texto class="cs-num" valor={contenido.loQueViene.numero} />
-            <Texto como="h2" class="cs-h" id="h-cs-5" valor={contenido.loQueViene.titulo} />
-          </header>
-          {contenido.loQueViene.parrafos.map((parrafo) => <Texto class="cs-text cs-rv" valor={parrafo} />)}
-        </section>
-
+      {/* el cierre de siempre: volver, el proyecto y los otros proyectos */}
+      <div class="cs-rv">
         <CierreDeCaso
           texto={contenido.cierre}
           enlaceDelProyecto={EN_DRIVE}
+          claseDelBoton="btn btn-yellow"
           relacionados={[
             /* interno: es otra página del sitio, así que NO abre pestaña nueva */
             { nombre: 'Schaman Analytics BI', meta: 'Rediseño de Interfaz · 2026',
@@ -327,12 +242,16 @@ const gruposDePantallas = [
               imagen: imagen('images/proyectos/catventures', 416).src },
           ]}
         />
-
       </div>
+
     </div>
   </div>
 
   <script>
-    import '../../scripts/casos/riel';
+    import '../../scripts/casos/barra';
+    import '../../scripts/casos/nav-al-leer';
+    import '../../scripts/casos/escritura';
+    import '../../scripts/casos/portada';
+    import '../../scripts/casos/diagnostico';
   </script>
 </BaseLayout>
