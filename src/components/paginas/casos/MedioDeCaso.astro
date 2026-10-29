@@ -63,12 +63,19 @@ const idDelVideo = video ? `video-${video.video.split('/').pop()!.replace(/\.mp4
   style={anchoNatural ? `--ancho-natural:${anchoNatural}px` : undefined}>
   <div class="caso-figura-marco">
     {rotulo && <Texto como="span" class:list={['caso-sello', `es-${tono}`]} valor={rotulo} />}
-    {imagenes.map((img) => (
-      <img src={img.imagen} width={img.ancho} height={img.alto} loading={carga} decoding="async" {...altConIdioma(img.alt)} />
-    ))}
+    {/* el recorte redondea las esquinas de lo que lleva dentro; el
+        rótulo va FUERA de él, porque se monta sobre el borde y se
+        cortaría */}
+    <div class="caso-figura-recorte">
+      {imagenes.map((img) => (
+        <img src={img.imagen} width={img.ancho} height={img.alto} loading={carga} decoding="async" {...altConIdioma(img.alt)} />
+      ))}
+      {video && (
+        <video src={video.video} poster={video.poster} width={video.ancho} height={video.alto}
+          preload="metadata" playsinline muted loop controls aria-labelledby={idDelVideo}></video>
+      )}
+    </div>
     {video && (<>
-      <video src={video.video} poster={video.poster} width={video.ancho} height={video.alto}
-        preload="metadata" playsinline muted loop controls aria-labelledby={idDelVideo}></video>
       <button class="caso-video-boton" type="button" hidden>
         <span class="sr-only" id={idDelVideo}><span data-i18n="cases.video.play">{translate('cases.video.play')}</span>{' '}<Texto como="span" valor={video.alt} /></span>
         <svg viewBox="0 0 7 8" width="18" height="20" shape-rendering="crispEdges" aria-hidden="true" focusable="false">

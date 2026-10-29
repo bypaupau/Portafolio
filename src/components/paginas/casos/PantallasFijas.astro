@@ -53,7 +53,9 @@ const dosCifras = (n: number) => String(n).padStart(2, '0');
           {p.imagenes.map((c) => (
             <figure class="caso-figura es-completo">
               <div class="caso-figura-marco">
-                <img src={c.imagen} width={c.ancho} height={c.alto} loading="lazy" decoding="async" {...altConIdioma(c.alt)} />
+                <div class="caso-figura-recorte">
+                  <img src={c.imagen} width={c.ancho} height={c.alto} loading="lazy" decoding="async" {...altConIdioma(c.alt)} />
+                </div>
               </div>
               {c.pie && <Texto como="figcaption" valor={c.pie} />}
             </figure>

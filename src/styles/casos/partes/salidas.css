@@ -20,7 +20,7 @@
 }
 .cs-rel a:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--pink-mid); }
 .cs-rel a:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--pink-mid); }
-.cs-rel img{ width:64px; height:46px; object-fit:cover; border:2px solid var(--ink); flex:none; }
+.cs-rel img{ width:64px; height:46px; object-fit:cover; border:2px solid var(--ink); border-radius:calc(var(--caso-radio, 0px) / 2); flex:none; }
 .cs-rel b{ font-family:var(--font-pixel); font-size:var(--cs-h5); color:var(--ink); font-weight:600; display:block; }
 .cs-rel span{ font-family:var(--font-term); font-size:var(--cs-term); color:var(--text-soft); }
 

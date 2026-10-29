@@ -22,6 +22,18 @@
 /* dos capturas apiladas en una misma pieza: un filete fino entre ellas */
 .caso-figura-marco img + img{ border-top:2px solid var(--pink-light); }
 
+/* ESQUINAS REDONDEADAS. El marco de tinta lleva el radio y el recorte
+   de dentro (imágenes, vídeo, la lupa del zoom) lo sigue 2 px más
+   cerrado, que es el grosor del borde: así borde e imagen doblan
+   juntos. El rótulo de esquina queda fuera del recorte. */
+.caso-figura-marco{ border-radius:var(--caso-radio); }
+.caso-figura-recorte{
+  display:grid; overflow:hidden;
+  border-radius:calc(var(--caso-radio) - 2px);
+}
+/* el botón de la lupa envuelve la imagen: ocupa la celda entera */
+.caso-figura-recorte > .amp{ display:block; }
+
 .caso-figura figcaption{
   justify-self:stretch;
   font-size:16px; line-height:1.55; color:var(--text-soft);
@@ -119,7 +131,12 @@
   .caso-portada-fila .caso-ficha dd{ font-size:14px; line-height:1.45; }
 }
 
-.caso-ventana-marco{ border:2px solid var(--ink); background:var(--white); }
+/* la ventana, también redondeada: el recorte se lleva la barra de
+   título y la captura a la vez */
+.caso-ventana-marco{
+  border:2px solid var(--ink); background:var(--white);
+  border-radius:var(--caso-radio); overflow:hidden;
+}
 .caso-ventana-barra{
   display:flex; align-items:center; gap:10px;
   padding:7px 12px; border-bottom:2px solid var(--ink); background:var(--sky);
