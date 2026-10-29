@@ -23,16 +23,10 @@
    Press Start 2P no entra en el caso. */
 
 /* ── LA PÁGINA: barra + contenido ─────────────────────────────
-   El papel es blanco. La retícula rosa del sitio se apaga aquí, y el
-   fondo del <body> pinta la columna de la barra de arriba abajo: así,
-   cuando la página termina, la barra sigue hasta el final junto al pie
-   y no asoma una franja del fondo rosa por debajo. */
-body:has(.caso-pagina){
-  background:linear-gradient(90deg,
-    var(--caso-barra-fondo) 0 calc(var(--caso-barra) - 2px),
-    var(--pink-light) 0 var(--caso-barra),
-    var(--white) 0);
-}
+   Todo sobre papel blanco, la barra incluida. La retícula rosa del
+   sitio se apaga aquí y el <body> también es blanco: así, cuando la
+   página termina, no asoma una franja del fondo rosa junto al pie. */
+body:has(.caso-pagina){ background:var(--white); }
 body:has(.caso-pagina)::before{ display:none; }
 .caso-pagina{
   position:relative; z-index:1;

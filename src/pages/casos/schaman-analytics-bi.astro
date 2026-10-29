@@ -21,7 +21,7 @@
    cada una con su acento (--caso-acento), que pinta el filete de su
    encabezado y el sub-índice de su parada:
 
-     00 portada      --pink        04 exploración  --lav
+     00 portada      --pink-light  04 exploración  --lav
      01 origen       --sky         05 datos        --pink-mid
      02 reto         --peach       06 resultado    --yellow
      03 vistas       --mint        07 aprendizaje  --yellow
@@ -98,7 +98,7 @@ const video = (nombre: string, duracion: string) => ({
 });
 
 const ACENTO = {
-  portada: 'var(--pink)', origen: 'var(--sky)', reto: 'var(--peach)', vistas: 'var(--mint)',
+  portada: 'var(--pink-light)', origen: 'var(--sky)', reto: 'var(--peach)', vistas: 'var(--mint)',
   exploracion: 'var(--lav)', datos: 'var(--pink-mid)', resultado: 'var(--yellow)', aprendizaje: 'var(--yellow)',
 } as const;
 

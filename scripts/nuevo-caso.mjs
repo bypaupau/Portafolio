@@ -153,7 +153,7 @@ const captura = (nombre: string) => {
 };
 
 /* el acento de cada sección; el primero es el de la portada */
-const ACENTOS = ['var(--pink)', 'var(--sky)', 'var(--peach)', 'var(--mint)', 'var(--lav)', 'var(--yellow)'];
+const ACENTOS = ['var(--pink-light)', 'var(--sky)', 'var(--peach)', 'var(--mint)', 'var(--lav)', 'var(--yellow)'];
 
 const { indice, portada, secciones } = contenido;
 const PARADAS = indice.map((parada, i) => ({ ...parada, id: \`caso-\${String(i).padStart(2, '0')}\`, acento: ACENTOS[i % ACENTOS.length]! }));

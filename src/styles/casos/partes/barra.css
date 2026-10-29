@@ -6,16 +6,16 @@
    página de Schaman: Grow With Phoenix sigue con el riel viejo hasta la
    etapa 6, y nada de aquí lo alcanza.
 
-   MINIMALISTA: número y nombre por parada, sin espina, sin puntos y
-   sin cajas. Lo único que se marca es dónde estás. Esquinas rectas en
+   MINIMALISTA: blanca, sin filete, número y nombre por parada en un
+   tono suave. Lo único con color es dónde estás: el pastel de esa
+   sección detrás de su nombre. Esquinas rectas en
    todo: el sistema no redondea nada. */
 
 /* ── LA COLUMNA ────────────────────────────────────────────────
-   Llega de arriba abajo con su fondo y su filete; lo que se queda
-   quieto al bajar es lo de dentro (.caso-indice). */
+   Blanca, como el caso: lo que se queda quieto al bajar es lo de
+   dentro (.caso-indice). */
 .caso-barra{
   background:var(--caso-barra-fondo);
-  border-right:2px solid var(--pink-light);
   min-width:0;
 }
 .caso-indice{
@@ -51,29 +51,40 @@
 .caso-paradas{ list-style:none; display:grid; gap:4px; }
 .caso-parada > a{
   position:relative; display:flex; align-items:baseline; gap:9px;
-  padding:9px 12px 9px 22px;
+  padding:8px 12px;
   color:var(--text-soft); text-decoration:none;
   transition:background-color var(--mo-fast,180ms) ease, color var(--mo-fast,180ms) ease;
 }
-.caso-parada > a:hover{ background:var(--pink-light); color:var(--ink); }
+.caso-parada > a:hover{ color:var(--ink); }
+
+/* POR LEER: las paradas a las que todavía no llegaste van atenuadas.
+   Las leídas (.es-leida) y la activa se ven enteras; así la barra dice
+   de un vistazo cuánto falta. Al pasar el ratón o con el teclado
+   recuperan su tono, para que se lean bien antes de pulsarlas. */
+.caso-parada:not(.es-leida):not(.es-aqui) > a{
+  opacity:.45;
+  transition:opacity var(--mo-fast,180ms) ease, color var(--mo-fast,180ms) ease;
+}
+.caso-parada:not(.es-leida):not(.es-aqui) > a:is(:hover, :focus-visible){ opacity:1; }
 .caso-parada-num{
   flex:none;
-  font-family:var(--font-term); font-size:calc(17px * var(--font-term-scale)); line-height:1; letter-spacing:1px;
-  color:var(--pink-ink);
+  font-family:var(--font-term); font-size:17px; line-height:1; letter-spacing:1px;
+  color:var(--text-soft);
 }
 .caso-parada-nombre{ font-family:var(--font-body); font-size:16px; line-height:1.3; }
 /* el papel («Primera decisión») no sale en la lista: lo copia la franja */
 .caso-parada-papel{ display:none; }
 
-/* AQUÍ: fila rosa, nombre en 700 y el cuadrito a la izquierda. El
-   cuadrito va siempre en --pink (como en el PDF): con el color de la
-   sección, el amarillo de la 06 y la 07 no se veía sobre el rosa. */
-.caso-parada.es-aqui > a{ background:var(--pink-light); color:var(--ink); }
-.caso-parada.es-aqui .caso-parada-nombre{ font-weight:700; }
-.caso-parada.es-aqui > a::before{
-  content:""; position:absolute; left:8px; top:50%; margin-top:-3.5px;
-  width:7px; height:7px; background:var(--pink);
+/* AQUÍ: el nombre en tinta y 700, y detrás el pastel de SU sección
+   (--caso-acento), como un resaltador. Es lo único con color de la
+   barra: así marca dónde estás sin competir con el caso. La portada
+   va en rosa claro; las demás, en celeste, durazno, menta, lila… */
+.caso-parada.es-aqui > a{
+  background:var(--caso-acento, var(--pink-light)); color:var(--ink);
+  transition:background-color var(--mo-fast,180ms) ease, color var(--mo-fast,180ms) ease;
 }
+.caso-parada.es-aqui .caso-parada-nombre{ font-weight:700; }
+.caso-parada.es-aqui .caso-parada-num{ color:var(--ink); }
 
 /* ── EL SUB-ÍNDICE ─────────────────────────────────────────────
    Cuelga de la parada abierta y solo de ella. El sub-bloque en el que
@@ -86,7 +97,7 @@
   transition:background-color var(--mo-fast,180ms) ease, color var(--mo-fast,180ms) ease;
 }
 .caso-subparada .caso-parada-num{ font-size:15px; }
-.caso-subparada a:hover{ background:var(--pink-light); color:var(--ink); }
+.caso-subparada a:hover{ color:var(--ink); }
 .caso-subparada.es-aqui a{ background:var(--caso-acento,var(--pink-light)); color:var(--ink); font-weight:700; }
 
 /* ── 4 · EL PIE: la mascota, volver arriba y el idioma ────────── */

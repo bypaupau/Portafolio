@@ -96,7 +96,11 @@
   --caso-contenido-max: 1240px;  /* en pantallas anchas crece hasta aquí: siempre llega al margen */
   /* el fondo de la barra; lo pinta también el <body>, para que siga
      junto al pie cuando la página se acaba */
-  --caso-barra-fondo: color-mix(in srgb, var(--pink-pale) 55%, var(--white));
+  --caso-barra-fondo: var(--white);
+  /* el redondeo de las imágenes, vídeos y la ventana de un caso. Es la
+     única excepción a las esquinas rectas del sitio, y vive aquí para
+     cambiarse en un solo sitio */
+  --caso-radio: 12px;   /* blanca: la barra acompaña, no compite con el caso */
   --caso-margen:    80px;   /* margen derecho */
 }
 @media (min-width:1600px){
