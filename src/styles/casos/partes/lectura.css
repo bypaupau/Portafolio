@@ -85,6 +85,10 @@ body:has(.caso-pagina)::before{ display:none; }
    cambia de alto mientras se escribe. El cursor no ocupa ancho (su
    margen negativo lo compensa), así que ninguna letra salta. */
 .caso-por-escribir{ visibility:hidden; }
+/* y hasta que el script lo prepara (le pone aria-label), el título
+   entero también espera invisible: si no, en un aparato lento salía
+   completo, se borraba y se volvía a escribir */
+.cs-motion .caso-h1[data-escribir]:not([aria-label]){ visibility:hidden; }
 .caso-cursor{
   display:inline-block; width:.42em; height:.86em; margin-right:-.42em;
   vertical-align:-.06em; background:var(--pink);

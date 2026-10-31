@@ -11,7 +11,9 @@
    ═══════════════════════════════════════════════════════════ */
 import { registrarAparicion } from '../global/scroll-reveal';
 
-/* en orden de lectura dentro de cada sección .ab-reveal */
+/* en orden de lectura dentro de cada sección .ab-reveal.
+   La lista está repetida en partes/aparicion-hacer-scroll.css, que las
+   esconde antes de que este script corra: si cambia una, cambia la otra. */
 const PIEZAS = [
   ':scope > .now-msg', /* el bocadillo de "¿qué estoy haciendo ahora?" */
   ':scope > .ab-head > *', /* 01 / ··· · título · subtítulo */

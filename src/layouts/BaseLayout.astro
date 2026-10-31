@@ -107,11 +107,35 @@ const urlCanonica = new URL(Astro.url.pathname, Astro.site);
 
   <!-- La animación de entrada solo se arma si hay JavaScript y nadie pidió
        menos movimiento. Va INLINE y en el <head> a propósito: si se
-       retrasara, el contenido daría un parpadeo al cargar. -->
+       retrasara, el contenido daría un parpadeo al cargar.
+
+       Las clases que esconden lo que aparece al bajar (.rv, .ab-rv,
+       .cs-rv) también se ponen AQUÍ, antes del primer fotograma. Antes
+       las ponían los módulos del final del <body>, que corren después de
+       pintar: al cambiar de página los bloques salían visibles, se
+       escondían y volvían a aparecer. caso-con-js es lo mismo para la
+       barra de los casos (en el celular se pliega).
+
+       Red de seguridad: scroll-reveal.ts marca data-aparicion al
+       arrancar. Si a los 4 s no lo ha hecho (un script que no cargó),
+       se quitan las clases y todo queda visible, como sin JavaScript. -->
   <script is:inline>
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('hx-motion');
-    }
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var raiz = document.documentElement;
+      raiz.classList.add('hx-motion');
+      if ('IntersectionObserver' in window) {
+        raiz.classList.add('rv-motion', 'ab-motion', 'cs-motion', 'caso-con-js');
+        window.setTimeout(function () {
+          if (!raiz.dataset.aparicion) raiz.classList.remove('rv-motion', 'ab-motion', 'cs-motion', 'caso-con-js');
+        }, 4000);
+      }
+      /* si se llega con la transición entre páginas, la cuadrícula del
+         fondo ya estaba: no se vuelve a fundir (inicio-entrada.css) */
+      window.addEventListener('pagereveal', function (e) {
+        if (e.viewTransition) raiz.classList.add('llega-con-transicion');
+      });
+    })();
   </script>
 </head>
 

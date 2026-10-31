@@ -32,7 +32,11 @@ let alEntrar: IntersectionObserver | undefined;
 let temporizadorDeRed: number | undefined;
 
 if (activo) {
+  /* el <head> de BaseLayout ya las puso antes de pintar; aquí se
+     repiten por si acaso y se avisa a su red de seguridad de que el
+     motor arrancó */
   raiz.classList.add('rv-motion', 'ab-motion');
+  raiz.dataset.aparicion = 'lista';
 
   alEntrar = new IntersectionObserver((entradas) => {
     entradas

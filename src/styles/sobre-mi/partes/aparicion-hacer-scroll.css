@@ -20,6 +20,14 @@
 @keyframes ab-rise{ from{ translate:0 30px; } to{ translate:0 0; } }
 
 .ab-motion .ab-rv{ opacity:0; }
+/* Las mismas piezas que lista PIEZAS en
+   src/scripts/sobre-mi/piezas-que-aparecen.ts, escondidas desde el
+   primer fotograma: .ab-motion ya viene del <head>, pero .ab-rv la pone
+   ese script cuando ya se pintó, y sin esto salían, se iban y volvían.
+   Si se cambia una lista, se cambia la otra. */
+.ab-motion .ab-reveal > :is(.now-msg, .win, .ab-more, .ab-title, .ab-sub, .hero-btns),
+.ab-motion .ab-reveal > .ab-head > *,
+.ab-motion .ab-reveal .tool{ opacity:0; }
 .ab-motion .ab-rv.is-in{
   opacity:1;
   animation:
