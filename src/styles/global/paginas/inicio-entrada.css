@@ -12,6 +12,9 @@
 @keyframes hx-fade{ from{ opacity:0; } to{ opacity:1; } }
 .hx-motion .hx{ animation:hx-in .6s var(--ease-out) var(--d, 0ms) backwards; }
 .hx-motion body::before{ animation:hx-fade .5s ease backwards; }
+/* llegando desde otra página del sitio la cuadrícula ya estaba en
+   pantalla: fundirla otra vez la hacía parpadear (BaseLayout) */
+.llega-con-transicion body::before{ animation:none; }
 
 /* ── 2 · STATUS ───────────────────────────────────────────── */
 .hero-status{

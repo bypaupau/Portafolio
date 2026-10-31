@@ -28,10 +28,16 @@
 .barra-superior{ view-transition-name:px-nav; }
 .taskbar{ view-transition-name:px-task; }
 
-@keyframes vt-out{ to{ opacity:0; } }
-@keyframes vt-in{ from{ opacity:0; translate:0 8px; } to{ opacity:1; translate:0 0; } }
-::view-transition-old(root){ animation:vt-out var(--mo-fast) ease both; }
-::view-transition-new(root){ animation:vt-in var(--mo-base) var(--ease-out) both; }
+/* La página nueva se funde ENCIMA de la vieja, que se queda quieta y
+   entera debajo hasta el final. Antes la vieja se iba en 180 ms y la
+   nueva tardaba 320 ms en llegar: en medio asomaba el fondo vacío (el
+   «flash» blanco), y la mezcla por defecto del navegador (plus-lighter)
+   aclaraba los dos a la vez. La nueva ya no se desplaza: lo que sube
+   son sus piezas (.hx, .rv), y sumar los dos movimientos movía también
+   la cuadrícula del fondo. */
+@keyframes vt-in{ from{ opacity:0; } to{ opacity:1; } }
+::view-transition-old(root){ animation:none; mix-blend-mode:normal; }
+::view-transition-new(root){ animation:vt-in var(--mo-base) ease both; mix-blend-mode:normal; }
 /* las dos barras solo se funden entre sí (el link activo y el nombre de
    la ventana cambian), nunca se desplazan */
 ::view-transition-old(px-nav), ::view-transition-new(px-nav),
