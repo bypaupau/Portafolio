@@ -100,11 +100,16 @@
   --w-wide:    1200px;   /* galerías y cuadrículas: las imágenes y las tarjetas necesitan espacio */
   --w-canvas:  1280px;   /* lienzo: composiciones cuyos márgenes llevan decoración */
 
-  /* ── la rejilla de una página de caso, a 1280 px ──
-     barra 300 · aire 48 · contenido 852 · margen 80 = 1280.
+  /* el ancho de la columna fija de la izquierda: lo comparten la barra
+     lateral del sitio y el índice de un caso, para que el layout sea el
+     mismo en todas las páginas (200 px hasta 1600, 290 como máximo) */
+  --barra-ancho: clamp(200px, 12.5vw, 290px);
+
+  /* ── la rejilla de una página de caso ──
+     barra · aire 48 · contenido (lo que sobre, hasta 1240) · margen 80.
      El contenido es UNA medida para todo: texto, títulos y evidencia
      terminan en la misma vertical, y llega siempre al margen derecho. */
-  --caso-barra:     300px;  /* la columna del índice */
+  --caso-barra:     var(--barra-ancho);  /* la columna del índice */
   --caso-aire:      48px;   /* entre la barra y el contenido */
   --caso-contenido: 852px;  /* texto, títulos y evidencia, todo aquí */
   --caso-contenido-max: 1240px;  /* en pantallas anchas crece hasta aquí: siempre llega al margen */

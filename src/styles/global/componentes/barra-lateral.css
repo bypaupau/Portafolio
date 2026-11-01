@@ -18,7 +18,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 body.con-barra-lateral{
-  --lateral-ancho: clamp(200px, 12.5vw, 290px);
+  --lateral-ancho: var(--barra-ancho);
   /* --nav-h es el alto de la barra de arriba, el que esquivan main y
      el hero: aquí lo pone la barrita de ruta */
   --nav-h: clamp(52px, 3.5vw, 72px);
