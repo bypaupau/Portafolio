@@ -22,7 +22,7 @@
   display:inline-flex; align-items:center;
   margin-left:clamp(8px,2vw,18px);
 }
-.nav-logo-imagen{ height:32px; width:auto; flex:none; margin-right:22px; }
+.nav-logo-imagen{ height:32px; width:auto; flex:none; margin-right:12px; }
 .nav-logo span{ color:var(--pink); }
 .nav-tabs{ display:flex; gap:4px; list-style:none; }
 .nav-tabs a{
