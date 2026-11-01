@@ -36,17 +36,28 @@
 .popup:hover .plabel{ background:var(--yellow); }
 
 /* ventana decorativa del hero (sprite pixel, sin "foto aquí") */
-.hero-card{ justify-self:end; width:100%; max-width:480px; }
+/* en el diseño la ventana llena su columna, su barra lleva el rosa
+   de la barra lateral sin raya debajo, y la sombra es gris */
+/* sus medidas interiores son las de la versión grande × 0,87: la
+   ventana se achica entera sin deformar la compu */
+.hero-card{
+  justify-self:end; width:100%; max-width:500px;
+  --win-shadow:6px 6px 0 color-mix(in srgb, var(--ink) 40%, transparent);
+}
+.hero-card .win-bar{ background:var(--lateral-fondo); border-bottom:none; }
 .hero-card .win-body{
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;
+  --franja:11px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
   background:
-    repeating-linear-gradient(45deg, var(--pink-pale) 0 10px, #fff 10px 20px);
-  min-height:340px; text-align:center;
+    repeating-linear-gradient(45deg, var(--pink-pale) 0 var(--franja), #fff var(--franja) calc(2 * var(--franja)));
+  min-height:clamp(320px, 25vw, 385px); text-align:center;
 }
 .hero-card .sprite{ width:160px; height:auto; }
-.hero-card .cap{ font-family:var(--font-term); font-size:calc(1.5rem * var(--font-term-scale)); color:var(--text-soft); }
+.hero-card .mon{ width:clamp(160px, 14.5vw, 218px); }
+.hero-card .cap{ margin-top:26px; font-family:var(--font-term); font-size:calc(1.5rem * var(--font-term-scale)); color:var(--text-soft); }
 /* tiles sociales dentro de pau.exe */
-.social-row{ display:flex; gap:12px; margin-top:2px; }
+.social-row{ display:flex; gap:14px; margin-top:22px; }
+.hero-card .social{ width:52px; height:52px; }
 .social{
   width:48px; height:48px; display:grid; place-items:center;
   background:#fff; border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink);

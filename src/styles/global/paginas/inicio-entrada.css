@@ -17,16 +17,20 @@
 .llega-con-transicion body::before{ animation:none; }
 
 /* ── 2 · STATUS ───────────────────────────────────────────── */
+/* la etiqueta menta con el puntito redondo es la del diseño; el
+   tamaño, el de siempre */
 .hero-status{
   display:flex; align-items:center; gap:8px; flex-wrap:wrap;
-  margin-top:20px;
+  margin-top:22px;
   font-family:var(--font-term); font-size:calc(1.12rem * var(--font-term-scale)); line-height:1.1; color:var(--text-soft);
 }
 .st-key{
-  display:inline-flex; align-items:center; gap:7px;
-  color:var(--ink); background:#fff; border:2px solid var(--ink);
-  padding:2px 8px 1px; box-shadow:2px 2px 0 var(--pink-mid);
+  display:inline-flex; align-items:center; gap:6px;
+  padding:3px 8px 2px;
+  color:var(--ok-green-texto); background:var(--mint);
+  border:2px solid color-mix(in srgb, var(--ok-green) 35%, var(--mint));
 }
+.st-key .st-dot{ width:6px; height:6px; border-radius:50%; box-shadow:none; }
 /* puntito cuadrado (pixel), quieto */
 .st-dot{
   width:8px; height:8px; flex:none; background:var(--ok-green);

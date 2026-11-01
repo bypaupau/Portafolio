@@ -25,11 +25,9 @@
   .split > .split-body{ grid-column:2; min-width:0; }
   .split .sec-title{ font-size:clamp(1.7rem,2.3vw,2.1rem); }
 
-  /* hero: texto y pau.exe más cerca; sus bordes coinciden con los del grid */
-  .hero-inner{ grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); }
-  .hero-card{ max-width:560px; }
-  .hero-card .mon{ width:clamp(160px,13vw,208px); }
-  .hero-desc{ max-width:46ch; }
+  /* (el hero de Inicio ya no se ajusta aquí: con la barra lateral sus
+     columnas y su escalera de tamaños viven en paginas/inicio-hero.css
+     y paginas/inicio-responsive.css) */
 
   /* destacados: galería protagonista a todo el ancho, el título encima */
   .featured{ padding:0 0 120px; }

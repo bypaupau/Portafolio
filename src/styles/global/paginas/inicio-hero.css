@@ -14,29 +14,43 @@
   display:flex; flex-direction:column; justify-content:center;
   padding:40px 0;
 }
+/* ── EL HERO JUNTO A LA BARRA LATERAL ─────────────────────────
+   La composición es la del diseño de Figma (texto | pau.exe, la pista
+   de scroll bajo el texto), pero con la ESCALA del hero de siempre:
+   el mismo contenedor de 1080 (--w-content, en .wrap) y los mismos
+   tamaños de letra. Copiar los tamaños del Figma en vw lo agrandaba
+   todo un 35–50 % y se perdía el aire. Abajo hay un poco más de aire
+   que arriba: el bloque queda algo por encima del centro. */
+.hero{ padding:40px 0 56px; }
 @supports (height:100svh){
   .hero{ min-height:calc(100svh - var(--nav-h)); }
 }
-.hero-inner{ display:grid; grid-template-columns:1fr 1.12fr; gap:clamp(26px,4vw,40px); align-items:center; width:100%; }
+/* 1.1fr | 1fr: a 1080 la ventana mide ~495, un 13 % menos que la
+   versión grande, y al texto le cabe el titular en una línea */
+.hero-inner{
+  display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
+  gap:clamp(26px,4vw,40px); align-items:center; width:100%;
+}
 .hero-greeting{
   font-family:var(--font-term);
   font-size:clamp(calc(1.4rem * var(--font-term-scale)), calc(4.4vw * var(--font-term-scale)), calc(1.8rem * var(--font-term-scale)));
-  color:var(--pink);
+  color:var(--pink-ink);
 }
 .hero-name{
   font-family:var(--font-pixel); font-weight:700;
   font-size:clamp(2.4rem,10vw,4.2rem); line-height:.95; color:var(--ink);
-  text-shadow:4px 4px 0 var(--pink-mid); margin:2px 0 14px;
+  text-shadow:4px 4px 0 var(--pink-mid); margin:6px 0 18px;
 }
-.hero-role{ font-size:clamp(1.2rem,2vw,1.5rem); font-weight:600; color:var(--ink); }
-.hero-sem{ font-size:clamp(.96rem,1.25vw,1.05rem); color:var(--text-muted); margin-bottom:14px; }
-.hero-desc{ font-size:clamp(1.02rem,1.5vw,1.14rem); color:var(--text-soft); line-height:1.75; max-width:42ch; margin-bottom:26px; }
+.hero-role{ font-size:clamp(1.2rem,2vw,1.5rem); font-weight:600; color:var(--ink); margin-bottom:6px; }
+.hero-sem{ font-size:clamp(.96rem,1.25vw,1.05rem); color:var(--text-soft); margin-bottom:16px; }
+.hero-desc{ font-size:clamp(1.02rem,1.5vw,1.14rem); color:var(--text-soft); line-height:1.75; max-width:46ch; margin-bottom:28px; }
 .hero-desc strong{ color:var(--ink); }
 .hero-btns{ display:flex; gap:14px; flex-wrap:wrap; }
 
-/* indicador de scroll (va DEBAJO del hero, centrado) */
+/* indicador de scroll: debajo del texto, alineado con él
+   (inline-block: mide lo que su texto, no lo que la columna) */
 .scroll-hint{
-  display:block; text-align:center; margin:26px auto 0; width:100%;
+  display:inline-block; margin-top:30px;
   font-family:var(--font-term); font-size:calc(1.2rem * var(--font-term-scale)); color:var(--text-muted);
   animation:bob 2s ease-in-out infinite;
 }

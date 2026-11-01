@@ -131,6 +131,10 @@ const verbos = [
         <p class="hero-status hx" style="--d:680ms">
           <span class="st-key"><span class="st-dot" aria-hidden="true"></span><span data-i18n="pages.home.status.label">{translate('pages.home.status.label')}</span></span>{' '}<span data-i18n="pages.home.status.text">{translate('pages.home.status.text')}</span>
         </p>
+
+        {/* bajo la columna del texto, como en el diseño (antes iba
+            centrado debajo de las dos columnas) */}
+        <span class="scroll-hint hx" style="--d:900ms" aria-hidden="true"><span class="arr">↓</span> <span data-i18n="pages.home.scrollHint">{translate('pages.home.scrollHint')}</span> <span class="arr">↓</span></span>
       </div>
 
       {/* ═══════════ pau.exe ═══════════
@@ -155,7 +159,6 @@ const verbos = [
       </div>
     </div>
 
-    <span class="scroll-hint hx" style="--d:900ms" aria-hidden="true"><span class="arr">↓</span> <span data-i18n="pages.home.scrollHint">{translate('pages.home.scrollHint')}</span> <span class="arr">↓</span></span>
   </section>
 
   {/* ═══════════ PUENTE · quién soy → qué he hecho ═══════════

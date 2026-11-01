@@ -20,13 +20,11 @@
 /* ── ≤1024px · tablet horizontal ── */
 @media (max-width:1024px){
   .popups{ gap:22px; }
-  .hero-card{ max-width:420px; }
 }
 
 /* ── ≤900px · tablet vertical ── */
 @media (max-width:900px){
   .grid-3{ grid-template-columns:repeat(2,1fr); }
-  .hero-inner{ grid-template-columns:1fr .95fr; }
   .stats{ grid-template-columns:repeat(2,1fr); }
   .contact-cols{ grid-template-columns:1fr; gap:26px; }
   .materias-grid{ grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); }
@@ -60,13 +58,8 @@
   .nav-tabs a.active{ border:none; background:var(--pink-light); }
   .nav-tabs a.active{ box-shadow:inset 5px 0 0 var(--pink); }
 
-  /* layout general → una columna */
-  .hero{ padding:28px 0 40px; }
-  .hero-inner{ grid-template-columns:1fr; gap:30px; text-align:center; }
-  .hero-desc{ margin-inline:auto; }
-  .hero-btns{ justify-content:center; }
-  .hero-card{ justify-self:center; max-width:380px; margin-inline:auto; }
-  .hero-card .win-body{ min-height:280px; }
+  /* layout general → una columna (el hero de Inicio, en
+     paginas/inicio-responsive.css) */
   .grid-3,.grid-2{ grid-template-columns:1fr; }
   .contact-cols{ grid-template-columns:1fr; gap:24px; }
   .resumen-grid{ grid-template-columns:1fr; }
@@ -93,10 +86,6 @@
   .stat{ padding:14px 10px; }
   .stat .num{ font-size:1.9rem; }
   .stat .lbl{ font-size:1rem; line-height:1.15; }
-
-  /* botones a lo ancho: más fáciles de tocar */
-  .hero-btns{ flex-direction:column; align-items:stretch; }
-  .hero-btns .btn{ justify-content:center; }
 
   .materias-grid{ grid-template-columns:1fr; }
   .filters-bar .dd{ flex:1 1 100%; }

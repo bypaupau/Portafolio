@@ -5,12 +5,34 @@
    Las reglas están sin tocar. */
 /* ── fin de la nota · abajo empieza el CSS tal cual ── */
 /* ── RESPONSIVE de lo nuevo ─────────────────────────────── */
+/* La escalera del hero entero vive aquí (antes estaba repartida entre
+   ajustes/rejilla-comun.css y ajustes/responsive.css). Los cortes miden
+   la pantalla, pero el hero tiene a su lado la barra lateral (200 px
+   como mínimo): por debajo de 1100 px a la columna del texto le quedan
+   menos de 400, y el titular y los botones se aprietan. Es el mismo
+   corte de siempre del grid de dos columnas (ajustes/rejilla-comun.css). */
+
+/* ── <1100px · tablet: una columna, alineada a la izquierda ── */
+@media (max-width:1099px){
+  .hero-inner{ grid-template-columns:minmax(0,1fr); gap:clamp(28px, 5vw, 44px); }
+  .hero-card{ justify-self:start; max-width:460px; }
+}
+
+/* ── ≤760px · celular: una columna centrada ── */
 @media (max-width:760px){
+  .hero{ padding:28px 0 40px; }
+  .hero-inner{ gap:30px; text-align:center; }
+  .hero-btns{ justify-content:center; }
+  .hero-card{ justify-self:center; max-width:380px; margin-inline:auto; }
+  .hero-card .win-body{ min-height:280px; }
   .hero-status, .hero-also, .hero-name{ justify-content:center; }
   .rot-w{ justify-self:center; }   /* centrado, la palabra corta no queda "corrida" */
 }
 @media (max-width:480px){
   .hero-status{ font-size:1.05rem; }
+  /* botones a lo ancho: más fáciles de tocar */
+  .hero-btns{ flex-direction:column; align-items:stretch; }
+  .hero-btns .btn{ justify-content:center; }
 }
 
 /* ── MENOS MOVIMIENTO: todo quieto, todo visible ─────────── */
