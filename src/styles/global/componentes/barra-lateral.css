@@ -50,6 +50,10 @@ body.con-barra-lateral{
   display:flex; flex-direction:column; align-items:center; gap:14px;
   padding-inline:10px;
   text-decoration:none;
+  /* baja el bloque para que no quede pegado arriba: la mitad de lo que
+     sobra de alto una vez cabe todo (unos 640 px), hasta 100 px. En una
+     pantalla baja es 0 y no hay scroll */
+  margin-top:clamp(0px, calc((100vh - 640px) / 2.2), 100px);
 }
 /* el logo va tal cual; el círculo rosa y su borde son de aquí */
 .lateral-avatar{
@@ -191,7 +195,7 @@ body.con-barra-lateral{
     border-right:none; border-bottom:3px solid var(--ink);
     overflow:visible;
   }
-  .lateral-identidad{ flex-direction:row; gap:10px; padding:0; margin-right:auto; min-width:0; }
+  .lateral-identidad{ flex-direction:row; gap:10px; padding:0; margin:0 auto 0 0; min-width:0; }
   .lateral-toggle{ flex:none; }
   .lateral-avatar{ width:42px; border-width:2px; box-shadow:none; }
   .lateral-quien{ align-items:flex-start; gap:2px; min-width:0; }
