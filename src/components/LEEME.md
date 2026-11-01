@@ -4,7 +4,7 @@ El mismo vocabulario que `src/styles/global/`, para que las dos carpetas se
 lean igual: lo general arriba, lo específico abajo.
 
 ```
-globales/    4   en TODAS las páginas · los monta BaseLayout
+globales/    7   en TODAS las páginas · los monta BaseLayout
 piezas/      4   se reutilizan entre páginas
 dibujos/     9   SVG decorativos que usan dos o más páginas
 iconos/      8   SVG de interfaz (pixel art) · tiene su propio README

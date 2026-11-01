@@ -30,6 +30,20 @@
      y --pink-mid compite con los sellos de Antes/Después. --ink encima
      da 13,9:1. */
   --resalte:    #FBDDE8;
+  /* ── la barra lateral (componentes/barra-lateral.css) ──
+     su rosa es el del diseño de Figma: entre --pink-light y --pink-mid,
+     para que la barra se separe del papel sin competir con el rosa de
+     los botones. El café es el del pelo del logo: el nombre y el menú
+     de la barra lo comparten con el avatar que tienen encima. */
+  --lateral-fondo: #F4D8E3;
+  --cafe-logo:     #44342C;
+  /* el rosa del link activo y de la sección en la barrita de ruta: es
+     el del diseño. --pink-ink sobre --lateral-fondo da 4,2:1 y no
+     llega al 4,5:1 del texto chico; este da 4,9:1 */
+  --lateral-activo: #A5335C;
+  /* el texto de la etiqueta «disponible»: --ok-green sobre --mint no
+     llega a 3:1; este da 5,1:1 */
+  --ok-green-texto: #2F6F48;
 
   /* ── etiquetas con significado ─────────────────────────────────
      Cada color dice QUÉ es la etiqueta inclinada de una tarjeta:

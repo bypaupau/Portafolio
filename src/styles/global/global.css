@@ -2,7 +2,7 @@
    ÍNDICE DE ESTILOS GLOBALES
 
    Este archivo no tiene CSS propio: solo dice en qué ORDEN se cargan
-   los 35 archivos de estilos. Y el orden importa de verdad, porque en
+   los 37 archivos de estilos. Y el orden importa de verdad, porque en
    CSS, cuando dos reglas empatan en importancia y especificidad, gana
    la última que se carga. Así que este índice ES la cascada.
 
@@ -47,9 +47,11 @@
 @import './base/transicion-entre-paginas.css';
 
 /* ── componentes/ · LAS PIEZAS QUE SE REPITEN ──
-   El nav, la ventana estilo sistema operativo, los botones, el pie y la
+   El nav (la barra de arriba, que queda en las páginas de caso), la
+   barra lateral del resto de páginas, la ventana estilo sistema operativo, los botones, el pie y la
    taskbar. Aparecen en varias páginas, así que van antes que las páginas. */
 @import './componentes/nav.css';
+@import './componentes/barra-lateral.css';
 @import './componentes/ventana.css';
 @import './componentes/botones.css';
 @import './componentes/pie.css';

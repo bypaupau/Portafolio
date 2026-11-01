@@ -30,6 +30,14 @@
                            idiomas. Lo usan las páginas de caso, donde
                            el título es parte del proyecto. Si va, manda
                            sobre claveTitulo / claveDescripcion.
+     barraLateral          opcional: la navegación va en la barra de la
+                           izquierda (BarraLateral + BarraDeRuta) en vez
+                           de la barra de arriba. Por defecto sí, salvo
+                           en las páginas sin taskbar: las de caso ya
+                           tienen su índice a la izquierda y dos
+                           columnas fijas se comerían la lectura. Con la
+                           barra lateral no hay taskbar: el idioma pasa a
+                           la barra y el nombre de la ventana, arriba.
 
    Las claves van como data-* en el <body> para que el script de
    idioma pueda traducir el título y la descripción sin tener que
@@ -41,6 +49,8 @@ import { defaultLanguage } from '../i18n/languages';
 import { rutaPublica } from '../lib/rutas';
 import { conIdioma, type TextoBilingue } from '../lib/texto-bilingue';
 import Navegacion from '../components/globales/Navegacion.astro';
+import BarraLateral from '../components/globales/BarraLateral.astro';
+import BarraDeRuta from '../components/globales/BarraDeRuta.astro';
 import AmpliarImagenes from '../components/globales/AmpliarImagenes.astro';
 import Pie from '../components/globales/Pie.astro';
 import Taskbar from '../components/globales/Taskbar.astro';
@@ -59,12 +69,15 @@ interface Props {
   /** true en las páginas sin la barra de abajo (las de caso): la página
       pone ella misma el selector de idioma, con data-anfitrion-idioma */
   sinTaskbar?: boolean;
+  barraLateral?: boolean;
 }
 const {
   paginaActual, claveTitulo, claveDescripcion, claveNombreVentana,
   claseBody, pieConSecreto = false, tituloDelCaso,
   paginaDeDatos, nombreDeVentana, sinTaskbar = false,
+  barraLateral = !sinTaskbar,
 } = Astro.props;
+const conTaskbar = !sinTaskbar && !barraLateral;
 
 const delCaso = tituloDelCaso
   ? { titulo: conIdioma(tituloDelCaso.titulo), descripcion: conIdioma(tituloDelCaso.descripcion) }
@@ -139,15 +152,22 @@ const urlCanonica = new URL(Astro.url.pathname, Astro.site);
   </script>
 </head>
 
-<body class:list={[claseBody, sinTaskbar && 'sin-taskbar']} data-page={paginaDeDatos ?? paginaActual} {...datosDeIdioma}>
-  <Navegacion paginaActual={paginaActual} />
+<body class:list={[claseBody, !conTaskbar && 'sin-taskbar', barraLateral && 'con-barra-lateral']} data-page={paginaDeDatos ?? paginaActual} {...datosDeIdioma}>
+  {barraLateral ? (
+    <Fragment>
+      <BarraLateral paginaActual={paginaActual} />
+      <BarraDeRuta paginaActual={paginaActual} />
+    </Fragment>
+  ) : (
+    <Navegacion paginaActual={paginaActual} />
+  )}
 
   <main>
     <slot />
   </main>
 
   <Pie conSecreto={pieConSecreto} ventana={sinTaskbar ? nombreDeVentana : undefined} />
-  {!sinTaskbar && <Taskbar claveNombreVentana={claveNombreVentana} nombreDeVentana={nombreDeVentana} />}
+  {conTaskbar && <Taskbar claveNombreVentana={claveNombreVentana} nombreDeVentana={nombreDeVentana} />}
   {/* el molde de la lupa y la vista ampliada, vacíos hasta que se usan.
       Van en TODAS las páginas: así una captura nueva nace ampliable sin
       tocar su página. */}
@@ -158,6 +178,7 @@ const urlCanonica = new URL(Astro.url.pathname, Astro.site);
        Astro los junta en un solo módulo y respeta este orden. */
     import '../scripts/global/language-runtime';
     import '../scripts/global/taskbar';
+    import '../scripts/global/barra-lateral';
     import '../scripts/global/mobile-menu';
     import '../scripts/global/resume-by-language';
     import '../scripts/global/scroll-reveal';

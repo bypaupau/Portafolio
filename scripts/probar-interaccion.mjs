@@ -54,6 +54,20 @@ await new Promise((r) => servidor.listen(0, '127.0.0.1', r));
 const S = `http://127.0.0.1:${servidor.address().port}`;
 const navegador = await abrirNavegador();
 
+/* El idioma se cambia de dos maneras según la página: con los botones
+   ES / EN de la barra lateral, o con la ventanita de la taskbar (o del
+   pie de la barra, en las de caso). Lo que se comprueba es lo mismo. */
+const conBarraLateral = (p) => p.locator('[data-cambiar-idioma]').count().then((n) => n > 0);
+async function pasarAIngles(p) {
+  if (await conBarraLateral(p)) {
+    await p.click('[data-cambiar-idioma="en"]');
+  } else {
+    await p.click('#tb-lang'); await p.waitForTimeout(200);
+    await p.click('.tb-opt[data-lang="en"]');
+  }
+  await p.waitForTimeout(400);
+}
+
 const resultados = [];
 const comprobar = (nombre, condicion, detalle = '') => resultados.push({ nombre, condicion, detalle });
 
@@ -70,10 +84,17 @@ for (const pagina of paginas) {
     await p.goto(url, { waitUntil: 'load' }); await p.waitForTimeout(500);
 
     const tituloAntes = await p.title();
-    await p.click('#tb-lang'); await p.waitForTimeout(250);
-    comprobar(marca('el menú de idioma se abre'), (await p.getAttribute('#tb-lang', 'aria-expanded')) === 'true');
-
-    await p.click('.tb-opt[data-lang="en"]'); await p.waitForTimeout(400);
+    if (await conBarraLateral(p)) {
+      comprobar(marca('el botón ES arranca marcado'),
+        (await p.getAttribute('[data-cambiar-idioma="es"]', 'aria-pressed')) === 'true');
+      await pasarAIngles(p);
+      comprobar(marca('el botón EN queda marcado'),
+        (await p.getAttribute('[data-cambiar-idioma="en"]', 'aria-pressed')) === 'true');
+    } else {
+      await p.click('#tb-lang'); await p.waitForTimeout(250);
+      comprobar(marca('el menú de idioma se abre'), (await p.getAttribute('#tb-lang', 'aria-expanded')) === 'true');
+      await p.click('.tb-opt[data-lang="en"]'); await p.waitForTimeout(400);
+    }
     /* ¿El título DEBE cambiar? No se adivina: se le pregunta a la página.
        Las de caso traen su título en data-title-es / data-title-en, así que
        se comprueba contra el valor exacto esperado en inglés. Las demás lo
@@ -92,7 +113,8 @@ for (const pagina of paginas) {
     }
     comprobar(marca('el <html lang> cambia a en'), (await p.getAttribute('html', 'lang')) === 'en');
     comprobar(marca('la preferencia se guarda'), (await p.evaluate(() => localStorage.getItem('pau.lang'))) === 'en');
-    comprobar(marca('se anuncia a lectores de pantalla'), ((await p.textContent('#tb-live')) || '').length > 0);
+    comprobar(marca('se anuncia a lectores de pantalla'),
+      ((await p.textContent('#aviso-de-idioma, #tb-live')) || '').length > 0);
     comprobar(marca('NO recarga la página al cambiar idioma'), cargas === 1, cargas + ' carga(s)');
 
     /* no todas las páginas llevan el CV: solo se comprueba si lo hay */
@@ -248,8 +270,7 @@ for (const pagina of paginas) {
     comprobar(marca('el enlace dentro de una pista apunta a /Portafolio/'),
       (await enlaceDePista()) === '/Portafolio/proyectos', await enlaceDePista());
 
-    await p.click('#tb-lang'); await p.waitForTimeout(200);
-    await p.click('.tb-opt[data-lang="en"]'); await p.waitForTimeout(400);
+    await pasarAIngles(p);
     comprobar(marca('y sigue bien después de cambiar a inglés'),
       (await enlaceDePista()) === '/Portafolio/proyectos', await enlaceDePista());
     comprobar(marca('sin huecos {pagina:...} a la vista'),

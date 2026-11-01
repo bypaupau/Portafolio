@@ -1,0 +1,103 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   La barra lateral: avatar, nombre, menú e idioma.
+
+   Es la navegación de todas las páginas menos las de caso (esas
+   tienen su propio índice a la izquierda y conservan la barra de
+   arriba, ver BaseLayout). La acompaña BarraDeRuta, la barrita de
+   «pau.exe / Inicio» sobre el contenido.
+
+   EL AVATAR es public/mi-logo.svg tal cual, el mismo archivo de la
+   barra superior. El círculo rosa y su borde los pone el CSS
+   (.lateral-avatar): el dibujo no se toca.
+
+   EN CELULAR (≤760px) la barra se vuelve una franja arriba con el
+   avatar, el nombre y el botón de menú; el menú y el idioma quedan
+   dentro de #nav-tabs, que abre src/scripts/global/mobile-menu.ts.
+   Por eso el botón y el panel conservan los id de siempre
+   (nav-toggle · nav-tabs): el mismo script sirve a las dos barras.
+
+   EL IDIOMA son dos botones, ES y EN, como en el diseño. Los mueve
+   src/scripts/global/barra-lateral.ts. Reemplazan a la ventanita
+   de idioma de la taskbar, que en estas páginas ya no está.
+   ═══════════════════════════════════════════════════════════ */
+import { translate } from '../../i18n/translate';
+import type { TranslationKey } from '../../i18n/keys';
+import { supportedLanguages, defaultLanguage, type Language } from '../../i18n/languages';
+import { rutaPagina, rutaPublica } from '../../lib/rutas';
+import { paginasDelSitio } from '../../lib/navegacion';
+
+interface Props {
+  /** id de la página actual (ver src/lib/navegacion.ts) */
+  paginaActual: string;
+}
+const { paginaActual } = Astro.props;
+
+/* el nombre de cada idioma, escrito EN ese idioma (igual que la
+   ventanita de la taskbar): es lo que lee un lector de pantalla */
+const nombreDelIdioma: Record<Language, TranslationKey> = {
+  es: 'language.spanish',
+  en: 'language.english',
+};
+---
+<header class="barra-lateral">
+  <a href={rutaPagina('')} class="lateral-identidad">
+    <span class="lateral-avatar"><img src={rutaPublica('mi-logo.svg')} alt="" aria-hidden="true" /></span>
+    <span class="lateral-nombre">Paula Martillo Quintana</span>
+  </a>
+
+  <button
+    class="nav-toggle lateral-toggle"
+    id="nav-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="nav-tabs"
+    aria-label={translate('navigation.menuOpen')}
+  >
+    <span class="nav-burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span data-i18n="navigation.menuLabel">{translate('navigation.menuLabel')}</span>
+  </button>
+
+  <div class="lateral-panel" id="nav-tabs">
+    <nav
+      class="lateral-menu"
+      aria-label={translate('navigation.mainLabel')}
+      data-i18n-attr="aria-label:navigation.mainLabel"
+    >
+      <ul>
+        {paginasDelSitio.map((pagina) => (
+          <li>
+            <a
+              href={rutaPagina(pagina.ruta)}
+              data-i18n={pagina.claveEnlace}
+              class:list={[pagina.id === paginaActual && 'active']}
+              aria-current={pagina.id === paginaActual ? 'page' : undefined}
+            >{translate(pagina.claveEnlace)}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div
+      class="lateral-idioma"
+      role="group"
+      aria-label={translate('language.buttonLabel')}
+      data-i18n-attr="aria-label:language.buttonLabel"
+    >
+      {supportedLanguages.map((idioma) => (
+        <button
+          type="button"
+          class:list={['lateral-idioma-boton', idioma === defaultLanguage && 'is-on']}
+          data-cambiar-idioma={idioma}
+          lang={idioma}
+          aria-pressed={idioma === defaultLanguage ? 'true' : 'false'}
+          aria-label={translate(nombreDelIdioma[idioma])}
+          title={translate(nombreDelIdioma[idioma])}
+        >{idioma.toUpperCase()}</button>
+      ))}
+    </div>
+  </div>
+
+  <!-- anuncia el cambio de idioma a un lector de pantalla -->
+  <p class="sr-only" aria-live="polite" id="aviso-de-idioma"></p>
+</header>

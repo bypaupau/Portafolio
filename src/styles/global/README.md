@@ -1,12 +1,12 @@
 # La hoja compartida, por partes
 
-`global.css` ya no tiene reglas: es un **índice** de 35 `@import` agrupados en
+`global.css` ya no tiene reglas: es un **índice** de 37 `@import` agrupados en
 cuatro carpetas, de lo más general a lo más específico.
 
 ```
 global.css          el índice · EL ORDEN DE SUS @import ES LA CASCADA
 base/           7   los cimientos: variables, anchos, encabezados, animación, cursor
-componentes/    5   piezas que se repiten: nav · ventana · botones · pie · taskbar
+componentes/    7   piezas que se repiten: nav · barra lateral · ventana · botones · pie · taskbar · ampliar
 paginas/       19   lo propio de cada página, en el orden en que se recorre el sitio
 ajustes/        4   lo que REESCRIBE a todo lo de arriba
 ```

@@ -1,0 +1,26 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   La barrita de arriba del contenido: «pau.exe / Inicio».
+
+   Acompaña a BarraLateral y hace lo que hacía el nombre de la
+   ventana en la taskbar: dice dónde estás. La sección sale de la
+   misma lista que el menú (src/lib/navegacion.ts), con la misma
+   clave de texto, así que cambia con la página y con el idioma.
+   ═══════════════════════════════════════════════════════════ */
+import { translate } from '../../i18n/translate';
+import { paginasDelSitio } from '../../lib/navegacion';
+
+interface Props {
+  /** id de la página actual (ver src/lib/navegacion.ts) */
+  paginaActual: string;
+}
+const { paginaActual } = Astro.props;
+const seccion = paginasDelSitio.find((pagina) => pagina.id === paginaActual);
+---
+<div class="barra-ruta">
+  <p class="barra-ruta-texto">
+    <span class="barra-ruta-app">pau.exe</span>{' '}<span class="barra-ruta-barra" aria-hidden="true">/</span>{' '}{seccion && (
+      <span class="barra-ruta-seccion" data-i18n={seccion.claveEnlace}>{translate(seccion.claveEnlace)}</span>
+    )}
+  </p>
+</div>

@@ -1,0 +1,180 @@
+/* ═══════════════════════════════════════════════════════════
+   LA BARRA LATERAL Y LA BARRITA DE RUTA
+
+   El marcado: src/components/globales/BarraLateral.astro y
+   BarraDeRuta.astro. Las monta BaseLayout en todas las páginas
+   menos las de caso, y marca el <body> con .con-barra-lateral.
+
+   Las medidas salen del diseño de Figma, que se dibujó a todo el
+   ancho de la pantalla: por eso van en vw (la barra es el 12,5 %
+   del ancho, la barrita de arriba el 3,5 %…), con un clamp() que
+   las frena en pantallas muy chicas o muy grandes.
+
+   Escalones:
+     escritorio y tablet   barra fija a la izquierda
+     ≤760 celular          franja arriba: avatar, nombre y menú; el
+                           menú y el idioma se despliegan debajo
+                           (src/scripts/global/mobile-menu.ts)
+   ═══════════════════════════════════════════════════════════ */
+
+body.con-barra-lateral{
+  --lateral-ancho: clamp(200px, 12.5vw, 290px);
+  /* --nav-h es el alto de la barra de arriba, el que esquivan main y
+     el hero: aquí lo pone la barrita de ruta */
+  --nav-h: clamp(52px, 3.5vw, 72px);
+  /* el aire y el ancho del contenido: los de .wrap, para que la
+     barrita de ruta empiece en la misma vertical que el hero */
+  --contenido-aire: var(--edge);
+  --contenido-ancho: var(--w-content);
+  padding-left:var(--lateral-ancho);
+}
+
+/* ════════ LA BARRA ════════ */
+.barra-lateral{
+  position:fixed; top:0; bottom:0; left:0; z-index:100;
+  width:var(--lateral-ancho);
+  display:flex; flex-direction:column; align-items:center;
+  padding:min(6.3vw, 13vh) 0 min(3.1vw, 6vh);
+  background:var(--lateral-fondo);
+  border-right:3px solid var(--ink);
+  overflow-y:auto; overscroll-behavior:contain;
+}
+
+.lateral-identidad{
+  display:flex; flex-direction:column; align-items:center; gap:clamp(14px, 1.75vw, 36px);
+  padding-inline:10px;
+  text-decoration:none;
+}
+/* el logo va tal cual; el círculo rosa y su borde son de aquí */
+.lateral-avatar{
+  display:grid; place-items:center; flex:none;
+  width:clamp(96px, 8.35vw, 180px); aspect-ratio:1;
+  background:var(--pink);
+  border:3px solid var(--ink); border-radius:50%;
+  overflow:hidden;
+  transition:transform .16s cubic-bezier(.3,.7,.4,1);
+}
+.lateral-avatar img{
+  /* como en el diseño: el dibujo no toca el borde, queda un anillo
+     rosa alrededor, y sube un poco para que se vea más rosa abajo */
+  display:block; width:83%; height:83%; object-fit:contain; translate:0 -5%;
+}
+.lateral-identidad:hover .lateral-avatar{ transform:rotate(-4deg); }
+.lateral-nombre{
+  font-family:var(--font-pixel); font-weight:600;
+  font-size:clamp(1.1rem, 1.5vw, 1.9rem); line-height:1.22;
+  color:var(--cafe-logo); text-align:center;
+}
+
+/* ── el menú ── */
+.lateral-panel{ flex:1; width:100%; display:flex; flex-direction:column; }
+.lateral-menu ul{
+  list-style:none;
+  display:flex; flex-direction:column; align-items:center;
+  margin-top:clamp(6px, .7vw, 16px);
+}
+.lateral-menu a{
+  display:block;
+  padding:clamp(9px, 1.22vw, 26px) 16px;
+  font-family:var(--font-term); font-weight:500;
+  font-size:clamp(.8rem, .8vw, 1rem); line-height:1.2;
+  letter-spacing:.13em; text-transform:uppercase;
+  color:var(--cafe-logo); text-decoration:none;
+  transition:color .12s ease;
+}
+.lateral-menu a:hover{ color:var(--lateral-activo); }
+.lateral-menu a.active{ color:var(--lateral-activo); font-weight:700; }
+.lateral-menu a:focus-visible{ outline:3px dashed var(--pink); outline-offset:-3px; }
+
+/* ── el idioma, al pie, separado por una raya ── */
+.lateral-idioma{
+  display:flex; justify-content:center; gap:clamp(6px, .4vw, 10px);
+  margin:auto clamp(14px, 1.1vw, 24px) 0;
+  padding-top:clamp(14px, 1.25vw, 26px);
+  border-top:2px solid var(--pink-mid);
+}
+.lateral-idioma-boton{
+  min-width:clamp(34px, 1.9vw, 46px); height:clamp(22px, 1.2vw, 30px); padding:0 6px;
+  font-family:var(--font-tiny); font-size:clamp(.45rem, .45vw, .6rem); letter-spacing:.1em;
+  color:var(--text-soft); background:var(--pink-pale);
+  border:2px solid var(--ink); border-radius:0; cursor:pointer;
+  transition:background-color .12s ease, color .12s ease;
+}
+.lateral-idioma-boton:hover{ background:var(--white); color:var(--ink); }
+.lateral-idioma-boton.is-on{ background:var(--pink); color:var(--white); }
+.lateral-idioma-boton:focus-visible{ outline:3px dashed var(--pink); outline-offset:2px; }
+
+/* el botón de menú solo existe en celular (nav.css lo esconde y
+   ajustes/responsive.css lo enciende en ≤760, igual que en la barra
+   de arriba) */
+
+/* ════════ LA BARRITA DE RUTA · «pau.exe / Inicio» ════════ */
+.barra-ruta{
+  position:fixed; top:0; left:var(--lateral-ancho); right:0; z-index:99;
+  height:var(--nav-h);
+  display:flex; align-items:center;
+  /* el mismo borde izquierdo que el hero. Con 100vw y no con 100%:
+     en un elemento fijo el % se mide contra la pantalla entera */
+  padding-inline:max(var(--contenido-aire), (100vw - var(--lateral-ancho) - var(--contenido-ancho)) / 2);
+  background:var(--lateral-fondo);
+  border-bottom:3px solid var(--ink);
+}
+.barra-ruta-texto{
+  font-family:var(--font-term);
+  font-size:clamp(.95rem, 1vw, 1.3rem); line-height:1; letter-spacing:.06em;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.barra-ruta-app{ color:var(--text-soft); }
+.barra-ruta-barra{ color:var(--ink); }
+.barra-ruta-seccion{ color:var(--lateral-activo); font-weight:600; }
+
+/* ── ≤760px · CELULAR: la barra se vuelve una franja arriba ── */
+@media (max-width:760px){
+  body.con-barra-lateral{
+    --lateral-ancho: 0px;
+    --nav-h: 62px;
+    padding-left:0;
+  }
+  .barra-lateral{
+    bottom:auto; right:0; width:auto; height:var(--nav-h);
+    flex-direction:row; gap:12px;
+    padding:0 12px;
+    border-right:none; border-bottom:3px solid var(--ink);
+    overflow:visible;
+  }
+  .lateral-identidad{ flex-direction:row; gap:10px; padding:0; margin-right:auto; min-width:0; }
+  .lateral-toggle{ flex:none; }
+  .lateral-avatar{ width:42px; border-width:2px; }
+  .lateral-nombre{ font-size:1rem; line-height:1.15; text-align:left; }
+
+  /* el panel cuelga de la franja; .open lo pone mobile-menu.ts */
+  .lateral-panel{
+    position:absolute; top:100%; left:0; right:0;
+    display:none; flex:none;
+    background:var(--lateral-fondo);
+    border-bottom:3px solid var(--ink);
+    box-shadow:0 6px 0 rgba(44,26,36,.12);
+  }
+  .lateral-panel.open{ display:flex; }
+  .lateral-menu ul{ align-items:stretch; margin:0; }
+  .lateral-menu li{ border-top:2px solid var(--pink-mid); }
+  .lateral-menu li:first-child{ border-top:none; }
+  .lateral-menu a{ padding:14px 20px; font-size:.95rem; }   /* área táctil ≥44px */
+  .lateral-menu a.active{ background:var(--pink-light); box-shadow:inset 5px 0 0 var(--pink); }
+  .lateral-idioma{ justify-content:flex-start; margin:0; padding:12px 20px 14px; gap:10px; }
+  .lateral-idioma-boton{ min-width:48px; height:36px; font-size:.6rem; }
+
+  /* la ruta ya la dice el menú marcado; arriba solo cabe una franja */
+  .barra-ruta{ display:none; }
+}
+
+@media (hover:none){
+  .lateral-identidad:hover .lateral-avatar{ transform:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  .lateral-avatar, .lateral-menu a, .lateral-idioma-boton{ transition:none; }
+}
+@media print{
+  .barra-lateral, .barra-ruta{ display:none; }
+  body.con-barra-lateral{ padding-left:0; }
+}

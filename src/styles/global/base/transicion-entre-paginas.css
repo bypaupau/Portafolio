@@ -27,6 +27,10 @@
    nombre y dos elementos con un nombre repetido cancelan la transición */
 .barra-superior{ view-transition-name:px-nav; }
 .taskbar{ view-transition-name:px-task; }
+/* lo mismo con la barra lateral y la barrita de ruta: se quedan
+   quietas y solo cambian el link marcado y el nombre de la sección */
+.barra-lateral{ view-transition-name:px-lateral; }
+.barra-ruta{ view-transition-name:px-ruta; }
 
 /* La página nueva se funde ENCIMA de la vieja, que se queda quieta y
    entera debajo hasta el final. Antes la vieja se iba en 180 ms y la
@@ -41,7 +45,9 @@
 /* las dos barras solo se funden entre sí (el link activo y el nombre de
    la ventana cambian), nunca se desplazan */
 ::view-transition-old(px-nav), ::view-transition-new(px-nav),
-::view-transition-old(px-task), ::view-transition-new(px-task){
+::view-transition-old(px-task), ::view-transition-new(px-task),
+::view-transition-old(px-lateral), ::view-transition-new(px-lateral),
+::view-transition-old(px-ruta), ::view-transition-new(px-ruta){
   animation-duration:var(--mo-fast);
 }
 

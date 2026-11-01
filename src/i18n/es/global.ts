@@ -19,6 +19,7 @@ export const spanishGlobal = {
   'navigation.menuOpen': 'Abrir menú',
   'navigation.menuClose': 'Cerrar menú',
   'navigation.closeLabel': 'Cerrar',
+  'navigation.mainLabel': 'Navegación principal',
 
   /* ── pie ── */
   'footer.madeWith': 'hecho con',
