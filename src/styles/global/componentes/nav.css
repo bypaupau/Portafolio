@@ -19,7 +19,10 @@
   font-size:clamp(1.05rem,3.4vw,1.25rem);
   color:var(--ink); text-decoration:none; margin-right:auto; letter-spacing:.5px;
   white-space:nowrap;
+  display:inline-flex; align-items:center;
+  margin-left:clamp(8px,2vw,18px);
 }
+.nav-logo-imagen{ height:32px; width:auto; flex:none; margin-right:22px; }
 .nav-logo span{ color:var(--pink); }
 .nav-tabs{ display:flex; gap:4px; list-style:none; }
 .nav-tabs a{

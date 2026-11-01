@@ -16,7 +16,7 @@
    blanco, y además compartía el view-transition-name de esta barra.
    ═══════════════════════════════════════════════════════════ */
 import { translate } from '../../i18n/translate';
-import { rutaPagina } from '../../lib/rutas';
+import { rutaPagina, rutaPublica } from '../../lib/rutas';
 import { paginasDelSitio } from '../../lib/navegacion';
 
 interface Props {
@@ -26,7 +26,7 @@ interface Props {
 const { paginaActual } = Astro.props;
 ---
 <nav class="barra-superior">
-  <a href={rutaPagina('')} class="nav-logo">pau<span>.</span>proyectos</a>
+  <a href={rutaPagina('')} class="nav-logo"><img class="nav-logo-imagen" src={rutaPublica('mi-logo.svg')} alt="" aria-hidden="true" />pau<span>.</span>proyectos</a>
 
   <button
     class="nav-toggle"
