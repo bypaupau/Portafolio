@@ -21,6 +21,10 @@ export const spanishGlobal = {
   'navigation.closeLabel': 'Cerrar',
   'navigation.mainLabel': 'Navegación principal',
 
+  /* ── barra lateral ── */
+  /* lo que hace, debajo del nombre */
+  'sidebar.tagline': 'Diseño × Tecnología',
+
   /* ── pie ── */
   'footer.madeWith': 'hecho con',
   'footer.credit': '+ pixeles · por Pau · © 2026',

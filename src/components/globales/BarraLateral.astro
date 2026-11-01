@@ -1,6 +1,9 @@
 ---
 /* ═══════════════════════════════════════════════════════════
-   La barra lateral: avatar, nombre, menú e idioma.
+   La barra lateral, en tres zonas:
+     arriba   quién es: avatar, nombre y lo que hace
+     medio    el menú
+     abajo    el idioma
 
    Es la navegación de todas las páginas menos las de caso (esas
    tienen su propio índice a la izquierda y conservan la barra de
@@ -9,7 +12,12 @@
 
    EL AVATAR es public/mi-logo.svg tal cual, el mismo archivo de la
    barra superior. El círculo rosa y su borde los pone el CSS
-   (.lateral-avatar): el dibujo no se toca.
+   (.lateral-avatar): el dibujo no se toca. Encima, escondido, va
+   public/mi-logo-guino.svg (mismo lienzo): al pasar el mouse o llegar
+   con el teclado, el avatar se inclina y guiña. Sin «ñ» en el nombre a
+   propósito: macOS la guarda descompuesta (n + ~) y el servidor no
+   encontraba el archivo. Las dos imágenes están
+   en el HTML para que el guiño ya esté cargado y no parpadee.
 
    EN CELULAR (≤760px) la barra se vuelve una franja arriba con el
    avatar, el nombre y el botón de menú; el menú y el idioma quedan
@@ -42,8 +50,14 @@ const nombreDelIdioma: Record<Language, TranslationKey> = {
 ---
 <header class="barra-lateral">
   <a href={rutaPagina('')} class="lateral-identidad">
-    <span class="lateral-avatar"><img src={rutaPublica('mi-logo.svg')} alt="" aria-hidden="true" /></span>
-    <span class="lateral-nombre">Paula Martillo Quintana</span>
+    <span class="lateral-avatar">
+      <img class="lateral-avatar-logo" src={rutaPublica('mi-logo.svg')} alt="" aria-hidden="true" />
+      <img class="lateral-avatar-guino" src={rutaPublica('mi-logo-guino.svg')} alt="" aria-hidden="true" />
+    </span>
+    <span class="lateral-quien">
+      <span class="lateral-nombre">Paula Martillo Quintana</span>
+      <span class="lateral-oficio" data-i18n="sidebar.tagline">{translate('sidebar.tagline')}</span>
+    </span>
   </a>
 
   <button
@@ -78,23 +92,25 @@ const nombreDelIdioma: Record<Language, TranslationKey> = {
       </ul>
     </nav>
 
-    <div
-      class="lateral-idioma"
-      role="group"
-      aria-label={translate('language.buttonLabel')}
-      data-i18n-attr="aria-label:language.buttonLabel"
-    >
-      {supportedLanguages.map((idioma) => (
-        <button
-          type="button"
-          class:list={['lateral-idioma-boton', idioma === defaultLanguage && 'is-on']}
-          data-cambiar-idioma={idioma}
-          lang={idioma}
-          aria-pressed={idioma === defaultLanguage ? 'true' : 'false'}
-          aria-label={translate(nombreDelIdioma[idioma])}
-          title={translate(nombreDelIdioma[idioma])}
-        >{idioma.toUpperCase()}</button>
-      ))}
+    <div class="lateral-pie">
+      <div
+        class="lateral-idioma"
+        role="group"
+        aria-label={translate('language.buttonLabel')}
+        data-i18n-attr="aria-label:language.buttonLabel"
+      >
+        {supportedLanguages.map((idioma) => (
+          <button
+            type="button"
+            class:list={['lateral-idioma-boton', idioma === defaultLanguage && 'is-on']}
+            data-cambiar-idioma={idioma}
+            lang={idioma}
+            aria-pressed={idioma === defaultLanguage ? 'true' : 'false'}
+            aria-label={translate(nombreDelIdioma[idioma])}
+            title={translate(nombreDelIdioma[idioma])}
+          >{idioma.toUpperCase()}</button>
+        ))}
+      </div>
     </div>
   </div>
 

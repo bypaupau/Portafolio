@@ -31,66 +31,115 @@ body.con-barra-lateral{
 
 /* ════════ LA BARRA ════════ */
 .barra-lateral{
+  /* el margen de los lados: lo comparten las rayas, el menú y el
+     idioma, para que todo arranque y termine en las mismas verticales */
+  --lateral-margen: clamp(14px, 1.1vw, 24px);
   position:fixed; top:0; bottom:0; left:0; z-index:100;
   width:var(--lateral-ancho);
   display:flex; flex-direction:column; align-items:center;
-  padding:min(6.3vw, 13vh) 0 min(3.1vw, 6vh);
+  padding:clamp(24px, 5vh, 56px) 0 clamp(18px, 3vh, 32px);
   background:var(--lateral-fondo);
   border-right:3px solid var(--ink);
   overflow-y:auto; overscroll-behavior:contain;
 }
 
+/* ── ARRIBA · quién es ──
+   avatar, nombre y oficio son UN bloque: entre ellos el aire es corto
+   (14 y 6 px); el que los separa del menú es el doble */
 .lateral-identidad{
-  display:flex; flex-direction:column; align-items:center; gap:clamp(14px, 1.75vw, 36px);
+  display:flex; flex-direction:column; align-items:center; gap:14px;
   padding-inline:10px;
   text-decoration:none;
 }
 /* el logo va tal cual; el círculo rosa y su borde son de aquí */
 .lateral-avatar{
   display:grid; place-items:center; flex:none;
-  width:clamp(96px, 8.35vw, 180px); aspect-ratio:1;
+  width:clamp(96px, 7.6vw, 150px); aspect-ratio:1;
   background:var(--pink);
   border:3px solid var(--ink); border-radius:50%;
+  box-shadow:3px 3px 0 var(--pink-mid);
   overflow:hidden;
   transition:transform .16s cubic-bezier(.3,.7,.4,1);
 }
 .lateral-avatar img{
   /* como en el diseño: el dibujo no toca el borde, queda un anillo
-     rosa alrededor, y sube un poco para que se vea más rosa abajo */
+     rosa alrededor, y sube un poco para que se vea más rosa abajo.
+     Las dos (el logo y el guiño) en la misma celda, una sobre otra */
+  grid-area:1 / 1;
   display:block; width:83%; height:83%; object-fit:contain; translate:0 -5%;
 }
-.lateral-identidad:hover .lateral-avatar{ transform:rotate(-4deg); }
+/* el guiño: escondido hasta que se señala el avatar, y entonces es el
+   logo el que se esconde (si no, su ojo abierto asomaría por debajo).
+   Solo con mouse de verdad (en el celular un toque lo dejaría
+   guiñando) o con teclado */
+.lateral-avatar-guino{ visibility:hidden; }
+.lateral-identidad:focus-visible .lateral-avatar{ transform:rotate(-4deg); }
+.lateral-identidad:focus-visible .lateral-avatar-logo{ visibility:hidden; }
+.lateral-identidad:focus-visible .lateral-avatar-guino{ visibility:visible; }
+@media (hover:hover){
+  .lateral-identidad:hover .lateral-avatar{ transform:rotate(-4deg); }
+  .lateral-identidad:hover .lateral-avatar-logo{ visibility:hidden; }
+  .lateral-identidad:hover .lateral-avatar-guino{ visibility:visible; }
+}
+.lateral-quien{ display:flex; flex-direction:column; align-items:center; gap:6px; }
 .lateral-nombre{
   font-family:var(--font-pixel); font-weight:600;
-  font-size:clamp(1.1rem, 1.5vw, 1.9rem); line-height:1.22;
+  font-size:clamp(1.1rem, 1.4vw, 1.75rem); line-height:1.2;
   color:var(--cafe-logo); text-align:center;
 }
+/* el oficio: más chico, en la letra de las etiquetas y en el color del
+   texto secundario, para que acompañe al nombre sin competir */
+.lateral-oficio{
+  font-family:var(--font-term); font-size:clamp(.8rem, .75vw, .95rem); line-height:1.2;
+  letter-spacing:.06em; color:var(--text-soft);
+}
 
-/* ── el menú ── */
+/* ── MEDIO · el menú ──
+   Filas a lo ancho con el texto a la izquierda: se leen como una lista
+   de ventanas, no como texto suelto. La activa es una pastilla como la
+   etiqueta «disponible» o los botones de la taskbar: papel claro, borde
+   de tinta y sombra dura rosa, con una flechita pixel delante. */
 .lateral-panel{ flex:1; width:100%; display:flex; flex-direction:column; }
-.lateral-menu ul{
-  list-style:none;
-  display:flex; flex-direction:column; align-items:center;
-  margin-top:clamp(6px, .7vw, 16px);
+.lateral-menu{
+  margin:28px var(--lateral-margen) 0;
+  padding-top:18px;
+  border-top:2px solid var(--pink-mid);
 }
+.lateral-menu ul{ list-style:none; display:flex; flex-direction:column; gap:6px; }
 .lateral-menu a{
-  display:block;
-  padding:clamp(9px, 1.22vw, 26px) 16px;
+  display:flex; align-items:center; gap:10px;
+  min-height:44px; padding:0 12px;
   font-family:var(--font-term); font-weight:500;
-  font-size:clamp(.8rem, .8vw, 1rem); line-height:1.2;
-  letter-spacing:.13em; text-transform:uppercase;
+  font-size:clamp(.85rem, .8vw, 1rem); line-height:1.2;
+  letter-spacing:.12em; text-transform:uppercase;
   color:var(--cafe-logo); text-decoration:none;
-  transition:color .12s ease;
+  border:2px solid transparent;
+  transition:background-color .12s ease, color .12s ease;
 }
-.lateral-menu a:hover{ color:var(--lateral-activo); }
-.lateral-menu a.active{ color:var(--lateral-activo); font-weight:700; }
-.lateral-menu a:focus-visible{ outline:3px dashed var(--pink); outline-offset:-3px; }
+/* la flechita ▸ en pixeles (6×10, escalones de 2): escondida hasta que
+   la fila se señala o es la activa */
+.lateral-menu a::before{
+  content:""; flex:none; width:6px; height:10px;
+  background:currentColor;
+  clip-path:polygon(0 0, 2px 0, 2px 2px, 4px 2px, 4px 4px, 6px 4px, 6px 6px, 4px 6px, 4px 8px, 2px 8px, 2px 10px, 0 10px);
+  opacity:0; translate:-3px 0;
+  transition:opacity .12s ease, translate .12s ease;
+}
+.lateral-menu a:hover{ background:var(--pink-light); color:var(--ink); }
+.lateral-menu a:hover::before{ opacity:.45; translate:0 0; }
+.lateral-menu a.active{
+  background:var(--pink-pale); color:var(--lateral-activo); font-weight:700;
+  border-color:var(--ink); box-shadow:3px 3px 0 var(--pink-mid);
+}
+.lateral-menu a.active::before{ opacity:1; translate:0 0; color:var(--pink); }
+.lateral-menu a:focus-visible{ outline:3px dashed var(--pink); outline-offset:2px; }
 
-/* ── el idioma, al pie, separado por una raya ── */
+/* ── ABAJO · el idioma, bajo su raya ── */
+.lateral-pie{ margin:auto var(--lateral-margen) 0; padding-top:24px; }
 .lateral-idioma{
+  align-self:stretch;
   display:flex; justify-content:center; gap:clamp(6px, .4vw, 10px);
-  margin:auto clamp(14px, 1.1vw, 24px) 0;
-  padding-top:clamp(14px, 1.25vw, 26px);
+  padding-top:16px;
   border-top:2px solid var(--pink-mid);
 }
 .lateral-idioma-boton{
@@ -144,8 +193,10 @@ body.con-barra-lateral{
   }
   .lateral-identidad{ flex-direction:row; gap:10px; padding:0; margin-right:auto; min-width:0; }
   .lateral-toggle{ flex:none; }
-  .lateral-avatar{ width:42px; border-width:2px; }
+  .lateral-avatar{ width:42px; border-width:2px; box-shadow:none; }
+  .lateral-quien{ align-items:flex-start; gap:2px; min-width:0; }
   .lateral-nombre{ font-size:1rem; line-height:1.15; text-align:left; }
+  .lateral-oficio{ font-size:.75rem; }
 
   /* el panel cuelga de la franja; .open lo pone mobile-menu.ts */
   .lateral-panel{
@@ -156,23 +207,29 @@ body.con-barra-lateral{
     box-shadow:0 6px 0 rgba(44,26,36,.12);
   }
   .lateral-panel.open{ display:flex; }
-  .lateral-menu ul{ align-items:stretch; margin:0; }
+  /* en el panel el menú vuelve a ser una lista de filas con raya: la
+     pastilla es de la barra de escritorio */
+  .lateral-menu{ margin:0; padding:0; border-top:none; }
+  .lateral-menu ul{ gap:0; }
   .lateral-menu li{ border-top:2px solid var(--pink-mid); }
   .lateral-menu li:first-child{ border-top:none; }
-  .lateral-menu a{ padding:14px 20px; font-size:.95rem; }   /* área táctil ≥44px */
-  .lateral-menu a.active{ background:var(--pink-light); box-shadow:inset 5px 0 0 var(--pink); }
-  .lateral-idioma{ justify-content:flex-start; margin:0; padding:12px 20px 14px; gap:10px; }
+  .lateral-menu a{ min-height:0; padding:14px 20px; font-size:.95rem; border:none; }   /* área táctil ≥44px */
+  .lateral-menu a.active{ background:var(--pink-light); border:none; box-shadow:inset 5px 0 0 var(--pink); }
+  .lateral-pie{ margin:0; padding:0; }
+  .lateral-idioma{ justify-content:flex-start; padding:12px 20px 14px; gap:10px; }
   .lateral-idioma-boton{ min-width:48px; height:36px; font-size:.6rem; }
 
   /* la ruta ya la dice el menú marcado; arriba solo cabe una franja */
   .barra-ruta{ display:none; }
 }
-
-@media (hover:none){
-  .lateral-identidad:hover .lateral-avatar{ transform:none; }
+/* en los celulares más angostos (320) el nombre ya ocupa dos líneas
+   junto al botón, y el oficio sería la tercera */
+@media (max-width:340px){
+  .lateral-oficio{ display:none; }
 }
+
 @media (prefers-reduced-motion:reduce){
-  .lateral-avatar, .lateral-menu a, .lateral-idioma-boton{ transition:none; }
+  .lateral-avatar, .lateral-menu a, .lateral-menu a::before, .lateral-idioma-boton{ transition:none; }
 }
 @media print{
   .barra-lateral, .barra-ruta{ display:none; }

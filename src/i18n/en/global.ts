@@ -17,6 +17,8 @@ export const englishGlobal: Record<keyof typeof spanishGlobal, string> = {
   'navigation.closeLabel': 'Close',
   'navigation.mainLabel': 'Main navigation',
 
+  'sidebar.tagline': 'Design × Technology',
+
   'footer.madeWith': 'made with',
   'footer.credit': '+ pixels · by Pau · © 2026',
 
