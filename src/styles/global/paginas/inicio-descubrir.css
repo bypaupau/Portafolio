@@ -69,6 +69,9 @@
 .social:active{ transform:translate(3px,3px); box-shadow:0 0 0 var(--ink); }
 .social.gh{ background:var(--lav); } .social.in{ background:var(--sky); } .social.mail{ background:var(--pink-light); }
 .social .sprite{ width:26px; }
+/* el logo de GitHub (png de images/logos/): dentro del tile, sin bordes
+   de más; max-width:none para que el reset de img no lo encoja */
+.social-logo{ display:block; width:60%; height:auto; max-width:none; }
 
 /* sprites pixel (SVG) */
 .sprite{ image-rendering:pixelated; display:block; }
