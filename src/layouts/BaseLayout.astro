@@ -108,8 +108,11 @@ const urlCanonica = new URL(Astro.url.pathname, Astro.site);
   <meta name="description" content={descripcion} />
   <link rel="canonical" href={urlCanonica.href} />
 
-  <link rel="icon" type="image/png" sizes="64x64" href={rutaPublica('favicon.png?v=2')} />
-  <link rel="icon" type="image/svg+xml" href={rutaPublica('favicon.svg?v=2')} />
+  {/* el icono de la pestaña es el logo de Pau. favicon.png y favicon.svg
+      (la pantallita) se quedan en public/ porque son URLs que ya se
+      compartieron; solo que la página ya no los usa. */}
+  <link rel="icon" type="image/png" sizes="128x128" href={rutaPublica('mi-logo-icono.png?v=3')} />
+  <link rel="icon" type="image/svg+xml" href={rutaPublica('mi-logo.svg?v=3')} />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
