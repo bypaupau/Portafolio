@@ -34,7 +34,7 @@ export const spanishInicio = {
   'pages.home.passion.unite': 'unirlas',
   'pages.home.passion.end': '. ✿',
   'pages.home.button.projects': 'Ver proyectos',
-  'pages.home.button.resume': 'Descargar CV',
+  'pages.home.button.resume': 'Ver CV',
   'pages.home.status.label': 'disponible',
   'pages.home.status.text': 'abierta a pasantías · UX/UI · product design',
   'pages.home.scrollHint': 'desliza para explorar',

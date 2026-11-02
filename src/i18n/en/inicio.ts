@@ -30,7 +30,7 @@ export const englishInicio: Record<keyof typeof spanishInicio, string> = {
   'pages.home.passion.unite': 'combining them',
   'pages.home.passion.end': '. ✿',
   'pages.home.button.projects': 'See projects',
-  'pages.home.button.resume': 'Download CV',
+  'pages.home.button.resume': 'View CV',
   'pages.home.status.label': 'available',
   'pages.home.status.text': 'open to internships · UX/UI · product design',
   'pages.home.scrollHint': 'scroll to explore',
