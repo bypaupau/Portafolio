@@ -15,6 +15,11 @@
    Seis ya existían en el portafolio y se reutilizan tal cual; los cinco
    nuevos (y el trazo) viven al lado de este archivo.
 
+   Además del color, cada objeto lleva la clase de su categoría
+   (tk-diseno · tk-construir · tk-analisis). Es de lo que se agarra el
+   CSS para encender solo esos cuando señalas o enfocas la tarjeta de la
+   derecha; está en partes/02-caja-de-herramientas.css.
+
    El sitio de cada pieza, su giro y su flotación están en
    src/styles/sobre-mi/partes/02-caja-de-herramientas.css, una clase por
    objeto. Aquí solo se dice QUÉ objetos hay y en qué orden se pintan.
@@ -39,15 +44,15 @@ import TrazoDeSalida from './TrazoDeSalida.astro';
 
 /* el orden ES el orden de pintado: los últimos quedan encima */
 const objetos = [
-  { clase: 'tk-paleta t-pink tk-ficha',           dibujo: Paleta },
-  { clase: 'tk-lapiz tk-suelta',                  dibujo: StickerLapiz },
-  { clase: 'tk-codigo t-sky tk-ficha tk-fuera',   dibujo: SignoCodigo },
-  { clase: 'tk-disquete t-sky tk-ficha tk-fuera', dibujo: Disquete },
-  { clase: 'tk-llave tk-suelta',                  dibujo: LlaveInglesa },
-  { clase: 'tk-grafico t-mint tk-ficha tk-fuera', dibujo: Grafico },
-  { clase: 'tk-tabla t-mint tk-ficha',            dibujo: TablaDeDatos },
-  { clase: 'tk-lupa tk-suelta',                   dibujo: LupaPixel },
-  { clase: 'tk-cursor tk-suelta',                 dibujo: StickerCursor },
+  { clase: 'tk-paleta t-pink tk-ficha tk-diseno',           dibujo: Paleta },
+  { clase: 'tk-lapiz tk-suelta tk-diseno',                  dibujo: StickerLapiz },
+  { clase: 'tk-codigo t-sky tk-ficha tk-fuera tk-construir',   dibujo: SignoCodigo },
+  { clase: 'tk-disquete t-sky tk-ficha tk-fuera tk-construir', dibujo: Disquete },
+  { clase: 'tk-llave tk-suelta tk-construir',                  dibujo: LlaveInglesa },
+  { clase: 'tk-grafico t-mint tk-ficha tk-fuera tk-analisis', dibujo: Grafico },
+  { clase: 'tk-tabla t-mint tk-ficha tk-analisis',            dibujo: TablaDeDatos },
+  { clase: 'tk-lupa tk-suelta tk-analisis',                   dibujo: LupaPixel },
+  { clase: 'tk-cursor tk-suelta tk-diseno',                 dibujo: StickerCursor },
 ] as const;
 
 /* los destellos no cuentan como objetos: son acento, no herramienta */

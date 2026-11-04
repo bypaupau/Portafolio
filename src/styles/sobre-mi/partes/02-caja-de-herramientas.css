@@ -205,3 +205,43 @@
   .tk-suelta{ --ancho:26px; --alto:26px; }
   .tk-pie{ font-size:.44rem; }
 }
+
+/* ── EL PUENTE CON LAS TARJETAS ─────────────────────────────
+   Señalar (o enfocar con el teclado) una de las tres tarjetas de la
+   derecha apaga los objetos que no son suyos y agranda un poco los que
+   sí: diseñar enciende paleta, lápiz y cursor; construir el </>, el
+   disquete y la llave; analizar el gráfico, la tabla y la lupa.
+
+   Sin JavaScript: :has() mira hacia arriba, hasta .ab-split, y de ahí
+   baja al toolkit. Es lo que permite que una tarjeta que va DESPUÉS en
+   el HTML afecte a algo que va antes.
+
+   La carpeta no se apaga: es el mueble, no una herramienta. Y lo que
+   cambia de verdad es la opacidad —no el movimiento—, así que con
+   «menos movimiento» el puente sigue funcionando; lo único que se queda
+   fuera es el pellizco de escala y la transición. */
+.ab-split:has(.tool-disenar:hover)   .tk-pieza:not(.tk-diseno):not(.tk-carpeta),
+.ab-split:has(.tool-construir:hover) .tk-pieza:not(.tk-construir):not(.tk-carpeta),
+.ab-split:has(.tool-analizar:hover)  .tk-pieza:not(.tk-analisis):not(.tk-carpeta),
+.ab-split:has(.tool-disenar:focus-visible)   .tk-pieza:not(.tk-diseno):not(.tk-carpeta),
+.ab-split:has(.tool-construir:focus-visible) .tk-pieza:not(.tk-construir):not(.tk-carpeta),
+.ab-split:has(.tool-analizar:focus-visible)  .tk-pieza:not(.tk-analisis):not(.tk-carpeta){
+  opacity:.26;
+}
+.ab-split:has(.tool:hover) .tk-trazo,
+.ab-split:has(.tool:focus-visible) .tk-trazo{ opacity:.3; }
+
+@media (prefers-reduced-motion:no-preference){
+  /* se repite box-shadow a propósito: esta regla va después de la del
+     bloque de hover y, si no, le quitaría su transición a la ficha */
+  .tk-pieza, .tk-trazo{
+    transition:opacity .22s var(--ease-soft), scale .25s var(--ease-pop),
+               box-shadow .2s var(--ease-soft);
+  }
+  .ab-split:has(.tool-disenar:hover)   .tk-diseno,
+  .ab-split:has(.tool-construir:hover) .tk-construir,
+  .ab-split:has(.tool-analizar:hover)  .tk-analisis,
+  .ab-split:has(.tool-disenar:focus-visible)   .tk-diseno,
+  .ab-split:has(.tool-construir:focus-visible) .tk-construir,
+  .ab-split:has(.tool-analizar:focus-visible)  .tk-analisis{ scale:1.09; }
+}
