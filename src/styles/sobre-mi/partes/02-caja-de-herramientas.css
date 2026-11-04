@@ -1,0 +1,207 @@
+/* 02 · LA CAJA DE HERRAMIENTAS
+
+   Parte de sobre-mi.css. Va la ÚLTIMA del índice porque es nueva: antes
+   no existía, así que no puede haberle cambiado el ganador a ninguna
+   regla de arriba (es la norma de scripts/hojas-partidas.mjs).
+   La única regla que pisa algo a propósito es .win-body.tk-cuerpo, y por
+   eso lleva las dos clases: así gana por especificidad y no por orden. */
+/* ── fin de la nota · abajo empieza el CSS ── */
+/* ════════════════════════════════════════════════
+   02 · LA CAJA DE HERRAMIENTAS   (C:/pau/toolkit)
+
+   Vive en la columna del título de «02 / con qué trabajo», en el hueco
+   que quedaba debajo. No es una tarjeta más: es una ventana chica de la
+   que SALEN las cosas, y para eso tres piezas se pasan del marco.
+
+   Las partes:
+     .toolkit      el bloque. Lleva un ancho máximo: la ventana no crece
+                   con la columna, porque una caja grande deja de ser
+                   caja y se vuelve un cuadro vacío.
+     .tk-escena    el lienzo donde se coloca cada cosa. Su alto sale de
+                   un aspect-ratio y los sitios van en %, así la
+                   composición ENTERA se escala sin recolocar nada.
+     .tk-pieza     cada objeto: su sitio (--x/--y), su giro (--giro) y su
+                   flotación (--dur/--salto/--espera).
+     .tk-ficha     las que van en su cuadrito de color. El color dice a
+                   cuál de las tres tarjetas de la derecha pertenece:
+                   rosa diseñar · celeste construir · menta analizar.
+     .tk-suelta    las que van sin cuadrito, como los stickers de la
+                   polaroid del hero: dan el aire de "esto va cayendo".
+     .tk-fuera     las tres que rompen el marco (arriba, izquierda y
+                   derecha). Van SIN eventos de puntero: asoman al aire
+                   que hay entre las dos columnas y no deben robarle el
+                   hover ni la lectura a las tarjetas de herramientas.
+
+   Sobre el movimiento: el resto de la página sigue la norma de
+   partes/micro-interacciones.css —nada se mueve solo—. Aquí sí, y es a
+   propósito: es una ilustración, no un control, y lo que se mueve son
+   3-5 px en ciclos de 4-6 segundos, cada uno con su duración para que no
+   se sincronicen nunca. Todo está dentro de prefers-reduced-motion:
+   no-preference; con «menos movimiento» la composición queda idéntica,
+   pero quieta.
+   ════════════════════════════════════════════════ */
+
+.toolkit{
+  --tk-trazo-grosor:2.5;   /* píxeles de pantalla: lo fija non-scaling-stroke */
+  max-width:340px;
+  margin-top:26px;
+}
+
+/* la ventana de siempre, pero compacta y con el cuerpo punteado: el
+   mismo tablero de puntos que 03 · pistas */
+.win-body.tk-cuerpo{
+  padding:0;
+  background-color:var(--pink-pale);
+  background-image:radial-gradient(rgba(232,126,161,.28) 1.2px, transparent 1.3px);
+  background-size:16px 16px;
+}
+
+.tk-escena{ position:relative; aspect-ratio:1 / .62; }
+
+/* ── las piezas ─────────────────────────────────────────────
+   --x y --y son el CENTRO de la pieza en % del lienzo; los márgenes
+   negativos la centran ahí, así se mueve cambiando dos números. */
+.tk-pieza{
+  position:absolute;
+  left:var(--x); top:var(--y);
+  margin:calc(var(--alto, 0px) / -2) 0 0 calc(var(--ancho, 0px) / -2);
+  rotate:var(--giro, 0deg);
+  z-index:1;
+}
+.tk-pieza .px{ display:block; width:calc(var(--gw) * var(--ps, 2.4px)); max-width:none; height:auto; }
+
+/* en su cuadrito: el mismo lenguaje que .stop-ico y .tool-ico */
+.tk-ficha{
+  --ancho:46px; --alto:46px;
+  display:grid; place-items:center;
+  width:var(--ancho); height:var(--alto);
+  border:2px solid var(--ink);
+  box-shadow:3px 3px 0 var(--ink);
+}
+/* sin cuadrito: cae suelta, como los stickers de la polaroid */
+.tk-suelta{
+  --ancho:30px; --alto:30px;
+  filter:drop-shadow(2px 2px 0 rgba(44,26,36,.18));
+}
+
+/* la carpeta: el ancla. Pegada al borde de abajo y por DELANTE de las
+   fichas que la rodean, para que lo que queda a su espalda se lea como
+   "todavía dentro". No flota: es lo único quieto de la escena. */
+.tk-carpeta{
+  --ancho:38%;
+  left:50%; top:auto; bottom:-6px;
+  width:var(--ancho); margin:0 0 0 calc(var(--ancho) / -2);
+  z-index:3;
+  rotate:-2deg;
+}
+.tk-carpeta .px{ width:100%; }
+
+/* el trazo punteado de la trayectoria: el mismo punteado rosa con el que
+   01 une las paradas de la ruta. Detrás de todo. */
+.tk-trazo{
+  position:absolute; inset:0; z-index:0;
+  width:100%; height:100%; max-width:none;
+}
+.tk-trazo path{
+  fill:none; stroke:var(--pink-mid); stroke-linecap:round;
+  stroke-width:var(--tk-trazo-grosor); stroke-dasharray:3 5;
+  vector-effect:non-scaling-stroke;
+}
+
+.tk-fuera{ z-index:4; pointer-events:none; }
+.tk-chispa{ --ancho:16px; --alto:16px; z-index:2; }
+
+/* ── el sitio de cada cosa ──────────────────────────────────
+   Nada de rejilla: los sitios están puestos a ojo para que la nube suba
+   de la carpeta en diagonal hacia arriba-izquierda, y para que ninguna
+   pareja quede alineada ni dos giros se repitan. */
+.tk-paleta   { --x:11%; --y:14%; --giro:-11deg; --dur:4.3s; --espera:0s;    --salto:-5px; }
+.tk-lapiz    { --x:32%; --y:22%; --giro:9deg;   --dur:5.1s; --espera:-1.2s; --salto:-4px; }
+.tk-codigo   { --x:66%; --y:-8%; --giro:7deg;   --dur:4.9s; --espera:-2.1s; --salto:-5px; }
+.tk-disquete { --x:1%;  --y:48%; --giro:-6deg;  --dur:5.6s; --espera:-.9s;  --salto:-4px; }
+.tk-llave    { --x:49%; --y:38%; --giro:16deg;  --dur:4.1s; --espera:-1.7s; --salto:-3px; }
+.tk-grafico  { --x:99%; --y:40%; --giro:6deg;   --dur:5.3s; --espera:-.3s;  --salto:-5px; }
+.tk-tabla    { --x:30%; --y:70%; --giro:-5deg;  --dur:4.5s; --espera:-2.6s; --salto:-3px; }
+.tk-lupa     { --x:71%; --y:66%; --giro:5deg;   --dur:5.9s; --espera:-1.4s; --salto:-4px; }
+.tk-cursor   { --x:90%; --y:82%; --giro:-10deg; --dur:4.7s; --espera:-.6s;  --salto:-3px; }
+.tk-chispa-a { --x:54%; --y:62%; --dur:3.4s; --espera:-.5s;  --salto:-3px; }
+.tk-chispa-b { --x:22%; --y:34%; --dur:3.8s; --espera:-1.9s; --salto:-3px; }
+
+/* el píxel de cada sprite: unos piden más cuerpo que otros para leerse
+   al mismo tamaño aparente */
+.tk-paleta   .px{ --ps:3px; }
+.tk-lapiz    .px{ --ps:2.1px; }
+.tk-codigo   .px{ --ps:2.1px; }
+.tk-disquete .px{ --ps:2.6px; }
+.tk-llave    .px{ --ps:2.9px; }
+.tk-grafico  .px{ --ps:2.6px; }
+.tk-tabla    .px{ --ps:2.6px; }
+.tk-lupa     .px{ --ps:2.9px; }
+.tk-cursor   .px{ --ps:2.4px; }
+.tk-chispa   .px{ --ps:2.2px; }
+
+/* ── la barra de estado ─────────────────────────────────────
+   El dato que daría un gestor de archivos de los noventa. El número lo
+   escribe el componente contando las piezas, para que no pueda mentir si
+   algún día se añade o se quita una. */
+.tk-pie{
+  display:flex; align-items:center; gap:7px;
+  padding:6px 10px 5px;
+  border-top:3px solid var(--ink);
+  background:var(--white);
+  font-family:var(--font-tiny); font-size:.5rem; line-height:1.6;
+  color:var(--text-soft);
+}
+.tk-pie b{ color:var(--ink); font-weight:400; }
+.tk-bloque{ width:6px; height:9px; flex:none; margin-left:auto; background:var(--pink); }
+
+/* ── movimiento ─────────────────────────────────────────────
+   La flotación va en `translate` (la propiedad, no transform): así
+   convive con el `rotate` fijo de cada pieza y con el `scale` del hover
+   sin que ninguno de los tres pise a los otros. */
+@keyframes tk-flota{
+  0%,100%{ translate:0 0; }
+  50%    { translate:0 var(--salto, -4px); }
+}
+@keyframes tk-late{ 50%{ opacity:0; } }
+
+@media (prefers-reduced-motion:no-preference){
+  .tk-pieza{ animation:tk-flota var(--dur, 4.5s) ease-in-out var(--espera, 0s) infinite; }
+  .tk-carpeta{ animation:none; }
+  .tk-bloque{ animation:tk-late 1.1s steps(1) infinite; }
+}
+
+/* ── al pasar el cursor ─────────────────────────────────────
+   Dos gestos: la pieza que señalas se agranda y mueve el sprite de
+   adentro (el mismo ab-wiggle de la ruta), y la ventana engorda su
+   sombra, igual que .tool al señalarla. Solo con puntero de verdad. */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .tk-win{ transition:box-shadow .2s var(--ease-soft); }
+  .toolkit:hover .tk-win{ box-shadow:6px 8px 0 var(--pink-mid); }
+
+  .tk-pieza{ transition:scale .25s var(--ease-pop), box-shadow .2s var(--ease-soft); }
+  .tk-ficha:hover, .tk-suelta:hover{ scale:1.14; }
+  .tk-ficha:hover{ box-shadow:4px 5px 0 var(--ink); }
+  .tk-ficha:hover .px, .tk-suelta:hover .px{ animation:ab-wiggle .42s ease-in-out 1; }
+}
+
+/* ── se adapta ──────────────────────────────────────────────
+   El lienzo se escala solo, así que aquí solo se ajusta el tamaño de la
+   caja y, en pantallas angostas, se meten para dentro las tres piezas
+   que se salen: ahí el aire de los márgenes es justo y no hay dónde
+   asomarse sin empujar la página de lado. */
+@media (max-width:1100px){
+  .toolkit{ max-width:380px; }
+}
+@media (max-width:760px){
+  .toolkit{ max-width:100%; margin-top:20px; }
+  .tk-ficha{ --ancho:40px; --alto:40px; }
+  .tk-disquete{ --x:13%; --y:48%; }
+  .tk-grafico { --x:87%; --y:40%; }
+  .tk-codigo  { --x:66%; --y:7%;  }
+}
+@media (max-width:380px){
+  .tk-ficha{ --ancho:36px; --alto:36px; box-shadow:2px 2px 0 var(--ink); }
+  .tk-suelta{ --ancho:26px; --alto:26px; }
+  .tk-pie{ font-size:.44rem; }
+}

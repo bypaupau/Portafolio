@@ -2,7 +2,7 @@
    SOBRE MÍ · ÍNDICE
 
    Este archivo ya no tiene reglas: dice en qué ORDEN se cargan las
-   13 partes de partes/. Antes era un solo archivo de 821
+   14 partes de partes/. Antes era un solo archivo de 821
    líneas, que es donde deja de poder leerse y se empieza a buscar dentro.
 
    El orden importa: en CSS, cuando dos reglas empatan en importancia y
@@ -26,3 +26,4 @@
 @import './partes/hero-lienzo.css';                       /* HERO · LIENZO ANCHO (≥1100px) */
 @import './partes/01-ruta-camina.css';                    /* 01 · LA RUTA SE CAMINA */
 @import './partes/estoy-haciendo-ahora.css';              /* ¿QUÉ ESTOY HACIENDO AHORA? · mensajito pegado al her */
+@import './partes/02-caja-de-herramientas.css';           /* 02 · LA CAJA DE HERRAMIENTAS (C:/pau/toolkit) */
