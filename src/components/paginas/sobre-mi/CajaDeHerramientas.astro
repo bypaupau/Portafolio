@@ -1,0 +1,80 @@
+---
+/* ═══════════════════════════════════════════════════════════
+   LA CAJA DE HERRAMIENTAS · C:/pau/toolkit
+
+   La ilustración que va debajo del título de «02 / con qué trabajo»,
+   en la columna izquierda. Es una ventana chica de la que se están
+   saliendo las cosas: una carpeta abierta abajo, nueve objetos subiendo
+   de ella y tres que se pasan del marco.
+
+   LOS OBJETOS NO SON UNA LISTA. Lo que cuentan es el color de su
+   cuadrito, que es el de las tres tarjetas de la derecha:
+     rosa   → diseñar     (paleta · lápiz · cursor)
+     celeste→ construir   (</> · disquete · llave)
+     menta  → analizar    (gráfico · tabla · lupa)
+   Seis ya existían en el portafolio y se reutilizan tal cual; los cinco
+   nuevos (y el trazo) viven al lado de este archivo.
+
+   El sitio de cada pieza, su giro y su flotación están en
+   src/styles/sobre-mi/partes/02-caja-de-herramientas.css, una clase por
+   objeto. Aquí solo se dice QUÉ objetos hay y en qué orden se pintan.
+
+   Todo el bloque es aria-hidden: es decoración. Lo que esta sección
+   dice de verdad está en las tres tarjetas, que sí se leen.
+   ═══════════════════════════════════════════════════════════ */
+import { translate } from '../../../i18n/translate';
+
+import Paleta from '../../dibujos/Paleta.astro';
+import SignoCodigo from '../../dibujos/SignoCodigo.astro';
+import Grafico from '../../dibujos/Grafico.astro';
+import Destello from '../../dibujos/Destello.astro';
+import StickerLapiz from './StickerLapiz.astro';
+import StickerCursor from './StickerCursor.astro';
+import CarpetaAbierta from './CarpetaAbierta.astro';
+import Disquete from './Disquete.astro';
+import LlaveInglesa from './LlaveInglesa.astro';
+import TablaDeDatos from './TablaDeDatos.astro';
+import LupaPixel from './LupaPixel.astro';
+import TrazoDeSalida from './TrazoDeSalida.astro';
+
+/* el orden ES el orden de pintado: los últimos quedan encima */
+const objetos = [
+  { clase: 'tk-paleta t-pink tk-ficha',           dibujo: Paleta },
+  { clase: 'tk-lapiz tk-suelta',                  dibujo: StickerLapiz },
+  { clase: 'tk-codigo t-sky tk-ficha tk-fuera',   dibujo: SignoCodigo },
+  { clase: 'tk-disquete t-sky tk-ficha tk-fuera', dibujo: Disquete },
+  { clase: 'tk-llave tk-suelta',                  dibujo: LlaveInglesa },
+  { clase: 'tk-grafico t-mint tk-ficha tk-fuera', dibujo: Grafico },
+  { clase: 'tk-tabla t-mint tk-ficha',            dibujo: TablaDeDatos },
+  { clase: 'tk-lupa tk-suelta',                   dibujo: LupaPixel },
+  { clase: 'tk-cursor tk-suelta',                 dibujo: StickerCursor },
+] as const;
+
+/* los destellos no cuentan como objetos: son acento, no herramienta */
+const destellos = ['tk-chispa-a', 'tk-chispa-b'];
+---
+
+<div class="toolkit" aria-hidden="true">
+  <div class="win tk-win">
+    <div class="win-bar lav">
+      <span class="win-title" data-i18n="pages.about.tools.toolkit.windowTitle">{translate('pages.about.tools.toolkit.windowTitle')}</span>{' '}<span class="win-ctrls"><i>_</i><i>▢</i><i>✕</i></span>
+    </div>
+
+    <div class="win-body tk-cuerpo">
+      <div class="tk-escena">
+        <TrazoDeSalida />
+        {objetos.map((objeto) => (
+          <span class={`tk-pieza ${objeto.clase}`}><objeto.dibujo /></span>
+        ))}
+        {destellos.map((clase) => (
+          <span class={`tk-pieza tk-chispa ${clase}`}><Destello /></span>
+        ))}
+        <span class="tk-pieza tk-carpeta"><CarpetaAbierta /></span>
+      </div>
+    </div>
+
+    {/* el número sale de contar los objetos: si mañana se añade uno, la
+        barra de estado no se queda mintiendo */}
+    <p class="tk-pie"><b>{objetos.length}</b>{' '}<span data-i18n="pages.about.tools.toolkit.items">{translate('pages.about.tools.toolkit.items')}</span><span class="tk-bloque"></span></p>
+  </div>
+</div>

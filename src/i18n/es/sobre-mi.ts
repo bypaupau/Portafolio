@@ -59,6 +59,10 @@ export const spanishSobreMi = {
   'pages.about.tools.analyze.verb': 'analizar',
   'pages.about.tools.analyze.what': 'datos antes de decidir',
   'pages.about.tools.more': 'herramientas adicionales de mi stack',
+  /* la ventanita ilustrada que va bajo el título, en la columna izquierda.
+     El número de objetos lo cuenta el componente; aquí solo la palabra. */
+  'pages.about.tools.toolkit.windowTitle': 'C:/pau/toolkit',
+  'pages.about.tools.toolkit.items': 'objetos',
 
   /* ── 03 · pistas, fuera de la pantalla ── */
   'pages.about.clues.eyebrow': '03 / fuera de la pantalla',

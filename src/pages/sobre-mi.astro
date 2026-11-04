@@ -7,7 +7,7 @@
    estilo      src/styles/sobre-mi/sobre-mi.css   (hoja propia)
    scripts     src/scripts/sobre-mi/piezas-que-aparecen.ts  (qué aparece al bajar)
                src/scripts/sobre-mi/ruta-animada.ts         (la ruta de 01)
-   dibujos     src/components/paginas/sobre-mi/            (los 21 sprites, con nombre)
+   dibujos     src/components/paginas/sobre-mi/            (los 27 sprites, con nombre)
    imágenes    public/images/sobre-mi/polaroid.jpg
                public/images/logos/                (coursera · udemy · utokyo)
    URL previa  /pages/sobremi.html → redirige  (public/pages/sobremi.html)
@@ -50,6 +50,7 @@ import PistaVideojuegos from '../components/paginas/sobre-mi/PistaVideojuegos.as
 import PistaMusica from '../components/paginas/sobre-mi/PistaMusica.astro';
 import PistaManualidades from '../components/paginas/sobre-mi/PistaManualidades.astro';
 import PistaLibros from '../components/paginas/sobre-mi/PistaLibros.astro';
+import CajaDeHerramientas from '../components/paginas/sobre-mi/CajaDeHerramientas.astro';
 
 /* Las cuatro paradas con texto + la quinta ("aquí estoy"), que es distinta
    y va escrita aparte abajo. El orden es el del camino. */
@@ -234,6 +235,13 @@ const pistas = [
       <header class="ab-head">
         <p class="ab-num" data-i18n="pages.about.tools.eyebrow">{translate('pages.about.tools.eyebrow')}</p>
         <h2 class="ab-title" id="ab-tools" data-i18n="pages.about.tools.title">{translate('pages.about.tools.title')}</h2>
+
+        {/* la ilustración va DENTRO del header a propósito: desde 1100px
+            esta es la columna del título (ver canvas-ancho-1100px.css), y
+            el hueco de abajo era lo que quedaba vacío. Al apilarse, cae
+            entre el título y las tarjetas, que es el mismo orden de
+            lectura: primero qué hago, luego la caja, luego con qué. */}
+        <CajaDeHerramientas />
       </header>
 
       <div class="tools">

@@ -59,6 +59,10 @@ export const englishSobreMi: Record<keyof typeof spanishSobreMi, string> = {
   'pages.about.tools.analyze.verb': 'analyze',
   'pages.about.tools.analyze.what': 'data before deciding',
   'pages.about.tools.more': 'more tools in my stack',
+  /* la ventanita ilustrada que va bajo el título, en la columna izquierda.
+     El número de objetos lo cuenta el componente; aquí solo la palabra. */
+  'pages.about.tools.toolkit.windowTitle': 'C:/pau/toolkit',
+  'pages.about.tools.toolkit.items': 'items',
 
   /* ── 03 · pistas, fuera de la pantalla ── */
   'pages.about.clues.eyebrow': '03 / away from the screen',
