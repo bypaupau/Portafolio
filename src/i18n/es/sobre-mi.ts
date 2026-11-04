@@ -61,6 +61,9 @@ export const spanishSobreMi = {
   'pages.about.tools.more': 'herramientas adicionales de mi stack',
   /* la ventanita ilustrada que va bajo el título, en la columna izquierda.
      El número de objetos lo cuenta el componente; aquí solo la palabra. */
+  /* la marca que separa, dentro de cada tarjeta, las herramientas
+     principales de las adicionales */
+  'pages.about.tools.also': 'y también',
   'pages.about.tools.toolkit.windowTitle': 'C:/pau/toolkit',
   'pages.about.tools.toolkit.items': 'objetos',
 

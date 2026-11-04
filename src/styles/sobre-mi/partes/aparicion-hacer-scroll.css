@@ -48,7 +48,7 @@
 /* ── ≤900 · tablet vertical ──
    hero: la polaroid se achica y va al lado de un intro más angosto.
    ruta: pasa a vertical (5 columnas ya no caben con texto legible).
-   herramientas: diseño ocupa toda la fila; construir y analizar debajo.
+   herramientas: ya van apiladas; aquí solo acompañan al resto.
    evidencia: tarjetas horizontales (foto | texto), una por fila. */
 @media (max-width:900px){
   .ab-hero{ grid-template-columns:minmax(0,40fr) minmax(0,60fr); gap:28px; }
@@ -70,9 +70,9 @@
   .stop-note{ position:static; display:inline-block; margin-bottom:6px; }
   .stop-note .arr-l{ display:inline; } .stop-note .arr-r{ display:none; }
 
-  .tools{ grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .tool:first-child{ grid-column:1 / -1; }
-
+  /* las herramientas ya no se reparten en columnas: desde 02-herramientas
+     son tres tiras apiladas, y a este ancho solo cambia que la cabecera
+     pastel pasa del costado a arriba (el corte está en los 700px). */
 
   .clues{ grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
@@ -97,7 +97,6 @@
   .stop-note{ position:static; }
 
   .ab-head{ margin-bottom:18px; }
-  .tools{ grid-template-columns:1fr; }
 
   .ab-all{ text-align:left; }
 }
@@ -116,7 +115,7 @@
   .stop{ grid-template-columns:56px minmax(0,1fr); gap:14px; }
   .stop-ico{ width:56px; height:56px; --ps:2px; }
   .stop:not(:last-child)::after{ left:26px; top:56px; }
-  .keys{ padding:14px 12px 16px; }
+  .keys{ padding:10px 12px; }
 }
 
 @media (prefers-reduced-motion:reduce){

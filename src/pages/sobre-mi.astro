@@ -63,26 +63,32 @@ const paradas = [
 ] as const;
 
 /* Las tres cosas que hace con sus herramientas. Las listas NO se traducen:
-   son nombres propios de programas y lenguajes. */
+   son nombres propios de programas y lenguajes.
+
+   `nombres` son las principales y `mas` las que antes vivían en el
+   <details> de «herramientas adicionales»: ahora cada una está en la
+   categoría que le toca, en voz baja, y el desplegable ya no hace falta.
+   `clase` es la que une la tarjeta con sus objetos del toolkit. */
 const herramientas = [
   {
-    icono: Paleta, color: 't-pink',
+    icono: Paleta, color: 't-pink', clase: 'tool-disenar',
     verbo: 'pages.about.tools.design.verb', que: 'pages.about.tools.design.what',
     nombres: ['Figma', 'Illustrator', 'Photoshop', 'Procreate'],
+    mas: [],
   },
   {
-    icono: SignoCodigo, color: 't-sky',
+    icono: SignoCodigo, color: 't-sky', clase: 'tool-construir',
     verbo: 'pages.about.tools.build.verb', que: 'pages.about.tools.build.what',
-    nombres: ['HTML & CSS', 'JavaScript', 'TypeScript', 'React', 'Python', "Java"],
+    nombres: ['HTML & CSS', 'JavaScript', 'TypeScript', 'React', 'Python', 'Java'],
+    mas: ['PHP/Laravel', 'C#', 'Unity', 'Docker', 'Git & GitHub'],
   },
   {
-    icono: Grafico, color: 't-mint',
+    icono: Grafico, color: 't-mint', clase: 'tool-analizar',
     verbo: 'pages.about.tools.analyze.verb', que: 'pages.about.tools.analyze.what',
     nombres: ['SQL', 'Pandas', 'Google Earth Engine', 'Spark'],
+    mas: ['SQLite', 'PostgreSQL'],
   },
 ] as const;
-
-const masHerramientas = ['PHP/Laravel', 'C#', 'Unity', 'Docker', 'Git & GitHub', 'SQLite', 'PostgreSQL'];
 
 /* Las seis pistas de "fuera de la pantalla": dibujo, cada una con su icono. */
 const pistas = [
@@ -230,7 +236,9 @@ const pistas = [
 
     {/* ═══════════ 02 · HERRAMIENTAS ═══════════
         Agrupadas por lo que HACE con ellas (verbos), no por tecnología.
-        Lo secundario queda detrás de un <details>: está, pero no compite. */}
+        Lo secundario ya no vive en un <details> aparte: cada herramienta
+        adicional está en su categoría, detrás de la marca «y también» y
+        en voz baja. Está, pero no compite. */}
     <section class="ab-sec ab-split ab-reveal" aria-labelledby="ab-tools">
       <header class="ab-head">
         <p class="ab-num" data-i18n="pages.about.tools.eyebrow">{translate('pages.about.tools.eyebrow')}</p>
@@ -246,20 +254,23 @@ const pistas = [
 
       <div class="tools">
         {herramientas.map((grupo) => (
-          <article class="tool">
+          <article class={`tool ${grupo.clase}`} tabindex="0">
             <div class={`tool-head ${grupo.color}`}>
               <span class="tool-ico"><grupo.icono /></span>
               <div><h3 class="tool-verb" data-i18n={grupo.verbo}>{translate(grupo.verbo)}</h3><p class="tool-what" data-i18n={grupo.que}>{translate(grupo.que)}</p></div>
             </div>
-            <ul class="keys">{grupo.nombres.map((nombre) => <li>{nombre}</li>)}</ul>
+            <ul class="keys">
+              {grupo.nombres.map((nombre) => <li>{nombre}</li>)}
+              {grupo.mas.length > 0 && (
+                <Fragment>
+                  <li class="keys-sep" data-i18n="pages.about.tools.also">{translate('pages.about.tools.also')}</li>
+                  {grupo.mas.map((nombre) => <li class="keys-quiet">{nombre}</li>)}
+                </Fragment>
+              )}
+            </ul>
           </article>
         ))}
       </div>
-
-      <details class="ab-more">
-        <summary data-i18n="pages.about.tools.more">{translate('pages.about.tools.more')}</summary>
-        <ul class="keys keys-quiet">{masHerramientas.map((nombre) => <li>{nombre}</li>)}</ul>
-      </details>
     </section>
 
     {/* ═══════════ 03 · FUERA DE LA PANTALLA ═══════════ */}
