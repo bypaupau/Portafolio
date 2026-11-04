@@ -7,29 +7,76 @@
 /* ════════════════════════════════════════════════
    02 · HERRAMIENTAS
    ════════════════════════════════════════════════ */
-.tools{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+/* TRES TIRAS, NO TRES COLUMNAS. Al entrar las adicionales en sus
+   categorías, tres columnas quedaban desparejas de remate: construir
+   con once teclas y diseñar con cuatro, y la rejilla las estira a la
+   más alta. Apiladas, cada una toma el alto que necesita, el desnivel
+   deja de verse y las tres categorías siguen a la vista a la vez. */
+.tools{ display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
+
+/* desde 700px la cabecera pastel se va al costado y la tarjeta se lee
+   de izquierda a derecha: qué hago → con qué. Debajo vuelve a apilarse. */
+@media (min-width:700px){
+  .tool{ display:grid; grid-template-columns:minmax(0,252px) minmax(0,1fr); }
+  /* span 2 y no 1/-1: con filas implícitas, -1 es el final de la rejilla
+     EXPLÍCITA (una sola fila) y la cabecera no llegaba hasta abajo */
+  .tool-head{ grid-row:1; grid-row-end:span 2; border-bottom:0; border-right:3px solid var(--ink); }
+  .keys{ grid-column:2; align-content:center; }
+}
+
+/* LAS TRES TIRAS, CENTRADAS CONTRA LA COLUMNA DEL TÍTULO.
+   Juntas miden menos que título + caja, así que si empiezan arriba
+   queda un escalón al pie. Centradas, los dos bloques terminan a la par.
+
+   El `grid-row` de la cabecera se queda en una fila: la regla común de
+   canvas-ancho-1100px.css la hace abarcar tres porque esta sección tenía
+   un tercer hijo (el <details>), y mientras abarque filas no hay contra
+   qué centrar. El :has(.toolkit) acota el cambio a esta sección: 03
+   sigue con la regla de siempre. Gana por especificidad, no por orden. */
+@media (min-width:1100px){
+  .ab-split:has(.toolkit) > .ab-head{ grid-row:1; }
+  .ab-split:has(.toolkit) > .tools{ align-self:center; }
+}
 .tool{
   min-width:0; background:#fff;
   border:3px solid var(--ink); box-shadow:var(--win-shadow);
 }
 .tool-head{
-  display:flex; align-items:center; gap:14px;
-  padding:14px 16px; border-bottom:3px solid var(--ink);
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px; border-bottom:3px solid var(--ink);
 }
 .tool-ico{
   flex:none; display:grid; place-items:center;
-  width:56px; height:56px; --ps:3px;
+  width:46px; height:46px; --ps:2.5px;
   background:#fff; border:2px solid var(--ink);
 }
-.tool-verb{ font-family:var(--font-pixel); font-weight:700; font-size:1.35rem; line-height:1; color:var(--ink); }
-.tool-what{ font-family:var(--font-term); font-size:calc(1.12rem * var(--font-term-scale)); line-height:1.1; color:var(--text-soft); margin-top:4px; }
+.tool-verb{ font-family:var(--font-pixel); font-weight:700; font-size:1.22rem; line-height:1; color:var(--ink); }
+.tool-what{ font-family:var(--font-term); font-size:calc(1.02rem * var(--font-term-scale)); line-height:1.1; color:var(--text-soft); margin-top:4px; }
 
-/* teclas: mismo lenguaje que los botones biselados, a escala chica */
-.keys{ list-style:none; display:flex; flex-wrap:wrap; gap:10px 8px; padding:18px 16px 20px; }
+/* el color del punto de las teclas, uno por categoría: el mismo trío de
+   las cabeceras, en su versión saturada para que se vea a 6 px */
+.tool-disenar  { --chip:var(--pink); }
+.tool-construir{ --chip:var(--dib-celeste); }
+.tool-analizar { --chip:var(--dib-verde); }
+
+/* la tarjeta se puede enfocar con el teclado. No navega a ningún sitio:
+   solo enciende su parte del toolkit (ver 02-caja-de-herramientas.css),
+   así el puente no depende de tener mouse. */
+.tool:focus-visible{ outline:3px dashed var(--pink); outline-offset:4px; }
+
+/* teclas: mismo lenguaje que los botones biselados, a escala chica.
+   El punto de color delante es lo que las hace leerse como rejilla y no
+   como párrafo: repite el color de la categoría tecla por tecla. */
+.keys{ list-style:none; display:flex; flex-wrap:wrap; gap:6px 5px; padding:12px 14px; }
 .keys li{
-  font-family:var(--font-pixel); font-weight:500; font-size:.98rem; line-height:1.2; color:var(--ink);
-  background:var(--pink-pale); border:2px solid var(--ink); box-shadow:0 3px 0 var(--ink);
-  padding:5px 10px 4px;
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--font-pixel); font-weight:500; font-size:.82rem; line-height:1.2; color:var(--ink);
+  background:var(--pink-pale); border:2px solid var(--ink); box-shadow:0 2px 0 var(--ink);
+  padding:3px 8px 2px;
+}
+.keys li::before{
+  content:""; flex:none; width:6px; height:6px;
+  background:var(--chip, var(--pink)); box-shadow:0 0 0 1px var(--ink);
 }
 
 /* lo secundario: presente pero en voz baja */
@@ -55,7 +102,22 @@
 .ab-more summary:hover{ color:var(--ink); }
 .ab-more summary:hover::before{ background:var(--pink-light); }
 .ab-more summary:focus-visible{ outline:3px solid var(--pink); outline-offset:3px; }
-.keys-quiet{ padding:6px 0 0; }
-.keys-quiet li{ background:transparent; border-style:dashed; box-shadow:none; color:var(--text-soft); font-weight:400; }
+/* LO SECUNDARIO, DENTRO DE SU CATEGORÍA. Antes las siete de
+   «herramientas adicionales» vivían en el <details> de abajo; ahora
+   cada una está en la tarjeta que le toca, detrás de una marca y en voz
+   baja. Son <li> de la MISMA lista para que floten en la misma rejilla:
+   la marca corta la fila y lo de abajo se lee como segundo grupo. */
+.keys .keys-sep{
+  flex:0 0 100%;
+  background:none; border:0; box-shadow:none; padding:6px 0 0;
+  font-family:var(--font-tiny); font-size:.44rem; letter-spacing:.5px;
+  color:var(--text-muted);
+}
+.keys .keys-sep::before{ display:none; }
+.keys .keys-quiet{
+  background:transparent; border-style:dashed; box-shadow:none;
+  color:var(--text-soft); font-weight:400;
+}
+.keys .keys-quiet::before{ background:var(--text-muted); box-shadow:none; }
 
 
