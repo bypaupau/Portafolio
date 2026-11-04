@@ -1,0 +1,16 @@
+---
+/* El trazo punteado que sube desde la carpeta de la caja de herramientas
+   de 02 hasta la ficha de arriba: la trayectoria de lo que está saliendo.
+
+   El lienzo (100×62) es el mismo rectángulo que la escena, y va con
+   preserveAspectRatio="none" para que el trazo se estire con ella y no
+   se despegue de los objetos al cambiar el ancho de la columna.
+
+   Color, grosor y guiones los pone el CSS (igual que en .mark path):
+   aquí solo vive la curva. Ver partes/02-caja-de-herramientas.css. */
+interface Props { class?: string }
+const { class: clase = 'tk-trazo' } = Astro.props;
+---
+<svg class={clase} viewBox="0 0 100 62" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <path d="M54 46C36 40 20 31 13 9" />
+</svg>
